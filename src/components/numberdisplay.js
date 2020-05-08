@@ -1,6 +1,6 @@
 import React from 'react';
 
-import "/home/kaappo/testit/canvas/src/components/numberdisplay.css";
+import "./numberdisplay.css";
 
 class NumberDisplay extends React.Component {
     constructor(props) {

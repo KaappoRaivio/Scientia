@@ -1,8 +1,8 @@
 import React from 'react';
 
 import { mod } from "mathjs";
-import "/home/kaappo/testit/canvas/src/components/compass.css"
-import NumberDisplay from "/home/kaappo/testit/canvas/src/components/numberdisplay.js"
+import "./compass.css"
+import NumberDisplay from "./numberdisplay.js"
 
 import DrawHelper from "./helpers.js"
 
