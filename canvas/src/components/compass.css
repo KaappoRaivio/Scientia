@@ -1,0 +1,25 @@
+.container {
+    /* width: 600px !important; */
+    /* height: 600px !important; */
+
+    border: black solid 1px;
+    position: relative;
+    text-align: center;
+    float: left;
+    margin-left: -0.5px;
+    margin-top: -0.5px;
+    margin-right: -0.5px;
+    margin-bottom: -0.5px;
+    /* display: flex; */
+    /* flex-wrap: wrap; */
+}
+
+.compassRose {
+    bottom: 0px;
+    left: 0px;
+    position: absolute;
+}
+
+.number {
+    border: green;
+}

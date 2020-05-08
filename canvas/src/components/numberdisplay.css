@@ -1,0 +1,8 @@
+.displayContainer {
+    /* border: solid green ; */
+    display: inline-block;
+}
+
+.displayElement {
+    float: left;
+}
