@@ -25,14 +25,14 @@ class Compass extends React.Component {
     }
 
     getCircleRadius (canvasWidth, offsetY) {
-        return Math.sqrt((canvasWidth / 2) ** 2 + offsetY ** 2)
+        return Math.sqrt((canvasWidth / 2) ** 2 + offsetY ** 2) / 1.05
     }
 
     componentDidMount() {
         const canvas = this.refs.canvas;
         const ctx = canvas.getContext("2d");
         
-        const arcCenterOffsetY = canvas.width / 2.6;
+        const arcCenterOffsetY = canvas.width / 5;
         const radius = this.getCircleRadius(canvas.width, arcCenterOffsetY);
         
         const compassLineMaxLength = canvas.width / 2 / 10
@@ -105,8 +105,9 @@ class Compass extends React.Component {
                 height={this.props.height / 3 * 2} 
                 upperBound={360} 
                 decimalPlaces={1} 
-                fontSize={this.props.width / 4} 
-            />            
+                fontSize={this.props.width / 4}
+                legend="" 
+            />
             <canvas ref="canvas" className="compassRose" width={this.props.width} height={this.props.height / 2} />
         </div>
     }

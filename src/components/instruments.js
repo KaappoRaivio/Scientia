@@ -2,9 +2,10 @@ import  React from "react";
 
 import Compass from "./compass"
 import Wind from "./wind"
+import Tridata from "./tridata";
 
 
-const server_root = "ws://localhost:3000"
+const server_root = "ws://192.168.1.135:3000"
 
 class Instruments extends React.Component {
     constructor (props) {
@@ -41,6 +42,8 @@ class Instruments extends React.Component {
                     preparePath("navigation.speedThroughWater"),
                     preparePath("navigation.courseOverGroundTrue"),
                     preparePath("navigation.position"),
+                    preparePath("navigation.speedOverGround"),
+                    preparePath("performance.velocityMadeGood"),
                 ]
             }))
         }
@@ -73,8 +76,7 @@ class Instruments extends React.Component {
 
                     
                 } catch (err) {
-                    console.error(message)
-                    // console.error(err)
+                    console.error(err)
                 }
             }
         }
@@ -111,11 +113,11 @@ class Instruments extends React.Component {
         return (        
             <div>
                 <div className="table">
-                    <Wind width={500} height={500} subscribe={setCallback} />
                     <Compass width={500} height={500} heading={0} subscribe={setCallback} />
+                    <Wind width={500} height={500} subscribe={setCallback} />
+                    <Tridata width={500} height={500} subscribe={setCallback} />
                 </div>
                 <div className="table">
-                    {/* <Wind width={500} height={500} subscribe={setCallback}/> */}
                 </div>
             </div>
         );

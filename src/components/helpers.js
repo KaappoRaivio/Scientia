@@ -9,14 +9,14 @@ class DrawHelper {
         // this.arcCenterOffsetY = arcCenterOffsetY;
     }
     
-    drawAngleText (origin, angle, radius, text, dontRotateText) {
-        if (dontRotateText === undefined) {
-            dontRotateText = false;
+    drawAngleText (origin, angle, radius, text, rotateText) {
+        if (rotateText === undefined) {
+            rotateText = true;
         }
         
         this.ctx.save();
 
-        if (dontRotateText) {
+        if (!rotateText) {
             // radius -= angle / Math.PI * 50
             radius -= 10;  // TODO change magic number - 20200505
         }
@@ -26,7 +26,7 @@ class DrawHelper {
         let y = pos[1];
 
         this.ctx.translate(x, y);
-        if (!dontRotateText) {
+        if (rotateText) {
             this.ctx.rotate(angle);
         }
     
@@ -45,7 +45,7 @@ class DrawHelper {
         return [x + Math.sin(Math.PI - angle) * radius, y + Math.cos(Math.PI - angle) * radius]
     }
 
-    drawDivision(origin, radius, division, length, angleProvider, numberTextProvider) {
+    drawDivision(origin, radius, division, length, angleProvider, numberTextProvider, rotateNumbers) {
         // console.log(origin, radius, division, length ,angleProvider, numberTextProvider)
         for (let i = 0; i < division; i++) {
             // let angleOffset = this.props.heading * Math.PI / 180;
@@ -57,7 +57,7 @@ class DrawHelper {
             
 
             let angleText = numberTextProvider(i)
-            this.drawAngleText(origin, angle, radius - length * 1.5, angleText, false)
+            this.drawAngleText(origin, angle, radius - length * 1.5, angleText, rotateNumbers)
         
         }
     }
