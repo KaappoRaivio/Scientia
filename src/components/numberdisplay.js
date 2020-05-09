@@ -13,7 +13,7 @@ class NumberDisplay extends React.Component {
 
         let measureText = this.props.upperBound;
         let text1 = this.props.value.toFixed(0);
-        let text3 = "." + Math.abs(((this.props.value - Math.trunc(this.props.value)) * 10 ** this.props.decimalPlaces)).toFixed(0) + this.props.suffix + " " + this.props.unit
+        let text3 = "." + (Math.abs(((this.props.value - Math.trunc(this.props.value)) * 10 ** this.props.decimalPlaces)).toFixed(0) + "").slice(0, this.props.decimalPlaces) + this.props.suffix + " " + this.props.unit
 
         let containerWidth = ctx.measureText(measureText).width ;
 

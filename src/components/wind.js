@@ -6,6 +6,7 @@ import DrawHelper from './helpers';
 import "./wind.css"
 
 import Interpolator from "./misc/interpolate.js"
+import Tridata from './tridata.js';
 
 class Wind extends React.Component {
     constructor (props) {
@@ -15,58 +16,56 @@ class Wind extends React.Component {
         this.state = {
             closeHaulAngle: 41,
 
-            "angleTrueWater": null,
-            "angleApparent": null,
-            "speedTrue": -1,
-            "speedApparent": null,
+            "angleTrueWater": 0,
+            "angleApparent": 0,
+            "speedTrue": 4,
+            "speedApparent": 5,
+
+            interpolated: {
+                angleTrueWater: 0,
+                angleApparent: 0,
+                speedTrue: 0,
+            },
         }
     }
 
     subscribe() {
         this.counter = 0;
         this.onMessage = (message) => {
-            // console.log("Received wind message: " + JSON.stringify(message));
             let path = message.values[0].path.split(".")[2];
 
-            // console.log("Wind prop: " + path)
-
             if (path in this.state) {
-                // console.log("moioioioi" + message.values[0].value)
                 this.setState({
                     [path]: message.values[0].value
                 })
             }
-            // console.log(this.state)
-            // console.log(this)
-            this.data.interpolator.addDataPoint(
-                this.counter++,
-                [
-                    this.state["angleTrueWater"],
-                    this.state["angleApparent"],
-                    this.state["speedTrue"],
-                    this.state["speedApparent"],
-                ]
-            );
-            // console.log("testi")
+            
+            if (path === "angleTrueWater") {
+                this.data.interpolators.true.addDataPoint(new Date().getTime(), this.state["angleTrueWater"]);
+            } else if (path === "angleApparent") {
+                this.data.interpolators.app.addDataPoint(new Date().getTime(), this.state.angleApparent);
+            } else if (path === "speedTrue") {
+                this.data.interpolators.speedTrue.addDataPoint(new Date().getTime(), this.state.speedTrue);
+            }
         }
         this.props.subscribe(["environment\.wind\..+"], this.onMessage.bind(this))
 
         setInterval(() => {
-            let values = this.data.interpolator.interpolate(this.counter);
-            // console.log(this)
-            // console.log(values)
+            let trueValue = this.data.interpolators.true.interpolate(new Date().getTime());
+            let trueSpeed = this.data.interpolators.speedTrue.interpolate(new Date().getTime());
+            let apparentValue = this.data.interpolators.app.interpolate(new Date().getTime());
             this.setState({
-                "angleTrueWater": values[0],
-                "angleApparent":  values[1],
-                "speedTrue":      values[2],
-                "speedApparent":  values[3],
+                interpolated: {
+                    angleTrueWater: trueValue,
+                    angleApparent: apparentValue,
+                    speedTrue: trueSpeed,
+                }
             })
-        }, 10)
+        }, 16)
     }
 
     componentDidMount() {
         this.subscribe()
-
 
         const canvas = this.refs.canvas_background;
         const ctx = canvas.getContext("2d");
@@ -82,20 +81,28 @@ class Wind extends React.Component {
             ctx_update: ctx_update,
 
             drawHelper: new DrawHelper(canvas, ctx),
-            interpolator: new Interpolator(),
-            
+            interpolators: {
+                true: new Interpolator(),  
+                app: new Interpolator(),
+                speedTrue: new Interpolator(),
+            },
+                
             compassLineMaxLength: canvas.width / 2.1 / 20,
             origin: [canvas.width / 2, canvas.height / 2],
             radius: canvas.width / 2.1,
-
-            image: new Image()
         };
         
+        this.drawBackground();
+        this.componentDidUpdate();
+    }
 
+    drawBackground() {
+        const ctx = this.data.ctx_background;
+        const canvas = this.data.canvas_update;
+        
         ctx.beginPath();
         ctx.arc(canvas.width / 2, canvas.height / 2, this.data.radius, 0, 2 * Math.PI);
         ctx.font = "20px Courier"
-        
 
         const divisions = [[24, 0.5], [72, 1]];
         for (const division of divisions) {
@@ -111,17 +118,13 @@ class Wind extends React.Component {
                     return "";
                 }
             }
-            
+
             this.data.drawHelper.drawDivision(this.data.origin, this.data.radius, division[0], this.data.compassLineMaxLength / division[1], angleProvider, numberTextProvider, false);
         }
-            
-        
+
         ctx.closePath();
         ctx.stroke();
-
-        this.componentDidUpdate();
     }
-
 
     componentDidUpdate() {
         const ctx = this.data.ctx_update;
@@ -151,31 +154,30 @@ class Wind extends React.Component {
 
     drawPointer () {
         const ctx = this.data.ctx_update;
-        ctx.strokeStyle = "rgb(220, 50, 0)";
         ctx.lineWidth = 10;
-        ctx.beginPath();
         this.data.drawHelper.ctx = this.data.ctx_update;
-        this.data.drawHelper.drawCompassLine(this.data.origin, this.state.angleTrueWater + Math.PI, -this.data.radius + this.data.compassLineMaxLength * 2, this.data.compassLineMaxLength * 2)
+        
+        ctx.strokeStyle = "rgb(220, 50, 0)";
+        ctx.beginPath();
+        this.data.drawHelper.drawCompassLine(this.data.origin, this.state.interpolated.angleTrueWater + Math.PI, -this.data.radius + this.data.compassLineMaxLength * 2, this.data.compassLineMaxLength * 2)
         ctx.closePath();
         ctx.stroke()
+        
+        
         ctx.strokeStyle = "rgb(230, 230, 0)";
         ctx.beginPath()
-        
-
-        this.data.drawHelper.drawCompassLine(this.data.origin, this.state.angleApparent + Math.PI, -this.data.radius + this.data.compassLineMaxLength * 2, this.data.compassLineMaxLength* 2)
-        this.data.drawHelper.ctx = this.data.ctx_background;
-        // ctx.moveTo(250, 250);
-        // ctx.lineTo(300, 300);
+        this.data.drawHelper.drawCompassLine(this.data.origin, this.state.interpolated.angleApparent + Math.PI, -this.data.radius + this.data.compassLineMaxLength * 2, this.data.compassLineMaxLength* 2)
         ctx.closePath();
-        // ctx.fill();
         ctx.stroke();
+        
+        this.data.drawHelper.ctx = this.data.ctx_background;
     }
 
     render() {
         return <div className="container" style={{ width: this.props.width + "px", height: this.props.height + "px" }}>
             <div className="layerCentered">
                 <NumberDisplay
-                    value={this.state.speedTrue}
+                    value={this.state.interpolated.speedTrue}
                     suffix=""
                     unit="kts"
                     width={this.props.width / 2}

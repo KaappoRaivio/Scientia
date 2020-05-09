@@ -30,13 +30,15 @@ class Tridata extends React.Component {
     }
 
     render () {
+        let divider = 3.075;
+        
         return <div className="container" style={{ width: this.props.width + "px", height: this.props.height + "px" }}>
             <NumberDisplay
                 value={this.state["environment.depth.belowTransducer"]}
                 suffix=""
                 unit="metriä"
                 width={this.props.width}
-                height={this.props.height / 3}
+                height={this.props.height / divider}
                 upperBound={99}
                 decimalPlaces={1}
                 fontSize={this.props.width / 4}
@@ -47,7 +49,7 @@ class Tridata extends React.Component {
                 suffix=""
                 unit="solmua"
                 width={this.props.width}
-                height={this.props.height / 3}
+                height={this.props.height / divider}
                 upperBound={99}
                 decimalPlaces={1}
                 fontSize={this.props.width / 4}
@@ -58,7 +60,7 @@ class Tridata extends React.Component {
                 suffix=""
                 unit="solmua"
                 width={this.props.width}
-                height={this.props.height / 3}
+                height={this.props.height / divider}
                 upperBound={99}
                 decimalPlaces={1}
                 fontSize={this.props.width / 4}

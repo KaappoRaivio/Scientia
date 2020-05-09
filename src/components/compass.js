@@ -5,23 +5,16 @@ import "./compass.css"
 import NumberDisplay from "./numberdisplay.js"
 
 import DrawHelper from "./helpers.js"
+import Interpolator from './misc/interpolate';
 
 class Compass extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            heading: 0
+            heading: 0,
+            interpolated: 0
         }
-
-        this.onMessage = (message) => {
-            // console.debug("Received message: " + JSON.stringify(message) + ", " + this.radius);
-            const extracted = message.values[0].value / Math.PI * 180;
-            if (message.source.label === "nmeaFromFile") {
-                this.setState({heading: extracted});
-            }
-        }
-        this.props.subscribe(["navigation.courseOverGroundTrue"], this.onMessage)
     }
 
     getCircleRadius (canvasWidth, offsetY) {
@@ -29,6 +22,8 @@ class Compass extends React.Component {
     }
 
     componentDidMount() {
+        this.subscribe();
+        
         const canvas = this.refs.canvas;
         const ctx = canvas.getContext("2d");
         
@@ -50,11 +45,31 @@ class Compass extends React.Component {
             arcCenterOffsetY: arcCenterOffsetY,
 
             drawHelper: drawHelper,
+            interpolator: new Interpolator(),
         }
 
         this.componentDidUpdate();        
     }
 
+    subscribe () {
+        this.onMessage = (message) => {
+            const extracted = message.values[0].value / Math.PI * 180;
+            if (message.source.label === "nmeaFromFile") {
+                this.setState({ heading: extracted });
+
+                this.data.interpolator.addDataPoint(new Date().getTime(), extracted);
+            }
+        }
+        this.props.subscribe(["navigation.courseOverGroundTrue"], this.onMessage)
+
+        setInterval(() => {
+            let heading = this.data.interpolator.interpolate(new Date().getTime());
+            this.setState({
+                interpolated: heading
+            })
+        }, 16)
+
+    }
 
     componentDidUpdate () {
         const ctx = this.data.ctx_backgroud;
@@ -74,13 +89,13 @@ class Compass extends React.Component {
             
             let angleProvider = (index) => {
                 let baseAngle = 2 * Math.PI / division[0] * index;
-                let angleOffset = this.state.heading * Math.PI / 180;
+                let angleOffset = this.state.interpolated * Math.PI / 180;
                 return baseAngle - angleOffset;
             }
 
             let numberTextProvider = (index) => {
                 if (division[0] === 24) {
-                    let baseAngle = angleProvider(index) + this.state.heading * Math.PI / 180
+                    let baseAngle = angleProvider(index) + this.state.interpolated * Math.PI / 180
                     return mod(baseAngle / Math.PI * 180, 360).toFixed(0);
                 } else {
                     return "";
@@ -98,7 +113,7 @@ class Compass extends React.Component {
         return <div className="container" style={{width: this.props.width + "px", height: this.props.height + "px"}}>
             <NumberDisplay 
                 className="number" 
-                value={this.state.heading} 
+                value={this.state.interpolated} 
                 suffix="°" 
                 unit="T" 
                 width={this.props.width} 

@@ -25,9 +25,9 @@ class Instruments extends React.Component {
         const preparePath = (name) => {
             return {
                 "path": name,
-                "period": 100,
+                "period": 1000,
                 "format": "full",
-                "policy": "ideal",
+                "policy": "fixed",
                 // "minPeriod": 200
             }
         }

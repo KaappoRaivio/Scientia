@@ -5,13 +5,12 @@ class Interpolator {
 
 
         this.dataPoints = [
-            [0, [0, 0, 0, 0]]
+            [new Date().getTime(), 0],
+            [new Date().getTime() + 1000, 0]
         ];
     }
 
     addDataPoint (timeStamp, data) {
-        // console.log(this.dataPoints)
-        // console.log(this.dataPoints)
         this.dataPoints.push([timeStamp, data]);
         while (this.dataPoints.length > 20) {
             this.dataPoints.shift();
@@ -20,14 +19,14 @@ class Interpolator {
     }
 
     interpolate (timeStamp) {
-        // let latest = this.dataPoints[this.dataPoints.length - 1][0];
-        // let diff = timeStamp - latest;
+        let latest = this.dataPoints[this.dataPoints.length - 1][0];
+        let diff = timeStamp - latest;
 
         let averageDiff = this.getAverageDeltaTime();
 
-        // let progress = diff / averageDiff;
-
-        return this.getLatestPairSlope()(timeStamp - averageDiff)
+        let progress = diff / averageDiff;
+        // console.log(averageDiff)
+        return this.getLatestPairSlope()(progress * 1200)
     }
 
     getAverageDeltaTime () {
@@ -42,7 +41,6 @@ class Interpolator {
 
             previous = current;
         }
-
         return diffs.reduce((a, b) => a + b, 0) / diffs.length;
     }
 
@@ -51,16 +49,25 @@ class Interpolator {
         let other = this.dataPoints[this.dataPoints.length - 2]
 
         return (x) => {
-            console.log(latest)
-            if (latest === undefined) {
-                alert()
-            }
-            let yDiffs = latest[1].map((item, index) => item - other[1][index]);
+            // console.log(latest)
+            // if (latest === undefined || other === undefined) {
+            //     return [0, 0, 0, 0]
+            // }
+            // let yDiffs = latest[1].map((item, index) => item - other[1][index]);
             // let k = (latest[1] - other[1]) / (latest[0] - other[0]);
-            let slopes = yDiffs.map(item => item / (latest[0] - other[0]))
-            let constants = other[1];
+            // let slopes = yDiffs.map(item => item / (latest[0] - other[0]))
+            // let constants = other[1];
 
-            return slopes.map((item, index) => item * x + constants[index]);
+            // return slopes.map((item, index) => item * x + constants[index]);
+            // console.log(x + 0)
+            // console.log(latest, other)
+            let k = (latest[1] - other[1]) / (latest[0] - other[0]);
+            let b = other[1];
+
+            // return this.dataPoints[this.dataPoints.length - 1][1]
+            // console.log(k.toFixed(5), x.toFixed(0), b.toFixed(0), (latest[1]))
+            return k > 0 ? Math.min(k * x + b, latest[1]) : Math.max(k * x + b, latest[1])
+            // return Math.abs(k*x + b) > Math.abs(latest[1]) ? latest[1] : k*x + b;
         }
     }
 }
