@@ -45,7 +45,7 @@ class Compass extends React.Component {
             arcCenterOffsetY: arcCenterOffsetY,
 
             drawHelper: drawHelper,
-            interpolator: new Interpolator(),
+            interpolator: new Interpolator(true),
         }
 
         this.componentDidUpdate();        
@@ -53,9 +53,9 @@ class Compass extends React.Component {
 
     subscribe () {
         this.onMessage = (message) => {
-            const extracted = message.values[0].value / Math.PI * 180;
+            const extracted = message.values[0].value;
             if (message.source.label === "nmeaFromFile") {
-                this.setState({ heading: extracted });
+                this.setState({ heading: extracted / Math.PI * 180 });
 
                 this.data.interpolator.addDataPoint(new Date().getTime(), extracted);
             }
@@ -65,7 +65,7 @@ class Compass extends React.Component {
         setInterval(() => {
             let heading = this.data.interpolator.interpolate(new Date().getTime());
             this.setState({
-                interpolated: heading
+                interpolated: heading / Math.PI * 180
             })
         }, 16)
 

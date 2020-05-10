@@ -1,7 +1,17 @@
+import Bezier from "bezier";
+import { mod } from "mathjs";
+
+
 class Interpolator {
-    constructor () {
+    constructor (angle) {
         this.previousData = 0;
         this.currentData = 0;
+
+        if (angle === undefined) {
+            angle = false;
+        }
+
+        this.angle = angle;
 
 
         this.dataPoints = [
@@ -25,8 +35,7 @@ class Interpolator {
         let averageDiff = this.getAverageDeltaTime();
 
         let progress = diff / averageDiff;
-        // console.log(averageDiff)
-        return this.getLatestPairSlope()(progress * 1200)
+        return this.getLatestPairSlope()(progress)
     }
 
     getAverageDeltaTime () {
@@ -44,31 +53,71 @@ class Interpolator {
         return diffs.reduce((a, b) => a + b, 0) / diffs.length;
     }
 
+    deltaAngle (a, b) {
+        let diff = a - b;
+        return (diff + Math.PI) % (2 * Math.PI) - Math.PI
+    }
+
+    normalizeAngle (a) {
+        // if (a >= Math.PI) {
+        //     return a - 2 * Math.PI;
+        // } else if (a <= -Math.PI) {
+        //     return a + 2* Math.PI;
+        // } else {
+            return a;
+        // }
+    }
+
     getLatestPairSlope () {
         let latest = this.dataPoints[this.dataPoints.length - 1]
         let other = this.dataPoints[this.dataPoints.length - 2]
 
         return (x) => {
-            // console.log(latest)
-            // if (latest === undefined || other === undefined) {
-            //     return [0, 0, 0, 0]
-            // }
-            // let yDiffs = latest[1].map((item, index) => item - other[1][index]);
-            // let k = (latest[1] - other[1]) / (latest[0] - other[0]);
-            // let slopes = yDiffs.map(item => item / (latest[0] - other[0]))
-            // let constants = other[1];
+            let deltaX = latest[0] - other[0];
+            
+            let deltaY = 0;
 
-            // return slopes.map((item, index) => item * x + constants[index]);
-            // console.log(x + 0)
-            // console.log(latest, other)
-            let k = (latest[1] - other[1]) / (latest[0] - other[0]);
+            if (this.angle) {
+                let delta1 = this.deltaAngle(latest[1], other[1])
+                let delta2 = -this.deltaAngle(other[1], latest[1])
+                
+                deltaY = Math.abs(delta1) < Math.abs(delta2) ? delta1 : delta2
+            } else {
+                deltaY = latest[1] - other[1];
+            }
+            
+            let speed = 3;
+
+            // let k = -Math.sign(deltaY) * Math.PI * speed;
+            let k = deltaY / deltaX * 1000 * speed;
             let b = other[1];
 
-            // return this.dataPoints[this.dataPoints.length - 1][1]
-            // console.log(k.toFixed(5), x.toFixed(0), b.toFixed(0), (latest[1]))
-            return k > 0 ? Math.min(k * x + b, latest[1]) : Math.max(k * x + b, latest[1])
-            // return Math.abs(k*x + b) > Math.abs(latest[1]) ? latest[1] : k*x + b;
+            if (this.angle) {
+                x = Math.max(Math.min(x, 1 / speed), 0);
+                console.log(x, mod(k * x + b, 2 * Math.PI) / Math.PI * 180, k, deltaX)
+                return mod(k*x + b, 2 * Math.PI);
+                
+            } else {
+                return k > 0 ? Math.min(k * x + b, latest[1]) : Math.max(k * x + b, latest[1])
+            }
         }
+    }
+
+    magicTruthTable (k, y, t) {
+        let cond = [k > 0, y < Math.PI, t > Math.PI].map(k => k ? "1" : "0").join("");
+        
+        const table = {
+            "000": Math.min,
+            "001": Math.max,
+            "010": Math.min,
+            "011": Math.min,
+            "100": Math.max,
+            "101": Math.max,
+            "110": Math.min,
+            "111": Math.max,
+        };
+
+        return table[cond];
     }
 }
 

@@ -27,12 +27,29 @@ class Wind extends React.Component {
                 speedTrue: 0,
             },
         }
+
     }
 
     subscribe() {
-        this.counter = 0;
+        this.counter = 1;
         this.onMessage = (message) => {
             let path = message.values[0].path.split(".")[2];
+
+            // if (path === "angleTrueWater") {
+            //     this.setState((state) => {
+            //         let left = 95;
+            //         let right = -95;
+            //         return {
+            //             // angleTrueWater: state.angleTrueWater === left / 180 * Math.PI ? right / 180 * Math.PI : left / 180 * Math.PI,
+            //             angleApparent: state.angleApparent === left / 180 * Math.PI ? right / 180 * Math.PI : left / 180 * Math.PI
+            //         }
+            //     })
+            //     this.data.interpolators.true.addDataPoint(new Date().getTime(), this.state["angleTrueWater"]);
+            //     this.data.interpolators.app.addDataPoint(new Date().getTime(), this.state.angleApparent);
+            //     return;
+            // } else {
+            //     return;
+            // }
 
             if (path in this.state) {
                 this.setState({
@@ -82,8 +99,8 @@ class Wind extends React.Component {
 
             drawHelper: new DrawHelper(canvas, ctx),
             interpolators: {
-                true: new Interpolator(),  
-                app: new Interpolator(),
+                true: new Interpolator(true),  
+                app: new Interpolator(true),
                 speedTrue: new Interpolator(),
             },
                 

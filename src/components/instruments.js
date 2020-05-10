@@ -113,9 +113,8 @@ class Instruments extends React.Component {
         return (        
             <div>
                 <div className="table">
-                    <Compass width={500} height={500} heading={0} subscribe={setCallback} />
                     <Wind width={500} height={500} subscribe={setCallback} />
-                    <Tridata width={500} height={500} subscribe={setCallback} />
+                    <Compass width={500} height={500} subscribe={setCallback} />
                 </div>
                 <div className="table">
                 </div>
