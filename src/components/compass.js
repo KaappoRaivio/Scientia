@@ -30,7 +30,7 @@ class Compass extends React.Component {
         const arcCenterOffsetY = canvas.width / 5;
         const radius = this.getCircleRadius(canvas.width, arcCenterOffsetY);
         
-        const compassLineMaxLength = canvas.width / 2 / 10
+        const compassLineMaxLength = canvas.width / 2 / 10;
         const origin = [canvas.width / 2, canvas.height + arcCenterOffsetY];
 
         const drawHelper = new DrawHelper(canvas, ctx);
@@ -46,7 +46,7 @@ class Compass extends React.Component {
 
             drawHelper: drawHelper,
             interpolator: new Interpolator(true),
-        }
+        };
 
         this.componentDidUpdate();        
     }
@@ -54,13 +54,14 @@ class Compass extends React.Component {
     subscribe () {
         this.onMessage = (message) => {
             const extracted = message.values[0].value;
+            console.log(extracted / Math.PI * 180 )
             if (message.source.label === "nmeaFromFile") {
                 this.setState({ heading: extracted / Math.PI * 180 });
 
                 this.data.interpolator.addDataPoint(new Date().getTime(), extracted);
             }
-        }
-        this.props.subscribe(["navigation.courseOverGroundTrue"], this.onMessage)
+        };
+        this.props.subscribe(["navigation.courseOverGroundTrue"], this.onMessage);
 
         setInterval(() => {
             let heading = this.data.interpolator.interpolate(new Date().getTime());
@@ -79,28 +80,28 @@ class Compass extends React.Component {
 
         ctx.beginPath();
         ctx.arc(canvas.width / 2, canvas.height + this.data.arcCenterOffsetY, this.data.radius, 0, 2 * Math.PI);
-        ctx.fillRect(this.props.width / 2 - 1, canvas.height - this.data.radius + this.data.arcCenterOffsetY - 10, 2, 10)
+        ctx.fillRect(this.props.width / 2 - 1, canvas.height - this.data.radius + this.data.arcCenterOffsetY - 10, 2, 10);
         ctx.font = canvas.width / 20 + "px Courier";
 
         
         let divisions = [[24, 1], [72, 2], [144, 3]];
         for (let index = 0; index < divisions.length; index++) {
-            let division = divisions[index]
+            let division = divisions[index];
             
             let angleProvider = (index) => {
                 let baseAngle = 2 * Math.PI / division[0] * index;
                 let angleOffset = this.state.interpolated * Math.PI / 180;
                 return baseAngle - angleOffset;
-            }
+            };
 
             let numberTextProvider = (index) => {
                 if (division[0] === 24) {
-                    let baseAngle = angleProvider(index) + this.state.interpolated * Math.PI / 180
+                    let baseAngle = angleProvider(index) + this.state.interpolated * Math.PI / 180;
                     return mod(baseAngle / Math.PI * 180, 360).toFixed(0);
                 } else {
                     return "";
                 }
-            }
+            };
 
             this.data.drawHelper.drawDivision(this.data.origin, this.data.radius, division[0], this.data.compassLineMaxLength / division[1], angleProvider, numberTextProvider)
         }
@@ -110,7 +111,7 @@ class Compass extends React.Component {
     }
 
     render () {
-        return <div className="container" style={{width: this.props.width + "px", height: this.props.height + "px"}}>
+        return <div className="container col-3 col-t-4 col-s-6" style={{width: this.props.width + "px", height: this.props.height + "px"}}>
             <NumberDisplay 
                 className="number" 
                 value={this.state.interpolated} 

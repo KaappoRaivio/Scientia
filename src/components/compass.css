@@ -1,6 +1,6 @@
 .container {
-    /* width: 600px !important; */
-    /* height: 600px !important; */
+     /*width: 400px !important;*/
+     /*height: 400px !important;*/
 
     border: black solid 1px;
     position: relative;
@@ -15,8 +15,8 @@
 }
 
 .compassRose {
-    bottom: 0px;
-    left: 0px;
+    bottom: 0;
+    left: 0;
     position: absolute;
 }
 

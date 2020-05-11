@@ -11,7 +11,7 @@ class Tridata extends React.Component {
             "environment.depth.belowTransducer": -1,
             "navigation.speedOverGround": -1,
             "performance.velocityMadeGood": -1
-        }
+        };
 
         this.onMessage = (message) => {
             let path = message.values[0].path;
@@ -24,7 +24,7 @@ class Tridata extends React.Component {
                 // console.log(path)
             }
 
-        }
+        };
 
         this.props.subscribe(["depth.belowTransducer", "navigation.speedOverGround", "performance.velocityMadeGood"], this.onMessage)
     }
@@ -32,7 +32,7 @@ class Tridata extends React.Component {
     render () {
         let divider = 3.075;
         
-        return <div className="container" style={{ width: this.props.width + "px", height: this.props.height + "px" }}>
+        return <div className="container col-3 col-t-4 col-s-6" style={{ width: this.props.width + "px", height: this.props.height + "px" }}>
             <NumberDisplay
                 value={this.state["environment.depth.belowTransducer"]}
                 suffix=""

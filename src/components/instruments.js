@@ -4,8 +4,9 @@ import Compass from "./compass"
 import Wind from "./wind"
 import Tridata from "./tridata";
 
+import "./instruments.css"
 
-const server_root = "ws://192.168.1.115:3000"
+const server_root = "ws://192.168.1.115:3000";
 
 class Instruments extends React.Component {
     constructor (props) {
@@ -13,9 +14,9 @@ class Instruments extends React.Component {
 
         this.state = {
             data: null
-        }
+        };
 
-        this.ws = new WebSocket(server_root + "/signalk/v1/stream/?subscribe=none")
+        this.ws = new WebSocket(server_root + "/signalk/v1/stream/?subscribe=none");
 
         this.subscribers = []
 
@@ -30,10 +31,10 @@ class Instruments extends React.Component {
                 "policy": "fixed",
                 // "minPeriod": 200
             }
-        }
+        };
 
         this.ws.onopen = () => {
-            console.log("open")
+            console.log("open");
             this.ws.send(JSON.stringify({
                 context: "vessels.self",
                 subscribe: [
@@ -46,25 +47,17 @@ class Instruments extends React.Component {
                     preparePath("performance.velocityMadeGood"),
                 ]
             }))
-        }
+        };
 
         this.ws.onmessage = (event) => {
-            // console.log(event)
             const message = JSON.parse(event.data);
             this.setState({data: message});
-            // console.log(message);
 
             for (const subscriber of this.subscribers) {
                 try {
-                    // console.log(message.updates[0].values[0].path)
-                    // console.log(subscriber.paths)
-                    
+
                     message.updates.forEach(update => {
                         update.values.forEach(value => {
-                            // if (subscriber.paths.includes(value.path)) {
-                                //     subscriber.callback(update)
-                                // }
-                            // console.log(value.path)
                             subscriber.paths.forEach(subscriberPath => {
                                 let re = new RegExp(subscriberPath);
                                 if (re.test(value.path)) {
@@ -73,13 +66,12 @@ class Instruments extends React.Component {
                             })
                         })
                     });
-
                     
                 } catch (err) {
                     console.error(err)
                 }
             }
-        }
+        };
 
         
         console.log(this.refs);
@@ -108,16 +100,24 @@ class Instruments extends React.Component {
     render () {
         const setCallback = (paths, callback) => {
             this.subscribers.push({paths: paths, callback: callback})
-        }
+        };
+
+        const instruments = [Wind,
+            Compass,
+            Tridata];
 
         return (        
-            <div>
-                <div className="table">
-                    <Wind width={500} height={500} subscribe={setCallback} />
-                    <Compass width={500} height={500} subscribe={setCallback} />
-                </div>
-                <div className="table">
-                </div>
+            <div className="row">
+                {/*{*/}
+                {/*    instruments.map(instrument => {*/}
+                {/*        return React.createElement(instrument,*/}
+                {/*            {width: 400, height: 400, subscribe: setCallback, className: "col-3 col-t-4 col-s-6"},*/}
+                {/*            [])*/}
+                {/*    })*/}
+                {/*}*/}
+                <Wind className="" width={400} height={400} subscribe={setCallback} />
+                <Tridata className="" width={400} height={400} subscribe={setCallback} />
+                <Compass className="" width={400} height={400} subscribe={setCallback} />
             </div>
         );
     }

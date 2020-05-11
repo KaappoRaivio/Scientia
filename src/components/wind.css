@@ -5,6 +5,8 @@
 }
 
 .layerCentered {
+    width: 50%;
+    height: 30%;
     position: absolute;
     top: 35% !important;
     left: 25%;

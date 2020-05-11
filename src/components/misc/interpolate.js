@@ -69,8 +69,8 @@ class Interpolator {
     }
 
     getLatestPairSlope () {
-        let latest = this.dataPoints[this.dataPoints.length - 1]
-        let other = this.dataPoints[this.dataPoints.length - 2]
+        let latest = this.dataPoints[this.dataPoints.length - 1];
+        let other = this.dataPoints[this.dataPoints.length - 2];
 
         return (x) => {
             let deltaX = latest[0] - other[0];
@@ -78,8 +78,8 @@ class Interpolator {
             let deltaY = 0;
 
             if (this.angle) {
-                let delta1 = this.deltaAngle(latest[1], other[1])
-                let delta2 = -this.deltaAngle(other[1], latest[1])
+                let delta1 = this.deltaAngle(latest[1], other[1]);
+                let delta2 = -this.deltaAngle(other[1], latest[1]);
                 
                 deltaY = Math.abs(delta1) < Math.abs(delta2) ? delta1 : delta2
             } else {
@@ -94,7 +94,7 @@ class Interpolator {
 
             if (this.angle) {
                 x = Math.max(Math.min(x, 1 / speed), 0);
-                console.log(x, mod(k * x + b, 2 * Math.PI) / Math.PI * 180, k, deltaX)
+                // console.log(x, mod(k * x + b, 2 * Math.PI) / Math.PI * 180, k, deltaX);
                 return mod(k*x + b, 2 * Math.PI);
                 
             } else {
