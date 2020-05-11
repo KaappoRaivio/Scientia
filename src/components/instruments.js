@@ -5,7 +5,7 @@ import Wind from "./wind"
 import Tridata from "./tridata";
 
 
-const server_root = "ws://192.168.1.135:3000"
+const server_root = "ws://192.168.1.115:3000"
 
 class Instruments extends React.Component {
     constructor (props) {
