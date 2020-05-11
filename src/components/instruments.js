@@ -35,8 +35,8 @@ class Instruments extends React.Component {
         this.ws.onopen = () => {
             console.log("open")
             this.ws.send(JSON.stringify({
-                "context": "vessels.self",
-                "subscribe": [
+                context: "vessels.self",
+                subscribe: [
                     preparePath("environment.depth.belowTransducer"),
                     preparePath("environment.wind.*"),
                     preparePath("navigation.speedThroughWater"),

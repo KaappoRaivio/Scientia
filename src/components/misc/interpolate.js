@@ -35,7 +35,7 @@ class Interpolator {
         let averageDiff = this.getAverageDeltaTime();
 
         let progress = diff / averageDiff;
-        return this.getLatestPairSlope()(progress)
+        return this.getLatestPairSlope()(progress * 2)
     }
 
     getAverageDeltaTime () {
