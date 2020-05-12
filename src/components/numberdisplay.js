@@ -31,6 +31,7 @@ class NumberDisplay extends React.Component {
     }
 
     componentDidUpdate () {
+        // console.log("Hello?")
         this.componentDidMount()
     }
 

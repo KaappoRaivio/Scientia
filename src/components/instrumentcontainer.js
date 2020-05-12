@@ -11,8 +11,6 @@ class InstrumentContainer extends React.Component {
             width: 0,
             height: 0
         };
-
-
     }
 
     debounce (func, wait, immediate) {
@@ -33,44 +31,36 @@ class InstrumentContainer extends React.Component {
         canvas.style.width = "100%";
         canvas.style.height ="100%";
 
-        // canvas.width = measuredCanvas.offsetWidth;
-        // canvas.height = measuredCanvas.offsetWidth;
-        console.log(canvas.offsetHeight, canvas.offsetWidth)
-
+        // console.log("setting state!")
         this.setState({
-            width: measuredCanvas.offsetWidth,
-            height: measuredCanvas.offsetWidth
+            width: Math.round(measuredCanvas.offsetWidth),
+            height: Math.round(measuredCanvas.offsetWidth)
         });
     }
 
     componentDidMount() {
-        this.fitToContainer(this.refs.canvas_update, this.refs.canvas_background);
-        this.fitToContainer(this.refs.canvas_background, this.refs.canvas_background);
+        this.test = this.refs.test;
+        this.fitToContainer(this.test, this.test);
 
-        this.canvases = {
-            update: this.refs.canvas_update,
-            background: this.refs.canvas_background
-        };
 
         this.componentDidUpdate();
         window.addEventListener("resize", this.debounce(() => {
-            this.fitToContainer(this.canvases.background, this.canvases.background);
-            this.fitToContainer(this.canvases.update, this.canvases.background);
+            this.fitToContainer(this.test, this.test);
             this.componentDidUpdate();
         }, 10));
 
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log("moi");
-        let canvas = this.canvases.update;
+        // console.log("moi");
+        let canvas = this.test;
         // this.fitToContainer(canvas);
         let ctx = canvas.getContext("2d");
         ctx.font = "20px Courier";
 
         ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.rect(0, 0, canvas.width / 2, canvas.height /2);
-        ctx.fillText(this.state.number + "asd", 0, canvas.height / 2);
+        ctx.rect(0, 0, canvas.width, canvas.height);
+        // ctx.fillText(this.state.number + "asd", 0, canvas.height / 2);
         ctx.stroke();
 
 
@@ -80,8 +70,14 @@ class InstrumentContainer extends React.Component {
         // console.log(this.state.width, this.state.height);
         return (
             <div className="col-3 col-t-4 col-s-6" style={{height: this.state.height}}>
-                <canvas className="canvas_update" ref="canvas_update" width={this.state.width} height={this.state.height}/>
-                <canvas className="canvas_background" ref="canvas_background" width={this.state.width} height={this.state.height}/>
+                {
+                    React.createElement(this.props.children,
+                        {width: this.state.width, height: this.state.height, subscribe: this.props.callback},
+                        [])
+                }
+
+                <canvas className="canvas_update" ref="test" width={this.state.width} height={this.state.height}/>
+                {/*<canvas className="canvas_background" ref="canvas_background" width={this.state.width} height={this.state.height}/>*/}
             </div>
         )
     }

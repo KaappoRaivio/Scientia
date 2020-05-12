@@ -109,13 +109,14 @@ class Instruments extends React.Component {
 
         return (        
             <div className="row">
-                {/*{*/}
-                {/*    instruments.map(instrument => {*/}
-                {/*        return React.createElement(instrument,*/}
-                {/*            {width: 400, height: 400, subscribe: setCallback, className: "col-3 col-t-4 col-s-6"},*/}
-                {/*            [])*/}
-                {/*    })*/}
-                {/*}*/}
+                {
+                    instruments.map(instrument => {
+
+                        return <InstrumentContainer children={instrument} callback={setCallback} />
+
+                    })
+                }
+
                 {/*<Wind className="" width={400} height={400} subscribe={setCallback} />*/}
                 {/*<Tridata className="" width={400} height={400} subscribe={setCallback} />*/}
                 {/*<Compass className="" width={400} height={400} subscribe={setCallback} />*/}
@@ -125,15 +126,17 @@ class Instruments extends React.Component {
                 {/*<div className="col-3 col-t-4 col-s-6" />*/}
                 {/*<div className="col-3 col-t-4 col-s-6" />*/}
                 {/*<div className="col-3 col-t-4 col-s-6" />*/}
-                <InstrumentContainer /*className="col-3 col-t-4 col-s-6"*/  />
-                <InstrumentContainer /*className="col-3 col-t-4 col-s-6"*/  />
-                <InstrumentContainer /*className="col-3 col-t-4 col-s-6"*/  />
-                <InstrumentContainer /*className="col-3 col-t-4 col-s-6"*/  />
-                <InstrumentContainer /*className="col-3 col-t-4 col-s-6"*/  />
-                <InstrumentContainer /*className="col-3 col-t-4 col-s-6"*/  />
+
             </div>
         );
     }
 }
 
 export default Instruments
+
+                // <InstrumentContainer /*className="col-3 col-t-4 col-s-6"*/  />
+                // <InstrumentContainer /*className="col-3 col-t-4 col-s-6"*/  />
+                // <InstrumentContainer /*className="col-3 col-t-4 col-s-6"*/  />
+                // <InstrumentContainer /*className="col-3 col-t-4 col-s-6"*/  />
+                // <InstrumentContainer /*className="col-3 col-t-4 col-s-6"*/  />
+                // <InstrumentContainer /*className="col-3 col-t-4 col-s-6"*/  />

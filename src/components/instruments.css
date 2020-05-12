@@ -23,7 +23,7 @@
   position: relative;
   float: left;
   /*padding: 15px;*/
-  border: 10px solid red;
+  /*border: 10px solid red;*/
 }
 
 [class*="col-"]:after {

@@ -21,27 +21,38 @@ class Compass extends React.Component {
         return Math.sqrt((canvasWidth / 2) ** 2 + offsetY ** 2) / 1.05
     }
 
+    getRadius () {
+        return this.getCircleRadius(this.props.width, this.props.width / 5);
+    }
+
+    getOrigin () {
+        return [this.props.width / 2, this.props.height / 2 + this.getArcCenterOffsetY()];
+    }
+
+    getArcCenterOffsetY() {
+        return this.props.width / 5;
+    }
+    getCompassLineMaxLength ()  {
+        return this.props.width / 2 / 10;
+    }
+
     componentDidMount() {
         this.subscribe();
         
         const canvas = this.refs.canvas;
         const ctx = canvas.getContext("2d");
         
-        const arcCenterOffsetY = canvas.width / 5;
-        const radius = this.getCircleRadius(canvas.width, arcCenterOffsetY);
-        
-        const compassLineMaxLength = canvas.width / 2 / 10;
-        const origin = [canvas.width / 2, canvas.height + arcCenterOffsetY];
+        const arcCenterOffsetY = this.props.width / 5;
+
+        // const compassLineMaxLength = ;
 
         const drawHelper = new DrawHelper(canvas, ctx);
 
         this.data = {
             canvas_background: canvas,
-            ctx_backgroud: ctx,
+            ctx_background: ctx,
 
-            compassLineMaxLength: compassLineMaxLength,
-            origin: origin,
-            radius: radius,
+            // compassLineMaxLength: compassLineMaxLength,
             arcCenterOffsetY: arcCenterOffsetY,
 
             drawHelper: drawHelper,
@@ -54,7 +65,7 @@ class Compass extends React.Component {
     subscribe () {
         this.onMessage = (message) => {
             const extracted = message.values[0].value;
-            console.log(extracted / Math.PI * 180 )
+            // console.log(extracted / Math.PI * 180 )
             if (message.source.label === "nmeaFromFile") {
                 this.setState({ heading: extracted / Math.PI * 180 });
 
@@ -65,24 +76,34 @@ class Compass extends React.Component {
 
         setInterval(() => {
             let heading = this.data.interpolator.interpolate(new Date().getTime());
-            this.setState({
-                interpolated: heading / Math.PI * 180
-            })
+            if (this.state.interpolated !== heading) {
+                this.setState({
+                    interpolated: heading / Math.PI * 180
+                })
+            }
         }, 16)
 
     }
+    resizeCanvases () {
+        this.data.canvas_background.width = this.props.width;
+        this.data.canvas_background.height = this.props.height / 2;
+    }
 
     componentDidUpdate () {
-        const ctx = this.data.ctx_backgroud;
+        // console.log(this.data)
+        this.resizeCanvases();
+        const ctx = this.data.ctx_background;
         const canvas = this.data.canvas_background;
+        // console.log(canvas.width, canvas.height);
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(0, 0, this.props.width, this.props.height);
 
         ctx.beginPath();
-        ctx.arc(canvas.width / 2, canvas.height + this.data.arcCenterOffsetY, this.data.radius, 0, 2 * Math.PI);
-        ctx.fillRect(this.props.width / 2 - 1, canvas.height - this.data.radius + this.data.arcCenterOffsetY - 10, 2, 10);
-        ctx.font = canvas.width / 20 + "px Courier";
+        ctx.arc(...this.getOrigin(), this.getRadius(), 0, 2 * Math.PI);
+        ctx.font = this.props.width / 20 + "px Courier";
 
+        // console.log(this.props.width / 2 - 1, this.props.height / 2 - this.getRadius() + this.getArcCenterOffsetY() - 10, 2, 10)
+        ctx.fillRect(this.props.width / 2 - 1, this.props.height / 2 - this.getRadius() + this.getArcCenterOffsetY() - 10, 2, 10)
         
         let divisions = [[24, 1], [72, 2], [144, 3]];
         for (let index = 0; index < divisions.length; index++) {
@@ -102,8 +123,7 @@ class Compass extends React.Component {
                     return "";
                 }
             };
-
-            this.data.drawHelper.drawDivision(this.data.origin, this.data.radius, division[0], this.data.compassLineMaxLength / division[1], angleProvider, numberTextProvider)
+            this.data.drawHelper.drawDivision(this.getOrigin(), this.getRadius(), division[0], this.getCompassLineMaxLength() / division[1], angleProvider, numberTextProvider)
         }
 
         ctx.closePath();
@@ -111,6 +131,7 @@ class Compass extends React.Component {
     }
 
     render () {
+        // this.componentDidMount();
         return <div className="container col-3 col-t-4 col-s-6" style={{width: this.props.width + "px", height: this.props.height + "px"}}>
             <NumberDisplay 
                 className="number" 
@@ -127,6 +148,8 @@ class Compass extends React.Component {
             <canvas ref="canvas" className="compassRose" width={this.props.width} height={this.props.height / 2} />
         </div>
     }
+
+
 }
 
 export default Compass
