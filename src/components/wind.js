@@ -6,6 +6,7 @@ import DrawHelper from './helpers';
 
 import "./wind.css"
 import "./instruments.css"
+import "./compass.css"
 
 import Interpolator from "./misc/interpolate.js"
 import Tridata from './tridata.js';

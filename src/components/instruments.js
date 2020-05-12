@@ -5,6 +5,7 @@ import Wind from "./wind"
 import Tridata from "./tridata";
 
 import "./instruments.css"
+import InstrumentContainer from "./instrumentcontainer";
 
 const server_root = "ws://192.168.1.115:3000";
 
@@ -115,9 +116,21 @@ class Instruments extends React.Component {
                 {/*            [])*/}
                 {/*    })*/}
                 {/*}*/}
-                <Wind className="" width={400} height={400} subscribe={setCallback} />
-                <Tridata className="" width={400} height={400} subscribe={setCallback} />
-                <Compass className="" width={400} height={400} subscribe={setCallback} />
+                {/*<Wind className="" width={400} height={400} subscribe={setCallback} />*/}
+                {/*<Tridata className="" width={400} height={400} subscribe={setCallback} />*/}
+                {/*<Compass className="" width={400} height={400} subscribe={setCallback} />*/}
+                {/*<div className="col-3 col-t-4 col-s-6" />*/}
+                {/*<div className="col-3 col-t-4 col-s-6" />*/}
+                {/*<div className="col-3 col-t-4 col-s-6" />*/}
+                {/*<div className="col-3 col-t-4 col-s-6" />*/}
+                {/*<div className="col-3 col-t-4 col-s-6" />*/}
+                {/*<div className="col-3 col-t-4 col-s-6" />*/}
+                <InstrumentContainer /*className="col-3 col-t-4 col-s-6"*/  />
+                <InstrumentContainer /*className="col-3 col-t-4 col-s-6"*/  />
+                <InstrumentContainer /*className="col-3 col-t-4 col-s-6"*/  />
+                <InstrumentContainer /*className="col-3 col-t-4 col-s-6"*/  />
+                <InstrumentContainer /*className="col-3 col-t-4 col-s-6"*/  />
+                <InstrumentContainer /*className="col-3 col-t-4 col-s-6"*/  />
             </div>
         );
     }
