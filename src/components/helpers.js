@@ -5,6 +5,8 @@ class DrawHelper {
     constructor (canvas, ctx) {
         this.canvas = canvas;
         this.ctx = ctx;
+
+        // this.canvas.translate(0.5, 0.5);
         // this.radius = radius;
         // this.arcCenterOffsetY = arcCenterOffsetY;
     }
@@ -40,8 +42,10 @@ class DrawHelper {
     }
     
     getPosFromAngle(origin, angle, radius) {
-        let x = origin[0];
-        let y = origin[1];
+        let x = origin[0] + 0.5;
+        let y = origin[1] + 0.5;
+        // let x = origin[0];
+        // let y = origin[1];
         return [x + Math.sin(Math.PI - angle) * radius, y + Math.cos(Math.PI - angle) * radius]
     }
 

@@ -21,7 +21,6 @@ class Tridata extends React.Component {
                     [path]: message.values[0].value
                 })
             } else {
-                // console.log(path)
             }
 
         };
@@ -30,10 +29,9 @@ class Tridata extends React.Component {
     }
 
     render () {
-        // console.log(this.props)
         let divider = 3.075;
         
-        return <div className="container col-3 col-t-4 col-s-6" style={{ width: this.props.width + "px", height: this.props.height + "px" }}>
+        return <div style={{ width: this.props.width + "px", height: this.props.height + "px" }}>
             <NumberDisplay
                 value={this.state["environment.depth.belowTransducer"]}
                 suffix=""

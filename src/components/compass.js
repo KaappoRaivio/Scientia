@@ -15,6 +15,15 @@ class Compass extends React.Component {
             heading: 0,
             interpolated: 0
         }
+
+        this.interpolate = () => {
+            let heading = this.data.interpolator.interpolate(new Date().getTime());
+            if (this.state.interpolated !== heading) {
+                this.setState({
+                    interpolated: heading / Math.PI * 180
+                })
+            }
+        };
     }
 
     getCircleRadius (canvasWidth, offsetY) {
@@ -65,23 +74,21 @@ class Compass extends React.Component {
     subscribe () {
         this.onMessage = (message) => {
             const extracted = message.values[0].value;
-            // console.log(extracted / Math.PI * 180 )
             if (message.source.label === "nmeaFromFile") {
                 this.setState({ heading: extracted / Math.PI * 180 });
 
                 this.data.interpolator.addDataPoint(new Date().getTime(), extracted);
             }
+
+            if (!this.props.animate) {
+                this.interpolate()
+            }
         };
         this.props.subscribe(["navigation.courseOverGroundTrue"], this.onMessage);
 
-        setInterval(() => {
-            let heading = this.data.interpolator.interpolate(new Date().getTime());
-            if (this.state.interpolated !== heading) {
-                this.setState({
-                    interpolated: heading / Math.PI * 180
-                })
-            }
-        }, 16)
+        if (this.props.animate) {
+            setInterval(this.interpolate, 16)
+        }
 
     }
     resizeCanvases () {
@@ -90,7 +97,6 @@ class Compass extends React.Component {
     }
 
     componentDidUpdate () {
-        // console.log(this.data)
         this.resizeCanvases();
         const ctx = this.data.ctx_background;
         const canvas = this.data.canvas_background;
@@ -102,7 +108,6 @@ class Compass extends React.Component {
         ctx.arc(...this.getOrigin(), this.getRadius(), 0, 2 * Math.PI);
         ctx.font = this.props.width / 20 + "px Courier";
 
-        // console.log(this.props.width / 2 - 1, this.props.height / 2 - this.getRadius() + this.getArcCenterOffsetY() - 10, 2, 10)
         ctx.fillRect(this.props.width / 2 - 1, this.props.height / 2 - this.getRadius() + this.getArcCenterOffsetY() - 10, 2, 10)
         
         let divisions = [[24, 1], [72, 2], [144, 3]];
@@ -132,7 +137,7 @@ class Compass extends React.Component {
 
     render () {
         // this.componentDidMount();
-        return <div className="container col-3 col-t-4 col-s-6" style={{width: this.props.width + "px", height: this.props.height + "px"}}>
+        return <div style={{width: this.props.width + "px", height: this.props.height + "px"}}>
             <NumberDisplay 
                 className="number" 
                 value={this.state.interpolated} 

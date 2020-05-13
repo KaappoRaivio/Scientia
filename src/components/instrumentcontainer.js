@@ -7,7 +7,6 @@ class InstrumentContainer extends React.Component {
         super(props);
 
         this.state = {
-            number: 0,
             width: 0,
             height: 0
         };
@@ -27,52 +26,45 @@ class InstrumentContainer extends React.Component {
             if (callNow) func.apply(context, args);
         };
 };
-    fitToContainer (canvas, measuredCanvas) {
+    fitToContainer (canvas, ) {
         canvas.style.width = "100%";
         canvas.style.height ="100%";
 
-        // console.log("setting state!")
         this.setState({
-            width: Math.round(measuredCanvas.offsetWidth),
-            height: Math.round(measuredCanvas.offsetWidth)
+            width: Math.round(canvas.offsetWidth),
+            height: Math.round(canvas.offsetWidth)
         });
     }
 
     componentDidMount() {
+
         this.test = this.refs.test;
-        this.fitToContainer(this.test, this.test);
+        this.fitToContainer(this.test);
 
-
-        this.componentDidUpdate();
         window.addEventListener("resize", this.debounce(() => {
-            this.fitToContainer(this.test, this.test);
-            this.componentDidUpdate();
-        }, 10));
+            this.fitToContainer(this.test);
+            try {
+                this.refs.child.onResize();
+            } catch (err) {}
+        }, this.props.resizeDebounce || 250));
 
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        // console.log("moi");
-        let canvas = this.test;
-        // this.fitToContainer(canvas);
-        let ctx = canvas.getContext("2d");
-        ctx.font = "20px Courier";
-
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        ctx.rect(0, 0, canvas.width, canvas.height);
-        // ctx.fillText(this.state.number + "asd", 0, canvas.height / 2);
-        ctx.stroke();
-
-
+    componentDidUpdate() {
+            try {
+                // this.refs.child.onResize();
+            } catch (err) {}
     }
+
 
     render() {
         // console.log(this.state.width, this.state.height);
+
         return (
-            <div className="col-3 col-t-4 col-s-6" style={{height: this.state.height}}>
+            <div className="col-3 col-t-4 col-s-6 container" style={{height: this.state.height}}>
                 {
                     React.createElement(this.props.children,
-                        {width: this.state.width, height: this.state.height, subscribe: this.props.callback},
+                        {width: this.state.width, height: this.state.height, subscribe: this.props.callback, ref: "child", ...this.props.additionalProps, animate: true},
                         [])
                 }
 

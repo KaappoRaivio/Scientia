@@ -3,6 +3,7 @@ import  React from "react";
 import Compass from "./compass"
 import Wind from "./wind"
 import Tridata from "./tridata";
+import Visualiser from "./visualiser"
 
 import "./instruments.css"
 import InstrumentContainer from "./instrumentcontainer";
@@ -52,7 +53,6 @@ class Instruments extends React.Component {
 
         this.ws.onmessage = (event) => {
             const message = JSON.parse(event.data);
-            this.setState({data: message});
 
             for (const subscriber of this.subscribers) {
                 try {
@@ -103,29 +103,23 @@ class Instruments extends React.Component {
             this.subscribers.push({paths: paths, callback: callback})
         };
 
-        const instruments = [Wind,
-            Compass,
-            Tridata];
+        const instruments = [
+            [Wind, {}],
+            [Compass, {}],
+            [Tridata, {}],
+            [Visualiser, {path: "environment.depth.belowTransducer", upperBound: 100}],
+            [Visualiser, {path: "environment.wind.speedTrue", upperBound: 30}]
+        ];
+
+        // console.log("rerendering!")
 
         return (        
             <div className="row">
                 {
-                    instruments.map(instrument => {
-
-                        return <InstrumentContainer children={instrument} callback={setCallback} />
-
-                    })
+                    instruments.map(instrument =>
+                        <InstrumentContainer  children={instrument[0]} callback={setCallback} additionalProps={instrument[1]} />
+                    )
                 }
-
-                {/*<Wind className="" width={400} height={400} subscribe={setCallback} />*/}
-                {/*<Tridata className="" width={400} height={400} subscribe={setCallback} />*/}
-                {/*<Compass className="" width={400} height={400} subscribe={setCallback} />*/}
-                {/*<div className="col-3 col-t-4 col-s-6" />*/}
-                {/*<div className="col-3 col-t-4 col-s-6" />*/}
-                {/*<div className="col-3 col-t-4 col-s-6" />*/}
-                {/*<div className="col-3 col-t-4 col-s-6" />*/}
-                {/*<div className="col-3 col-t-4 col-s-6" />*/}
-                {/*<div className="col-3 col-t-4 col-s-6" />*/}
 
             </div>
         );
@@ -133,10 +127,3 @@ class Instruments extends React.Component {
 }
 
 export default Instruments
-
-                // <InstrumentContainer /*className="col-3 col-t-4 col-s-6"*/  />
-                // <InstrumentContainer /*className="col-3 col-t-4 col-s-6"*/  />
-                // <InstrumentContainer /*className="col-3 col-t-4 col-s-6"*/  />
-                // <InstrumentContainer /*className="col-3 col-t-4 col-s-6"*/  />
-                // <InstrumentContainer /*className="col-3 col-t-4 col-s-6"*/  />
-                // <InstrumentContainer /*className="col-3 col-t-4 col-s-6"*/  />
