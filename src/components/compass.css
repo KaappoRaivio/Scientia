@@ -15,10 +15,27 @@
     /* flex-wrap: wrap; */
 }
 
+.compass {
+    position: relative;
+    overflow: hidden;
+}
+
 .compassRose {
-    bottom: 0;
+    /*bottom: -50%;*/
     left: 0;
+    top: 50%;
     position: absolute;
+    /*position:relative;*/
+    /*position:absolute;*/
+
+    transition: transform 0.5s ease;
+    transform: rotate(0deg);
+}
+
+canvas.background {
+    position: absolute;
+    left: 0;
+    top: 0;
 }
 
 .number {

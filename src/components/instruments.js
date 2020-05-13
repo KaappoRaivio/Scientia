@@ -97,6 +97,11 @@ class Instruments extends React.Component {
         // }, 10000)
     }
 
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        // console.log(nextProps, nextState)
+        return true
+    }
+
 
     render () {
         const setCallback = (paths, callback) => {
@@ -107,8 +112,8 @@ class Instruments extends React.Component {
             [Wind, {}],
             [Compass, {}],
             [Tridata, {}],
-            [Visualiser, {path: "environment.depth.belowTransducer", upperBound: 100}],
-            [Visualiser, {path: "environment.wind.speedTrue", upperBound: 30}]
+            [Visualiser, {path: "environment.depth.belowTransducer", upperBound: 0, lowerBound: -30, numberOfPointsToShow: 100, negate: true}],
+            [Visualiser, {path: "environment.wind.speedTrue", upperBound: 30, lowerBound: 0, numberOfPointsToShow: 100}]
         ];
 
         // console.log("rerendering!")

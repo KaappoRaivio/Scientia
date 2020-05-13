@@ -33,14 +33,24 @@ class Visualiser extends React.Component {
 
     addData (data) {
         this.setState(oldState => {
-            return {
-                data: oldState.data.concat({ // slice(1, Math.max(oldState.data.length, 10))
-                    x: oldState.counter,
-                    y: data
-                }),
-                counter: oldState.counter + 1,
+            if (this.props.negate) {
+                return {
+                    data: oldState.data.concat({
+                        x: oldState.counter,
+                        y: -data
+                    }),
+                    counter: oldState.counter + 1,
+                }
+            } else {
+                return {
+                    data: oldState.data.concat({
+                        x: oldState.counter,
+                        y: data
+                    }),
+                    counter: oldState.counter + 1,
+                }
             }
-      })
+        })
     }
 
     render () {
@@ -49,18 +59,18 @@ class Visualiser extends React.Component {
                 animation={true}
                 width={this.props.width}
                 height={this.props.height}
-                xDomain={[this.state.counter - 10, this.state.counter]}
-                yDomain={[0, this.props.upperBound]}
+                xDomain={[this.state.counter - this.props.numberOfPointsToShow, this.state.counter]}
+                yDomain={[this.props.lowerBound, this.props.upperBound]}
                 // xRange={[this.state.counter - 20, this.state.counter]}
                 // xType={"time"}
             >
                     <HorizontalGridLines />
                     <LineSeries data={this.state.data}/>
                 <XAxis
-                    xDomain={[this.state.counter - 10, this.state.counter]}
+                    xDomain={[this.state.counter - this.props.numberOfPointsToShow, this.state.counter]}
                 />
                 <YAxis
-                    yDomain={[0, this.props.upperBound]}
+                    yDomain={[this.props.lowerBound, this.props.upperBound]}
                 />
             </XYPlot>
         )

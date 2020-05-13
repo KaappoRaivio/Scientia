@@ -13,16 +13,6 @@ class Compass extends React.Component {
 
         this.state = {
             heading: 0,
-            interpolated: 0
-        }
-
-        this.interpolate = () => {
-            let heading = this.data.interpolator.interpolate(new Date().getTime());
-            if (this.state.interpolated !== heading) {
-                this.setState({
-                    interpolated: heading / Math.PI * 180
-                })
-            }
         };
     }
 
@@ -31,16 +21,13 @@ class Compass extends React.Component {
     }
 
     getRadius () {
-        return this.getCircleRadius(this.props.width, this.props.width / 5);
+        return Math.max(this.props.width / 2 - 2, 0)
     }
 
     getOrigin () {
-        return [this.props.width / 2, this.props.height / 2 + this.getArcCenterOffsetY()];
+        return [this.props.width / 2, this.props.height / 2];
     }
 
-    getArcCenterOffsetY() {
-        return this.props.width / 5;
-    }
     getCompassLineMaxLength ()  {
         return this.props.width / 2 / 10;
     }
@@ -50,10 +37,6 @@ class Compass extends React.Component {
         
         const canvas = this.refs.canvas;
         const ctx = canvas.getContext("2d");
-        
-        const arcCenterOffsetY = this.props.width / 5;
-
-        // const compassLineMaxLength = ;
 
         const drawHelper = new DrawHelper(canvas, ctx);
 
@@ -61,14 +44,11 @@ class Compass extends React.Component {
             canvas_background: canvas,
             ctx_background: ctx,
 
-            // compassLineMaxLength: compassLineMaxLength,
-            arcCenterOffsetY: arcCenterOffsetY,
-
             drawHelper: drawHelper,
-            interpolator: new Interpolator(true),
         };
 
-        this.componentDidUpdate();        
+        this.onResize();
+        setTimeout(() => this.onResize(), 100);
     }
 
     subscribe () {
@@ -76,53 +56,46 @@ class Compass extends React.Component {
             const extracted = message.values[0].value;
             if (message.source.label === "nmeaFromFile") {
                 this.setState({ heading: extracted / Math.PI * 180 });
-
-                this.data.interpolator.addDataPoint(new Date().getTime(), extracted);
-            }
-
-            if (!this.props.animate) {
-                this.interpolate()
             }
         };
         this.props.subscribe(["navigation.courseOverGroundTrue"], this.onMessage);
-
-        if (this.props.animate) {
-            setInterval(this.interpolate, 16)
-        }
-
     }
-    resizeCanvases () {
+
+    onResize () {
         this.data.canvas_background.width = this.props.width;
-        this.data.canvas_background.height = this.props.height / 2;
+        this.data.canvas_background.height = this.props.height;
+        console.log("on resize!")
+        this.drawCompassRose();
+        this.drawBackground();
     }
 
-    componentDidUpdate () {
-        this.resizeCanvases();
-        const ctx = this.data.ctx_background;
-        const canvas = this.data.canvas_background;
-        // console.log(canvas.width, canvas.height);
+    drawBackground () {
+        const ctx = this.refs.canvas_static.getContext("2d");
+        ctx.fillRect(this.props.width / 2 - 1.5, this.props.height / 2  - 10.5, 2, 10);
+        ctx.stroke()
 
+    }
+
+    drawCompassRose () {
+        console.log("Drawing background!")
+        const ctx = this.data.ctx_background;
         ctx.clearRect(0, 0, this.props.width, this.props.height);
 
         ctx.beginPath();
+
         ctx.arc(...this.getOrigin(), this.getRadius(), 0, 2 * Math.PI);
         ctx.font = this.props.width / 20 + "px Courier";
 
-        ctx.fillRect(this.props.width / 2 - 1, this.props.height / 2 - this.getRadius() + this.getArcCenterOffsetY() - 10, 2, 10)
-        
-        let divisions = [[24, 1], [72, 2], [144, 3]];
+
+        let divisions = [[24, 1], [72, 2.5], [144, 3]];
         for (let index = 0; index < divisions.length; index++) {
             let division = divisions[index];
-            
-            let angleProvider = (index) => {
-                let baseAngle = 2 * Math.PI / division[0] * index;
-                let angleOffset = this.state.interpolated * Math.PI / 180;
-                return baseAngle - angleOffset;
-            };
+
+            let angleProvider = (index) => 2 * Math.PI / division[0] * index;
 
             let numberTextProvider = (index) => {
                 if (division[0] === 24) {
-                    let baseAngle = angleProvider(index) + this.state.interpolated * Math.PI / 180;
+                    let baseAngle = angleProvider(index);// + this.state.interpolated * Math.PI / 180;
                     return mod(baseAngle / Math.PI * 180, 360).toFixed(0);
                 } else {
                     return "";
@@ -137,20 +110,22 @@ class Compass extends React.Component {
 
     render () {
         // this.componentDidMount();
-        return <div style={{width: this.props.width + "px", height: this.props.height + "px"}}>
+        return <div className="compass" style={{width: this.props.width + "px", height: this.props.height + "px"}}>
             <NumberDisplay 
                 className="number" 
-                value={this.state.interpolated} 
+                value={this.state.heading}
                 suffix="°" 
                 unit="T" 
                 width={this.props.width} 
-                height={this.props.height / 3 * 2} 
+                height={this.props.height / 2}
                 upperBound={360} 
                 decimalPlaces={1} 
                 fontSize={this.props.width / 4}
                 legend="" 
             />
-            <canvas ref="canvas" className="compassRose" width={this.props.width} height={this.props.height / 2} />
+            <canvas ref="canvas_static" className="background" width={this.props.width} height={this.props.height } />
+            <canvas ref="canvas" className="compassRose" width={this.props.width} height={this.props.height } style={{transform: "rotate(" + -this.state.heading + "deg)"}} />
+            <canvas ref="canvas_overlay" className="compassRose" width={this.props.width} height={this.props.height } style={{transform: "rotate(" + -this.state.heading + "deg)"}} />
         </div>
     }
 
