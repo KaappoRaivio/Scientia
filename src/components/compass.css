@@ -6,13 +6,10 @@
     position: relative;
     text-align: center;
     float: left;
-    margin-left: -0.5px;
-    margin-top: -0.5px;
-    margin-right: -0.5px;
-    margin-bottom: -0.5px;
+    width: 100%;
+    margin-left: -1px;
+    margin-top: -1px;
 
-    /* display: flex; */
-    /* flex-wrap: wrap; */
 }
 
 .compass {

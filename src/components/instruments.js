@@ -112,8 +112,8 @@ class Instruments extends React.Component {
             [Wind, {}],
             [Compass, {}],
             [Tridata, {}],
-            [Visualiser, {path: "environment.depth.belowTransducer", upperBound: 0, lowerBound: -30, numberOfPointsToShow: 100, negate: true}],
-            [Visualiser, {path: "environment.wind.speedTrue", upperBound: 30, lowerBound: 0, numberOfPointsToShow: 100}]
+            [Visualiser, {path: "environment.depth.belowTransducer", ranges: [5, 10, 20, 40, 100], numberOfPointsToShow: 100, negate: true, upperBound: 100, lowerBound: 0}],
+            // [Visualiser, {path: "environment.wind.speedTrue", ranges: [10, 20, 40], numberOfPointsToShow: 100, upperBound: 100, lowerBound: 0}]
         ];
 
         // console.log("rerendering!")

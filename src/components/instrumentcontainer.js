@@ -61,7 +61,7 @@ class InstrumentContainer extends React.Component {
         // console.log(this.state.width, this.state.height);
 
         return (
-            <div className="col-3 col-t-4 col-s-6 container" style={{height: this.state.height}}>
+            <div className="col-3 col-t-4 col-s-6 container" style={{height: this.state.height, fontSize: this.state.width / 10}}>
                 {
                     React.createElement(this.props.children,
                         {width: this.state.width, height: this.state.height, subscribe: this.props.callback, ref: "child", ...this.props.additionalProps, animate: true},

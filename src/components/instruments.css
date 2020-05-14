@@ -21,6 +21,7 @@
 
 .row {
   width: 100%;
+  margin-top: -1px;
 }
 
 .row::after {
@@ -28,6 +29,7 @@
   clear: both;
   display: table;
   float: left;
+  width: 100%;
 }
 
 canvas.canvas_update {

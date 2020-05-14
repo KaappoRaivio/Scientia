@@ -1,0 +1,21 @@
+.legend {
+    /*padding: 10px;*/
+    padding-right: 50px;
+    padding-top: 5px;
+    font-size: 75%;
+    position: absolute;
+    /*position: relative;*/
+    /*text-align: center;*/
+    clear: left;
+    top: 0;
+    left: 50%;
+
+}
+
+div.parent {
+    width: 100%;
+    text-align: center;
+    /*clear: both;*/
+    /*border: 10px solid orange;*/
+}
+
