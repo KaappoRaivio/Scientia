@@ -78,44 +78,53 @@ class  Visualiser extends React.Component {
 
     render () {
         return (<div className="parent">
-                <XYPlot
-                    animation={true}
-                    width={this.props.width}
-                    height={this.props.height}
-                    xDomain={[this.state.counter - this.props.numberOfPointsToShow, this.state.counter]}
-                    yDomain={this.state.yDomain}
-                    getY={y => this.props.negate? -y.y : y.y}
-                    >
-                    <HorizontalGridLines />
-                    <LineSeries data={this.state.data}
-                    />
-                    <XAxis
+                    <div className="legend" style={{height: this.props.height * 0.1}}>
+                        {this.props.legend}, {this.props.unit}
+                    </div>
+                    <XYPlot
+                        animation={true}
+                        width={this.props.width}
+                        height={this.props.height * 0.9}
                         xDomain={[this.state.counter - this.props.numberOfPointsToShow, this.state.counter]}
-                        hideTicks
-                    />
-                    <YAxis
                         yDomain={this.state.yDomain}
-                        left={this.props.width - 45}
-                    />
+                        getY={y => this.props.negate? -y.y : y.y}
+                        >
+                        <HorizontalGridLines />
+                        <LineSeries data={this.state.data}
+                        />
+                        <XAxis
+                            xDomain={[this.state.counter - this.props.numberOfPointsToShow, this.state.counter]}
+                            hideTicks
+                            // title={"Syvyys kölin alla, m"}
+                            orientation={"top"}
+                            // style={{
+                            //     fontSize: "85%",
+                            //     fontFamily: "Courier new",
+                            //     color: "white",
+                            //     // padding: "10%"
+                            // }}
+                        />
+                        <YAxis
+                            yDomain={this.state.yDomain}
+                            left={this.props.width * 0.88}
+                            // orientation={"right"}
+                            // left={0}
+                            // tickSize={6}
+                        />
 
-                    {/*<ChartLabel*/}
-                    {/*    text="Y Axisasd"*/}
-                    {/*    className="legend"*/}
-                    {/*    includeMargin={false}*/}
-                    {/*    xPercent={0.9}*/}
-                    {/*    yPercent={0.05}*/}
-                    {/*    style={{*/}
-                    {/*      // transform: 'rotate(-90)',*/}
-                    {/*        fontSize: "200",*/}
-                    {/*        textAnchor: 'end'*/}
-                    {/*    }}*/}
-                    {/*    />*/}
+                        {/*<ChartLabel*/}
+                        {/*    text="Y Axisasd"*/}
+                        {/*    className="legend"*/}
+                        {/*    includeMargin={false}*/}
+                        {/*    xPercent={0.9}*/}
+                        {/*    yPercent={0.05}*/}
+                        {/*    style={{*/}
+                        {/*      // transform: 'rotate(-90)',*/}
+                        {/*        fontSize: "200",*/}
+                        {/*        textAnchor: 'end'*/}
+                        {/*    }}*/}
+                        {/*    />*/}
                 </XYPlot>
-                <div className="legend">
-                    Syvyys kölin alla
-                </div>
-
-                {/*<text className={"legend"}>asd</text>*/}
             </div>
         )
     }

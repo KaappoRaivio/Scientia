@@ -149,7 +149,7 @@ class Wind extends React.Component {
                         suffix=""
                         unit="kts"
                         width={this.props.width / 2}
-                        height={this.props.height / 3}
+                        height={this.props.height * 0.3}
                         upperBound={99}
                         decimalPlaces={1}
                         fontSize={this.props.width / 6}

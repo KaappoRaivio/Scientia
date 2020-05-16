@@ -112,7 +112,7 @@ class Instruments extends React.Component {
             [Wind, {}],
             [Compass, {}],
             [Tridata, {}],
-            [Visualiser, {path: "environment.depth.belowTransducer", ranges: [5, 10, 20, 40, 100], numberOfPointsToShow: 100, negate: true, upperBound: 100, lowerBound: 0}],
+            [Visualiser, {path: "environment.depth.belowTransducer", ranges: [5, 10, 20, 40, 100], numberOfPointsToShow: 100, negate: true, upperBound: 100, lowerBound: 0, legend: "Syvyys", unit: "m"}],
             // [Visualiser, {path: "environment.wind.speedTrue", ranges: [10, 20, 40], numberOfPointsToShow: 100, upperBound: 100, lowerBound: 0}]
         ];
 

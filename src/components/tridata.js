@@ -41,7 +41,7 @@ class Tridata extends React.Component {
                 upperBound={99}
                 decimalPlaces={1}
                 fontSize={this.props.width / 4}
-                legend="Syvyys"
+                legend="Syvyys"li
             />
             <NumberDisplay
                 value={this.state["navigation.speedOverGround"] * 3.6 / 1.852}

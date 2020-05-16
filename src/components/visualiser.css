@@ -1,14 +1,16 @@
 .legend {
     /*padding: 10px;*/
-    padding-right: 50px;
-    padding-top: 5px;
+    /*padding-right: 50px;*/
+    /*padding-top: 5px;*/
     font-size: 75%;
-    position: absolute;
-    /*position: relative;*/
+    /*position: absolute;*/
+    position: relative;
     /*text-align: center;*/
-    clear: left;
+    /*clear: left;*/
     top: 0;
-    left: 50%;
+    /*left: 50%;*/
+    margin-top: 3%;
+    margin-bottom: 3%
 
 }
 
