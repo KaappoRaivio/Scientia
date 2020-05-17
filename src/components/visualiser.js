@@ -15,6 +15,12 @@ class  Visualiser extends React.Component {
             yDomain: [0, 0]
         };
 
+        if (this.props.convert) {
+            this.converter = this.props.convert
+        } else {
+            this.converter = x => x;
+        }
+
     }
 
     componentDidMount() {
@@ -36,7 +42,7 @@ class  Visualiser extends React.Component {
             return {
                 data: oldState.data.concat({
                     x: oldState.counter,
-                    y: data
+                    y: this.converter(data)
                 }),
                 counter: oldState.counter + 1,
                 yDomain: this.getYDomain()
@@ -45,9 +51,7 @@ class  Visualiser extends React.Component {
     }
 
     getYDomain () {
-        console.log("moimiomio", this.state, Math.max(this.state.data.length - this.props.numberOfPointsToShow, 0), this.state.data.length)
         let data = this.state.data.slice(Math.max(this.state.data.length - this.props.numberOfPointsToShow, 0), this.state.data.length);
-        console.log(data);
 
         let absMax = Math.max(...data.map(item => item.y).map(Math.abs));
         // let absMax = data.reduce((accumulator, current) => {
@@ -57,7 +61,6 @@ class  Visualiser extends React.Component {
         //         return accumulator
         //     }
         // });
-        console.log(absMax);
 
         var closest = this.props.ranges.reduce((accumulator, current) => {
             if (current > absMax && accumulator < absMax) {
@@ -66,8 +69,6 @@ class  Visualiser extends React.Component {
                 return accumulator;
             }
         });
-
-        console.log(this.state.yDomain);
 
         if (this.props.negate) {
             return [-closest, 0];

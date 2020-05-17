@@ -56,7 +56,7 @@ class NumberDisplay extends React.Component {
                 </div>
                 {/*</div>*/}
                 <div className="label">
-                    Suure
+                    {this.props.legend}
                 </div>
             </div>
         );

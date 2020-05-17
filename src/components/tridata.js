@@ -16,7 +16,7 @@ class Tridata extends React.Component {
         this.onMessage = (message) => {
             let path = message.values[0].path;
 
-            if (path in this.state && message.source.label === "nmeaFromFile") {
+            if (path in this.state) {
                 this.setState({
                     [path]: message.values[0].value
                 })

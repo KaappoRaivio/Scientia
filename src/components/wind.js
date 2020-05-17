@@ -49,7 +49,7 @@ class Wind extends React.Component {
     }
     
     getRadius () {
-        return Math.round(this.props.width / 2.1);
+        return Math.round(this.props.width / 2.025);
     }
 
     componentDidMount() {
@@ -145,7 +145,7 @@ class Wind extends React.Component {
             <div style={{ width: this.props.width + "px", height: this.props.height + "px" }}>
                 <div className="layerCentered">
                     <NumberDisplay
-                        value={this.state.speedTrue}
+                        value={this.state.speedTrue * 3.6 / 1.852}
                         suffix=""
                         unit="kts"
                         width={this.props.width / 2}

@@ -53,8 +53,10 @@ class Compass extends React.Component {
 
     subscribe () {
         this.onMessage = (message) => {
+            console.log(message)
             const extracted = message.values[0].value;
-            if (message.source.label === "nmeaFromFile") {
+            // if (message.source.label === "nmeaFromFile") {
+            if (true) {
                 this.setState({ heading: extracted / Math.PI * 180 });
             }
         };
@@ -116,12 +118,12 @@ class Compass extends React.Component {
                 value={this.state.heading}
                 suffix="°" 
                 unit="T" 
-                width={this.props.width} 
-                height={this.props.height / 2}
+                width={this.props.width}
+                height={this.props.height / 4}
                 upperBound={360} 
                 decimalPlaces={1} 
                 fontSize={this.props.width / 4}
-                legend="" 
+                legend="Suunta"
             />
             <canvas ref="canvas_static" className="background" width={this.props.width} height={this.props.height } />
             <canvas ref="canvas" className="compassRose" width={this.props.width} height={this.props.height } style={{transform: "rotate(" + -this.state.heading + "deg)"}} />

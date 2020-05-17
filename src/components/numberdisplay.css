@@ -8,6 +8,7 @@
     position: relative;
     float: left;
     display: inline;
+    padding: 3%;
     /*padding: 3%;*/
 }
 
@@ -60,6 +61,6 @@
 }
 
 h1, h2, h3 {
-    font-size: 250%;
+    font-size: 200%;
     display: inline;
 }

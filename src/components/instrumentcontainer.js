@@ -7,8 +7,8 @@ class InstrumentContainer extends React.Component {
         super(props);
 
         this.state = {
-            width: 0,
-            height: 0
+            width: 100,
+            height: 100
         };
     }
 
