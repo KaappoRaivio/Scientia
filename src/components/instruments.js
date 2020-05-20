@@ -8,7 +8,8 @@ import Visualiser from "./visualiser"
 import "./instruments.css"
 import InstrumentContainer from "./instrumentcontainer";
 
-const server_root = "ws://192.168.1.115:3000";
+// const server_root = "ws://192.168.1.115:3000";
+const server_root = "ws://localhost:3000";
 
 class Instruments extends React.Component {
     constructor (props) {
@@ -28,7 +29,7 @@ class Instruments extends React.Component {
         const preparePath = (name) => {
             return {
                 "path": name,
-                "period": 1000,
+                "period": 500,
                 "format": "full",
                 "policy": "fixed",
                 // "minPeriod": 200
@@ -53,28 +54,31 @@ class Instruments extends React.Component {
 
         this.ws.onmessage = (event) => {
             const message = JSON.parse(event.data);
+            // console.log(message)
 
             for (const subscriber of this.subscribers) {
                 try {
 
                     message.updates.forEach(update => {
+                        // console.log(update)
                         update.values.forEach(value => {
                             subscriber.paths.forEach(subscriberPath => {
                                 let re = new RegExp(subscriberPath);
+                                // console.log(value.path, re)
                                 if (re.test(value.path)) {
                                     subscriber.callback(update);
                                 }
                             })
                         })
                     });
-                    
+
                 } catch (err) {
                     console.error(err)
                 }
             }
         };
 
-        
+
         console.log(this.refs);
 
         this.ws.onclose = () => {
@@ -85,7 +89,7 @@ class Instruments extends React.Component {
             //     }]
             // }))
         }
-        
+
         // setInterval(() => {
         //     this.ws.send(JSON.stringify({
         //         "context": "*",
@@ -116,19 +120,15 @@ class Instruments extends React.Component {
             [Visualiser, {path: "navigation.speedOverGround", ranges: [8, 12], numberOfPointsToShow: 100, negate: false, upperBound: 12, lowerBound: 0, legend: "Nopeus", unit: "kts", convert: x => x * 3.6 / 1.852}],
             [Visualiser, {path: "navigation.courseOverGroundTrue", ranges: [360], numberOfPointsToShow: 100, negate: false, upperBound: 360, lowerBound: 0, legend: "Suunta", unit: "°", convert: x => x / Math.PI * 180}],
             [Visualiser, {path: "environment.wind.speedTrue", ranges: [10, 20, 50], numberOfPointsToShow: 100, negate: false, upperBound: 50, lowerBound: 0, legend: "Tuulen nopeus", unit: "kts", convert: x => x * 3.6 / 1.852}],
-            // [Visualiser, {path: "environment.wind.speedTrue", ranges: [10, 20, 40], numberOfPointsToShow: 100, upperBound: 100, lowerBound: 0}]
         ];
 
         // console.log("rerendering!")
 
-        return (        
-            <div className="row">
-                {
-                    instruments.map(instrument =>
-                        <InstrumentContainer  children={instrument[0]} callback={setCallback} additionalProps={instrument[1]} />
-                    )
-                }
-
+        return (
+            <div className="flexbox-container">
+                {instruments.map(instrument =>
+                    <InstrumentContainer  children={instrument[0]} callback={setCallback} additionalProps={instrument[1]} resizeDebounce={250} />
+                )}
             </div>
         );
     }

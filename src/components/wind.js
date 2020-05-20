@@ -108,7 +108,6 @@ class Wind extends React.Component {
     }
 
     resizeCanvases () {
-        console.log("losing everything!")
         this.data.canvas_background.width = this.props.width;
         this.data.canvas_background.height = this.props.height;
         this.data.canvas_update.width = this.props.width;
@@ -149,7 +148,7 @@ class Wind extends React.Component {
                         suffix=""
                         unit="kts"
                         width={this.props.width / 2}
-                        height={this.props.height * 0.3}
+                        height={this.props.height * 0.25}
                         upperBound={99}
                         decimalPlaces={1}
                         fontSize={this.props.width / 6}

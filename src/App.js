@@ -1,4 +1,5 @@
 import React from 'react';
+import './flat-remix.css';
 import './App.css';
 
 
@@ -12,12 +13,11 @@ class App extends React.Component {
   render() {
 
     return (
-      <div>
-        <Instruments />
-
-      </div>
+        <div className="instruments">
+          <Instruments />
+        </div>
     );
-    }
+  }
 }
 
 export default App;

@@ -9,7 +9,9 @@ class DrawHelper {
         // this.canvas.translate(0.5, 0.5);
         // this.radius = radius;
         // this.arcCenterOffsetY = arcCenterOffsetY;
+        console.log(this.ctx.translate(0.5, 0.5))
     }
+
     
     drawAngleText (origin, angle, radius, text, rotateText) {
         if (rotateText === undefined) {

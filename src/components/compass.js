@@ -53,7 +53,6 @@ class Compass extends React.Component {
 
     subscribe () {
         this.onMessage = (message) => {
-            console.log(message)
             const extracted = message.values[0].value;
             // if (message.source.label === "nmeaFromFile") {
             if (true) {
@@ -66,7 +65,6 @@ class Compass extends React.Component {
     onResize () {
         this.data.canvas_background.width = this.props.width;
         this.data.canvas_background.height = this.props.height;
-        console.log("on resize!")
         this.drawCompassRose();
         this.drawBackground();
     }
@@ -79,7 +77,6 @@ class Compass extends React.Component {
     }
 
     drawCompassRose () {
-        console.log("Drawing background!")
         const ctx = this.data.ctx_background;
         ctx.clearRect(0, 0, this.props.width, this.props.height);
 

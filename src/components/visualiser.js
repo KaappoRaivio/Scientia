@@ -82,10 +82,10 @@ class  Visualiser extends React.Component {
                     <div className="legend" style={{height: this.props.height * 0.1}}>
                         {this.props.legend}, {this.props.unit}
                     </div>
-                    <XYPlot
+                    <XYPlot className="plot"
                         animation={true}
                         width={this.props.width}
-                        height={this.props.height * 0.9}
+                        height={this.props.height * 0.9 * 0.94}
                         xDomain={[this.state.counter - this.props.numberOfPointsToShow, this.state.counter]}
                         yDomain={this.state.yDomain}
                         getY={y => this.props.negate? -y.y : y.y}
@@ -96,35 +96,11 @@ class  Visualiser extends React.Component {
                         <XAxis
                             xDomain={[this.state.counter - this.props.numberOfPointsToShow, this.state.counter]}
                             hideTicks
-                            // title={"Syvyys kölin alla, m"}
                             orientation={"top"}
-                            // style={{
-                            //     fontSize: "85%",
-                            //     fontFamily: "Courier new",
-                            //     color: "white",
-                            //     // padding: "10%"
-                            // }}
                         />
                         <YAxis
                             yDomain={this.state.yDomain}
-                            left={this.props.width * 0.88}
-                            // orientation={"right"}
-                            // left={0}
-                            // tickSize={6}
                         />
-
-                        {/*<ChartLabel*/}
-                        {/*    text="Y Axisasd"*/}
-                        {/*    className="legend"*/}
-                        {/*    includeMargin={false}*/}
-                        {/*    xPercent={0.9}*/}
-                        {/*    yPercent={0.05}*/}
-                        {/*    style={{*/}
-                        {/*      // transform: 'rotate(-90)',*/}
-                        {/*        fontSize: "200",*/}
-                        {/*        textAnchor: 'end'*/}
-                        {/*    }}*/}
-                        {/*    />*/}
                 </XYPlot>
             </div>
         )

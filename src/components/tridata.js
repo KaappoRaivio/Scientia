@@ -9,12 +9,15 @@ class Tridata extends React.Component {
 
         this.state = {
             "environment.depth.belowTransducer": -1,
-            "navigation.speedOverGround": -1,
+            "navigation.speedThroughWater": -1,
             "performance.velocityMadeGood": -1
         };
 
         this.onMessage = (message) => {
             let path = message.values[0].path;
+
+            // console.log(path, message.values[0].value)
+            // console.log(this.state)
 
             if (path in this.state) {
                 this.setState({
@@ -25,11 +28,11 @@ class Tridata extends React.Component {
 
         };
 
-        this.props.subscribe(["depth.belowTransducer", "navigation.speedOverGround", "performance.velocityMadeGood"], this.onMessage)
+        this.props.subscribe(["depth.belowTransducer", "navigation.speedThroughWater", "performance.velocityMadeGood"], this.onMessage)
     }
 
     render () {
-        let divider = 3.075;
+        let divider = 3;
         
         return <div style={{ width: this.props.width + "px", height: this.props.height + "px" }}>
             <NumberDisplay
@@ -41,10 +44,10 @@ class Tridata extends React.Component {
                 upperBound={99}
                 decimalPlaces={1}
                 fontSize={this.props.width / 4}
-                legend="Syvyys"li
+                legend="Syvyys"
             />
             <NumberDisplay
-                value={this.state["navigation.speedOverGround"] * 3.6 / 1.852}
+                value={this.state["navigation.speedThroughWater"] * 3.6 / 1.852}
                 suffix=""
                 unit="solmua"
                 width={this.props.width}

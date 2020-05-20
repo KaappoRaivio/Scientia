@@ -1,6 +1,7 @@
 import React from "react";
 
 import "./instruments.css"
+import "./instrumentcontainer.css"
 
 class InstrumentContainer extends React.Component {
     constructor(props) {
@@ -46,7 +47,7 @@ class InstrumentContainer extends React.Component {
             try {
                 this.refs.child.onResize();
             } catch (err) {}
-        }, this.props.resizeDebounce || 250));
+        }, this.props.resizeDebounce));
 
     }
 
@@ -58,18 +59,18 @@ class InstrumentContainer extends React.Component {
 
 
     render() {
-        // console.log(this.state.width, this.state.height);
+        console.log(this.state.width, this.state.height);
 
         return (
-            <div className="col-3 col-t-4 col-s-6 container" style={{height: this.state.height, fontSize: this.state.width / 10}}>
-                {
-                    React.createElement(this.props.children,
-                        {width: this.state.width, height: this.state.height, subscribe: this.props.callback, ref: "child", ...this.props.additionalProps, animate: true},
-                        [])
-                }
-
-                <canvas className="canvas_update" ref="test" width={this.state.width} height={this.state.height}/>
-                {/*<canvas className="canvas_background" ref="canvas_background" width={this.state.width} height={this.state.height}/>*/}
+            <div className="flexbox-item with-shadow" style={{height: this.state.height, fontSize: this.state.width / 10}}>
+                <div className="flexbox-wrapper">
+                    {
+                        React.createElement(this.props.children,
+                            {width: this.state.width , height: this.state.height, subscribe: this.props.callback, ref: "child", ...this.props.additionalProps, animate: true},
+                            [])
+                    }
+                    <canvas className="probe" ref="test" width={this.state.width} height={this.state.height}/>
+                </div>
             </div>
         )
     }

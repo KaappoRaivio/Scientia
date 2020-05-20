@@ -1,66 +1,32 @@
 .displayContainer {
-    /* border: solid black 1px; */
-    /*display: inline-block;*/
-     border: 1px black solid;
-    /*margin: -20px;*/
-    text-align: left;
+    text-align: right;
     height: 100%;
     position: relative;
     float: left;
     display: inline;
     padding: 3%;
-    /*padding: 3%;*/
-}
-
-.whole_wrapper {
-    /*width: 0%;*/
-    height: 100%;
-    /*text-align: left;*/
-    /*position: relative;*/
-    /*display: inline;*/
 }
 
 .label {
-    /*padding: 3%;*/
     font-size: 50%;
     margin: 3%;
 
-    /*position: relative;*/
     position: absolute;
     display: inline;
     top: 0;
     right: 0;
 }
 
-/*.whole {*/
-/*    position: absolute;*/
-/*    !*width: 50%;*!*/
-/*    height: 1em;*/
-/*    border: 1px solid black;*/
-
-/*    !*right: 0;*!*/
-/*    !*bottom: -1em;*!*/
-/*    !*line-height: 95%;*!*/
-/*    !*margin-bottom: -10px;*!*/
-/*}*/
-
 .value {
     position: absolute;
-
-    bottom: 0;
-}
-
-.unit {
-    /*margin: 3%;*/
-    /*position: absolute;*/
-    /*display: inline;*/
-    /*bottom: 0;*/
-    /*right: 0;*/
-
-    /*height: 1em;*/
 }
 
 h1, h2, h3 {
     font-size: 200%;
+    font-weight: bold;
     display: inline;
+}
+
+i {
+    font-size: 75%;
 }
