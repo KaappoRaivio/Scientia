@@ -9,7 +9,6 @@ import "./instruments.css"
 import InstrumentContainer from "./instrumentcontainer";
 
 // const server_root = "ws://192.168.1.115:3000";
-const server_root = "ws://localhost:3000";
 
 class Instruments extends React.Component {
     constructor (props) {
@@ -19,10 +18,13 @@ class Instruments extends React.Component {
             data: null
         };
 
-        this.ws = new WebSocket(server_root + "/signalk/v1/stream/?subscribe=none");
-
+        this.resetWebsocket();
         this.subscribers = []
 
+    }
+
+    resetWebsocket () {
+        this.ws = new WebSocket(this.props.server + "/signalk/v1/stream/?subscribe=none");
     }
 
     componentDidMount () {
@@ -30,9 +32,9 @@ class Instruments extends React.Component {
             return {
                 "path": name,
                 "period": 500,
-                "format": "full",
+                "format": "delta",
                 "policy": "fixed",
-                // "minPeriod": 200
+                "minPeriod": 500
             }
         };
 
@@ -77,35 +79,29 @@ class Instruments extends React.Component {
                 }
             }
         };
-
-
-        console.log(this.refs);
-
-        this.ws.onclose = () => {
-            // this.ws.send(JSON.stringify({
-            //     "context": "*",
-            //     "unsubscribe": [{
-            //         "path": "*"
-            //     }]
-            // }))
-        }
-
-        // setInterval(() => {
-        //     this.ws.send(JSON.stringify({
-        //         "context": "*",
-        //         "unsubscribe": [{
-        //             "path": "*"
-        //         }]
-        //     }));
-        //     this.ws.close()
-        // }, 10000)
     }
 
     shouldComponentUpdate(nextProps, nextState, nextContext) {
-        // console.log(nextProps, nextState)
-        return true
+        return nextProps.server !== this.props.server;
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log(this.props.server)
+        this.resetWebsocket();
+        this.componentDidMount();
+    }
+
+    getSnapshotBeforeUpdate(prevProps, prevState) {
+        if (this.ws.readyState) {
+            this.ws.send(JSON.stringify({
+                "context": "*",
+                "unsubscribe": [{
+                    "path": "*"
+                }]
+            }))
+        }
+        this.ws.close(1000, `Changing server from ${prevProps.server}`)
+    }
 
     render () {
         const setCallback = (paths, callback) => {

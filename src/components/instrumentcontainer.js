@@ -59,8 +59,6 @@ class InstrumentContainer extends React.Component {
 
 
     render() {
-        console.log(this.state.width, this.state.height);
-
         return (
             <div className="flexbox-item with-shadow" style={{height: this.state.height, fontSize: this.state.width / 10}}>
                 <div className="flexbox-wrapper">

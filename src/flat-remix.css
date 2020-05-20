@@ -364,7 +364,7 @@ select {
     border-color: #2656a8;
 }
 
-button,
+.button,
 input[type=submit],
 input[type=reset],
 .blue-button, input.blue-button,

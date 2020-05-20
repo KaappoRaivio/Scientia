@@ -1,11 +1,13 @@
 import React from 'react';
 import "./numberdisplay.css";
 
-const ReactFitText = require("react-fittext");
 
 class NumberDisplay extends React.Component {
     render() {
-        let wholePart = Math.floor(this.props.value).toFixed(0);
+        // console.log((this.props.upperBound + "").length)
+        let wholePart = Math.floor(this.props.value).toFixed(0).padStart((this.props.upperBound + "").length, "⠀");
+        // let wholePart = "foobar";
+        // console.log(wholePart);
         let decimalPart = "." + (Math.abs(((this.props.value - Math.trunc(this.props.value)) * 10 ** this.props.decimalPlaces)).toFixed(0) + "").slice(0, this.props.decimalPlaces);
 
 

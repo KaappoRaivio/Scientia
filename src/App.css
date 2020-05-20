@@ -8,4 +8,54 @@ html, body {
   width: 100%;
   height: auto;
   position: relative;
+  text-align: center;
+}
+
+
+.address {
+  flex: 1 0 70%;
+  border: none !important;
+  border-bottom: 1px solid gray !important;
+}
+
+.confirm {
+  flex: 0 0 50px;
+  margin-left: 5px;
+  margin-right: 5px;
+
+  /*border: 1px solid gray !important;*/
+  border: none !important;
+  background-color: #EFEFEF;
+  color: black;
+}
+
+.confirm:active {
+  background: #E0E0E0 !important;
+}
+
+.addressInput {
+  /*position: sticky;*/
+  /*display: inline;*/
+  display: flex;
+  position: relative;
+  margin: 6px;
+  padding-left: 5px;
+  /*display: inline;*/
+}
+
+.open-menu {
+  margin-left: 10px !important;
+  margin-right: 10px !important;
+  padding: 10px;
+  /*height: 10px;*/
+  /*width: 100%;*/
+  position: relative;
+}
+
+.open-menu-wrapper {
+  border: none;
+  background: none;
+  text-transform: capitalize;
+  font-family: "Courier New", sans-serif;
+  color: #5c616c;
 }
