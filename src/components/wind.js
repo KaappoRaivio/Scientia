@@ -55,20 +55,20 @@ class Wind extends React.Component {
     componentDidMount() {
         this.subscribe()
 
-        const canvas = this.refs.canvas_background;
-        const ctx = canvas.getContext("2d");
+        // const canvas = this.refs.canvas_background;
+        // const ctx = canvas.getContext("2d");
 
-        const canvas_update = this.refs.canvas_update;
-        const ctx_update = canvas_update.getContext("2d");
+        // const canvas_update = this.refs.canvas_update;
+        // const ctx_update = canvas_update.getContext("2d");
 
         this.data = {
-            canvas_background: canvas,
-            ctx_background: ctx,
+            // canvas_background: canvas,
+            // ctx_background: ctx,
 
-            canvas_update: canvas_update,
-            ctx_update: ctx_update,
+            // canvas_update: canvas_update,
+            // ctx_update: ctx_update,
 
-            drawHelper: new DrawHelper(canvas, ctx),
+            // drawHelper: new DrawHelper(canvas, ctx),
         };
 
         this.drawBackground();
@@ -77,41 +77,41 @@ class Wind extends React.Component {
     }
 
     drawBackground() {
-        const ctx = this.data.ctx_background;
-
-        ctx.beginPath();
-        ctx.arc(this.props.width / 2, this.props.height / 2, this.getRadius(), 0, 2 * Math.PI);
-        ctx.font = this.props.width / 22 + "px Courier"
-
-        const divisions = [[24, 0.5], [72, 1]];
-        for (const division of divisions) {
-            let angleProvider = (index) => {
-                return 2 * Math.PI / division[0] * index;
-            }
-
-            let numberTextProvider = (index) => {
-                if (division[0] === 24) {
-                    let baseAngle = angleProvider(index);
-                    return baseAngle / Math.PI * 180 <= 180 ? mod(baseAngle / Math.PI * 180, 360).toFixed(0) : mod(360 - baseAngle / Math.PI * 180, 360).toFixed(0);
-                } else {
-                    return "";
-                }
-            }
-
-            this.data.drawHelper.drawDivision(this.getOrigin(), this.getRadius(), division[0], this.getCompassLineMaxLength() / division[1], angleProvider, numberTextProvider, false);
-        }
-
-        ctx.closePath();
-        ctx.stroke();
+        // const ctx = this.data.ctx_background;
+        //
+        // ctx.beginPath();
+        // ctx.arc(this.props.width / 2, this.props.height / 2, this.getRadius(), 0, 2 * Math.PI);
+        // ctx.font = this.props.width / 22 + "px Courier"
+        //
+        // const divisions = [[24, 0.5], [72, 1]];
+        // for (const division of divisions) {
+        //     let angleProvider = (index) => {
+        //         return 2 * Math.PI / division[0] * index;
+        //     }
+        //
+        //     let numberTextProvider = (index) => {
+        //         if (division[0] === 24) {
+        //             let baseAngle = angleProvider(index);
+        //             return baseAngle / Math.PI * 180 <= 180 ? mod(baseAngle / Math.PI * 180, 360).toFixed(0) : mod(360 - baseAngle / Math.PI * 180, 360).toFixed(0);
+        //         } else {
+        //             return "";
+        //         }
+        //     }
+        //
+        //     this.data.drawHelper.drawDivision(this.getOrigin(), this.getRadius(), division[0], this.getCompassLineMaxLength() / division[1], angleProvider, numberTextProvider, false);
+        // }
+        //
+        // ctx.closePath();
+        // ctx.stroke();
 
         this.drawCloseHaulMarks()
     }
 
     resizeCanvases () {
-        this.data.canvas_background.width = this.props.width;
-        this.data.canvas_background.height = this.props.height;
-        this.data.canvas_update.width = this.props.width;
-        this.data.canvas_update.height = this.props.height;
+        // this.data.canvas_background.width = this.props.width;
+        // this.data.canvas_background.height = this.props.height;
+        // this.data.canvas_update.width = this.props.width;
+        // this.data.canvas_update.height = this.props.height;
     }
 
     onResize () {
@@ -121,20 +121,20 @@ class Wind extends React.Component {
 
 
     drawCloseHaulMarks () {
-        const ctx = this.data.ctx_background;
-        ctx.beginPath();
-        ctx.fillStyle = "rgba(0, 200, 0, 0.75)"
-        ctx.arc(this.getOrigin()[0], this.getOrigin()[1], this.getRadius(), -Math.PI / 2, (90 - this.state.closeHaulAngle) / 180 * -Math.PI, false);
-        ctx.arc(this.getOrigin()[0], this.getOrigin()[1], this.getRadius() - this.getCompassLineMaxLength(), (90 - this.state.closeHaulAngle) / 180 * -Math.PI, -Math.PI / 2, true);
-        ctx.closePath();
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.fillStyle = "rgba(255, 150, 125, 0.75)"
-        ctx.arc(this.getOrigin()[0], this.getOrigin()[1], this.getRadius(), -Math.PI - (90 - this.state.closeHaulAngle) / 180 * -Math.PI, -Math.PI / 2, false);
-        ctx.arc(this.getOrigin()[0], this.getOrigin()[1], this.getRadius() - this.getCompassLineMaxLength(), -Math.PI / 2, -Math.PI - (90 - this.state.closeHaulAngle) / 180 * -Math.PI, true);
-        ctx.closePath();
-        ctx.fill();
+        // const ctx = this.data.ctx_background;
+        // ctx.beginPath();
+        // ctx.fillStyle = "rgba(0, 200, 0, 0.75)"
+        // ctx.arc(this.getOrigin()[0], this.getOrigin()[1], this.getRadius(), -Math.PI / 2, (90 - this.state.closeHaulAngle) / 180 * -Math.PI, false);
+        // ctx.arc(this.getOrigin()[0], this.getOrigin()[1], this.getRadius() - this.getCompassLineMaxLength(), (90 - this.state.closeHaulAngle) / 180 * -Math.PI, -Math.PI / 2, true);
+        // ctx.closePath();
+        // ctx.fill();
+        //
+        // ctx.beginPath();
+        // ctx.fillStyle = "rgba(255, 150, 125, 0.75)"
+        // ctx.arc(this.getOrigin()[0], this.getOrigin()[1], this.getRadius(), -Math.PI - (90 - this.state.closeHaulAngle) / 180 * -Math.PI, -Math.PI / 2, false);
+        // ctx.arc(this.getOrigin()[0], this.getOrigin()[1], this.getRadius() - this.getCompassLineMaxLength(), -Math.PI / 2, -Math.PI - (90 - this.state.closeHaulAngle) / 180 * -Math.PI, true);
+        // ctx.closePath();
+        // ctx.fill();
 
     }
 
@@ -144,7 +144,7 @@ class Wind extends React.Component {
             <div style={{ width: this.props.width + "px", height: this.props.height + "px" }}>
                 <div className="layerCentered">
                     <NumberDisplay
-                        value={this.state.speedTrue * 3.6 / 1.852}
+                        value={this.state.speedApparent * 3.6 / 1.852}
                         suffix=""
                         unit="kts"
                         width={this.props.width / 2}
@@ -159,8 +159,20 @@ class Wind extends React.Component {
                 <Needle angle={this.state.angleApparent / Math.PI * 180} color="rgb(230, 230, 0)"/>
                 <Needle angle={this.state.angleTrueWater / Math.PI * 180} color="rgb(220, 50, 0)"/>
 
-                <canvas ref="canvas_update" className="layer" width={this.props.width} height={this.props.height} />
-                <canvas ref="canvas_background" className="layer" width={this.props.width} height={this.props.height} />
+                {/*<canvas ref="canvas_update" className="layer" width={this.props.width} height={this.props.height} />*/}
+                {/*<canvas ref="canvas_background" className="layer" width={this.props.width} height={this.props.height} />*/}
+                <svg width={this.props.width} height={this.props.height}>
+                    <circle
+                        cx={this.props.width / 2}
+                        cy={this.props.height / 2}
+                        r={this.props.width / 2 - 1}
+                        fill="#fff"
+                        stroke={"#777"}
+                        strokeWidth={2}
+                    />
+                    <line x1={10} y1={10} x2={20} y2={20} stroke={"#223"}/>
+
+                </svg>
             </div>
         )
     }

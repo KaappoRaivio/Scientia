@@ -22,12 +22,12 @@ class NumberDisplay extends React.Component {
                         {decimalPart}
                         {this.props.suffix + " "}
                     </span>
-                    <i>
-                        {this.props.unit}
-                    </i>
                 </div>
                 <div className="label">
                     {this.props.legend}
+                    <i>
+                        {", " + this.props.unit}
+                    </i>
                 </div>
             </div>
         );

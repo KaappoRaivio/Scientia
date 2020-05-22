@@ -14,8 +14,8 @@ class App extends React.Component {
         super(props);
         this.state = {
             sidebarOpen: false,
-            address: "ws://localhost:3000",
-            server: "ws://localhost:3000"
+            address: "ws://192.168.43.232:3000",
+            server: "ws://192.168.43.232:3000"
         };
     }
 

@@ -10,7 +10,7 @@ class Tridata extends React.Component {
         this.state = {
             "environment.depth.belowTransducer": -1,
             "navigation.speedThroughWater": -1,
-            "performance.velocityMadeGood": -1
+            "performance.velocityMadeGood": "--"
         };
 
         this.onMessage = (message) => {
