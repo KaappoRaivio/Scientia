@@ -28,13 +28,32 @@ class Tridata extends React.Component {
 
         };
 
+
         this.props.subscribe([/depth.belowTransducer/, /navigation.speedThroughWater/, /performance.velocityMadeGood/], this.onMessage)
+        this.setColors();
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        this.setColors();
+    }
+
+    setColors () {
+        if (this.props.darkMode) {
+            this.colors = {
+                primary: "#f00",
+                background: "#000"
+            }
+        } else {
+            this.colors = {
+                primary: "#777",
+                background: "#fff",
+            }
+        }
+    }
     render () {
         let divider = 3;
         
-        return <div style={{ width: this.props.width + "px", height: this.props.height + "px" }}>
+        return <div style={{ width: this.props.width + "px", height: this.props.height + "px", color: this.colors.primary, backgroundColor: this.colors.background}}>
             <NumberDisplay
                 value={this.state["environment.depth.belowTransducer"]}
                 suffix=""

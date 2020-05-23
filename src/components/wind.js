@@ -21,31 +21,7 @@ class Wind extends React.Component {
             speedApparent: 5,
         }
 
-        const darkMode = true;
-        if (darkMode) {
-            this.colors = {
-                primary: "#f00",
-                background: "#000",
-                closeHaulRight: "rgba(0, 200, 0)",
-                closeHaulLeft: "rgba(255, 150, 125)",
-
-                angleTrue: "rgb(0, 50, 150)",
-                angleApparent: "rgb(0, 50, 220)",
-            }
-        } else {
-            this.colors = {
-                primary: "#777",
-                background: "#fff",
-
-                closeHaulRight: "rgba(0, 200, 0, 0.75)",
-                closeHaulLeft: "rgba(255, 150, 125, 0.75)",
-
-                angleTrue: "rgb(0, 50, 150)",
-                angleApparent: "rgb(0, 50, 220)",
-            }
-        }
-
-
+        this.setColors()
     }
 
     subscribe() {
@@ -76,8 +52,37 @@ class Wind extends React.Component {
 
     componentDidMount() {
         this.subscribe()
+
     }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        this.setColors()
+    }
+
+    setColors() {
+        if (this.props.darkMode) {
+            this.colors = {
+                primary: "#f00",
+                background: "#000",
+                closeHaulRight: "rgba(0, 200, 0)",
+                closeHaulLeft: "rgba(255, 150, 125)",
+
+                angleTrue: "rgb(0, 50, 150)",
+                angleApparent: "rgb(0, 50, 220)",
+            }
+        } else {
+            this.colors = {
+                primary: "#777",
+                background: "#fff",
+
+                closeHaulRight: "rgba(0, 200, 0, 0.75)",
+                closeHaulLeft: "rgba(255, 150, 125, 0.75)",
+
+                angleTrue: "rgb(0, 50, 150)",
+                angleApparent: "rgb(0, 50, 220)",
+            }
+        }
+    }
 
 
     render() {
@@ -92,6 +97,7 @@ class Wind extends React.Component {
         const radius = this.getRadius();
         const radiusPercent = this.getRadius() / (this.props.width / 2) * 100 / 2;
         const helper = new Svghelpers();
+
 
         return (
             <div style={{ width: this.props.width + "px", height: this.props.height + "px", background: this.colors.background, color: this.colors.primary }}>
@@ -128,7 +134,7 @@ class Wind extends React.Component {
                     <g fill={this.colors.closeHaulLeft}>
                         {helper.getSector(centerX, centerY, radius, -this.state.closeHaulAngle, this.colors.background)}
                     </g>
-                    <g stroke={this.colors.primary} fill={this.colors.primary}>
+                    <g stroke={this.colors.primary} fill={this.colors.primary} strokeWidth={radius * 0.005}>
                         {divisions.map((division) => {
                             return helper
                                     .drawDivision(centerX, centerY,

@@ -25,8 +25,6 @@ class Svghelpers {
                                                             y1={item.start.y}
                                                             x2={item.end.x}
                                                             y2={item.end.y}
-                                                            strokeWidth={1.5}
-                                                            // strokeWidth={radius * 0.015}
                                                             />)
                 }
                 {
