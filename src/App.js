@@ -12,11 +12,19 @@ import Sidebar from "react-sidebar";
 class App extends React.Component {
     constructor(props) {
         super(props);
+
+        let url = window.location.href;
+        let ws = "ws:" + url.split(":")[1] + ":3000"
+
         this.state = {
             sidebarOpen: false,
-            address: "ws://192.168.43.232:3000",
-            server: "ws://192.168.43.232:3000"
+            // address: "ws://192.168.43.232:3000",
+            // server: "ws://192.168.43.232:3000"
+            address: ws,
+            server: ws,
         };
+
+        console.log(window.location.href)
     }
 
     componentDidMount() {

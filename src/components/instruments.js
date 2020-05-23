@@ -65,9 +65,9 @@ class Instruments extends React.Component {
                         // console.log(update)
                         update.values.forEach(value => {
                             subscriber.paths.forEach(subscriberPath => {
-                                let re = new RegExp(subscriberPath);
+                                // let re = new RegExp(subscriberPath);
                                 // console.log(value.path, re)
-                                if (re.test(value.path)) {
+                                if (subscriberPath.test(value.path)) {
                                     subscriber.callback(update);
                                 }
                             })
@@ -111,11 +111,12 @@ class Instruments extends React.Component {
         const instruments = [
             [Wind, {}],
             [Compass, {}],
-            [Tridata, {}],
-            [Visualiser, {path: "environment.depth.belowTransducer", ranges: [5, 10, 20, 40, 100], numberOfPointsToShow: 100, negate: true, upperBound: 100, lowerBound: 0, legend: "Syvyys", unit: "m"}],
-            [Visualiser, {path: "navigation.speedThroughWater", ranges: [8, 12], numberOfPointsToShow: 100, negate: false, upperBound: 12, lowerBound: 0, legend: "Nopeus", unit: "kts", convert: x => x * 3.6 / 1.852}],
-            [Visualiser, {path: "navigation.courseOverGroundTrue", ranges: [360], numberOfPointsToShow: 100, negate: false, upperBound: 360, lowerBound: 0, legend: "Suunta", unit: "°", convert: x => x / Math.PI * 180}],
-            [Visualiser, {path: "environment.wind.speedApparent", ranges: [10, 20, 50], numberOfPointsToShow: 100, negate: false, upperBound: 50, lowerBound: 0, legend: "Tuulen nopeus", unit: "kts", convert: x => x * 3.6 / 1.852}],
+            // [Tridata, {}],
+            // [Visualiser, {path: /environment.depth.belowTransducer/, ranges: [5, 10, 20, 40, 100], numberOfPointsToShow: 100, negate: true, upperBound: 100, lowerBound: 0, legend: "Syvyys", unit: "m"}],
+            // [Visualiser, {path: /navigation.speedThroughWater/, ranges: [8, 12], numberOfPointsToShow: 100, negate: false, upperBound: 12, lowerBound: 0, legend: "Nopeus", unit: "kts", convert: x => x * 3.6 / 1.852}],
+            // [Visualiser, {path: /navigation.courseOverGroundTrue/, ranges: [360], numberOfPointsToShow: 100, negate: false, upperBound: 360, lowerBound: 0, legend: "Suunta", unit: "°", convert: x => x / Math.PI * 180}],
+            // [Visualiser, {path: /environment.wind.speedApparent/, ranges: [10, 20, 50], numberOfPointsToShow: 100, negate: false, upperBound: 50, lowerBound: 0, legend: "Tuulen nopeus", unit: "kts", convert: x => x * 3.6 / 1.852}],
+
         ];
 
         // console.log("rerendering!")

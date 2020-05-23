@@ -71,17 +71,9 @@ class DrawHelper {
     drawCompassLine(origin, angle, radius, length) {
         let end = this.getPosFromAngle(origin, angle, radius);
         let start = this.getPosFromAngle(origin, angle, radius - length);
-        // console.log(end, start)
-        // if (true) {
-            // start = [0, 0]
-            // end = [50, 50]
-            // console.log(start[0])
-            // console.log(end[1])
-        // }
+
         this.ctx.moveTo(start[0], start[1]);
         this.ctx.lineTo(end[0], end[1]);
-        // this.ctx.moveTo(250, 250);
-        // this.ctx.lineTo(207, 277);
     }
 }
 

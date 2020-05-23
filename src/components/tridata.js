@@ -28,7 +28,7 @@ class Tridata extends React.Component {
 
         };
 
-        this.props.subscribe(["depth.belowTransducer", "navigation.speedThroughWater", "performance.velocityMadeGood"], this.onMessage)
+        this.props.subscribe([/depth.belowTransducer/, /navigation.speedThroughWater/, /performance.velocityMadeGood/], this.onMessage)
     }
 
     render () {
