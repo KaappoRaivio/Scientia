@@ -24,14 +24,7 @@ canvas.probe {
   flex: 1 0 100%;
   margin-right: 10px;
   margin-bottom: 10px;
-
-  transition: background-color 0.1s linear;
 }
-
-/*.flexbox-item:hover {*/
-/*  border: black 1px solid;*/
-/*  background: #eee;*/
-/*}*/
 
 .flexbox-item:after {
   content: "";

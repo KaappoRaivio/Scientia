@@ -1,76 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400;1,700&display=swap');
+
 html, body {
   width: 100%;
   height: 100%;
-  font-family: "Courier New", sans-serif;
+  font-family: "Space Mono", monospace;
 }
 
 .instruments {
-  width: 100%;
-  height: auto;
+  width: 100vw;
+  height: 100vh;
   position: relative;
   text-align: left;
-}
-
-.sidebar-wrapper {
-  padding: 10px;
-}
-
-.server-address-wrapper {
-  padding: 10px;
-  margin-bottom: 10px;
-
-}
-
-.server-address {
-  width: 100%;
-  clear: both;
-  font-size: 2em;
-  font-weight: bold;
-}
-
-.address {
-  flex: 1 0 70%;
-  border: none !important;
-  border-bottom: 1px solid gray !important;
-}
-
-.confirm {
-  flex: 0 0 50px;
-  margin-left: 5px;
-  margin-right: 5px;
-
-  /*border: 1px solid gray !important;*/
-  border: none !important;
-  background-color: #EFEFEF;
-  color: black;
-}
-
-.confirm:active {
-  background: #E0E0E0 !important;
-}
-
-.addressInput {
-  display: flex;
-  position: relative;
-}
-
-.color-scheme {
-  width: 100%;
-}
-
-.open-menu {
-  margin-left: 10px !important;
-  margin-right: 10px !important;
-  padding: 10px;
-  /*height: 10px;*/
-  /*width: 100%;*/
-  position: relative;
-}
-
-.open-menu-wrapper {
-  border: none;
-  background: none;
-  text-transform: capitalize;
-  font-family: "Courier New", sans-serif;
-  color: #5c616c;
+  overflow-x: hidden;
 }

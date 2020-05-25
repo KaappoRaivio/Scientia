@@ -40,7 +40,7 @@ input[type="search"]::-webkit-search-results-decoration {
     -moz-user-select: none;
     -ms-user-select: none;
     cursor: default;
-    font-family: "Courier New", sans-serif;
+    /*font-family: "Courier New", sans-serif;*/
     letter-spacing: 0;
 }
 

@@ -12,20 +12,6 @@ class InstrumentContainer extends React.Component {
             height: 100
         };
 
-        this.setColor()
-    }
-    setColor () {
-        if (this.props.darkMode) {
-            this.colors = {
-                primary: "#f00",
-                background: "#000"
-            }
-        } else {
-            this.colors = {
-                primary: "#777",
-                background: "#fff"
-            }
-        }
     }
 
     debounce (func, wait, immediate) {
@@ -41,7 +27,8 @@ class InstrumentContainer extends React.Component {
             timeout = setTimeout(later, wait);
             if (callNow) func.apply(context, args);
         };
-};
+    };
+
     fitToContainer (canvas, ) {
         canvas.style.width = "100%";
         canvas.style.height ="100%";
@@ -66,23 +53,36 @@ class InstrumentContainer extends React.Component {
 
     }
 
-    componentDidUpdate() {
-        this.setColor()
-    }
-
-
-
     render() {
         console.log(this.props.darkMode)
+        const props = {
+            width: this.state.width,
+            height: this.state.height,
+            subscribe: this.props.callback,
+            ref: "child",
+            animate: false,
+            darkMode: this.props.darkMode,
+            colors: this.props.colors,
+            key: this.props.children.id,
+            ...this.props.additionalProps,
+        };
+
+        const parentStyle = {
+            height: this.state.height,
+            fontSize: this.state.width / 10,
+            color: this.props.colors.primary,
+            backgroundColor: this.props.colors.background
+        };
+
         return (
-            <div className="flexbox-item with-shadow" style={{height: this.state.height, fontSize: this.state.width / 10, color: this.colors.primary, backgroundColor: this.colors.background}}>
+            <div className="flexbox-item with-shadow" style={parentStyle}>
                 <div className="flexbox-wrapper">
                     {
                         React.createElement(this.props.children,
-                            {width: this.state.width , height: this.state.height, subscribe: this.props.callback, ref: "child", ...this.props.additionalProps, animate: true, darkMode: this.props.darkMode},
+                            props,
                             [])
                     }
-                    <canvas className="probe" ref="test" width={this.state.width} height={this.state.height}/>
+                    <canvas key={this.props.children.id} className="probe" ref="test" width={this.state.width} height={this.state.height}/>
                 </div>
             </div>
         )

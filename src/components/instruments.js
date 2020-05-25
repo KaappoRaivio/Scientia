@@ -2,11 +2,12 @@ import  React from "react";
 
 import Compass from "./compass"
 import Wind from "./wind"
-import Tridata from "./tridata";
+import TridataContainer from "./tridataContainer";
 import Visualiser from "./visualiser"
 
 import "./instruments.css"
 import InstrumentContainer from "./instrumentcontainer";
+import WindContainer from "./WindContainer";
 
 // const server_root = "ws://192.168.1.115:3000";
 
@@ -31,9 +32,9 @@ class Instruments extends React.Component {
         const preparePath = (name) => {
             return {
                 "path": name,
-                "period": 500,
+                // "period": 500,
                 "format": "delta",
-                "policy": "fixed",
+                "policy": "instant",
                 "minPeriod": 500
             }
         };
@@ -42,13 +43,13 @@ class Instruments extends React.Component {
             this.ws.send(JSON.stringify({
                 context: "vessels.self",
                 subscribe: [
-                    preparePath("environment.depth.belowTransducer"),
-                    preparePath("environment.wind.*"),
-                    preparePath("navigation.speedThroughWater"),
-                    preparePath("navigation.courseOverGroundTrue"),
-                    preparePath("navigation.position"),
-                    preparePath("navigation.speedOverGround"),
-                    preparePath("performance.velocityMadeGood"),
+                    // preparePath("environment.depth.belowTransducer"),
+                    // preparePath("environment.wind.*"),
+                    // preparePath("navigation.speedThroughWater"),
+                    // preparePath("navigation.courseOverGroundTrue"),
+                    // preparePath("navigation.position"),
+                    // preparePath("navigation.speedOverGround"),
+                    preparePath("*"),
                 ]
             }))
         };
@@ -74,15 +75,11 @@ class Instruments extends React.Component {
                     });
 
                 } catch (err) {
-                    console.error(err)
+                    console.error(err, message)
                 }
             }
         };
     }
-
-    // shouldComponentUpdate(nextProps, nextState, nextContext) {
-    //     return nextProps.server !== this.props.server;
-    // }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
         this.resetWebsocket();
@@ -108,13 +105,14 @@ class Instruments extends React.Component {
 
 
         const instruments = [
+            [TridataContainer, {}],
             [Compass, {}],
-            [Tridata, {}],
-            [Wind, {}],
-            [Visualiser, {path: /environment.depth.belowTransducer/, ranges: [5, 10, 20, 40, 100], numberOfPointsToShow: 100, negate: true, upperBound: 100, lowerBound: 0, legend: "Syvyys", unit: "m", trendlinePeriod: 50, trendline: true}],
-            [Visualiser, {path: /navigation.speedThroughWater/, ranges: [8, 12], numberOfPointsToShow: 100, negate: false, upperBound: 12, lowerBound: 0, legend: "Nopeus", unit: "kts", convert: x => x * 3.6 / 1.852, trendlinePeriod: 50, trendline: true}],
-            [Visualiser, {path: /navigation.courseOverGroundTrue/, ranges: [360], numberOfPointsToShow: 100, negate: false, upperBound: 360, lowerBound: 0, legend: "Suunta", unit: "°", convert: x => x / Math.PI * 180, trendlinePeriod: 50, trendline: true}],
-            [Visualiser, {path: /environment.wind.speedApparent/, ranges: [10, 20, 50], numberOfPointsToShow: 100, negate: false, upperBound: 50, lowerBound: 0, legend: "Tuulen nopeus", unit: "kts", convert: x => x * 3.6 / 1.852, trendlinePeriod: 50, trendline: true}],
+            [WindContainer, {}],
+            [Visualiser, {path: /environment.depth.belowTransducer/, ranges: [5, 10, 20, 40, 100], numberOfPointsToShow: 100, negate: true, upperBound: 100, lowerBound: 0, legend: "Syvyys", unit: "m", trendlinePeriod: 4, trendline: true}],
+            [Visualiser, {path: /^navigation.speedThroughWater$/, ranges: [8, 12], numberOfPointsToShow: 100, negate: false, upperBound: 12, lowerBound: 0, legend: "Nopeus", unit: "kts", convert: x => x * 3.6 / 1.852, trendlinePeriod: 10, trendline: true}],
+            [Visualiser, {path: /^navigation.courseOverGroundTrue$/, ranges: [360], numberOfPointsToShow: 100, negate: false, upperBound: 360, lowerBound: 0, legend: "Suunta", unit: "°", convert: x => x / Math.PI * 180, trendlinePeriod: 10, trendline: true}],
+            [Visualiser, {path: /^environment.wind.speedTrue$/, ranges: [10, 20, 50], numberOfPointsToShow: 100, negate: false, upperBound: 50, lowerBound: 0, legend: "Tuulen nopeus", unit: "kts", convert: x => x * 3.6 / 1.852, trendlinePeriod: 10, trendline: true}],
+            [Visualiser, {path: /electrical.batteries.1.voltage/, ranges: [15], numberOfPointsToShow: 100, negate: false, upperBound: 15, lowerBound: 0, legend: "Jännite", unit: "V", convert: x => x, trendlinePeriod: 10, trendline: true}],
 
         ];
 
@@ -122,9 +120,9 @@ class Instruments extends React.Component {
         console.log(this.props.darkMode)
 
         return (
-            <div className="flexbox-container">
+            <div key={"fixed"} className="flexbox-container">
                 {instruments.map(instrument =>
-                    <InstrumentContainer darkMode={this.props.darkMode} children={instrument[0]} callback={setCallback} additionalProps={instrument[1]} resizeDebounce={250} />
+                    <InstrumentContainer key={instrument.id} darkMode={this.props.darkMode} colors={this.props.colors} children={instrument[0]} callback={setCallback} additionalProps={instrument[1]} resizeDebounce={250} />
                 )}
             </div>
         );

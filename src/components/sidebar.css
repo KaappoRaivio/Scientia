@@ -1,0 +1,57 @@
+.sidebar-wrapper {
+    padding: 10px;
+}
+
+.setting {
+    padding: 10px;
+    margin-bottom: 10px;
+
+}
+
+.setting-title {
+    width: 100%;
+    clear: both;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.address {
+    border: none !important;
+    border-bottom: 1px solid gray !important;
+    width: 100%;
+}
+
+.confirm {
+    width: calc(100% - 10px);
+    margin: 5px;
+
+
+    border: none !important;
+    background-color: inherit;
+    color: inherit;
+}
+
+.confirm:active {
+    background: #E0E0E0 !important;
+}
+
+.color-scheme {
+    width: 100%;
+}
+
+.open-menu {
+    margin-left: 10px !important;
+    margin-right: 10px !important;
+    padding: 10px;
+    text-align: center;
+    /*height: 10px;*/
+    /*width: 100%;*/
+    position: relative;
+}
+
+.open-menu-wrapper {
+    border: none;
+    background: none;
+    text-transform: capitalize;
+    color: #5c616c;
+}

@@ -4,18 +4,13 @@ import {HorizontalGridLines, LineSeries, XAxis, XYPlot, YAxis} from "react-vis";
 import "./visualiser.css"
 
 class  Visualiser extends React.Component {
-        constructor(props) {
+    constructor(props) {
         super(props);
 
         this.state = {
             counter: 0,
-            data: [
-              // {x: 0, y: 0},
-            ],
-            trendData: [
-                // {x: 0, y: 0}
-            ],
-
+            data: [],
+            trendData: [],
             yDomain: [0, 0]
         };
 
@@ -24,34 +19,19 @@ class  Visualiser extends React.Component {
         } else {
             this.converter = x => x;
         }
-
-        this.subscribe();
-        this.setColors()
     }
 
     subscribe () {
-            this.props.subscribe([this.props.path], this.onMessage.bind(this))
-    }
-
-    onMessage (message) {
-        let value = message.values[0];
-        this.addData(value.value);
-
-    }
-
-    setColors () {
-        if (this.props.darkMode) {
-            this.colors = {
-                primary: "#f00",
-                background: "#000"
-            }
-        } else {
-            this.colors = {
-                primary: "#777",
-                background: "#fff"
-            }
+        const onMessage = (message) => {
+            let value = message.values[0];
+            this.addData(value.value);
         }
 
+        this.props.subscribe([this.props.path], onMessage)
+    }
+
+    componentDidMount() {
+        this.subscribe();
     }
 
     addData (data) {
@@ -61,7 +41,7 @@ class  Visualiser extends React.Component {
             return {
                 data: oldState.data.concat({
                     x: oldState.counter,
-                    y: this.converter(data)
+                    y: isNaN(this.converter(data)) ? 0 : this.converter(data)
                 }),
 
                 trendData: oldState.trendData.concat(trend),
@@ -76,13 +56,17 @@ class  Visualiser extends React.Component {
     computeTrendDataPoint () {
         let dataPoints = this.state.data.slice(Math.max(this.state.data.length - this.props.trendlinePeriod, 0), this.state.data.length);
         if (!dataPoints.length) {
-            return {x: null, y: null}
+            return {x: 0, y: 0}
         }
 
+        let x = this.state.data.length - Math.trunc(this.props.trendlinePeriod / 2) - 1;
         let y = dataPoints.map(a => a.y).reduce ((a, b) => a + b) / dataPoints.length;
-        let x = this.state.data[this.state.data.length - 1].x;
 
-        return {x: x, y: y}
+        if (x < 0) {
+            return {x: 0, y: 0}
+        } else {
+            return {x, y}
+        }
     }
 
     getYDomain () {
@@ -105,48 +89,48 @@ class  Visualiser extends React.Component {
         }
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        this.setColors()
-    }
 
     render () {
+        const colors = this.props.colors;
+
+        const lineStyle = {stroke: colors.primary, backgroundColor: colors.background};
+
         return (
-            <div className="parent with-shadow" style={{ color: this.colors.primary, backgroundColor: this.colors.background}}>
+            <div className="parent with-shadow" style={{ color: colors.primary, backgroundColor: colors.background}}>
                     <div className="legend" style={{height: this.props.height * 0.1}}>
                         {this.props.legend}, {this.props.unit}
                     </div>
                     <XYPlot className="plot"
-                        animation={true}
+                        animation={false}
                         width={this.props.width}
                         height={this.props.height * 0.9 * 0.94}
                         xDomain={[this.state.counter - this.props.numberOfPointsToShow, this.state.counter]}
                         yDomain={this.state.yDomain}
                         getY={y => this.props.negate? -y.y : y.y}
-                        // style={{fill: this.colors.primary, backgroundColor: this.colors.background}}
                         >
                         <HorizontalGridLines
-                            style={{stroke: this.colors.primary, backgroundColor: this.colors.background}}
+                            style={{...lineStyle}}
                         />
                         <LineSeries
                             data={this.state.data}
-                            style={{stroke: this.colors.primary, backgroundColor: this.colors.background}}
+                            style={{...lineStyle, strokeDasharray: "10, 10", strokeWidth: 1}}
                         />
 
                         {this.props.trendline ? <LineSeries
                             data={this.state.trendData}
-                            style={{stroke: this.colors.primary, backgroundColor: this.colors.background, strokeDasharray: "10, 10"}}
+                            style={{...lineStyle, strokeWidth: 2}}
                         /> : <span />}
 
                         <XAxis
                             xDomain={[this.state.counter - this.props.numberOfPointsToShow, this.state.counter]}
                             hideTicks
                             orientation={"top"}
-                            style={{stroke: this.colors.primary, backgroundColor: this.colors.background}}
+                            style={lineStyle}
 
                         />
                         <YAxis
                             yDomain={this.state.yDomain}
-                            style={{fill: this.colors.primary, stroke: this.colors.primary, backgroundColor: this.colors.background}}
+                            style={lineStyle}
                         />
                 </XYPlot>
             </div>
