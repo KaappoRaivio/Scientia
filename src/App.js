@@ -6,6 +6,8 @@ import './App.css';
 import Instruments from "./components/instruments"
 import MySidebar from "./components/mySidebar";
 import Switch from "react-switch";
+import Logo from "./components/Logo";
+
 
 
 class App extends React.Component {
@@ -19,7 +21,7 @@ class App extends React.Component {
             sidebarOpen: false,
             serverAddress: ws,
 
-            darkMode: false
+            darkMode: false,
         };
 
         console.log(window.location.href)
@@ -60,9 +62,16 @@ class App extends React.Component {
             })
         }
 
+        const parentStyle = {
+            stroke: colors.primary,
+            fill: colors.background,
+            color: colors.primary,
+            backgroundColor: colors.background
+        }
+
         return (
-            <div className="instruments" style={{color: colors.primary, backgroundColor: colors.background}}>
-                <MySidebar sidebarOpen={this.state.sidebarOpen} initialAddress={this.state.serverAddress} initialDarkMode={this.state.darkMode} onSetSidebarOpen={onSetSidebarOpen} onSettingsChange={onSettingsChange}/>
+            <div className="instruments" style={parentStyle}>
+                <MySidebar sidebarOpen={this.state.sidebarOpen} initialAddress={this.state.serverAddress} initialDarkMode={this.state.darkMode} onSetSidebarOpen={onSetSidebarOpen} onSettingsChange={onSettingsChange} colors={colors}/>
                 <Instruments server={this.state.serverAddress} darkMode={this.state.darkMode} colors={colors}/>
                 <div className="open-menu with-shadow">
                     <button className="open-menu-wrapper"
@@ -70,6 +79,7 @@ class App extends React.Component {
                         configure
                     </button>
                 </div>
+                <Logo/>
 
             </div>
         );

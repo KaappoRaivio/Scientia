@@ -1,11 +1,11 @@
 .sidebar-wrapper {
     padding: 10px;
+    transform: translateZ(-10px);
 }
 
 .setting {
     padding: 10px;
     margin-bottom: 10px;
-
 }
 
 .setting-title {
@@ -17,8 +17,10 @@
 
 .address {
     border: none !important;
-    border-bottom: 1px solid gray !important;
+    border-bottom: 1px solid !important;
     width: 100%;
+    background: inherit !important;
+    color: inherit !important;
 }
 
 .confirm {
@@ -32,7 +34,7 @@
 }
 
 .confirm:active {
-    background: #E0E0E0 !important;
+    background: inherit !important;
 }
 
 .color-scheme {
@@ -54,4 +56,19 @@
     background: none;
     text-transform: capitalize;
     color: #5c616c;
+    font-family: inherit !important;
+}
+
+.open-menu-wrapper:active {
+    background: none !important;
+}
+
+.night-mode-switch {
+    float: right;
+}
+
+.night-mode {
+    /*width: 100%;*/
+    height: 100%;
+    margin: 10px;
 }

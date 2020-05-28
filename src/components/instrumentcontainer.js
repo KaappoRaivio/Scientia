@@ -60,7 +60,7 @@ class InstrumentContainer extends React.Component {
             height: this.state.height,
             subscribe: this.props.callback,
             ref: "child",
-            animate: false,
+            animate: this.props.animate,
             darkMode: this.props.darkMode,
             colors: this.props.colors,
             key: this.props.children.id,
@@ -71,7 +71,7 @@ class InstrumentContainer extends React.Component {
             height: this.state.height,
             fontSize: this.state.width / 10,
             color: this.props.colors.primary,
-            backgroundColor: this.props.colors.background
+            // backgroundColor: this.props.colors.background,
         };
 
         return (

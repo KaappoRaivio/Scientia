@@ -2,33 +2,31 @@ import React from 'react';
 import "./numberdisplay.css";
 
 
-class NumberDisplay extends React.Component {
-    render() {
-        let wholePart = Math.floor(this.props.value).toFixed(0).padStart((this.props.upperBound + "").length, "⠀").replace("-", "–");
-        let decimalPart = "." + (Math.abs(((this.props.value - Math.trunc(this.props.value)) * 10 ** this.props.decimalPlaces)).toFixed(0) + "").slice(0, this.props.decimalPlaces);
+const NumberDisplay = (props) => {
+    let wholePart = Math.floor(props.value).toFixed(0).padStart((props.upperBound + "").length, "⠀").replace("-", "–");
+    let decimalPart = (Math.abs(((props.value - Math.trunc(props.value)) * 10 ** props.decimalPlaces)).toFixed(0) + "").slice(0, props.decimalPlaces);
 
 
-        return (
-            <div className="displayContainer" style={{width: `${this.props.width}px`, height: `${this.props.height}px`}}>
+    return (
+        <div className="displayContainer" style={{width: `${props.width}px`, height: `${props.height}px`}}>
 
-                <div className="value">
-                    <h1>
-                        {wholePart}
-                    </h1>
-                    <span>
-                        {decimalPart}
-                        {this.props.suffix + " "}
+            <div className="value">
+                <h1>
+                    {wholePart}
+                </h1>
+                <span>
+                    .{decimalPart}
+                    {props.suffix + " "}
                     </span>
-                </div>
-                <div className="label">
-                    {this.props.legend}
-                    <i>
-                        {", " + this.props.unit}
-                    </i>
-                </div>
             </div>
-        );
-    }
+            <div className="label">
+                {props.legend}
+                <i>
+                    {", " + props.unit}
+                </i>
+            </div>
+        </div>
+    );
 }
 
 export default NumberDisplay;

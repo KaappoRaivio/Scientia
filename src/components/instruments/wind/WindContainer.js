@@ -1,5 +1,5 @@
 import React from "react";
-import Wind from "./wind";
+import Wind from "./Wind";
 
 class WindContainer extends React.Component {
     constructor(props) {
@@ -61,6 +61,7 @@ class WindContainer extends React.Component {
             closeHaulAngle={this.state.closeHaulAngle}
             colors={this.props.colors} darkMode={this.props.darkMode}
             divisions={this.divisions}
+            animate={this.props.animate}
         />
     }
 }

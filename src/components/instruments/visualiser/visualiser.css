@@ -11,6 +11,7 @@
 div.parent {
     width: 100%;
     text-align: center;
+    /*stroke: red;*/
     /*clear: both;*/
     /*border: 10px solid orange;*/
 }

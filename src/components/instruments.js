@@ -1,13 +1,13 @@
 import  React from "react";
 
-import Compass from "./compass"
-import Wind from "./wind"
-import TridataContainer from "./tridataContainer";
-import Visualiser from "./visualiser"
+import CompassWrapper from "./instruments/compass/CompassWrapper"
+import Wind from "./instruments/wind/Wind"
+import TridataContainer from "./instruments/tridata/TridataContainer";
+import Visualiser from "./instruments/visualiser/Visualiser"
 
 import "./instruments.css"
 import InstrumentContainer from "./instrumentcontainer";
-import WindContainer from "./WindContainer";
+import WindContainer from "./instruments/wind/WindContainer";
 
 // const server_root = "ws://192.168.1.115:3000";
 
@@ -106,23 +106,25 @@ class Instruments extends React.Component {
 
         const instruments = [
             [TridataContainer, {}],
-            [Compass, {}],
+            [CompassWrapper, {}],
             [WindContainer, {}],
-            [Visualiser, {path: /environment.depth.belowTransducer/, ranges: [5, 10, 20, 40, 100], numberOfPointsToShow: 100, negate: true, upperBound: 100, lowerBound: 0, legend: "Syvyys", unit: "m", trendlinePeriod: 4, trendline: true}],
+            [Visualiser, {path: /^environment.depth.belowTransducer$/, ranges: [5, 10, 20, 40, 100], numberOfPointsToShow: 100, negate: true, upperBound: 100, lowerBound: 0, legend: "Syvyys", unit: "m", trendlinePeriod: 4, trendline: true}],
             [Visualiser, {path: /^navigation.speedThroughWater$/, ranges: [8, 12], numberOfPointsToShow: 100, negate: false, upperBound: 12, lowerBound: 0, legend: "Nopeus", unit: "kts", convert: x => x * 3.6 / 1.852, trendlinePeriod: 10, trendline: true}],
             [Visualiser, {path: /^navigation.courseOverGroundTrue$/, ranges: [360], numberOfPointsToShow: 100, negate: false, upperBound: 360, lowerBound: 0, legend: "Suunta", unit: "°", convert: x => x / Math.PI * 180, trendlinePeriod: 10, trendline: true}],
-            [Visualiser, {path: /^environment.wind.speedTrue$/, ranges: [10, 20, 50], numberOfPointsToShow: 100, negate: false, upperBound: 50, lowerBound: 0, legend: "Tuulen nopeus", unit: "kts", convert: x => x * 3.6 / 1.852, trendlinePeriod: 10, trendline: true}],
+            [Visualiser, {path: /^environment.wind.speedTrue$/, ranges: [10, 20, 50], numberOfPointsToShow: 100, negate: false, upperBound: 50, lowerBound: 0, legend: "Tuulen nopeus", unit: "kts", convert: x => x * 3.6 / 1.852, trendlinePeriod: 20, trendline: true}],
             [Visualiser, {path: /electrical.batteries.1.voltage/, ranges: [15], numberOfPointsToShow: 100, negate: false, upperBound: 15, lowerBound: 0, legend: "Jännite", unit: "V", convert: x => x, trendlinePeriod: 10, trendline: true}],
-
+            //
         ];
 
         // console.log("rerendering!")
         console.log(this.props.darkMode)
 
+
+
         return (
             <div key={"fixed"} className="flexbox-container">
                 {instruments.map(instrument =>
-                    <InstrumentContainer key={instrument.id} darkMode={this.props.darkMode} colors={this.props.colors} children={instrument[0]} callback={setCallback} additionalProps={instrument[1]} resizeDebounce={250} />
+                    <InstrumentContainer animate={true} key={instrument.id} darkMode={this.props.darkMode} colors={this.props.colors} children={instrument[0]} callback={setCallback} additionalProps={instrument[1]} resizeDebounce={250} />
                 )}
             </div>
         );

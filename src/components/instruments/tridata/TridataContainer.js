@@ -1,6 +1,6 @@
 import React from 'react';
 
-import NumberDisplay from "./numberdisplay"
+import NumberDisplay from "../../numberdisplay"
 import "./tridata.css"
 import Tridata from "./Tridata";
 

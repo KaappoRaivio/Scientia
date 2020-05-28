@@ -1,4 +1,8 @@
-.wind-speed-display {
+.wind {
+    background-color: inherit;
+}
+
+.wind-speed-display-wrapper {
     width: 50%;
     height: 25%;
     position: absolute;
@@ -8,3 +12,6 @@
     z-index: 1;
 }
 
+.wind-speed-display {
+    /*background-color: inherit;*/
+}

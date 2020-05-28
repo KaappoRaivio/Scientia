@@ -97,11 +97,11 @@ class  Visualiser extends React.Component {
 
         return (
             <div className="parent with-shadow" style={{ color: colors.primary, backgroundColor: colors.background}}>
-                    <div className="legend" style={{height: this.props.height * 0.1}}>
-                        {this.props.legend}, {this.props.unit}
-                    </div>
-                    <XYPlot className="plot"
-                        animation={false}
+                <div className="legend" style={{height: this.props.height * 0.1}}>
+                    {this.props.legend}, {this.props.unit}
+                </div>
+                <XYPlot className="plot"
+                        animation={this.props.animate}
                         width={this.props.width}
                         height={this.props.height * 0.9 * 0.94}
                         xDomain={[this.state.counter - this.props.numberOfPointsToShow, this.state.counter]}

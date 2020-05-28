@@ -5,6 +5,7 @@
     float: left;
     display: inline;
     padding: 3%;
+    background-color: inherit;
 }
 
 .label {

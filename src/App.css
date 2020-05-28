@@ -12,4 +12,8 @@ html, body {
   position: relative;
   text-align: left;
   overflow-x: hidden;
+
+  transform: translateZ(0); /* To prevent repaint on scroll */
+
+  background-color: black;
 }

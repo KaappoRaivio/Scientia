@@ -1,0 +1,10 @@
+.logo-wrapper {
+    text-align: center;
+    filter: grayscale(100%) opacity(25%)
+}
+
+
+.logo {
+    margin-top: 10px;
+
+}

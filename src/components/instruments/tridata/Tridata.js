@@ -1,4 +1,4 @@
-import NumberDisplay from "./numberdisplay";
+import NumberDisplay from "../../numberdisplay";
 import React from "react";
 
 const Tridata = (props) => {
