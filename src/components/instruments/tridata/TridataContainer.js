@@ -37,19 +37,19 @@ class TridataContainer extends React.Component {
         const values = [
             {
                 value: this.state["environment.depth.belowTransducer"],
-                suffix: "", unit: "metriä", legend: "Syvyys",
+                suffix: "", unit: "meters", legend: "Depth",
                 upperBound: 99, decimalPlaces: 1,
                 conversion: 1
             },
             {
                 value: this.state["navigation.speedThroughWater"],
-                suffix: "", unit: "solmua", legend: "Nopeus",
+                suffix: "", unit: "knots", legend: "Speed",
                 upperBound: 99, decimalPlaces: 1,
                 conversion: 3.6 / 1.852
             },
             {
                 value: this.state["performance.velocityMadeGood"],
-                suffix: "", unit: "solmua", legend: "VMG",
+                suffix: "", unit: "knots", legend: "VMG",
                 upperBound: 990, decimalPlaces: 1,
                 conversion: 3.6 / 1.852
             },

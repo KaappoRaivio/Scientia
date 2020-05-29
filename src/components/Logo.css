@@ -1,10 +1,21 @@
 .logo-wrapper {
     text-align: center;
-    filter: grayscale(100%) opacity(25%)
+    filter: grayscale(100%) opacity(25%);
+    font-size: 100%;
 }
 
 
 .logo {
     margin-top: 10px;
+    margin-bottom: -15px;
+}
 
+.name {
+    font-size: 2.5em;
+}
+
+.author {
+    position: relative;
+    font-size: 1em;
+    top: -5px;
 }

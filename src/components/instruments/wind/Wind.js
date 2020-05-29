@@ -40,7 +40,7 @@ const Wind = (props) => {
                     upperBound={99}
                     decimalPlaces={1}
                     fontSize={props.width / 6}
-                    legend={`Tuulen nopeus (${props.speedQuality})`}
+                    legend={`Wind speed (${props.speedQuality})`}
                 />
             </div>
 

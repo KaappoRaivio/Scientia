@@ -69,6 +69,8 @@ class App extends React.Component {
             backgroundColor: colors.background
         }
 
+        console.log(window.innerWidth)
+
         return (
             <div className="instruments" style={parentStyle}>
                 <MySidebar sidebarOpen={this.state.sidebarOpen} initialAddress={this.state.serverAddress} initialDarkMode={this.state.darkMode} onSetSidebarOpen={onSetSidebarOpen} onSettingsChange={onSettingsChange} colors={colors}/>
@@ -79,7 +81,7 @@ class App extends React.Component {
                         configure
                     </button>
                 </div>
-                <Logo/>
+                <Logo />
 
             </div>
         );

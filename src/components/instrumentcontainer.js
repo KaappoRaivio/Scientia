@@ -54,7 +54,6 @@ class InstrumentContainer extends React.Component {
     }
 
     render() {
-        console.log(this.props.darkMode)
         const props = {
             width: this.state.width,
             height: this.state.height,
