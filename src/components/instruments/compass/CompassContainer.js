@@ -6,7 +6,7 @@ import Svghelpers from "../../misc/svghelpers";
 import {mod} from "mathjs";
 import Compass from "./Compass";
 
-class CompassWrapper extends React.Component {
+class CompassContainer extends React.Component {
     constructor(props) {
         super(props);
 
@@ -43,4 +43,4 @@ class CompassWrapper extends React.Component {
 
 }
 
-export default CompassWrapper
+export default CompassContainer

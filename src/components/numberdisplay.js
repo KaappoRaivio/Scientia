@@ -3,7 +3,7 @@ import "./numberdisplay.css";
 
 
 const NumberDisplay = (props) => {
-    let wholePart = Math.floor(props.value).toFixed(0).padStart((props.upperBound + "").length, "⠀").replace("-", "–");
+    let wholePart = Math.floor(props.value).toFixed(0).padStart((props.upperBound + "").length, /*"⠀"*/ "_").replace("-", "–");
     let decimalPart = (Math.abs(((props.value - Math.trunc(props.value)) * 10 ** props.decimalPlaces)).toFixed(0) + "").slice(0, props.decimalPlaces);
 
 

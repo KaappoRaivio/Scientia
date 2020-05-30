@@ -1,6 +1,6 @@
 import  React from "react";
 
-import CompassWrapper from "./instruments/compass/CompassWrapper"
+import CompassContainer from "./instruments/compass/CompassContainer"
 import Wind from "./instruments/wind/Wind"
 import TridataContainer from "./instruments/tridata/TridataContainer";
 import Visualiser from "./instruments/visualiser/Visualiser"
@@ -106,7 +106,7 @@ class Instruments extends React.Component {
 
         const instruments = [
             [TridataContainer, {}],
-            [CompassWrapper, {}],
+            [CompassContainer, {}],
             [WindContainer, {}],
             // [Visualiser, {path: /^environment.depth.belowTransducer$/, ranges: [5, 10, 20, 40, 100], numberOfPointsToShow: 100, negate: true, upperBound: 100, lowerBound: 0, legend: "Syvyys", unit: "m", trendlinePeriod: 4, trendline: true}],
             // [Visualiser, {path: /^navigation.speedThroughWater$/, ranges: [8, 12], numberOfPointsToShow: 100, negate: false, upperBound: 12, lowerBound: 0, legend: "Nopeus", unit: "kts", convert: x => x * 3.6 / 1.852, trendlinePeriod: 10, trendline: true}],
