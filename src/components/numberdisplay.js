@@ -2,27 +2,27 @@ import React from 'react';
 import "./numberdisplay.css";
 
 
-const NumberDisplay = (props) => {
-    let wholePart = Math.floor(props.value).toFixed(0).padStart((props.upperBound + "").length, /*"⠀"*/ "_").replace("-", "–");
-    let decimalPart = (Math.abs(((props.value - Math.trunc(props.value)) * 10 ** props.decimalPlaces)).toFixed(0) + "").slice(0, props.decimalPlaces);
+const NumberDisplay = ({decimalPlaces, height, legend, suffix, unit, upperBound, value, width}) => {
+    let wholePart = Math.floor(value).toFixed(0).padStart((upperBound + "").length, " ").replace("-", "–");
+    let decimalPart = (Math.abs(((value - Math.trunc(value)) * 10 ** decimalPlaces)).toFixed(0) + "").slice(0, decimalPlaces);
 
 
     return (
-        <div className="displayContainer" style={{width: `${props.width}px`, height: `${props.height}px`}}>
+        <div className="displayContainer" style={{width: `${width}px`, height: `${height}px`}}>
 
             <div className="value">
                 <h1>
-                    {wholePart}
+                    {"​" + wholePart}
                 </h1>
                 <span>
                     .{decimalPart}
-                    {props.suffix + " "}
+                    {suffix + " "}
                     </span>
             </div>
             <div className="label">
-                {props.legend}
+                {legend}
                 <i>
-                    {", " + props.unit}
+                    {", " + unit}
                 </i>
             </div>
         </div>
