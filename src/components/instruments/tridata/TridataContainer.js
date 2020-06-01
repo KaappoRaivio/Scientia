@@ -17,7 +17,6 @@ class TridataContainer extends React.Component {
         this.onMessage = (message) => {
             let path = message.values[0].path;
 
-            // console.log(path, message.values[0].value)
             // console.log(this.state)
 
             if (path in this.state) {

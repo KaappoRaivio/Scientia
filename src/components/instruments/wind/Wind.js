@@ -57,8 +57,8 @@ const Wind = (props) => {
                 />
 
 
-                {helper.getSector(center.x, center.y, radius, -props.closeHaulAngle, colors.closeHaulRight)}
-                {helper.getSector(center.x, center.y, radius, props.closeHaulAngle, colors.closeHaulLeft)}
+                {helper.getSector(center.x, center.y, radius, 0.025 * props.width, -props.closeHaulAngle, 0, colors.closeHaulRight)}
+                {helper.getSector(center.x, center.y, radius, 0.025 * props.width, props.closeHaulAngle, 0, colors.closeHaulLeft)}
 
                 <g fill={props.colors.primary} strokeWidth={radius * 0.01}>
                     {props.divisions.map((division) =>

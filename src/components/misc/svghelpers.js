@@ -57,10 +57,10 @@ class Svghelpers {
         return `M${x} ${y} ${cx1} ${cy1} A${cr} ${cr} 0 0 ${otherWay} ${cx2} ${cy2}Z`;
     }
 
-    getSector (centerX, centerY, radius, angle, fillColor) {
+    getSector (centerX, centerY, radius, width, startAngle, endAngle, fillColor) {
         return <g>
-            <path d={this.getSectorPath(centerX, centerY, radius, 90 + angle, 90)} fill={fillColor}/>
-            <path d={this.getSectorPath(centerX, centerY, centerX * 0.9, 90 + angle, 90)}  fillOpacity={1} />
+            <path d={this.getSectorPath(centerX, centerY, radius              , 90 + startAngle, 90 + endAngle)} fill={fillColor}/>
+            <path d={this.getSectorPath(centerX, centerY, radius - width, 90 + startAngle, 90 + endAngle)} fillOpacity={1} />
         </g>
     }
 }

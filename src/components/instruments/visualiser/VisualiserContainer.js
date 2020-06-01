@@ -91,6 +91,7 @@ class  VisualiserContainer extends React.Component {
 
             width={this.props.width}
             height={this.props.height}
+            fontSize={this.props.fontSize}
 
             data={this.state.data}
             trendData={this.state.trendData}
