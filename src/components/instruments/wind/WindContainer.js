@@ -15,8 +15,6 @@ class WindContainer extends React.Component {
             speedApparent: null,
         }
 
-        this.subscribe()
-
         this.divisions = [
             {
                 numberOfDivisions: 12,
@@ -26,6 +24,10 @@ class WindContainer extends React.Component {
             {numberOfDivisions: 36, lineLength: 0.5, textProvider: i => ""},
             {numberOfDivisions: 144, lineLength: 0.25, textProvider: i => ""},
         ]
+    }
+
+    componentDidMount() {
+        this.subscribe()
     }
 
     subscribe() {

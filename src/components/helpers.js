@@ -1,6 +1,3 @@
-import { mod } from "mathjs";
-
-
 class DrawHelper {
     constructor (canvas, ctx) {
         this.canvas = canvas;

@@ -1,15 +1,13 @@
 import  React from "react";
 
 import CompassContainer from "./instruments/compass/CompassContainer"
-import Wind from "./instruments/wind/Wind"
 import TridataContainer from "./instruments/tridata/TridataContainer";
-import VisualiserContainer from "./instruments/visualiser/VisualiserContainer"
 
 import "./instruments.css"
 import InstrumentContainer from "./instrumentcontainer";
 import WindContainer from "./instruments/wind/WindContainer";
-import Gauge from "./instruments/gauge/Gauge";
 import GaugeContainer from "./instruments/gauge/GaugeContainer";
+import VisualiserContainer from "./instruments/visualiser/VisualiserContainer";
 
 // const server_root = "ws://192.168.1.115:3000";
 
@@ -34,7 +32,7 @@ class Instruments extends React.Component {
         const preparePath = (name) => {
             return {
                 "path": name,
-                "period": 500,
+                "period": 2000,
                 "format": "delta",
                 "policy": "fixed",
                 // "minPeriod": 500
@@ -56,19 +54,16 @@ class Instruments extends React.Component {
             }))
         };
 
+
         this.ws.onmessage = (event) => {
             const message = JSON.parse(event.data);
             // console.log(message)
 
             for (const subscriber of this.subscribers) {
                 try {
-
                     message.updates.forEach(update => {
-                        // console.log(update)
                         update.values.forEach(value => {
                             subscriber.paths.forEach(subscriberPath => {
-                                // let re = new RegExp(subscriberPath);
-                                // console.log(value.path, re)
                                 if (subscriberPath.test(value.path)) {
                                     subscriber.callback(update);
                                 }
@@ -77,18 +72,18 @@ class Instruments extends React.Component {
                     });
 
                 } catch (err) {
-                    console.error(err, message)
+                    console.debug("Instruments.js onMessage error: ", err, message)
                 }
             }
         };
     }
 
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    componentDidUpdate() {
         this.resetWebsocket();
         this.componentDidMount();
     }
 
-    getSnapshotBeforeUpdate(prevProps, prevState) {
+    getSnapshotBeforeUpdate(prevProps) {
         if (this.ws.readyState) {
             this.ws.send(JSON.stringify({
                 "context": "*",
@@ -110,25 +105,25 @@ class Instruments extends React.Component {
             [TridataContainer, {}],
             [CompassContainer, {}],
             [GaugeContainer, {}],
+            [GaugeContainer, {}],
             [WindContainer, {}],
-            // [VisualiserContainer, {path: /^environment.depth.belowTransducer$/, ranges: [5, 10, 20, 40, 100], numberOfPointsToShow: 100, negate: true, upperBound: 100, lowerBound: 0, legend: "Syvyys", unit: "m", trendlinePeriod: 4, trendline: true}],
-            // [VisualiserContainer, {path: /^navigation.speedThroughWater$/, ranges: [8, 12], numberOfPointsToShow: 100, negate: false, upperBound: 12, lowerBound: 0, legend: "Nopeus", unit: "kts", convert: x => x * 3.6 / 1.852, trendlinePeriod: 10, trendline: true}],
-            // [VisualiserContainer, {path: /^navigation.courseOverGroundTrue$/, ranges: [360], numberOfPointsToShow: 100, negate: false, upperBound: 360, lowerBound: 0, legend: "Suunta", unit: "°", convert: x => x / Math.PI * 180, trendlinePeriod: 10, trendline: true}],
-            // [VisualiserContainer, {path: /^environment.wind.speedTrue$/, ranges: [10, 20, 50], numberOfPointsToShow: 200, negate: false, upperBound: 50, lowerBound: 0, legend: "Wind speed", unit: "kts", convert: x => x * 3.6 / 1.852, trendlinePeriod: 20, trendline: true}],
-            // [VisualiserContainer, {path: /^environment.wind.speedTrue$/, ranges: [10, 20, 50], numberOfPointsToShow: 20, negate: false, upperBound: 50, lowerBound: 0, legend: "Wind speed", unit: "kts", convert: x => x * 3.6 / 1.852, trendlinePeriod: 6, trendline: true}],
+            [VisualiserContainer, {path: /^environment.depth.belowTransducer$/, ranges: [5, 10, 20, 40, 100], numberOfPointsToShow: 100, negate: true, upperBound: 100, lowerBound: 0, legend: "Syvyys", unit: "m", trendlinePeriod: 4, trendline: true}],
+            [VisualiserContainer, {path: /^navigation.speedThroughWater$/, ranges: [8, 12], numberOfPointsToShow: 100, negate: false, upperBound: 12, lowerBound: 0, legend: "Nopeus", unit: "kts", convert: x => x * 3.6 / 1.852, trendlinePeriod: 10, trendline: true}],
+            [VisualiserContainer, {path: /^navigation.courseOverGroundTrue$/, ranges: [360], numberOfPointsToShow: 100, negate: false, upperBound: 360, lowerBound: 0, legend: "Suunta", unit: "°", convert: x => x / Math.PI * 180, trendlinePeriod: 10, trendline: true}],
+            [VisualiserContainer, {path: /^environment.wind.speedTrue$/, ranges: [10, 20, 50], numberOfPointsToShow: 200, negate: false, upperBound: 50, lowerBound: 0, legend: "Wind speed", unit: "kts", convert: x => x * 3.6 / 1.852, trendlinePeriod: 20, trendline: true}],
+            [VisualiserContainer, {path: /^environment.wind.speedTrue$/, ranges: [10, 20, 50], numberOfPointsToShow: 20, negate: false, upperBound: 50, lowerBound: 0, legend: "Wind speed", unit: "kts", convert: x => x * 3.6 / 1.852, trendlinePeriod: 6, trendline: true}],
             // [VisualiserContainer, {path: /electrical.batteries.1.voltage/, ranges: [15], numberOfPointsToShow: 100, negate: false, upperBound: 15, lowerBound: 0, legend: "Jännite", unit: "V", convert: x => x, trendlinePeriod: 10, trendline: true}],
             //
         ];
 
         // console.log("rerendering!")
-        console.log(this.props.darkMode)
 
 
 
         return (
             <div key={"fixed"} className="flexbox-container">
-                {instruments.map(instrument =>
-                    <InstrumentContainer animate={true} key={instrument.id} darkMode={this.props.darkMode} colors={this.props.colors} children={instrument[0]} callback={setCallback} additionalProps={instrument[1]} resizeDebounce={250} />
+                {instruments.map((instrument, index) =>
+                    <InstrumentContainer animate={this.props.animation} key={index} darkMode={this.props.darkMode} colors={this.props.colors} children={instrument[0]} callback={setCallback} additionalProps={instrument[1]} resizeDebounce={250} />
                 )}
             </div>
         );

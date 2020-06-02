@@ -1,6 +1,5 @@
 import React from 'react';
 
-import NumberDisplay from "../../numberdisplay"
 import "./tridata.css"
 import Tridata from "./Tridata";
 
@@ -13,11 +12,11 @@ class TridataContainer extends React.Component {
             "navigation.speedThroughWater": "--",
             "performance.velocityMadeGood": "--"
         };
+    }
 
-        this.onMessage = (message) => {
+    componentDidMount() {
+        const onMessage = (message) => {
             let path = message.values[0].path;
-
-            // console.log(this.state)
 
             if (path in this.state) {
                 this.setState({
@@ -28,7 +27,7 @@ class TridataContainer extends React.Component {
 
         };
 
-        this.props.subscribe([/depth.belowTransducer/, /navigation.speedThroughWater/, /performance.velocityMadeGood/], this.onMessage)
+        this.props.subscribe([/depth.belowTransducer/, /navigation.speedThroughWater/, /performance.velocityMadeGood/], onMessage)
     }
 
     render () {

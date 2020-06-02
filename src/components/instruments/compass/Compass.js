@@ -56,13 +56,17 @@ const Compass = (props) => {
                 strokeWidth={2}
             />
             <g fill={colors.primary} stroke={colors.primary}>
-                {divisions.map((division) => {
-                    return new Svghelpers()
-                        .drawDivision(center.x, center.y,
-                            radius, -division[1] * props.width * 0.1,
-                            division[0], radius * 0.15,
-                            i => 2 * Math.PI / division[0] * i, division[2],
-                            true)
+                {divisions.map((division, index) => {
+                    return <g key={index}>
+                        {
+                            new Svghelpers()
+                            .drawDivision(center.x, center.y,
+                                radius, -division[1] * props.width * 0.1,
+                                division[0], radius * 0.15,
+                                i => 2 * Math.PI / division[0] * i, division[2],
+                                true)
+                        }
+                    </g>
                 })
                 }
             </g>

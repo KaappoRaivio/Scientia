@@ -5,7 +5,6 @@ import './App.css';
 
 import Instruments from "./components/instruments"
 import MySidebar from "./components/mySidebar";
-import Switch from "react-switch";
 import Logo from "./components/Logo";
 
 
@@ -22,9 +21,8 @@ class App extends React.Component {
             serverAddress: ws,
 
             darkMode: false,
+            animation: true
         };
-
-        console.log(window.location.href)
     }
 
     getColors () {
@@ -58,7 +56,8 @@ class App extends React.Component {
             console.log(newSettings)
             this.setState({
                 serverAddress: newSettings.address,
-                darkMode: newSettings.darkMode
+                darkMode: newSettings.darkMode,
+                animation: newSettings.animation
             })
         }
 
@@ -69,12 +68,10 @@ class App extends React.Component {
             backgroundColor: colors.background
         }
 
-        console.log(window.innerWidth)
-
         return (
             <div className="instruments" style={parentStyle}>
-                <MySidebar sidebarOpen={this.state.sidebarOpen} initialAddress={this.state.serverAddress} initialDarkMode={this.state.darkMode} onSetSidebarOpen={onSetSidebarOpen} onSettingsChange={onSettingsChange} colors={colors}/>
-                <Instruments server={this.state.serverAddress} darkMode={this.state.darkMode} colors={colors}/>
+                <MySidebar sidebarOpen={this.state.sidebarOpen} initialAddress={this.state.serverAddress} initialDarkMode={this.state.darkMode} initialAnimation={this.state.animation} onSetSidebarOpen={onSetSidebarOpen} onSettingsChange={onSettingsChange} colors={colors}/>
+                <Instruments server={this.state.serverAddress} darkMode={this.state.darkMode} colors={colors} animation={this.state.animation}/>
                 <div className="open-menu with-shadow">
                     <button className="open-menu-wrapper"
                         onClick={() => this.setState({sidebarOpen: true})}>

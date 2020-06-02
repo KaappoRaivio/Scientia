@@ -14,8 +14,9 @@ const Tridata = (props) => {
     };
 
     return <div style={parentStyle}>
-        {props.values.map(value => {
+        {props.values.map((value, index) => {
             return <NumberDisplay
+                key={index}
                 value={value.value * value.conversion}
 
                 suffix={value.suffix}

@@ -3,11 +3,9 @@ import React from "react";
 import Svghelpers from "../../misc/svghelpers";
 import {mod} from "mathjs";
 import Needle from "../wind/Needle";
-import NumberDisplay from "../../numberdisplay";
 
 import "./gauge.css"
 import NumberDisplayValue from "../../NumberDisplayValue";
-import NumberDisplayLabel from "../../NumberDisplayLabel";
 
 const Gauge = (props) => {
     const center = {x: props.width / 2, y: props.height / 2};
@@ -36,11 +34,9 @@ const Gauge = (props) => {
     const divisions = props.divisions;
 
     const helper = new Svghelpers(false);
-    console.log(colors.accent1)
-
 
     return <div className="gauge-parent" style={{width: props.width, height: props.height}}>
-        <Needle angle={needleAngle} radius={radiusPercent} color={colors.accent1} animate={true} demo={false}/>
+        <Needle angle={needleAngle} radius={radiusPercent} color={colors.accent1} animate={props.animate} demo={false}/>
         <div className="gauge-number-display-value">
             <NumberDisplayValue
                 value={props.value}
@@ -72,8 +68,9 @@ const Gauge = (props) => {
             />
 
             <g stroke={"black"} strokeWidth={radius * 0.01}>
-                {divisions.map((division) =>
-                    helper
+                {divisions.map((division, index) =>
+                    <g key={index}>
+                        {helper
                         .drawDivision(center.x, center.y,
                             radius,
                             -division.lineLength * props.width * 0.1,
@@ -81,7 +78,9 @@ const Gauge = (props) => {
                             radius * 0.15,
                             i => 2 * Math.PI / division.numberOfDivisions * i,
                             division.textProvider,
-                            false))
+                            false)}
+                    </g>
+                )
                 }
             </g>
             <g strokeWidth={0}>

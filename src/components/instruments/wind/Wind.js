@@ -56,17 +56,20 @@ const Wind = (props) => {
                 {helper.getSector(center.x, center.y, radius, 0.025 * props.width, props.closeHaulAngle, 0, colors.closeHaulLeft)}
 
                 <g fill={props.colors.primary} strokeWidth={radius * 0.01}>
-                    {props.divisions.map((division) =>
-                            helper
-                                .drawDivision(center.x, center.y,
-                                    radius,
-                                    -division.lineLength * props.width * 0.1,
-                                    division.numberOfDivisions,
-                                    radius * 0.15,
-                                    i => 2 * Math.PI / division.numberOfDivisions * i,
-                                    division.textProvider,
-                                    false))
-                    }
+                    {props.divisions.map((division, index) =>
+                        <g key={index}>
+                            {helper
+                                    .drawDivision(center.x, center.y,
+                                        radius,
+                                        -division.lineLength * props.width * 0.1,
+                                        division.numberOfDivisions,
+                                        radius * 0.15,
+                                        i => 2 * Math.PI / division.numberOfDivisions * i,
+                                        division.textProvider,
+                                        false)
+                            }
+                        </g>
+                    )}
                 </g>
             </svg>
         </div>

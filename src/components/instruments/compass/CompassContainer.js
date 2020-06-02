@@ -1,9 +1,5 @@
 import React from 'react';
 
-import NumberDisplay from "../../numberdisplay.js"
-import Svghelpers from "../../misc/svghelpers";
-
-import {mod} from "mathjs";
 import Compass from "./Compass";
 
 class CompassContainer extends React.Component {

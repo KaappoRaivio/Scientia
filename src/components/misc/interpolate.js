@@ -1,4 +1,3 @@
-import Bezier from "bezier";
 import { mod } from "mathjs";
 
 

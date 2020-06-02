@@ -12,6 +12,9 @@ class InstrumentContainer extends React.Component {
             height: 100
         };
 
+        this.probeCanvas = React.createRef();
+        this.child = React.createRef();
+
     }
 
     debounce (func, wait, immediate) {
@@ -41,13 +44,13 @@ class InstrumentContainer extends React.Component {
 
     componentDidMount() {
 
-        this.test = this.refs.test;
-        this.fitToContainer(this.test);
+        this.fitToContainer(this.probeCanvas.current);
 
         window.addEventListener("resize", this.debounce(() => {
-            this.fitToContainer(this.test);
+            this.fitToContainer(this.probeCanvas.current);
             try {
-                this.refs.child.onResize();
+                this.child.current.onResize();
+                console.log("succ")
             } catch (err) {}
         }, this.props.resizeDebounce));
 
@@ -58,7 +61,7 @@ class InstrumentContainer extends React.Component {
             width: this.state.width,
             height: this.state.height,
             subscribe: this.props.callback,
-            ref: "child",
+            ref: this.child,
             animate: this.props.animate,
             darkMode: this.props.darkMode,
             colors: this.props.colors,
@@ -81,7 +84,7 @@ class InstrumentContainer extends React.Component {
                             props,
                             [])
                     }
-                    <canvas key={this.props.children.id} className="probe" ref="test" width={this.state.width} height={this.state.height}/>
+                    <canvas className="probe" ref={this.probeCanvas} width={this.state.width} height={this.state.height}/>
                 </div>
             </div>
         )

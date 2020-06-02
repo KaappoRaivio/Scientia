@@ -5,7 +5,6 @@ import LogoAsset from "../assets/favicon.svg";
 import "./Logo.css"
 
 const Logo = (props) => {
-    console.log(window.innerWidth)
     return <div className="logo-wrapper">
         <div className="logo">
             <img src={LogoAsset} width="200px" alt="Logo"/>

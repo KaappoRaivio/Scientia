@@ -1,4 +1,4 @@
-import {AreaSeries, HorizontalGridLines, LineSeries, VerticalGridLines, XAxis, XYPlot, YAxis} from "react-vis";
+import {AreaSeries, HorizontalGridLines, LineSeries, XAxis, XYPlot, YAxis} from "react-vis";
 import React from "react";
 // import ChartistGraph from "react-chartist";
 
@@ -47,9 +47,9 @@ const Visualiser = (props) => {
     let xDomain = [latestX - props.numberOfPointsToShow, latestX];
 
     truncate(props.data, props.numberOfPointsToShow);
-    console.log(props.data, props.trendData)
+    truncate(props.trendData, props.numberOfPointsToShow);
 
-
+    console.log(props.fontSize)
     return (
         <div className="parent with-shadow" style={{ color: primary, backgroundColor: background}}>
             {/*<ChartistGraph type="Line" data={simpleLineChartData}  options={options}/>*/}
@@ -91,7 +91,7 @@ const Visualiser = (props) => {
                 />
                 <YAxis
                     yDomain={yDomain}
-                    style={{...lineStyle, fontSize: props.fontSize * 2}}
+                    style={{stroke: "none", fill: primary, fontSize: `70%`}}
                 />
             </XYPlot>
         </div>

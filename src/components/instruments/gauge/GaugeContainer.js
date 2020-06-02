@@ -1,6 +1,5 @@
 import React from "react";
 import Gauge from "./Gauge";
-import {mod} from "mathjs";
 
 class GaugeContainer extends React.Component {
     constructor(props) {
@@ -43,6 +42,7 @@ class GaugeContainer extends React.Component {
             divisions={divisions}
             upperBound={10}
             value={this.state.value}
+            animate={this.props.animate}
         />
     }
 }

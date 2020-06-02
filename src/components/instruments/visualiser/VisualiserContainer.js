@@ -21,6 +21,8 @@ class  VisualiserContainer extends React.Component {
         } else {
             this.converter = x => x;
         }
+
+        this.firstTime = true;
     }
 
     subscribe () {
@@ -36,12 +38,19 @@ class  VisualiserContainer extends React.Component {
         this.subscribe();
     }
 
+    getTimeStamp = () => new Date().getTime() / 1000
+
     addData (dataPoint) {
+
+        if (this.firstTime) {
+            this.startTime = this.getTimeStamp();
+            this.firstTime = false;
+        }
         let trend = this.computeTrendDataPoint(this.state.data)
 
         this.setState(({data, trendData}) => {
             return {
-                data: this.concatData(data, {x: this.getLatestX(), y: this.converter(dataPoint)}),
+                data: this.concatData(data, {x: this.getTimeStamp() - this.startTime, y: this.converter(dataPoint)}),
 
                 trendData: this.concatData(trendData, trend),
 
@@ -69,7 +78,7 @@ class  VisualiserContainer extends React.Component {
 
         let lastPoint = this.state.data[this.state.data.length - 1];
 
-        let x = lastPoint.x - Math.trunc(this.props.trendlinePeriod / 2) - 1;
+        let x = this.getTimeStamp() - this.startTime;
         let y = dataPoints.map(a => a.y).reduce ((a, b) => a + b) / dataPoints.length;
 
         if (x < 0) {
