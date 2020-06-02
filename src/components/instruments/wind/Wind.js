@@ -21,17 +21,13 @@ const Wind = (props) => {
     const parentStyle = {
         width: props.width,
         height: props.height,
-        backgroundColor: "inherit",
-        // background: "inherit",
-        fill: colors.background
-        ,
-        position: "relative",
+        fill: colors.background,
     };
 
     return (
         <div className="wind" style={parentStyle}>
             <div className="wind-speed-display-wrapper">
-                <NumberDisplay className="wind-speed-display"
+                <NumberDisplay
                     value={props.speed * 3.6 / 1.852}
                     suffix=""
                     unit="kts"
@@ -39,7 +35,6 @@ const Wind = (props) => {
                     height={props.height * 0.25}
                     upperBound={99}
                     decimalPlaces={1}
-                    fontSize={props.width / 6}
                     legend={`Wind speed (${props.speedQuality})`}
                 />
             </div>

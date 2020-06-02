@@ -17,8 +17,12 @@ const Needle = (props) => {
         };
     }
 
+    if (props.demo) {
+        style = {...style, animation: "needle 6s ease-in-out infinite"};
+    }
+
     return (
-        <div className="wrapper" style={{height: `${props.radius}%`}}>
+        <div className="wrapper" style={{height: `${props.radius}%`}} >
             <div className="needleTest" style={style}>
                 <div className="needle" style={{backgroundColor: props.color}}/>
             </div>

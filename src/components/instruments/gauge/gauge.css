@@ -1,0 +1,37 @@
+.gauge-parent {
+    position: relative;
+    /*text-align: center;*/
+}
+
+.gauge-number-display-value {
+    width: 60%;
+    height: 50%;
+    position: absolute;
+    top: 15% !important;
+    left: 20%;
+    background-color: inherit;
+    z-index: 1;
+    font-size: 155%;
+    line-height: 0;
+}
+
+.gauge-number-display-label {
+    position: absolute;
+
+    left: 10%;
+    bottom: 35%;
+    width: 80%;
+    text-align: center;
+    font-size: 100%;
+    line-height: 70%;
+}
+
+.gauge-number-display-unit {
+    font-style: italic;
+    text-align: right;
+    font-size: 70%;
+    position: absolute;
+    top: 25%;
+    width: 16%;
+    left: 60%;
+}

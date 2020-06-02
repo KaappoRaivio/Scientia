@@ -21,16 +21,20 @@
 .needle {
     background-color: #61dafb;
     width: 100%;
-    height: 100%;
-    top: 0%;
+    height: 40%;
+    top: 60%;
     position: relative;
 }
 
 @keyframes needle {
-    from {
-        transform: rotate(0deg);
+    0% {
+        transform: rotate(45deg);
     }
-    to {
-        transform: rotate(180deg);
+    50% {
+        transform: rotate(315deg);
+    }
+
+    100% {
+        transform: rotate(45deg);
     }
 }

@@ -16,6 +16,12 @@
     display: inline;
     top: 0;
     right: 0;
+
+    text-transform: capitalize;
+}
+
+i {
+    text-transform: none;
 }
 
 .value {
