@@ -1,11 +1,15 @@
-import React from "react";
+import React, {PureComponent} from "react";
 
-import Svghelpers from "../../misc/svghelpers";
+import { pure } from "recompose";
+
+import Svghelpers, {LineDivision, LineDivisions} from "../../misc/svghelpers";
 import {mod} from "mathjs";
 import Needle from "../wind/Needle";
 
 import "./gauge.css"
-import NumberDisplayValue from "../../NumberDisplayValue";
+import NumberDisplayValue from "../../numberdisplay/NumberDisplayValue";
+import * as PropTypes from "prop-types";
+import NumberDisplay from "../../numberdisplay/numberdisplay";
 
 const Gauge = (props) => {
     const center = {x: props.width / 2, y: props.height / 2};
@@ -23,74 +27,86 @@ const Gauge = (props) => {
 
     let { normal, alert, warn, alarm, emergency} = props.zones;
 
-    let normalAngle = normal.map(x => (start - end) * x);
-    let alertAngle = alert.map(x => (start - end) * x);
-    let warnAngle = warn.map(x => (start - end) * x);
-    let alarmAngle = alarm.map(x => (start - end) * x);
-    let emergencyAngle = emergency.map(x => (start - end) * x);
+    const converter = x => start -  (start - end) * x;
 
-    let sectorWidth = props.width * 0.075;
+    let normalAngle = normal.map(converter);
+    let alertAngle = alert.map(converter);
+    let warnAngle = warn.map(converter);
+    let alarmAngle = alarm.map(converter);
+    let emergencyAngle = emergency.map(converter);
 
+    let sectors = [
+        {startAngle: normalAngle[0], endAngle: normalAngle[1], fillColor: "lightgreen"},
+        {startAngle: alertAngle[0], endAngle: alertAngle[1], fillColor: "yellow"},
+        {startAngle: warnAngle[0], endAngle: warnAngle[1], fillColor: "orange"},
+        {startAngle: alarmAngle[0], endAngle: alarmAngle[1], fillColor: "red"},
+        {startAngle: emergencyAngle[0], endAngle: emergencyAngle[1], fillColor: "purple"},
+    ]
+
+    let sectorWidth = radius * 0.2;
     const divisions = props.divisions;
 
-    const helper = new Svghelpers(false);
+
+    function darkenIfNight() {
+        return <>
+            {props.darkMode
+                ? <rect x={0} y={0} width={props.width} height={props.height} fill={"rgba(0, 0, 0, 0.5)"}
+                        stroke={"none"}/>
+                : null
+            }
+        </>;
+    }
 
     return <div className="gauge-parent" style={{width: props.width, height: props.height}}>
-        <Needle angle={needleAngle} radius={radiusPercent} color={colors.accent1} animate={props.animate} demo={false}/>
         <div className="gauge-number-display-value">
-            <NumberDisplayValue
-                value={props.value}
-                decimalPlaces={1}
-                upperBound={props.upperBound}
-                suffix={""}
+            <NumberDisplay width={props.width * 0.7} height={props.height * 0.3}
+                           legend={props.label} suffix={props.suffix} upperBound={props.upperBound} decimalPlaces={props.decimalPlaces || 0}
+                           unit={props.unit}
+                           value={props.value}
+                           centerLabel={true}
             />
         </div>
-        <div className="gauge-number-display-unit">
-            kts
-        </div>
-        <div className="gauge-number-display-label" >
-            Wind speed
-        </div>
-        <svg width={props.width} height={props.height}>
-            <g stroke={"none"} fill={colors.background}>
-                {helper.getSector(center.x, center.y, radius, sectorWidth, start - normalAngle[0], start - normalAngle[1], "lightgreen")}
-                {helper.getSector(center.x, center.y, radius, sectorWidth, start - alertAngle[0], start - alertAngle[1], "yellow")}
-                {helper.getSector(center.x, center.y, radius, sectorWidth, start - warnAngle[0], start - warnAngle[1], "orange")}
-                {helper.getSector(center.x, center.y, radius, sectorWidth, start - alarmAngle[0], start - alarmAngle[1], "red")}
-                {helper.getSector(center.x, center.y, radius, sectorWidth, start - emergencyAngle[0], start - emergencyAngle[1], "purple")}
+
+        <svg className="gauge-gauge" width={props.width} height={props.height} xmlns="http://www.w3.org/2000/svg">
+            <g className="gauge-sectors">
+                <Sectors width={props.width} height={props.height} sectors={sectors} center={center} radius={radius}
+                         sectorWidth={sectorWidth} backgroundColor={colors.background}/>
             </g>
-            <circle stroke={colors.primary}
-                fill={"none"}
-                cx={center.x}
-                cy={center.y}
-                r={radius}
-                strokeWidth={radius * 0.01}
-            />
+            <circle stroke={"black"} fill={"none"} cx={center.x} cy={center.y} r={radius} strokeWidth={radius * 0.01}/>
 
             <g stroke={"black"} strokeWidth={radius * 0.01}>
-                {divisions.map((division, index) =>
-                    <g key={index}>
-                        {helper
-                        .drawDivision(center.x, center.y,
-                            radius,
-                            -division.lineLength * props.width * 0.1,
-                            division.numberOfDivisions,
-                            radius * 0.15,
-                            i => 2 * Math.PI / division.numberOfDivisions * i,
-                            division.textProvider,
-                            false)}
-                    </g>
-                )
-                }
+                <LineDivisions center={center} radius={radius} divisions={divisions}/>
             </g>
-            <g strokeWidth={0}>
-                {helper.getSector(center.x, center.y, radius + 2, radius, start, mod(end, 360), colors.background)}
-            </g>
+            <Sectors width={props.width} height={props.height}
+                     sectors={[{startAngle: start, endAngle: mod(end, 360), fillColor: colors.background}]}
+                     center={center} radius={radius + 2} sectorWidth={radius} backgroundColor={colors.background}
+            />
+            {darkenIfNight()}
         </svg>
+        <Needle angle={needleAngle} radius={radiusPercent} color={colors.accent1} animate={props.animate} demo={false}/>
     </div>
-
-
-
 }
+
+
+class Sectors extends React.Component {
+    shouldComponentUpdate(nextProps, nextState, nextContext) {
+        return nextProps.sectors.length !== this.props.sectors.length
+            || nextProps.width !== this.props.width
+            || nextProps.height !== this.props.height
+            || nextProps.backgroundColor !== this.props.backgroundColor;
+    }
+
+    render() {
+        let {sectors, backgroundColor, center, radius, sectorWidth} = this.props;
+
+        return <g stroke={"none"} fill={backgroundColor}>
+            {sectors.map((item, index) => {
+                return Svghelpers.getSector(center.x, center.y, radius, sectorWidth, item.startAngle, item.endAngle, item.fillColor, index)
+            })}
+        </g>;
+    }
+}
+
+
 
 export default Gauge;

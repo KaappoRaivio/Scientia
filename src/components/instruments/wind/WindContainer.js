@@ -17,12 +17,14 @@ class WindContainer extends React.Component {
 
         this.divisions = [
             {
-                numberOfDivisions: 12,
-                lineLength: 0.75,
-                textProvider: i => Math.abs(180 - (2 * Math.PI / 12 * i / Math.PI * 180).toFixed(0))
+                numberOfLines: 12,
+                lineLength: 0.15,
+                textProvider: i => Math.abs(180 - (2 * Math.PI / 12 * i / Math.PI * 180).toFixed(0)),
+                angleProvider: i => 2 * Math.PI / 12 * i,
+                fontSize: "80%"
             },
-            {numberOfDivisions: 36, lineLength: 0.5, textProvider: i => ""},
-            {numberOfDivisions: 144, lineLength: 0.25, textProvider: i => ""},
+            {numberOfLines: 36, lineLength: 0.1, textProvider: i => "", angleProvider: i => 2 * Math.PI / 36 * i},
+            {numberOfLines: 144, lineLength: 0.05, textProvider: i => "", angleProvider: i => 2 * Math.PI / 144 * i},
         ]
     }
 

@@ -4,8 +4,8 @@ import React from "react";
 
 
 const truncate = (data, length) => {
-    if (data.length > length * 4) {
-        while (data.length > length + 1) {
+    if (data.length > length) {
+        while (data.length >= length) {
             data.shift();
         }
     }
@@ -49,7 +49,6 @@ const Visualiser = (props) => {
     truncate(props.data, props.numberOfPointsToShow);
     truncate(props.trendData, props.numberOfPointsToShow);
 
-    console.log(props.fontSize)
     return (
         <div className="parent with-shadow" style={{ color: primary, backgroundColor: background}}>
             {/*<ChartistGraph type="Line" data={simpleLineChartData}  options={options}/>*/}
@@ -67,10 +66,6 @@ const Visualiser = (props) => {
                 <HorizontalGridLines
                     style={{...lineStyle, strokeWidth: 0.5}}
                 />
-                {/*<VerticalGridLines*/}
-                {/*    style={{...lineStyle}}*/}
-                {/*/>*/}
-
 
                 <LineSeries
                     data={props.data}

@@ -1,18 +1,23 @@
 .gauge-parent {
     position: relative;
-    /*text-align: center;*/
+    text-align: center;
+}
+
+.gauge-gauge {
+    position: absolute;
+    left: 0;
+    top: 0;
 }
 
 .gauge-number-display-value {
-    width: 60%;
+    width: 70%;
+    text-align: center;
     height: 50%;
     position: absolute;
-    top: 15% !important;
-    left: 20%;
-    background-color: inherit;
+    top: 35% !important;
+    left: 15%;
     z-index: 1;
-    font-size: 155%;
-    line-height: 0;
+    background-color: inherit;
 }
 
 .gauge-number-display-label {
@@ -26,12 +31,6 @@
     line-height: 70%;
 }
 
-.gauge-number-display-unit {
-    font-style: italic;
-    text-align: right;
-    font-size: 70%;
-    position: absolute;
-    top: 25%;
-    width: 16%;
-    left: 60%;
+.gauge-sectors {
+    filter: brightness(50%);
 }

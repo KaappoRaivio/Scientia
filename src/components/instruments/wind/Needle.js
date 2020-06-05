@@ -4,7 +4,7 @@ import "./needle.css"
 
 const Needle = (props) => {
     if (props.angle === null) {
-        return <div></div>;
+        return <div/>;
     }
     let style;
     if (props.animate) {

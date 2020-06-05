@@ -7,7 +7,17 @@ import Instruments from "./components/instruments"
 import MySidebar from "./components/mySidebar";
 import Logo from "./components/Logo";
 
+import FitText from '@kennethormandy/react-fittext'
+import ScaleText from "react-scale-text";
+import AutoFitTextBox from "./components/numberdisplay/AutoFitTextBox";
 
+// import ReactFitText from "react-fittext/lib/ReactFitText";
+const ReactFitText = require("react-fittext");
+
+if (process.env.NODE_ENV !== "production") {
+    const {whyDidYouUpdate} = require("why-did-you-update");
+    whyDidYouUpdate(React);
+}
 
 class App extends React.Component {
     constructor(props) {
@@ -78,8 +88,12 @@ class App extends React.Component {
                         configure
                     </button>
                 </div>
-                <Logo />
 
+                <Logo />
+                {/*<svg width={500} height={500} fill={"black"} stroke={"none"}>*/}
+                {/*    <AutoFitTextBox width={100} height={100}>3.100</AutoFitTextBox>*/}
+                {/*    <text y={10}>null</text>*/}
+                {/*</svg>*/}
             </div>
         );
     }

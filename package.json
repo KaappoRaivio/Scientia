@@ -10,13 +10,15 @@
     "mathjs": "^6.6.4",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
-    "react-chartist": "^0.14.3",
     "react-dom": "^16.13.1",
+    "react-fast-compare": "^3.2.0",
     "react-scripts": "3.4.1",
     "react-sidebar": "^3.0.2",
     "react-switch": "^5.0.1",
     "react-vis": "^1.11.7",
-    "regression": "^2.0.1"
+    "recompose": "^0.30.0",
+    "regression": "^2.0.1",
+    "why-did-you-update": "0.1.1"
   },
   "scripts": {
     "start": "PORT=3001 react-scripts start",
@@ -40,6 +42,8 @@
     ]
   },
   "devDependencies": {
-    "react-fittext": "^1.0.0"
+    "@kennethormandy/react-fittext": "^0.6.0",
+    "react-fittext": "^1.0.0",
+    "react-scale-text": "^1.2.2"
   }
 }

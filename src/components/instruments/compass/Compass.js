@@ -3,18 +3,19 @@ import {mod} from "mathjs";
 
 
 import "./compass.css"
-import NumberDisplay from "../../numberdisplay";
-import Svghelpers from "../../misc/svghelpers";
+import NumberDisplay from "../../numberdisplay/numberdisplay";
+import {LineDivisions} from "../../misc/svghelpers";
 
 const Compass = (props) => {
     const center = getCenter(props);
     const radius = getRadius(props);
 
-    const divisions = [
-        [12, 0.75, i => mod(180 - 360 / 12 * i, 360)],
-        [36, 0.5, i => ""],
-        [144, 0.25, i => ""]
-    ];
+    // const divisions = [
+    //     [12, 0.75, i => mod(180 - 360 / 12 * i, 360)],
+    //     [36, 0.5, i => ""],
+    //     [144, 0.25, i => ""]
+    // ];
+
 
     const colors = props.colors;
 
@@ -55,20 +56,8 @@ const Compass = (props) => {
                 stroke={colors.primary}
                 strokeWidth={2}
             />
-            <g fill={colors.primary} stroke={colors.primary}>
-                {divisions.map((division, index) => {
-                    return <g key={index}>
-                        {
-                            new Svghelpers()
-                            .drawDivision(center.x, center.y,
-                                radius, -division[1] * props.width * 0.1,
-                                division[0], radius * 0.15,
-                                i => 2 * Math.PI / division[0] * i, division[2],
-                                true)
-                        }
-                    </g>
-                })
-                }
+            <g fill={colors.primary} stroke={colors.primary} strokeWidth={radius * 0.01}>
+                    <LineDivisions center={center} radius={radius} divisions={props.divisions} rotateText={true}/>
             </g>
         </svg>
     </div>

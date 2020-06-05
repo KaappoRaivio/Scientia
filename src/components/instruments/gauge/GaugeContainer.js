@@ -17,20 +17,20 @@ class GaugeContainer extends React.Component {
                 counter: counter + 1,
                 value: (Math.abs(Math.sin(counter / 10))) * 10
             }));
-        }, 500)
+        }, 1000)
     }
 
     render () {
         const divisions = [
-            {numberOfDivisions: 12, lineLength: 0.75, textProvider: i => ""},
-            {numberOfDivisions: 36, lineLength: 0.5, textProvider: i => ""},
-            {numberOfDivisions: 144, lineLength: 0.25, textProvider: i => ""},
+            {numberOfLines: 12, lineLength: 0.1 * 1, textProvider: i => "", angleProvider: i => 2 * Math.PI / 12 * i},
+            {numberOfLines: 36, lineLength: 0.1 * 0.5, textProvider: i => "", angleProvider: i => 2 * Math.PI / 36 * i},
+            {numberOfLines: 144, lineLength: 0.1 * 0.25, textProvider: i => "", angleProvider: i => 2 * Math.PI / 144 * i},
         ]
         let zones = {
-            normal: [0, 0.3],
-            alert: [0.3, 0.5],
-            warn: [0.5, 0.7],
-            alarm: [0.7, 0.9],
+            normal: [0, 0.4],
+            alert: [0.4, 0.65],
+            warn: [0.65, 0.8],
+            alarm: [0.8, 0.9],
             emergency: [0.9, 1]
         }
 
@@ -39,10 +39,15 @@ class GaugeContainer extends React.Component {
             width={this.props.width}
             height={this.props.height}
             colors={this.props.colors}
+            darkMode={this.props.darkMode}
             divisions={divisions}
             upperBound={10}
             value={this.state.value}
             animate={this.props.animate}
+            unit={"kts/s²"}
+            label={"Acceleration"}
+            suffix={""}
+            decimalPlaces={0}
         />
     }
 }

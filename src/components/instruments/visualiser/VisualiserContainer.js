@@ -64,9 +64,12 @@ class  VisualiserContainer extends React.Component {
     }
 
     concatData(data, dataPoint) {
-        return data.concat(
-            dataPoint
-        );
+        let newArray = data.slice();
+        newArray.push(dataPoint);
+        return newArray;
+        // return data.concat(
+        //     dataPoint
+        // );
     }
 
 
