@@ -1,13 +1,50 @@
-.displayContainer {
+.numberdisplay-wrapper {
     text-align: left;
     /*border: 1px solid black;*/
     height: 100%;
     position: relative;
     /*float: left;*/
     /*display: inline;*/
-    /*padding: 3%;*/
-    background-color: inherit;
+    padding: 3%;
+    /*background-color: inherit;*/
     /*font-size: 20px;*/
+}
+
+.numberdisplay-parent {
+    width: 100%;
+    height: 100%;
+    transition: background-color 0.5s linear;
+    border-radius: 5px;
+}
+
+
+.value-normal {
+    background-color: inherit;
+}
+
+.value-alert {
+    animation: blink 2s infinite;
+    background-color: yellow;
+}
+
+.value-warning {
+    animation: blink 2s infinite;
+    background-color: orange;
+}
+.value-alarm {
+    animation: blink 1s steps(1, end) infinite;
+    background-color: red;
+}
+.value-emergency {
+    animation: blink 0.5s steps(1, end) infinite;
+    background-color: purple;
+}
+
+
+@keyframes blink {
+    50% {
+        background-color: white;
+    }
 }
 
 .numberdisplay-svg {

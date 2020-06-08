@@ -11,6 +11,8 @@ import VisualiserContainer from "./instruments/visualiser/VisualiserContainer";
 
 // const server_root = "ws://192.168.1.115:3000";
 
+const endpoint = "/signalk/v1";
+
 class Instruments extends React.Component {
     constructor (props) {
         super(props);
@@ -25,7 +27,7 @@ class Instruments extends React.Component {
     }
 
     resetWebsocket () {
-        this.ws = new WebSocket(this.props.server + "/signalk/v1/stream/?subscribe=none");
+        this.ws = new WebSocket(this.props.server + endpoint + "/stream/?subscribe=none");
     }
 
     componentDidMount () {
@@ -55,6 +57,7 @@ class Instruments extends React.Component {
         };
 
 
+
         this.ws.onmessage = (event) => {
             const message = JSON.parse(event.data);
             // console.log(message)
@@ -65,7 +68,7 @@ class Instruments extends React.Component {
                         update.values.forEach(value => {
                             subscriber.paths.forEach(subscriberPath => {
                                 if (subscriberPath.test(value.path)) {
-                                    subscriber.callback(update);
+                                    subscriber.onDelta(update);
                                 }
                             })
                         })
@@ -76,6 +79,27 @@ class Instruments extends React.Component {
                 }
             }
         };
+    }
+
+    pathRegexToHTTP = path => path.toString()
+        .replace(/([\\+.])+/g, "/")
+        .replace(/\/+/g, "/")
+
+    pathRegexToSignalkPath = path => this.pathRegexToHTTP(path)
+        .replace(/\/$/, "")
+        .replace(/^\//, "")
+        .replace(/\//g, ".")
+
+
+    giveMetadata(paths, onMetadata) {
+        const HTTPServerRoot = "http:" + this.props.server.split(":").slice(1, 10).join(":");
+
+        paths.forEach(path => {
+            fetch(HTTPServerRoot + endpoint + "/api/vessels/self" + this.pathRegexToHTTP(path) + "meta")
+                .then(response => response.json())
+                .then(data => onMetadata(data, this.pathRegexToSignalkPath(path)))
+                .catch(console.error)
+        })
     }
 
     componentDidUpdate() {
@@ -96,8 +120,9 @@ class Instruments extends React.Component {
     }
 
     render () {
-        const setCallback = (paths, callback) => {
-            this.subscribers.push({paths: paths, callback: callback})
+        const subscribe = (paths, onDelta, onMetadata) => {
+            this.subscribers.push({paths, onDelta, onMetadata})
+            this.giveMetadata(paths, onMetadata);
         };
 
 
@@ -123,11 +148,12 @@ class Instruments extends React.Component {
         return (
             <div className="flexbox-container">
                 {instruments.map((instrument, index) =>
-                    <InstrumentContainer animate={this.props.animation} key={index} darkMode={this.props.darkMode} colors={this.props.colors} children={instrument[0]} callback={setCallback} additionalProps={instrument[1]} resizeDebounce={250} />
+                    <InstrumentContainer animate={this.props.animation} key={index} darkMode={this.props.darkMode} colors={this.props.colors} children={instrument[0]} callback={subscribe} additionalProps={instrument[1]} resizeDebounce={250} />
                 )}
             </div>
         );
     }
+
 }
 
 export default Instruments

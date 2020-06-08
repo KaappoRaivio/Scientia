@@ -38,12 +38,12 @@ const Compass = (props) => {
             className="number"
             value={props.heading}
             suffix="°"
-            unit="T"
+            unit="cog"
             width={props.width}
-            height={props.height / 4}
+            height={props.height / 3}
             upperBound={360}
             decimalPlaces={1}
-            fontSize={props.width / 4}
+            // fontSize={props.width / 4}
             legend="Heading"
         />
 
