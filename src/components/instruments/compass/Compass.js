@@ -44,7 +44,7 @@ const Compass = (props) => {
             upperBound={360}
             decimalPlaces={1}
             // fontSize={props.width / 4}
-            legend="Heading"
+            label="Heading"
         />
 
         <svg className="compassRose" width={props.width} height={props.height} style={compassRotationStyle}>

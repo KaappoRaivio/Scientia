@@ -2,7 +2,20 @@ import NumberDisplay from "../../numberdisplay/numberdisplay";
 import React from "react";
 
 const Tridata = (props) => {
-    const commonUpperBound = props.values.map(value => value.upperBound).reduce((a, b) => a > b ? a : b);
+    const commonUpperBound = props.values.map(value => value.displayScale.upper).reduce((a, b) => {
+        if (b === null || isNaN(b)) {
+            return a
+        }
+        return a > b ? a : b;
+    });
+
+    const commonLowerBound = props.values.map(value => value.displayScale.lower).reduce((a, b) => {
+        if (b === null || isNaN(b)) {
+            return a
+        }
+        return a < b ? a : b;
+    });
+
     const colors = props.colors;
 
     const parentStyle = {
@@ -13,22 +26,26 @@ const Tridata = (props) => {
         position: "relative"
     };
 
+
     return <div style={parentStyle}>
         {props.values.map((value, index) => {
             return <NumberDisplay
                 key={index}
-                value={value.value * value.conversion}
+                value={value.value}
 
-                suffix={value.suffix}
-                unit={value.unit}
-                legend={value.legend}
+                suffix={""}
+                unit={value.units}
+                label={value.label}
 
-                upperBound={commonUpperBound}
+                upperBound={Math.max(commonUpperBound, commonLowerBound)}
                 decimalPlaces={value.decimalPlaces}
+                zones={value.zones}
 
                 fontSize={props.width / 4}
                 width={props.width}
                 height={props.height / props.values.length}
+
+                colors={props.colors}
             />
         })}
     </div>

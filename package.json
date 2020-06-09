@@ -9,6 +9,7 @@
     "chartist": "^0.11.4",
     "mathjs": "^6.6.4",
     "node-sass": "^4.14.1",
+    "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-fast-compare": "^3.2.0",
@@ -18,6 +19,7 @@
     "react-vis": "^1.11.7",
     "recompose": "^0.30.0",
     "regression": "^2.0.1",
+    "underscore": "^1.10.2",
     "why-did-you-update": "0.1.1"
   },
   "scripts": {

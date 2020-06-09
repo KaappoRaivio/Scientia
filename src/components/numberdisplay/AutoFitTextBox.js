@@ -58,6 +58,8 @@ class AutoFitTextBox extends React.Component {
         // this.setState({ scale: scale});
         const scale = this.getTextScale(this.svgTextNode.current);
         // console.log(scale, this.props.value.length)
+        const {value, maxNumberOfDigits, ...restOfTheProps} = this.props;
+
         return (
 
             <text
@@ -66,13 +68,13 @@ class AutoFitTextBox extends React.Component {
                 // fontSize={"1em"}
                 // scale={scale}
                 fontSize={scale}
-                {...this.props}
+                {...restOfTheProps}
                 // y={this.props.height}
                 // y={"50%"}
                 // width={"100%"}
                 // alignmentBaseline="hanging">
                 >
-                {this.props.value.padStart(this.props.maxNumberOfDigits, " ")}
+                {value.padStart(maxNumberOfDigits, " ")}
             </text>
         );
     }

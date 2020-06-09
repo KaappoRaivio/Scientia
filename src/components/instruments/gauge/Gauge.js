@@ -16,24 +16,26 @@ const Gauge = (props) => {
     const radius = props.width / 2.1;
     const radiusPercent = radius / (props.width / 2) * 100 / 2;
 
+    const valueToPercent = x => (x - props.displayScale.lower) - (props.displayScale.upper - x)
+    const percentToAngle = x => start -  (start - end) * x;
 
     let start = 135;
     let end = -135;
 
-    let limitedValue = Math.min(props.upperBound, props.value);
-    let needleAngle = ((start - end) / 180 * Math.PI) / props.upperBound * limitedValue - start / 180 * Math.PI;
+    let limitedValue = Math.min(props.displayScale.upper, props.value);
+    // let needleAngle = ((start - end) / 180 * Math.PI) / props.displayScale.upper * limitedValue - start / 180 * Math.PI;
+    let needleAngle = percentToAngle(valueToPercent(limitedValue));
 
     const colors = props.colors;
 
     let { normal, alert, warn, alarm, emergency} = props.zones;
 
-    const converter = x => start -  (start - end) * x;
 
-    let normalAngle = normal.map(converter);
-    let alertAngle = alert.map(converter);
-    let warnAngle = warn.map(converter);
-    let alarmAngle = alarm.map(converter);
-    let emergencyAngle = emergency.map(converter);
+    let normalAngle = normal.map(valueToPercent).map(percentToAngle);
+    let alertAngle = alert.map(valueToPercent).map(percentToAngle);
+    let warnAngle = warn.map(valueToPercent).map(percentToAngle);
+    let alarmAngle = alarm.map(valueToPercent).map(percentToAngle);
+    let emergencyAngle = emergency.map(valueToPercent).map(percentToAngle);
 
     let sectors = [
         {startAngle: normalAngle[0], endAngle: normalAngle[1], fillColor: "lightgreen"},
@@ -60,7 +62,7 @@ const Gauge = (props) => {
     return <div className="gauge-parent" style={{width: props.width, height: props.height}}>
         <div className="gauge-number-display-value">
             <NumberDisplay width={props.width * 0.7} height={props.height * 0.3}
-                           legend={props.label} suffix={props.suffix} upperBound={props.upperBound} decimalPlaces={props.decimalPlaces || 0}
+                           legend={props.label} suffix={props.suffix} upperBound={props.displayScale.upper} decimalPlaces={props.decimalPlaces || 0}
                            unit={props.unit}
                            value={props.value}
                            centerLabel={true}

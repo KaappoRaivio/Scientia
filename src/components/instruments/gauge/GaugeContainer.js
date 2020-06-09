@@ -41,7 +41,7 @@ class GaugeContainer extends React.Component {
             colors={this.props.colors}
             darkMode={this.props.darkMode}
             divisions={divisions}
-            upperBound={10}
+            displayScale={{"upper": 10, "lower": 0}}
             value={this.state.value}
             animate={this.props.animate}
             unit={"kts/s²"}

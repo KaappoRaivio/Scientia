@@ -2,12 +2,6 @@
   box-sizing: border-box;
 }
 
-canvas.probe {
-  /*position: absolute;*/
-  /*top: 0;*/
-  /*left: 0;*/
-}
-
 .flexbox-container {
   display: flex;
   flex-flow: row wrap;

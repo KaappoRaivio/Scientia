@@ -20,30 +20,42 @@
 
 .value-normal {
     background-color: inherit;
+    animation: none !important;
 }
 
+
+[class*="value"] {
+    animation: blink 0.5s infinite steps(1, end);
+}
 .value-alert {
-    animation: blink 2s infinite;
-    background-color: yellow;
+    /*animation: blink 0.5s infinite steps(1, end);*/
+    background-color: hsl(60, 100%, 60%);
 }
 
-.value-warning {
-    animation: blink 2s infinite;
+.value-warn {
+    /*animation: blink 0.5s infinite steps(1, end);*/
     background-color: orange;
 }
 .value-alarm {
-    animation: blink 1s steps(1, end) infinite;
+    /*animation: blink 1s steps(1, end) infinite;*/
     background-color: red;
 }
 .value-emergency {
-    animation: blink 0.5s steps(1, end) infinite;
+    /*animation: blink 0.5s steps(1, end) infinite;*/
     background-color: purple;
 }
 
 
 @keyframes blink {
+    0% {
+        border: 2px dashed gray;
+    }
     50% {
-        background-color: white;
+        background-color: inherit;
+        border-color: rgba(0, 0, 0, 0);
+    }
+    100% {
+        border: 2px dashed gray;
     }
 }
 
