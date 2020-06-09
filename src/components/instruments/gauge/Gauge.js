@@ -16,15 +16,17 @@ const Gauge = (props) => {
     const radius = props.width / 2.1;
     const radiusPercent = radius / (props.width / 2) * 100 / 2;
 
-    const valueToPercent = x => (x - props.displayScale.lower) - (props.displayScale.upper - x)
-    const percentToAngle = x => start -  (start - end) * x;
+    const valueToPercent = x => (x - props.displayScale.lower) / (props.displayScale.upper - props.displayScale.lower)
+    const percentToAngle = x => {
+        return start - (start - end) * x;
+    };
 
     let start = 135;
     let end = -135;
 
     let limitedValue = Math.min(props.displayScale.upper, props.value);
     // let needleAngle = ((start - end) / 180 * Math.PI) / props.displayScale.upper * limitedValue - start / 180 * Math.PI;
-    let needleAngle = percentToAngle(valueToPercent(limitedValue));
+    let needleAngle = -percentToAngle(valueToPercent(limitedValue)) / 180 * Math.PI;
 
     const colors = props.colors;
 
@@ -49,23 +51,24 @@ const Gauge = (props) => {
     const divisions = props.divisions;
 
 
-    function darkenIfNight() {
-        return <>
-            {props.darkMode
-                ? <rect x={0} y={0} width={props.width} height={props.height} fill={"rgba(0, 0, 0, 0.5)"}
-                        stroke={"none"}/>
-                : null
-            }
-        </>;
-    }
+    const darkenIfNight = () => <>
+        {props.darkMode
+            ? <rect x={0} y={0} width={props.width} height={props.height} fill={"rgba(0, 0, 0, 0.5)"}
+                    stroke={"none"}/>
+            : null
+        }
+    </>;
 
     return <div className="gauge-parent" style={{width: props.width, height: props.height}}>
         <div className="gauge-number-display-value">
             <NumberDisplay width={props.width * 0.7} height={props.height * 0.3}
-                           legend={props.label} suffix={props.suffix} upperBound={props.displayScale.upper} decimalPlaces={props.decimalPlaces || 0}
+                           label={props.label} suffix={props.suffix} upperBound={props.displayScale.upper} decimalPlaces={props.decimalPlaces || 0}
                            unit={props.unit}
                            value={props.value}
                            centerLabel={true}
+                           colors={colors}
+                           zones={[]}
+                           debug={true}
             />
         </div>
 

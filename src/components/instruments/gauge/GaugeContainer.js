@@ -27,11 +27,11 @@ class GaugeContainer extends React.Component {
             {numberOfLines: 144, lineLength: 0.1 * 0.25, textProvider: i => "", angleProvider: i => 2 * Math.PI / 144 * i},
         ]
         let zones = {
-            normal: [0, 0.4],
-            alert: [0.4, 0.65],
-            warn: [0.65, 0.8],
-            alarm: [0.8, 0.9],
-            emergency: [0.9, 1]
+            normal: [0, 4],
+            alert: [4, 6.5],
+            warn: [6.5, 8],
+            alarm: [8, 9],
+            emergency: [9, 10]
         }
 
         return <Gauge

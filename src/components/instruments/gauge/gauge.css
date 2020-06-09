@@ -12,12 +12,13 @@
 .gauge-number-display-value {
     width: 70%;
     text-align: center;
-    height: 50%;
+    height: 30%;
     position: absolute;
     top: 35% !important;
     left: 15%;
     z-index: 1;
     background-color: inherit;
+    border: none !important;
 }
 
 .gauge-number-display-label {

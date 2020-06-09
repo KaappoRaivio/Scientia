@@ -15,7 +15,7 @@ const getZoneCSSClass = (value, zones) => {
     return "value-" + zone;
 }
 
-const NumberDisplay = ({decimalPlaces, height, label, suffix, unit, upperBound, value, width, centerLabel, zones, colors}) => {
+const NumberDisplay = ({decimalPlaces, height, label, suffix, unit, upperBound, value, width, centerLabel, zones, colors, debug}) => {
     if (isStillLoading(decimalPlaces, label, unit, value, upperBound)) {
         return <div style={{padding: "6%"}}>Loading</div>
     }
@@ -28,8 +28,10 @@ const NumberDisplay = ({decimalPlaces, height, label, suffix, unit, upperBound, 
         value = 0;
     }
 
-    const alarmCSSClass = getZoneCSSClass(value, zones);
-    console.log(alarmCSSClass)
+    const alarmCSSClass = getZoneCSSClass(value, zones || []);
+    if (debug) {
+        console.log(alarmCSSClass)
+    }
 
     return (
         <div className="numberdisplay-wrapper" style={{width: `${width}px`, height: `${height}px`}}>
@@ -75,7 +77,8 @@ NumberDisplay.propTypes = {
     centerLabel: PropTypes.bool,
     debug: PropTypes.bool,
 
-    colors: PropTypes.object.isRequired
+    colors: PropTypes.object.isRequired,
+    zones: PropTypes.array,
 }
 
 export default NumberDisplay;

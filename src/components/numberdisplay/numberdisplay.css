@@ -21,6 +21,7 @@
 .value-normal {
     background-color: inherit;
     animation: none !important;
+    border: none !important;
 }
 
 

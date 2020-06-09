@@ -78,6 +78,6 @@ class AutoFitTextBox extends React.Component {
             </text>
         );
     }
-};
+}
 
 export default AutoFitTextBox;
