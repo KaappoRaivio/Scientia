@@ -44,8 +44,5 @@
     ]
   },
   "devDependencies": {
-    "@kennethormandy/react-fittext": "^0.6.0",
-    "react-fittext": "^1.0.0",
-    "react-scale-text": "^1.2.2"
   }
 }

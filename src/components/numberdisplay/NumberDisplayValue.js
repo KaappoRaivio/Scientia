@@ -1,9 +1,6 @@
 import React from "react";
 
 import "./numberdisplay.css"
-import ScaleText from "react-scale-text";
-
-
 
 const getDecimalPart = (value, decimalPlaces) => {
     let decimalPart = Math.abs(value - Math.trunc(value)) + "";
