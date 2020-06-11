@@ -1,99 +1,147 @@
-import React, {PureComponent} from "react";
+import React from "react";
 
-import { pure } from "recompose";
-
-import Svghelpers, {LineDivision, LineDivisions} from "../../misc/svghelpers";
+import Svghelpers, {LineDivisions} from "../../misc/svghelpers";
 import {mod} from "mathjs";
 import Needle from "../wind/Needle";
 
 import "./gauge.css"
-import NumberDisplayValue from "../../numberdisplay/NumberDisplayValue";
-import * as PropTypes from "prop-types";
-import NumberDisplay from "../../numberdisplay/numberdisplay";
+import NumberDisplay from "../../numberdisplay/NumberDisplay";
+import { PropTypes } from "prop-types";
 
-const Gauge = (props) => {
-    const center = {x: props.width / 2, y: props.height / 2};
-    const radius = props.width / 2.1;
-    const radiusPercent = radius / (props.width / 2) * 100 / 2;
+const valueToPercentConverters = {
+    "linear":      (upper, lower) => x => (x - lower) / (upper - lower),
+    "logarithmic": (upper, lower) => x => (Math.log(x) - Math.log(lower)) / (Math.log(upper) - Math.log(lower)),
+    "squareroot":  (upper, lower) => x => (Math.sqrt(x) - Math.sqrt(lower)) / (Math.sqrt(upper) - Math.sqrt(lower)),
+    "power": (upper, lower, power) => x => (x ** power - lower ** power) / (upper ** power - lower ** power)
+}
 
-    const valueToPercent = x => (x - props.displayScale.lower) / (props.displayScale.upper - props.displayScale.lower)
-    const percentToAngle = x => {
-        return start - (start - end) * x;
-    };
+const Gauge = ({
+                   width,
+                   height,
+
+                   animate,
+                   darkMode,
+                   colors,
+
+                   decimalPlaces,
+                   displayScale,
+                   zones,
+
+                   value,
+                   label,
+                   suffix,
+                   unit,
+
+                   divisions,
+}) => {
+
+    const center = {x: width / 2, y: height / 2};
+    const radius = width / 2.1;
+    const radiusPercent = radius / (width / 2) * 100 / 2;
 
     let start = 135;
     let end = -135;
 
-    let limitedValue = Math.min(props.displayScale.upper, props.value);
-    // let needleAngle = ((start - end) / 180 * Math.PI) / props.displayScale.upper * limitedValue - start / 180 * Math.PI;
+    const percentToAngle = x => {
+        return start - (start - end) * x;
+    };
+
+    const valueToPercent = valueToPercentConverters[displayScale.type || "linear"](displayScale.upper, displayScale.lower, displayScale.power);
+    console.log(valueToPercent, valueToPercent(value), displayScale, value)
+
+    let limitedValue = Math.min(displayScale.upper, value);
     let needleAngle = -percentToAngle(valueToPercent(limitedValue)) / 180 * Math.PI;
 
-    const colors = props.colors;
+    let sectors = zones.map(zone => {
+        const lowerLimit = zone.lower || displayScale.lower;
+        const upperLimit = zone.upper || displayScale.upper;
 
-    let { normal, alert, warn, alarm, emergency} = props.zones;
-
-
-    let normalAngle = normal.map(valueToPercent).map(percentToAngle);
-    let alertAngle = alert.map(valueToPercent).map(percentToAngle);
-    let warnAngle = warn.map(valueToPercent).map(percentToAngle);
-    let alarmAngle = alarm.map(valueToPercent).map(percentToAngle);
-    let emergencyAngle = emergency.map(valueToPercent).map(percentToAngle);
-
-    let sectors = [
-        {startAngle: normalAngle[0], endAngle: normalAngle[1], fillColor: "lightgreen"},
-        {startAngle: alertAngle[0], endAngle: alertAngle[1], fillColor: "yellow"},
-        {startAngle: warnAngle[0], endAngle: warnAngle[1], fillColor: "orange"},
-        {startAngle: alarmAngle[0], endAngle: alarmAngle[1], fillColor: "red"},
-        {startAngle: emergencyAngle[0], endAngle: emergencyAngle[1], fillColor: "purple"},
-    ]
+        return {
+            startAngle: percentToAngle(valueToPercent(lowerLimit)),
+            endAngle: percentToAngle(valueToPercent(upperLimit)),
+            fillColor: colors["value" + zone.state[0].toUpperCase() + zone.state.slice(1)]
+        };
+    })
 
     let sectorWidth = radius * 0.2;
-    const divisions = props.divisions;
-
 
     const darkenIfNight = () => <>
-        {props.darkMode
-            ? <rect x={0} y={0} width={props.width} height={props.height} fill={"rgba(0, 0, 0, 0.5)"}
+        {darkMode
+            ? <rect x={0} y={0} width={width} height={height} fill={"rgba(0, 0, 0, 0.5)"}
                     stroke={"none"}/>
             : null
         }
     </>;
 
-    return <div className="gauge-parent" style={{width: props.width, height: props.height}}>
+    return <div className="gauge-parent" style={{width: width, height: height}}>
         <div className="gauge-number-display-value">
-            <NumberDisplay width={props.width * 0.7} height={props.height * 0.3}
-                           label={props.label} suffix={props.suffix} upperBound={props.displayScale.upper} decimalPlaces={props.decimalPlaces || 0}
-                           unit={props.unit}
-                           value={props.value}
+            <NumberDisplay width={width * 0.7} height={height * 0.3}
+                           label={label} suffix={suffix}
+                           displayScale={displayScale} decimalPlaces={decimalPlaces || 0}
+                           unit={unit}
+                           value={value}
                            centerLabel={true}
                            colors={colors}
-                           zones={[]}
-                           debug={true}
+                           zones={zones}
+                           darkMode={darkMode}
             />
         </div>
 
-        <svg className="gauge-gauge" width={props.width} height={props.height} xmlns="http://www.w3.org/2000/svg">
+        <svg className="gauge-gauge" width={width} height={height} xmlns="http://www.w3.org/2000/svg">
             <g className="gauge-sectors">
-                <Sectors width={props.width} height={props.height} sectors={sectors} center={center} radius={radius}
+                <Sectors width={width} height={height} sectors={sectors} center={center} radius={radius}
                          sectorWidth={sectorWidth} backgroundColor={colors.background}/>
             </g>
-            <circle stroke={"black"} fill={"none"} cx={center.x} cy={center.y} r={radius} strokeWidth={radius * 0.01}/>
+            <circle stroke={colors.secondary} fill={"none"} cx={center.x} cy={center.y} r={radius + radius * 0.01 / 2} strokeWidth={radius * 0.01}/>
 
-            <g stroke={"black"} strokeWidth={radius * 0.01}>
+            <g stroke={colors.secondary} strokeWidth={radius * 0.01}>
                 <LineDivisions center={center} radius={radius} divisions={divisions}/>
             </g>
-            <Sectors width={props.width} height={props.height}
+            <Sectors width={width} height={height}
                      sectors={[{startAngle: start, endAngle: mod(end, 360), fillColor: colors.background}]}
-                     center={center} radius={radius + 2} sectorWidth={radius} backgroundColor={colors.background}
+                     center={center} radius={radius} sectorWidth={radius} backgroundColor={colors.background}
             />
             {darkenIfNight()}
         </svg>
-        <Needle angle={needleAngle} radius={radiusPercent} color={colors.accent1} animate={props.animate} demo={false}/>
+        <Needle angle={needleAngle} radius={radiusPercent} color={colors.primary} animate={animate} demo={false}/>
     </div>
 }
 
+Gauge.propTypes = {
+    width: PropTypes.number.isRequired,
+    height: PropTypes.number.isRequired,
 
+    animate: PropTypes.bool.isRequired,
+    darkMode: PropTypes.bool.isRequired,
+    colors: PropTypes.object.isRequired,
+
+    decimalPlaces: PropTypes.number.isRequired,
+    displayScale: PropTypes.shape({
+        upper: PropTypes.number,
+        lower: PropTypes.number,
+        type: PropTypes.string
+    }),
+    zones: PropTypes.array.isRequired,
+
+    value: PropTypes.number.isRequired,
+    label: PropTypes.string.isRequired,
+    suffix: PropTypes.string.isRequired,
+    unit: PropTypes.string.isRequired,
+
+    divisions: PropTypes.array.isRequired
+}
 class Sectors extends React.Component {
+    static propTypes = {
+        sectors: PropTypes.array.isRequired,
+        backgroundColor: PropTypes.string.isRequired,
+        center: PropTypes.shape({
+            x: PropTypes.number.isRequired,
+            y: PropTypes.number.isRequired
+        }),
+        radius: PropTypes.number.isRequired,
+        sectorWidth: PropTypes.number.isRequired,
+    }
+
     shouldComponentUpdate(nextProps, nextState, nextContext) {
         return nextProps.sectors.length !== this.props.sectors.length
             || nextProps.width !== this.props.width

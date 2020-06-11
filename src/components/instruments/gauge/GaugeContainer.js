@@ -1,53 +1,90 @@
 import React from "react";
 import Gauge from "./Gauge";
+import {camelCaseToSentenceCase, valueSkeleton} from "../DataStructures";
 
+import PropTypes from "prop-types";
+
+const divisions = [
+    {numberOfLines: 12, lineLength: 0.1, textProvider: i => "", angleProvider: i => 2 * Math.PI / 12 * i},
+    {numberOfLines: 36, lineLength: 0.05, textProvider: i => "", angleProvider: i => 2 * Math.PI / 36 * i},
+    {numberOfLines: 144, lineLength: 0.025, textProvider: i => "", angleProvider: i => 2 * Math.PI / 144 * i},
+]
 class GaugeContainer extends React.Component {
+    static propTypes = {
+        width: PropTypes.number.isRequired,
+        height: PropTypes.number.isRequired,
+
+        animate: PropTypes.bool,
+        colors: PropTypes.object.isRequired,
+        darkMode: PropTypes.bool.isRequired,
+    }
+    // const {path, width, animate, height, colors, darkMode} = this.props;
+
     constructor(props) {
         super(props);
 
-        this.state = {
-            counter: 0,
-            value: 0
-        }
+        let state = {};
+        state[props.path] = {...valueSkeleton, label: camelCaseToSentenceCase(props.path.split(".").slice(1).join(", "))}
+        this.state = state;
     }
 
     componentDidMount() {
-        setInterval(() => {
-            this.setState(({value, counter}) => ({
-                counter: counter + 1,
-                value: (Math.abs(Math.sin(counter / 10))) * 10
-            }));
-        }, 1000)
+        const onDelta = (message) => {
+            let path = message.values[0].path;
+
+            this.setState(oldState => {
+                let interestingKey = oldState[path];
+                return {
+                    [path]: {
+                        value: message.values[0].value,
+                        units: interestingKey.units,
+                        zones: interestingKey.zones,
+                        displayScale: interestingKey.displayScale,
+                        label: interestingKey.label,
+                        decimalPlaces: interestingKey.decimalPlaces,
+                    }
+                }
+            })
+        };
+
+        const onMetadata = (data, path) => {
+            this.setState(oldState => {
+                let interestingKey = oldState[path];
+                return {
+                    [path]: {
+                        value: interestingKey.value,
+                        units: data.units, // Data.units is always nonnull per the Signalk spec // 20200608
+                        zones: data.zones || interestingKey.zones,
+                        displayScale: data.displayScale || interestingKey.displayScale,
+                        label: interestingKey.label,
+                        decimalPlaces: interestingKey.decimalPlaces,
+                    }
+
+                }
+            })
+        }
+
+        this.props.subscribe([this.props.path], onDelta, onMetadata)
     }
 
     render () {
-        const divisions = [
-            {numberOfLines: 12, lineLength: 0.1 * 1, textProvider: i => "", angleProvider: i => 2 * Math.PI / 12 * i},
-            {numberOfLines: 36, lineLength: 0.1 * 0.5, textProvider: i => "", angleProvider: i => 2 * Math.PI / 36 * i},
-            {numberOfLines: 144, lineLength: 0.1 * 0.25, textProvider: i => "", angleProvider: i => 2 * Math.PI / 144 * i},
-        ]
-        let zones = {
-            normal: [0, 4],
-            alert: [4, 6.5],
-            warn: [6.5, 8],
-            alarm: [8, 9],
-            emergency: [9, 10]
-        }
+        const {path, width, animate, height, colors, darkMode} = this.props;
+        const dataPath = this.state[path];
 
         return <Gauge
-            zones={zones}
-            width={this.props.width}
-            height={this.props.height}
-            colors={this.props.colors}
-            darkMode={this.props.darkMode}
+            zones={dataPath.zones}
+            width={width}
+            height={height}
+            colors={colors}
+            darkMode={darkMode}
             divisions={divisions}
-            displayScale={{"upper": 10, "lower": 0}}
-            value={this.state.value}
-            animate={this.props.animate}
-            unit={"kts/s²"}
-            label={"Acceleration"}
+            displayScale={dataPath.displayScale}
+            value={dataPath.value}
+            animate={animate}
+            unit={dataPath.units}
+            label={dataPath.label}
             suffix={""}
-            decimalPlaces={0}
+            decimalPlaces={1}
         />
     }
 }

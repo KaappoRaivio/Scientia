@@ -4,11 +4,18 @@
     font-size: 100%;
     transition: filter 0.1s linear, transform 0.2s ease-in-out ;
     transform: scale(1, 1);
+    overflow: hidden;
 }
 
 .logo-parent:hover {
+    transition: filter 0.1s linear, transform 5s ease-out;
     filter: none;
-    transform: scale(1.05, 1.05);
+}
+
+.logo-parent:active {
+    transition: transform 5s cubic-bezier(0.995, 0.005, 0.860, -0.010);
+    transform: scale(10, 10) rotate(7200deg);
+    transform-origin: center;
 }
 
 .logo-link {
@@ -31,4 +38,8 @@
     position: relative;
     font-size: 1em;
     top: -5px;
+}
+
+img {
+    pointer-events: none;
 }

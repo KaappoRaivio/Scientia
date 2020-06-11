@@ -1,6 +1,6 @@
 import React from 'react';
 
-import NumberDisplay from "../../numberdisplay/numberdisplay.js"
+import NumberDisplay from "../../numberdisplay/NumberDisplay.js"
 import Needle from "./Needle"
 import Svghelper, {LineDivisions} from "../../misc/svghelpers";
 
@@ -35,7 +35,10 @@ const Wind = (props) => {
                     height={props.height * 0.25}
                     upperBound={99}
                     decimalPlaces={1}
-                    legend={`Wind speed (${props.speedQuality})`}
+                    label={`Wind speed (${props.speedQuality})`}
+                    colors={colors}
+                    darkMode={props.darkMode}
+                    displayScale={props.displayScale}
                 />
             </div>
 
@@ -51,12 +54,12 @@ const Wind = (props) => {
                 />
 
 
-                {!props.darkMode ?
-                    <g>
-                        {Svghelper.getSector(center.x, center.y, radius, 0.025 * props.width, -props.closeHaulAngle, 0, colors.closeHaulRight)}}
-                        {Svghelper.getSector(center.x, center.y, radius, 0.025 * props.width, props.closeHaulAngle, 0, colors.closeHaulLeft)}
-                    </g> : null
-                }
+
+                <g>
+                    {Svghelper.getSector(center.x, center.y, radius, 0.025 * props.width, -props.closeHaulAngle, 0, colors.closeHaulRight)}}
+                    {Svghelper.getSector(center.x, center.y, radius, 0.025 * props.width, props.closeHaulAngle, 0, colors.closeHaulLeft)}
+                </g> : null
+
                 <g fill={props.colors.primary} strokeWidth={radius * 0.01}>
                     <LineDivisions radius={radius} center={center} divisions={props.divisions}  />
                 </g>
@@ -68,8 +71,8 @@ const Wind = (props) => {
 const getAdditionalColors = (darkMode) => {
     if (darkMode) {
         return {
-            closeHaulRight: "rgba(0, 200, 0, 1)",
-            closeHaulLeft: "rgba(255, 150, 125, 1)",
+            closeHaulRight: "rgba(0, 200, 0, 0)",
+            closeHaulLeft: "rgba(255, 150, 125, 0)",
         }
     } else {
         return {

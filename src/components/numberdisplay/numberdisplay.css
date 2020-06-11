@@ -21,42 +21,44 @@
 .value-normal {
     background-color: inherit;
     animation: none !important;
-    border: none !important;
+    /*border: 2px solid white;*/
+    margin: 2px; /*Compensate for missing border*/
 }
 
 
-[class*="value"] {
-    animation: blink 0.5s infinite steps(1, end);
-}
-.value-alert {
+/*.value-blink {*/
+/*    animation: blink 0.5s infinite steps(1, end);*/
+/*    border: none;*/
+/*}*/
+/*.value-alert {*/
     /*animation: blink 0.5s infinite steps(1, end);*/
-    background-color: hsl(60, 100%, 60%);
-}
+    /*background-color: hsl(60, 100%, 60%);*/
+/*}*/
 
-.value-warn {
+/*.value-warn {*/
     /*animation: blink 0.5s infinite steps(1, end);*/
-    background-color: orange;
-}
-.value-alarm {
+    /*background-color: orange;*/
+/*}*/
+/*.value-alarm {*/
     /*animation: blink 1s steps(1, end) infinite;*/
-    background-color: red;
-}
-.value-emergency {
+    /*background-color: red;*/
+/*}*/
+/*.value-emergency {*/
     /*animation: blink 0.5s steps(1, end) infinite;*/
-    background-color: purple;
-}
+    /*background-color: purple;*/
+/*}*/
 
 
 @keyframes blink {
     0% {
-        border: 2px dashed gray;
+        border: 2px dashed rgba(0, 0, 0, 0);
     }
     50% {
         background-color: inherit;
-        border-color: rgba(0, 0, 0, 0);
+        /*border-color: rgba(0, 0, 0, 0);*/
     }
     100% {
-        border: 2px dashed gray;
+        border: 2px dashed rgba(0, 0, 0, 0);
     }
 }
 

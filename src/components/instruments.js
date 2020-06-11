@@ -4,10 +4,11 @@ import CompassContainer from "./instruments/compass/CompassContainer"
 import TridataContainer from "./instruments/tridata/TridataContainer";
 
 import "./instruments.css"
-import InstrumentContainer from "./instrumentcontainer";
+import SingleInstrumentContainer from "./noninstruments/SingleInstrumentContainer";
 import WindContainer from "./instruments/wind/WindContainer";
 import GaugeContainer from "./instruments/gauge/GaugeContainer";
 import VisualiserContainer from "./instruments/visualiser/VisualiserContainer";
+import QuadrantInstrumentContainer from "./noninstruments/QuadrantInstrumentContainer";
 
 // const server_root = "ws://192.168.1.115:3000";
 
@@ -67,8 +68,16 @@ class Instruments extends React.Component {
                     message.updates.forEach(update => {
                         update.values.forEach(value => {
                             subscriber.paths.forEach(subscriberPath => {
-                                if (subscriberPath.test(value.path)) {
-                                    subscriber.onDelta(update);
+                                if (subscriberPath instanceof RegExp) {
+                                    if (subscriberPath.test(value.path)) {
+                                        subscriber.onDelta(update);
+                                    }
+                                } else if (typeof subscriberPath === "string") {
+                                    if (subscriberPath === value.path) {
+                                        subscriber.onDelta(update);
+                                    }
+                                } else {
+                                    throw new Error(`Encountered subscriber path ${subscriberPath} of unknown type!`);
                                 }
                             })
                         })
@@ -81,8 +90,9 @@ class Instruments extends React.Component {
         };
     }
 
-    pathRegexToHTTP = path => path.toString()
+    pathRegexToHTTP = path => "/".concat(path.toString()
         .replace(/([\\+.])+/g, "/")
+        .concat("/"))
         .replace(/\/+/g, "/")
 
     pathRegexToSignalkPath = path => this.pathRegexToHTTP(path)
@@ -93,9 +103,10 @@ class Instruments extends React.Component {
 
     giveMetadata(paths, onMetadata) {
         const HTTPServerRoot = "http:" + this.props.server.split(":").slice(1, 10).join(":");
+        const API = HTTPServerRoot + endpoint;
 
         paths.forEach(path => {
-            fetch(HTTPServerRoot + endpoint + "/api/vessels/self" + this.pathRegexToHTTP(path) + "meta")
+            fetch(API + "/api/vessels/self" + this.pathRegexToHTTP(path) + "meta")
                 .then(response => response.json())
                 .then(data => onMetadata(data, this.pathRegexToSignalkPath(path)))
                 .catch(console.error)
@@ -127,9 +138,59 @@ class Instruments extends React.Component {
 
 
         const instruments = [
-            [TridataContainer, {}],
-            // [CompassContainer, {}],
-            [GaugeContainer, {}],
+            {
+                type: "quadrant",
+                instruments: [
+                    {
+                        component: TridataContainer,
+                        additionalProps: {
+                            paths: ["environment.depth.belowTransducer",
+                                    "navigation.speedThroughWater",
+                                    "performance.velocityMadeGood"
+                            ]
+                        }
+                    },
+                    {
+                        // component: TridataContainer,
+                        // additionalProps: {
+                        //     paths: ["environment.wind.speedApparent",
+                        //         "navigation.speedOverGround",
+                        //         "navigation.courseRhumbline.crossTrackError"
+                        //     ]
+                        // }
+                        component: GaugeContainer,
+                        additionalProps: {
+                            path: "environment.depth.belowTransducer"
+                        }
+                    }, {
+                        component: GaugeContainer,
+                        additionalProps: {
+                            path: "performance.velocityMadeGood"
+                        }
+                    }, {
+                        component: CompassContainer,
+                        additionalProps: {}
+                    }
+                ]
+            }, {
+                type: "single",
+                instruments: [
+                    {
+                        component: GaugeContainer,
+                        additionalProps: {
+                            path: "environment.wind.speedTrue"
+                        }
+                    }
+                ]
+            }, {
+                type: "single",
+                instruments: [
+                    {
+                        component: WindContainer,
+                        additionalProps: {}
+                    }
+                ]
+            },
             // [GaugeContainer, {}],
             // [WindContainer, {}],
             // [VisualiserContainer, {path: /^environment.depth.belowTransducer$/, ranges: [5, 10, 20, 40, 100], numberOfPointsToShow: 100, negate: true, upperBound: 100, lowerBound: 0, legend: "Syvyys", unit: "m", trendlinePeriod: 4, trendline: true}],
@@ -147,8 +208,35 @@ class Instruments extends React.Component {
 
         return (
             <div className="flexbox-container">
-                {instruments.map((instrument, index) =>
-                    <InstrumentContainer animate={this.props.animation} key={index} darkMode={this.props.darkMode} colors={this.props.colors} children={instrument[0]} callback={subscribe} additionalProps={instrument[1]} resizeDebounce={250} />
+                {instruments.map((instrument, index) => {
+                    if (instrument.type === "single") {
+                        const component = instrument.instruments[0];
+
+                        return <SingleInstrumentContainer
+                            animate={this.props.animation}
+                            key={index}
+                            darkMode={this.props.darkMode}
+                            colors={this.props.colors}
+                            children={component.component}
+                            callback={subscribe}
+                            additionalProps={component.additionalProps}
+                            resizeDebounce={0}
+                        />;
+                    } else if (instrument.type === "quadrant") {
+                        return <QuadrantInstrumentContainer
+                            animate={this.props.animation}
+                            key={index}
+                            darkMode={this.props.darkMode}
+                            colors={this.props.colors}
+                            children={instrument.instruments}
+                            callback={subscribe}
+                            resizeDebounce={0}
+                        />;
+
+                    }
+
+
+                    }
                 )}
             </div>
         );

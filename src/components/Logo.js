@@ -4,18 +4,47 @@ import LogoAsset from "../assets/favicon.svg";
 
 import "./Logo.css"
 
-const Logo = (props) => {
-    return <div className="logo-parent">
-        <a className="logo-link" href={"https://github.com/KaappoRaivio/Scientia"} target="_blank" rel="noopener noreferrer"/>
-        <div className="logo">
-            <img src={LogoAsset} width="200px" alt="Logo"/>
-        </div>
-        <b className="name" >Scientia</b> <br/>
-        <span  className="author">
-            Kaappo Raivio
-        </span>
+class Logo extends React.Component {
+    constructor(props) {
+        super(props);
 
-    </div>
+        this.handleButtonPress = this.handleButtonPress.bind(this);
+        this.handleButtonRelease = this.handleButtonRelease.bind(this);
+    }
+
+    handleButtonPress () {
+        this.buttonPressTimer = setTimeout(() => {
+            let win = window.open("https://github.com/KaappoRaivio/Scientia", "_blank");
+            win.focus();
+        }, 5000);
+    }
+
+    handleButtonRelease () {
+        clearTimeout(this.buttonPressTimer);
+    }
+
+    render() {
+        return <div className="logo-parent"
+                    onTouchStart={this.handleButtonPress}
+                    onTouchEnd={this.handleButtonRelease}
+                    onMouseDown={this.handleButtonPress}
+                    onMouseUp={this.handleButtonRelease}
+                    onMouseLeave={this.handleButtonRelease}
+        >
+            {/*<a className="logo-link" href={"https://github.com/KaappoRaivio/Scientia"} target="_blank"*/}
+            {/*   rel="noopener noreferrer">*/}
+
+            {/*</a>*/}
+            <div className="logo">
+                <img src={LogoAsset} width="200px" alt="Logo" onDragStart={e => e.preventDefault()} />
+            </div>
+            <b className="name">Scientia</b> <br/>
+            <span className="author">
+                Kaappo Raivio
+            </span>
+
+        </div>
+    }
 }
 
 export default Logo;

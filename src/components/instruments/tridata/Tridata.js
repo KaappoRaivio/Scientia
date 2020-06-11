@@ -1,4 +1,4 @@
-import NumberDisplay from "../../numberdisplay/numberdisplay";
+import NumberDisplay from "../../numberdisplay/NumberDisplay";
 import React from "react";
 
 const Tridata = (props) => {
@@ -15,6 +15,8 @@ const Tridata = (props) => {
         }
         return a < b ? a : b;
     });
+
+    const commonDisplayScale = {lower: commonLowerBound, upper: commonUpperBound};
 
     const colors = props.colors;
 
@@ -37,7 +39,7 @@ const Tridata = (props) => {
                 unit={value.units}
                 label={value.label}
 
-                upperBound={Math.max(commonUpperBound, commonLowerBound)}
+                displayScale={commonDisplayScale}
                 decimalPlaces={value.decimalPlaces}
                 zones={value.zones}
 
@@ -46,6 +48,7 @@ const Tridata = (props) => {
                 height={props.height / props.values.length}
 
                 colors={props.colors}
+                darkMode={props.darkMode}
             />
         })}
     </div>

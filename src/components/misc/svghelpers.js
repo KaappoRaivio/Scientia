@@ -32,8 +32,10 @@ class Svghelpers {
         const cy2 = -Math.sin(degtorad * a1) * cr + y;
 
         const otherWay = a1 < a2 ? "1" : "0";
+        const large = a1 - a2 > 180 ? "1" : "0";
 
-        return `M${x} ${y} ${cx1} ${cy1} A${cr} ${cr} 0 0 ${otherWay} ${cx2} ${cy2}Z`;
+        return `M${x} ${y} ${cx1} ${cy1} A${cr} ${cr} 0 ${large} ${otherWay} ${cx2} ${cy2}Z`;
+        // return `M${x} ${y} ${cx1} ${cy1} A${cr} ${cr} 0 0 ${1} ${cx2} ${cy2}Z`;
     }
 
     static getSector (centerX, centerY, radius, width, startAngle, endAngle, fillColor, key) {
@@ -88,6 +90,7 @@ export class LineDivisions extends React.Component {
                     textProvider={division.textProvider}
                     numberOfLines={division.numberOfLines}
                     rotateText={rotateText}
+                    key={index}
                 />
             })}
         </g>

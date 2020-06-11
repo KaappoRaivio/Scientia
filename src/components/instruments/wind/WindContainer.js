@@ -13,6 +13,8 @@ class WindContainer extends React.Component {
             angleApparent: null,
             speedTrue: null,
             speedApparent: null,
+
+            displayScale: {lower: 0, upper: 20, type: "power", "power": 2}
         }
 
         this.divisions = [
@@ -34,7 +36,7 @@ class WindContainer extends React.Component {
 
     subscribe() {
         this.counter = 1;
-        const onMessage = (message) => {
+        const onDelta = (message) => {
             let path = message.values[0].path.split(".")[2];
 
             if (path in this.state) {
@@ -43,7 +45,15 @@ class WindContainer extends React.Component {
                 })
             }
         };
-        this.props.subscribe([/environment\.wind\..+/], onMessage)
+
+        const onMetadata = (meta, path) => {
+            console.log(meta, path)
+            if (path === "environment.wind.speedTrue") {
+                this.setState({displayScale: meta.displayScale})
+            }
+        }
+        this.props.subscribe(["environment.wind.speedTrue", "environment.wind.speedApparent",
+            "environment.wind.angleTrueWater", "environment.wind.angleApparent"], onDelta, onMetadata)
     }
 
     render () {
@@ -66,6 +76,7 @@ class WindContainer extends React.Component {
             colors={this.props.colors} darkMode={this.props.darkMode}
             divisions={this.divisions}
             animate={this.props.animate}
+            displayScale={this.state.displayScale}
         />
     }
 }

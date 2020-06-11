@@ -3,7 +3,7 @@ import {mod} from "mathjs";
 
 
 import "./compass.css"
-import NumberDisplay from "../../numberdisplay/numberdisplay";
+import NumberDisplay from "../../numberdisplay/NumberDisplay";
 import {LineDivisions} from "../../misc/svghelpers";
 
 const Compass = (props) => {
@@ -45,6 +45,9 @@ const Compass = (props) => {
             decimalPlaces={1}
             // fontSize={props.width / 4}
             label="Heading"
+            colors={colors}
+            darkMode={props.darkMode}
+            displayScale={{"lower": 0, "upper": 360, "type": "linear"}}
         />
 
         <svg className="compassRose" width={props.width} height={props.height} style={compassRotationStyle}>

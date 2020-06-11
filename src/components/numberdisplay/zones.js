@@ -18,6 +18,5 @@ export const checkForZones = (zones, value) => {
 }
 
 const isIn = (zone, value) => {
-    // console.log(zone, value, (zone.upper || Infinity) > value && (zone.lower || -Infinity) < value)
-    return (zone.upper || Infinity) > value && (zone.lower || -Infinity) < value;
+    return (zone.upper || Infinity) >= value && (zone.lower || -Infinity) <= value;
 }

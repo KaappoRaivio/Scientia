@@ -58,7 +58,7 @@ class AutoFitTextBox extends React.Component {
         // this.setState({ scale: scale});
         const scale = this.getTextScale(this.svgTextNode.current);
         // console.log(scale, this.props.value.length)
-        const {value, maxNumberOfDigits, ...restOfTheProps} = this.props;
+        const {value, maxNumberOfDigits, initialFontSize, ...restOfTheProps} = this.props;
 
         return (
 

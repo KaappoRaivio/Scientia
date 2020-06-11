@@ -8,8 +8,8 @@ import MySidebar from "./components/mySidebar";
 import Logo from "./components/Logo";
 
 if (process.env.NODE_ENV !== "production") {
-    const {whyDidYouUpdate} = require("why-did-you-update");
-    whyDidYouUpdate(React);
+    // const {whyDidYouUpdate} = require("why-did-you-update");
+    // whyDidYouUpdate(React);
 }
 
 class App extends React.Component {
@@ -32,20 +32,46 @@ class App extends React.Component {
         if (this.state.darkMode) {
             return {
                 primary: "#f00",
+                secondary: "#222",
                 background: "#000",
 
                 accent1: "rgb(0, 50, 150)",
-                accent2: "rgb(0, 50, 220)"
+                accent2: "rgb(0, 50, 220)",
+
+                valueNormal: "rgba(0, 0, 0,0)",
+                valueAlert: "#dd0",
+                valueWarn: "#d80",
+                valueAlarm: "#d00",
+                valueEmergency: "#f0f"
             }
         } else {
             return {
                 primary: "#000",
+                secondary: "#000",
                 background: "#fff",
 
                 accent1: "rgb(0, 50, 150)",
-                accent2: "rgb(0, 50, 220)"
+                accent2: "rgb(0, 50, 220)",
+
+
+                valueNormal: "rgba(0, 0, 0, 0)",
+                valueAlert: "yellow",
+                valueWarn: "orange",
+                valueAlarm: "red",
+                valueEmergency: "purple"
             }
         }
+    }
+
+
+    componentDidMount() {
+        navigator
+            .getBattery()
+            .then(battery => {
+                console.log(battery);
+                this.setState({animation: battery.charging})
+            })
+            .catch(console.error);
     }
 
     render() {
@@ -81,12 +107,7 @@ class App extends React.Component {
                         configure
                     </button>
                 </div>
-
                 <Logo />
-                {/*<svg width={500} height={500} fill={"black"} stroke={"none"}>*/}
-                {/*    <AutoFitTextBox width={100} height={100}>3.100</AutoFitTextBox>*/}
-                {/*    <text y={10}>null</text>*/}
-                {/*</svg>*/}
             </div>
         );
     }

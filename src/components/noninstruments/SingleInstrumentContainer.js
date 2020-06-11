@@ -1,9 +1,9 @@
 import React from "react";
 
-import "./instruments.css"
-import "./instrumentcontainer.css"
+import "../instruments.css"
+import "./singleinstrumentcontainer.css"
 
-class InstrumentContainer extends React.Component {
+class SingleInstrumentContainer extends React.Component {
     constructor(props) {
         super(props);
 
@@ -74,11 +74,12 @@ class InstrumentContainer extends React.Component {
             fontSize: this.state.width / 10,
             color: this.props.colors.primary,
             // backgroundColor: this.props.colors.background,
+
         };
 
         return (
-            <div className="flexbox-item with-shadow" style={parentStyle}>
-                <div className="flexbox-wrapper">
+            <div className="single-flexbox-item with-shadow" style={parentStyle}>
+                <div className="single-flexbox-wrapper">
                     {
                         React.createElement(this.props.children,
                             props,
@@ -91,4 +92,4 @@ class InstrumentContainer extends React.Component {
     }
 }
 
-export default InstrumentContainer;
+export default SingleInstrumentContainer;
