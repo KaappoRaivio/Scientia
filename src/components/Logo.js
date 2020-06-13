@@ -16,7 +16,7 @@ class Logo extends React.Component {
         this.buttonPressTimer = setTimeout(() => {
             let win = window.open("https://github.com/KaappoRaivio/Scientia", "_blank");
             win.focus();
-        }, 5000);
+        }, 7000);
     }
 
     handleButtonRelease () {

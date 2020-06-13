@@ -14,6 +14,7 @@
 
 .logo-parent:active {
     transition: transform 5s cubic-bezier(0.995, 0.005, 0.860, -0.010);
+    transition-delay: 2s;
     transform: scale(10, 10) rotate(7200deg);
     transform-origin: center;
 }
