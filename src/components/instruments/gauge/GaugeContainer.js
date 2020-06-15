@@ -4,11 +4,7 @@ import {camelCaseToSentenceCase, valueSkeleton} from "../DataStructures";
 
 import PropTypes from "prop-types";
 
-const divisions = [
-    {numberOfLines: 12, lineLength: 0.1, textProvider: i => "", angleProvider: i => 2 * Math.PI / 12 * i},
-    {numberOfLines: 36, lineLength: 0.05, textProvider: i => "", angleProvider: i => 2 * Math.PI / 36 * i},
-    {numberOfLines: 144, lineLength: 0.025, textProvider: i => "", angleProvider: i => 2 * Math.PI / 144 * i},
-]
+
 class GaugeContainer extends React.Component {
     static propTypes = {
         width: PropTypes.number.isRequired,
@@ -77,7 +73,6 @@ class GaugeContainer extends React.Component {
             height={height}
             colors={colors}
             darkMode={darkMode}
-            divisions={divisions}
             displayScale={dataPath.displayScale}
             value={dataPath.value}
             animate={animate}

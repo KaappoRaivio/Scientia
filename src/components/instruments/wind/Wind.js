@@ -31,7 +31,7 @@ const Wind = (props) => {
                     value={props.speed * 3.6 / 1.852}
                     suffix=""
                     unit="kts"
-                    width={props.width / 2}
+                    width={props.width / 1.5}
                     height={props.height * 0.25}
                     upperBound={99}
                     decimalPlaces={1}
@@ -39,6 +39,7 @@ const Wind = (props) => {
                     colors={colors}
                     darkMode={props.darkMode}
                     displayScale={props.displayScale}
+                    centerLabel={true}
                 />
             </div>
 

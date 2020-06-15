@@ -142,12 +142,31 @@ class Instruments extends React.Component {
                 type: "quadrant",
                 instruments: [
                     {
-                        component: TridataContainer,
+                        component: GaugeContainer,
                         additionalProps: {
-                            paths: ["environment.depth.belowTransducer",
-                                    "navigation.speedThroughWater",
-                                    "performance.velocityMadeGood"
-                            ]
+                            path: "environment.depth.belowTransducer"
+                        }
+                    },
+                    // {
+                    //     component: TridataContainer,
+                    //     additionalProps: {
+                    //         paths: ["environment.depth.belowTransducer",
+                    //                 "navigation.speedThroughWater",
+                    //                 "performance.velocityMadeGood"
+                    //         ]
+                    //     }
+                    // },
+                    {
+                        // component: TridataContainer,
+                        // additionalProps: {
+                        //     paths: ["environment.wind.speedApparent",
+                        //         "navigation.speedOverGround",
+                        //         "navigation.courseRhumbline.crossTrackError"
+                        //     ]
+                        // }
+                        component: GaugeContainer,
+                        additionalProps: {
+                            path: "environment.wind.speedTrue"
                         }
                     },
                     {
@@ -160,51 +179,55 @@ class Instruments extends React.Component {
                         // }
                         component: GaugeContainer,
                         additionalProps: {
-                            path: "environment.depth.belowTransducer"
+                            path: "navigation.speedThroughWater"
                         }
-                    }, {
+                    },
+                    {
+                        // component: TridataContainer,
+                        // additionalProps: {
+                        //     paths: ["environment.wind.speedApparent",
+                        //         "navigation.speedOverGround",
+                        //         "navigation.courseRhumbline.crossTrackError"
+                        //     ]
+                        // }
                         component: GaugeContainer,
                         additionalProps: {
                             path: "performance.velocityMadeGood"
                         }
-                    }, {
-                        component: CompassContainer,
-                        additionalProps: {}
-                    }
-                ]
-            }, {
-                type: "single",
-                instruments: [
-                    {
-                        component: GaugeContainer,
-                        additionalProps: {
-                            path: "environment.wind.speedTrue"
-                        }
-                    }
-                ]
-            }, {
-                type: "single",
-                instruments: [
-                    {
-                        component: WindContainer,
-                        additionalProps: {}
-                    }
+                    },
+                    // {
+                    //     component: GaugeContainer,
+                    //     additionalProps: {
+                    //         path: "performance.velocityMadeGood"
+                    //     }
+                    // },
+                    // {
+                    //     component: CompassContainer,
+                    //     additionalProps: {}
+                    // }
                 ]
             },
-            // [GaugeContainer, {}],
-            // [WindContainer, {}],
-            // [VisualiserContainer, {path: /^environment.depth.belowTransducer$/, ranges: [5, 10, 20, 40, 100], numberOfPointsToShow: 100, negate: true, upperBound: 100, lowerBound: 0, legend: "Syvyys", unit: "m", trendlinePeriod: 4, trendline: true}],
-            // [VisualiserContainer, {path: /^navigation.speedThroughWater$/, ranges: [8, 12], numberOfPointsToShow: 100, negate: false, upperBound: 12, lowerBound: 0, legend: "Nopeus", unit: "kts", convert: x => x * 3.6 / 1.852, trendlinePeriod: 10, trendline: true}],
-            // [VisualiserContainer, {path: /^navigation.courseOverGroundTrue$/, ranges: [360], numberOfPointsToShow: 100, negate: false, upperBound: 360, lowerBound: 0, legend: "Suunta", unit: "°", convert: x => x / Math.PI * 180, trendlinePeriod: 10, trendline: true}],
-            // [VisualiserContainer, {path: /^environment.wind.speedTrue$/, ranges: [10, 20, 50], numberOfPointsToShow: 200, negate: false, upperBound: 50, lowerBound: 0, legend: "Wind speed", unit: "kts", convert: x => x * 3.6 / 1.852, trendlinePeriod: 20, trendline: true}],
-            // [VisualiserContainer, {path: /^environment.wind.speedTrue$/, ranges: [10, 20, 50], numberOfPointsToShow: 20, negate: false, upperBound: 50, lowerBound: 0, legend: "Wind speed", unit: "kts", convert: x => x * 3.6 / 1.852, trendlinePeriod: 6, trendline: true}],
-            // [VisualiserContainer, {path: /electrical.batteries.1.voltage/, ranges: [15], numberOfPointsToShow: 100, negate: false, upperBound: 15, lowerBound: 0, legend: "Jännite", unit: "V", convert: x => x, trendlinePeriod: 10, trendline: true}],
-            //
+            // {
+            //     type: "single",
+            //     instruments: [
+            //         {
+            //             component: GaugeContainer,
+            //             additionalProps: {
+            //                 path: "environment.depth.belowTransducer"
+            //             }
+            //         }
+            //     ]
+            // },
+            // {
+            //     type: "single",
+            //     instruments: [
+            //         {
+            //             component: WindContainer,
+            //             additionalProps: {}
+            //         }
+            //     ]
+            // },
         ];
-
-        // console.log("rerendering!")
-
-
 
         return (
             <div className="flexbox-container">

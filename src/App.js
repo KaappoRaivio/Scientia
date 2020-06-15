@@ -32,7 +32,7 @@ class App extends React.Component {
         if (this.state.darkMode) {
             return {
                 primary: "#f00",
-                secondary: "#222",
+                secondary: "#444",
                 background: "#000",
 
                 accent1: "rgb(0, 50, 150)",
@@ -55,6 +55,7 @@ class App extends React.Component {
 
 
                 valueNormal: "rgba(0, 0, 0, 0)",
+                // valueNormal: "lightgreen",
                 valueAlert: "yellow",
                 valueWarn: "orange",
                 valueAlarm: "red",

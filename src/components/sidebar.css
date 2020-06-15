@@ -44,6 +44,7 @@
 .open-menu {
     margin-left: 10px !important;
     margin-right: 10px !important;
+    margin-top: 10px;
     padding: 10px;
     text-align: center;
     /*height: 10px;*/

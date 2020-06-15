@@ -1,6 +1,7 @@
 .gauge-parent {
     position: relative;
     text-align: center;
+
 }
 
 .gauge-gauge {
@@ -10,7 +11,7 @@
 }
 
 .gauge-number-display-value {
-    width: 70%;
+    width: 80%;
     text-align: center;
     height: 30%;
     position: absolute;

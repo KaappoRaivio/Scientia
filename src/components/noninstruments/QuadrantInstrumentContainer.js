@@ -58,7 +58,7 @@ class QuadrantInstrumentContainer extends React.Component {
 
     render() {
         const props = {
-            width: this.state.width / 2 - 10,
+            width: this.state.width / 2 - 15,
             height: this.state.height / 2 - 5,
             subscribe: this.props.callback,
             ref: this.child,
@@ -79,34 +79,6 @@ class QuadrantInstrumentContainer extends React.Component {
         return (
             <div className="single-flexbox-item" style={parentStyle}>
                 <div className="quadrant-flexbox-wrapper">
-                    {/*<div className="quadrant-place-1 with-shadow">*/}
-                    {/*    {*/}
-                    {/*        React.createElement(this.props.children,*/}
-                    {/*            props,*/}
-                    {/*            [])*/}
-                    {/*    }*/}
-                    {/*</div>*/}
-                    {/*<div className="quadrant-place-2 with-shadow">*/}
-                    {/*    {*/}
-                    {/*        React.createElement(this.props.children,*/}
-                    {/*            props,*/}
-                    {/*            [])*/}
-                    {/*    }*/}
-                    {/*</div>*/}
-                    {/*<div className="quadrant-place-3 with-shadow">*/}
-                    {/*    {*/}
-                    {/*        React.createElement(this.props.children,*/}
-                    {/*            props,*/}
-                    {/*            [])*/}
-                    {/*    }*/}
-                    {/*</div>*/}
-                    {/*<div className="quadrant-place-4 with-shadow">*/}
-                    {/*    {*/}
-                    {/*        React.createElement(this.props.children,*/}
-                    {/*            props,*/}
-                    {/*            [])*/}
-                    {/*    }*/}
-                    {/*</div>*/}
                     {
                         this.props.children.map((instrument, index) => {
 

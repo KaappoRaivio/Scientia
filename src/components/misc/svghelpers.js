@@ -1,6 +1,7 @@
 import React from "react";
 import * as PropTypes from "prop-types";
 import isEqual from "react-fast-compare";
+import _ from "underscore";
 
 class Svghelpers {
     static getDivisionCoordinates (center, radius, length, numberOfDivisions, angleProvider) {
@@ -9,8 +10,11 @@ class Svghelpers {
         for (let i = 0; i < numberOfDivisions; i++) {
             let angle = angleProvider(i);
             // console.log(angle);
+
+            let actualLength = _.isFunction(length) ? length(i) : length;
+
             let start = this.polarToCartesian(angle, radius, center);
-            let end = this.polarToCartesian(angle, radius - length, center);
+            let end = this.polarToCartesian(angle, radius - actualLength, center);
 
             lines.push({start: start, end: end});
         }
@@ -46,12 +50,12 @@ class Svghelpers {
     }
 }
 
-const LineDivision = ({ center, radius, length, numberOfLines, fontSize, angleProvider, textProvider, rotateText }) => {
+const LineDivision = ({ center, radius, textRadius, length, numberOfLines, fontSize, angleProvider, textProvider, rotateText, strokeWidthMultiplier }) => {
     let lines = Svghelpers.getDivisionCoordinates(center, radius, length, numberOfLines, angleProvider);
-    let textPositions = Svghelpers.getDivisionCoordinates(center, radius - 1.5 * length, 0, numberOfLines, angleProvider);
+    let textPositions = Svghelpers.getDivisionCoordinates(center, textRadius, 0, numberOfLines, angleProvider);
 
     return (
-        <g fontSize={fontSize}>
+        <g strokeWidth={strokeWidthMultiplier ? radius * strokeWidthMultiplier : null}>
             {lines.map((item, index) => <line   key={index}
                                                         x1={item.start.x}
                                                         y1={item.start.y}
@@ -61,11 +65,17 @@ const LineDivision = ({ center, radius, length, numberOfLines, fontSize, anglePr
             }
             <g stroke={"none"}>
                 {
-                    textPositions.map((item, index) => <text
-                        key={index}
-                        alignmentBaseline={"middle"}
-                        transform={`rotate(${rotateText ? 180 - angleProvider(index) / Math.PI * 180 : 0}, ${item.start.x}, ${item.start.y})`}
-                        x={item.start.x} y={item.start.y} textAnchor="middle">{textProvider(index)}</text>)
+                    textPositions.map((item, index) =>
+                        <text
+                            key={index}
+                            alignmentBaseline={"middle"}
+                            transform={`rotate(${rotateText ? 180 - angleProvider(index) / Math.PI * 180 : 0}, ${item.start.x}, ${item.start.y})`}
+                            x={item.start.x} y={item.start.y} textAnchor="middle"
+                            fontSize={_.isFunction(fontSize) ? fontSize(index) : fontSize}
+                        >
+                        {textProvider(index)}
+
+                    </text>)
                 }
             </g>
         </g>
@@ -78,19 +88,22 @@ export class LineDivisions extends React.Component {
     }
 
     render() {
-        let {center, radius, divisions, rotateText} = this.props;
+        let {center, radius, divisions, rotateText, textRadius} = this.props;
         return <g>
             {divisions.map((division, index) => {
+                console.log(division.strokeWidthMultiplier)
                 return <LineDivision
                     center={center}
                     radius={radius}
-                    length={division.lineLength * radius}
+                    textRadius={textRadius || radius - 1.5 * division.lineLength * radius}
+                    length={_.isFunction(division.lineLength) ? i => division.lineLength(i) * radius : division.lineLength * radius}
                     fontSize={division.fontSize}
                     angleProvider={division.angleProvider}
                     textProvider={division.textProvider}
                     numberOfLines={division.numberOfLines}
                     rotateText={rotateText}
                     key={index}
+                    strokeWidthMultiplier={division.strokeWidthMultiplier}
                 />
             })}
         </g>
