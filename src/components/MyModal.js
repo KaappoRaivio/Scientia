@@ -56,9 +56,8 @@ const schema = {
     ]
 }
 
-const MyModal = props => {
+const MyModal = ({colors, initialValues, isModalOpen, onSettingsUpdate, requestClosing}) => {
     console.log(componentMapper, schema)
-    const {isModalOpen, requestClosing, onSettingsUpdate, initialValues, colors } = props;
 
     const test = (values, formApi) => {
         console.log(values, formApi);
