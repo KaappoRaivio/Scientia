@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import _ from "underscore";
 
 import {checkForZones} from "./zones";
+import NoData from "../misc/NoData";
 
 const isNull = obj => {
     if (obj != null && typeof obj === "object") {
@@ -30,9 +31,9 @@ const getActiveZone = (value, zones) => {
     return "value" + zone[0].toUpperCase() + zone.slice(1);
 }
 
-const NumberDisplay = ({decimalPlaces, height, label, suffix, unit, value, displayScale, width, centerLabel, zones, colors, debug, darkMode}) => {
-    if (isStillLoading(decimalPlaces, label, unit, value, displayScale)) {
-        return <div style={{padding: "6%"}}>No data</div>
+const NumberDisplay = ({decimalPlaces, height, label, suffix, units, value, displayScale, width, centerLabel, zones, colors, debug, darkMode}) => {
+    if (isStillLoading(decimalPlaces, label, units, value, displayScale)) {
+        return <NoData style={{fontWeight: "bold"}} width={width} height={height} colors={colors}/>
     }
 
     const actualWidth = width * 0.94;
@@ -73,9 +74,8 @@ const NumberDisplay = ({decimalPlaces, height, label, suffix, unit, value, displ
                         }
 
                         <AutoFitTextBox x="3%" y="90%" maxNumberOfDigits={textMaxLength} value={value.toFixed(decimalPlaces) + suffix}
-                                        initialFontSize={60} width={actualWidth * 0.57} height={actualHeight * 0.75}/>
-    s
-                        <AutoFitTextBox x="60%" y="90%" maxNumberOfDigits={unit.length} value={" " + unit}
+                                        initialFontSize={60} width={actualWidth * 0.57} height={actualHeight * 0.75} fontWeight={"bold"}/>
+                        <AutoFitTextBox x="60%" y="90%" maxNumberOfDigits={units.length} value={" " + units}
                                         initialFontSize={60} width={actualWidth * 0.37} height={actualHeight / 2}/>
 
                     </g>
@@ -91,7 +91,7 @@ NumberDisplay.propTypes = {
 
     label: PropTypes.string.isRequired,
     suffix: PropTypes.string,
-    unit: PropTypes.string.isRequired,
+    units: PropTypes.string.isRequired,
     value: PropTypes.number.isRequired,
 
     decimalPlaces: PropTypes.number.isRequired,

@@ -86,18 +86,6 @@
     width: 100%;
 }
 
-.test {
-    font-size: 80px;
-    /*position: absolute;*/
-    /*top: 0;*/
-    /*font-weight: bold;*/
-    /*display: inline;*/
-    font-weight: bold;
-    vertical-align: baseline;
-    /*line-height: 0;*/
-}
-
-
 .value-parent {
     /*text-align: center;*/
     height: 100px;

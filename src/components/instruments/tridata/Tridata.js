@@ -36,7 +36,7 @@ const Tridata = (props) => {
                 value={value.value}
 
                 suffix={""}
-                unit={value.units}
+                units={value.units}
                 label={value.label}
 
                 displayScale={commonDisplayScale}

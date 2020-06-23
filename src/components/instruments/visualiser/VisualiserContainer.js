@@ -2,18 +2,22 @@ import * as React from "react";
 
 import "./visualiser.css"
 import Visualiser from "./Visualiser";
+import PropTypes from "prop-types";
 
 class  VisualiserContainer extends React.Component {
     constructor(props) {
         super(props);
 
-        let data = /*[...Array(1000).keys()].map((_, index) => ({x: index, y: index}))*/ [{x: 0, y: 0}];
+        let data = /*[...Array(1000).keys()].map((_, index) => ({x: index, y: index}))*/ [{x: 0, y: 1}];
         console.log(data);
         this.state = {
             counter: 0,
             data,
-            trendData: [{x: 0, y: 0}],
-            yDomain: [0, 0]
+            trendData: [{x: 0, y: 1}],
+            yDomain: [0, 0],
+            displayScale: null,
+            zones: null,
+            units: null
         };
 
         if (this.props.convert) {
@@ -26,12 +30,23 @@ class  VisualiserContainer extends React.Component {
     }
 
     subscribe () {
-        const onMessage = (message) => {
+        const onDelta = message => {
             let value = message.values[0];
             this.addData(value.value);
         }
 
-        this.props.subscribe([this.props.path], onMessage)
+        const onMetadata = metadata => {
+            console.log(metadata)
+            this.setState({
+                displayScale: metadata.displayScale,
+                zones: metadata.zones,
+                units: metadata.units
+            })
+
+            console.log(this.state)
+        }
+
+        this.props.subscribe([this.props.path], onDelta, onMetadata)
     }
 
     componentDidMount() {
@@ -85,33 +100,47 @@ class  VisualiserContainer extends React.Component {
         let y = dataPoints.map(a => a.y).reduce ((a, b) => a + b) / dataPoints.length;
 
         if (x < 0) {
-            return {x: 0, y: 0}
+            return {x: 0, y: 1}
         } else {
             return {x, y}
         }
     }
 
+    static propTypes = {
+        width: PropTypes.number.isRequired,
+        height: PropTypes.number.isRequired,
+        ranges: PropTypes.arrayOf(PropTypes.number).isRequired,
+        unit: PropTypes.string.isRequired,
+        fontSize: PropTypes.string.isRequired,
+        trendlinePeriod: PropTypes.number.isRequired,
+        animate: PropTypes.bool.isRequired,
+        numberOfPointsToShow: PropTypes.number.isRequired,
+        colors: PropTypes.object.isRequired,
+        negate: PropTypes.bool
+    }
+
     render () {
-
+        const { width, fontSize, trendlinePeriod, animate, height, legend, numberOfPointsToShow, negate, colors } = this.props;
+        const { units, displayScale } = this.state;
         return <Visualiser
-            legend={this.props.legend}
-            unit={this.props.unit}
-            ranges={this.props.ranges}
+            legend={legend}
+            units={units}
+            displayScale={displayScale}
 
-            animate={this.props.animate}
-            colors={this.props.colors}
+            animate={animate}
+            colors={colors}
 
-            width={this.props.width}
-            height={this.props.height}
-            fontSize={this.props.fontSize}
+            width={width}
+            height={height}
+            fontSize={fontSize}
 
             data={this.state.data}
             trendData={this.state.trendData}
-            trendlinePeriod={this.props.trendlinePeriod}
-            numberOfPointsToShow={this.props.numberOfPointsToShow}
-            negate={this.props.negate}
+            trendlinePeriod={trendlinePeriod}
+            numberOfPointsToShow={numberOfPointsToShow}
+            negate={negate}
         />
     }
 }
 
-export default VisualiserContainer
+export default VisualiserContainer;

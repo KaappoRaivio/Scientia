@@ -30,7 +30,7 @@ const Wind = (props) => {
                 <NumberDisplay
                     value={props.speed * 3.6 / 1.852}
                     suffix=""
-                    unit="kts"
+                    units="kts"
                     width={props.width / 1.5}
                     height={props.height * 0.25}
                     upperBound={99}

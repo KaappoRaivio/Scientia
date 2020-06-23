@@ -52,13 +52,13 @@
 
 .quadrant-place-3 {
     left: 0;
-    top: calc(50% + 5px);
+    top: calc(50% + 10px);
     /*top: 50%;*/
 }
 
 .quadrant-place-4 {
     /*left: calc(50% + 5px);*/
     left: 50%;
-    top: calc(50% + 5px);
+    top: calc(50% + 10px);
 }
 

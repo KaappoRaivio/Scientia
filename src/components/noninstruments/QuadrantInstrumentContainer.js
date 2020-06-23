@@ -59,7 +59,7 @@ class QuadrantInstrumentContainer extends React.Component {
     render() {
         const props = {
             width: this.state.width / 2 - 15,
-            height: this.state.height / 2 - 5,
+            height: this.state.height / 2 - 10,
             subscribe: this.props.callback,
             ref: this.child,
             animate: this.props.animate,

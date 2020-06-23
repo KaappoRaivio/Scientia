@@ -9,6 +9,7 @@ import WindContainer from "./instruments/wind/WindContainer";
 import GaugeContainer from "./instruments/gauge/GaugeContainer";
 import VisualiserContainer from "./instruments/visualiser/VisualiserContainer";
 import QuadrantInstrumentContainer from "./noninstruments/QuadrantInstrumentContainer";
+import Visualiser2 from "./instruments/visualiser/Visualiser2";
 
 // const server_root = "ws://192.168.1.115:3000";
 
@@ -128,6 +129,7 @@ class Instruments extends React.Component {
             }))
         }
         this.ws.close(1000, `Changing server from ${prevProps.server}`)
+        return null;
     }
 
     render () {
@@ -139,94 +141,128 @@ class Instruments extends React.Component {
 
         const instruments = [
             {
-                type: "quadrant",
+                type: "single",
                 instruments: [
                     {
-                        component: GaugeContainer,
+                        component: TridataContainer,
                         additionalProps: {
-                            path: "environment.depth.belowTransducer"
+                            paths: ["environment.depth.belowTransducer",
+                                "navigation.speedThroughWater",
+                                "performance.polarSpeedRatio"
+                            ]
                         }
                     },
-                    // {
-                    //     component: TridataContainer,
-                    //     additionalProps: {
-                    //         paths: ["environment.depth.belowTransducer",
-                    //                 "navigation.speedThroughWater",
-                    //                 "performance.velocityMadeGood"
-                    //         ]
-                    //     }
-                    // },
+                ]
+            },
+            {
+                type: "single",
+                instruments: [
                     {
-                        // component: TridataContainer,
-                        // additionalProps: {
-                        //     paths: ["environment.wind.speedApparent",
-                        //         "navigation.speedOverGround",
-                        //         "navigation.courseRhumbline.crossTrackError"
-                        //     ]
-                        // }
-                        component: GaugeContainer,
-                        additionalProps: {
-                            path: "environment.wind.speedTrue"
-                        }
-                    },
-                    {
-                        // component: TridataContainer,
-                        // additionalProps: {
-                        //     paths: ["environment.wind.speedApparent",
-                        //         "navigation.speedOverGround",
-                        //         "navigation.courseRhumbline.crossTrackError"
-                        //     ]
-                        // }
-                        component: GaugeContainer,
-                        additionalProps: {
-                            path: "navigation.speedThroughWater"
-                        }
-                    },
-                    {
-                        // component: TridataContainer,
-                        // additionalProps: {
-                        //     paths: ["environment.wind.speedApparent",
-                        //         "navigation.speedOverGround",
-                        //         "navigation.courseRhumbline.crossTrackError"
-                        //     ]
-                        // }
-                        component: GaugeContainer,
-                        additionalProps: {
-                            path: "performance.velocityMadeGood"
-                        }
-                    },
-                    // {
-                    //     component: GaugeContainer,
-                    //     additionalProps: {
-                    //         path: "performance.velocityMadeGood"
-                    //     }
-                    // },
-                    // {
-                    //     component: CompassContainer,
-                    //     additionalProps: {}
-                    // }
+                        component: Visualiser2,
+                        additionalProps: {}
+                    }
                 ]
             },
             // {
-            //     type: "single",
+            //     type: "quadrant",
             //     instruments: [
             //         {
             //             component: GaugeContainer,
             //             additionalProps: {
             //                 path: "environment.depth.belowTransducer"
             //             }
-            //         }
-            //     ]
-            // },
-            // {
-            //     type: "single",
-            //     instruments: [
+            //         },
             //         {
-            //             component: WindContainer,
-            //             additionalProps: {}
-            //         }
+            //             component: TridataContainer,
+            //             additionalProps: {
+            //                 paths: ["environment.depth.belowTransducer",
+            //                         "navigation.speedThroughWater",
+            //                         "performance.velocityMadeGood"
+            //                 ]
+            //             }
+            //         },
+            //         {
+            //             // component: TridataContainer,
+            //             // additionalProps: {
+            //             //     paths: ["environment.wind.speedApparent",
+            //             //         "navigation.speedOverGround",
+            //             //         "navigation.courseRhumbline.crossTrackError"
+            //             //     ]
+            //             // }
+            //             component: GaugeContainer,
+            //             additionalProps: {
+            //                 path: "environment.wind.speedTrue"
+            //             }
+            //         },
+            //         {
+            //             // component: TridataContainer,
+            //             // additionalProps: {
+            //             //     paths: ["environment.wind.speedApparent",
+            //             //         "navigation.speedOverGround",
+            //             //         "navigation.courseRhumbline.crossTrackError"
+            //             //     ]
+            //             // }
+            //             component: GaugeContainer,
+            //             additionalProps: {
+            //                 path: "navigation.speedThroughWater"
+            //             }
+            //         },
+            //         {
+            //             // component: TridataContainer,
+            //             // additionalProps: {
+            //             //     paths: ["environment.wind.speedApparent",
+            //             //         "navigation.speedOverGround",
+            //             //         "navigation.courseRhumbline.crossTrackError"
+            //             //     ]
+            //             // }
+            //             component: GaugeContainer,
+            //             additionalProps: {
+            //                 path: "performance.polarSpeedRatio"
+            //             }
+            //         },
+            //         // {
+            //         //     component: GaugeContainer,
+            //         //     additionalProps: {
+            //         //         path: "performance.velocityMadeGood"
+            //         //     }
+            //         // },
+            //         // {
+            //         //     component: CompassContainer,
+            //         //     additionalProps: {}
+            //         // }
             //     ]
             // },
+            {
+                type: "single",
+                instruments: [
+                    {
+                        component: WindContainer,
+                        // additionalProps: {
+                        //     path: "environment.depth.belowTransducer"
+                        // }
+                    }
+                ]
+            },
+            {
+                type: "single",
+                instruments: [
+                    {
+                        component: VisualiserContainer,
+                        additionalProps: {
+                            path: "environment.depth.belowTransducer",
+                            ranges: [5, 10, 20, 40, 100],
+                            numberOfPointsToShow: 100,
+                            negate: false,
+                            upperBound: 100,
+                            lowerBound: 0,
+                            legend: "Syvyys",
+                            unit: "m",
+                            trendlinePeriod: 50,
+                            trendline: true
+                        }
+                    }
+                ]
+            },
         ];
 
         return (
