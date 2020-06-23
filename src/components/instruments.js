@@ -154,15 +154,15 @@ class Instruments extends React.Component {
                     },
                 ]
             },
-            {
-                type: "single",
-                instruments: [
-                    {
-                        component: Visualiser2,
-                        additionalProps: {}
-                    }
-                ]
-            },
+            // {
+            //     type: "single",
+            //     instruments: [
+            //         {
+            //             component: Visualiser2,
+            //             additionalProps: {}
+            //         }
+            //     ]
+            // },
             // {
             //     type: "quadrant",
             //     instruments: [

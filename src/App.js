@@ -1,11 +1,15 @@
 import React from 'react';
 import './flat-remix.css';
+import "@patternfly/patternfly/patternfly.css"
+
 import './App.css';
 
+import Modal from "react-modal";
 
 import Instruments from "./components/instruments"
 import MySidebar from "./components/mySidebar";
 import Logo from "./components/Logo";
+import MyModal from "./components/MyModal";
 
 if (process.env.NODE_ENV !== "production") {
     // const {whyDidYouUpdate} = require("why-did-you-update");
@@ -20,10 +24,10 @@ class App extends React.Component {
         let ws = "ws:" + url.split(":")[1] + ":3000"
 
         this.state = {
-            sidebarOpen: false,
+            settingsPaneOpen: true,
             serverAddress: ws,
 
-            darkMode: false,
+            darkMode: true,
             animation: true
         };
     }
@@ -78,16 +82,16 @@ class App extends React.Component {
     render() {
         const colors = this.getColors();
 
-        const onSetSidebarOpen = (open) => {
-            this.setState({ sidebarOpen: open });
+        const onSetSettingsPaneOpen = (open) => {
+            this.setState({ settingsPaneOpen: open });
         }
-
+        //
         const onSettingsChange = (newSettings) => {
             console.log(newSettings)
             this.setState({
-                serverAddress: newSettings.address,
+                serverAddress: newSettings.serverAddress,
                 darkMode: newSettings.darkMode,
-                animation: newSettings.animation
+                animation: newSettings.animate
             })
         }
 
@@ -98,13 +102,24 @@ class App extends React.Component {
             backgroundColor: colors.background
         }
 
+        const getInitialSettings = () => ({
+            animate: this.state.animation,
+            darkMode: this.state.darkMode,
+            serverAddress: this.state.serverAddress
+        })
+
         return (
             <div className="instruments" style={parentStyle}>
-                <MySidebar sidebarOpen={this.state.sidebarOpen} initialAddress={this.state.serverAddress} initialDarkMode={this.state.darkMode} initialAnimation={this.state.animation} onSetSidebarOpen={onSetSidebarOpen} onSettingsChange={onSettingsChange} colors={colors}/>
+                {/*<MySidebar settingsPaneOpen={this.state.settingsPaneOpen} initialAddress={this.state.serverAddress} initialDarkMode={this.state.darkMode} initialAnimation={this.state.animation} onSetSettingsPaneOpen={onSetSettingsPaneOpen} onSettingsChange={onSettingsChange} colors={colors}/>*/}
+                <MyModal isModalOpen={this.state.settingsPaneOpen}
+                    requestClosing={() => onSetSettingsPaneOpen(false)}
+                    initialValues={getInitialSettings()}
+                    onSettingsUpdate={onSettingsChange}
+                    colors={colors}/>
                 <Instruments server={this.state.serverAddress} darkMode={this.state.darkMode} colors={colors} animation={this.state.animation}/>
                 <div className="open-menu with-shadow">
                     <button className="open-menu-wrapper"
-                        onClick={() => this.setState({sidebarOpen: true})}>
+                        onClick={() => onSetSettingsPaneOpen(true)}>
                         configure
                     </button>
                 </div>

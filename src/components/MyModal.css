@@ -1,0 +1,26 @@
+.modal-close {
+    position: absolute;
+    right: 32px;
+    top: 32px;
+    width: 32px;
+    height: 32px;
+    opacity: 0.3;
+    transition: opacity 0.1s linear;
+}
+.modal-close:hover {
+    opacity: 1;
+}
+.modal-close:before, .modal-close:after {
+    position: absolute;
+    left: 15px;
+    content: ' ';
+    height: 33px;
+    width: 2px;
+    background-color: #333;
+}
+.modal-close:before {
+    transform: rotate(45deg);
+}
+.modal-close:after {
+    transform: rotate(-45deg);
+}
