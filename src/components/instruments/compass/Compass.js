@@ -38,7 +38,7 @@ const Compass = (props) => {
             className="number"
             value={props.heading}
             suffix="°"
-            unit="cog"
+            units="cog"
             width={props.width}
             height={props.height / 3}
             upperBound={360}

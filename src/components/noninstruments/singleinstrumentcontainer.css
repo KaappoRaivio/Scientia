@@ -12,6 +12,7 @@
     /*stroke: black;*/
 }
 
+
 .single-flexbox-item:after {
     content: "";
     display: block;
@@ -22,17 +23,29 @@
     .single-flexbox-item {
         flex: 1 1 calc(50% - 20px);
     }
+    .single-flexbox-item:last-child {
+        flex-grow: 0;
+        flex-basis: calc(50%);
+    }
 }
 
 @media screen and (min-width: 600px) {
     .single-flexbox-item {
         flex: 1 1 calc(33.33% - 20px);
     }
+    .single-flexbox-item:last-child {
+        flex-grow: 0;
+        flex-basis: calc(33.33%);
+    }
 }
 
 @media screen and (min-width: 800px) {
     .single-flexbox-item {
         flex: 1 1 calc(25% - 20px);
+    }
+    .single-flexbox-item:last-child {
+        flex-grow: 0;
+        flex-basis: calc(25%);
     }
 }
 .single-flexbox-wrapper {

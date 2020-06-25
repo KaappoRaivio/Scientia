@@ -28,7 +28,7 @@ class App extends React.Component {
             serverAddress: ws,
 
             darkMode: false,
-            animation: true
+            animation: false
         };
     }
 
@@ -73,8 +73,8 @@ class App extends React.Component {
         navigator
             .getBattery()
             .then(battery => {
-                console.log(battery);
-                this.setState({animation: battery.charging})
+                // // console.log(battery);
+                // this.setState({animation: battery.charging})
             })
             .catch(console.error);
     }
@@ -87,7 +87,7 @@ class App extends React.Component {
         }
         //
         const onSettingsChange = (newSettings) => {
-            console.log(newSettings)
+            // // console.log(newSettings)
             this.setState({
                 serverAddress: newSettings.serverAddress,
                 darkMode: newSettings.darkMode,
@@ -121,7 +121,9 @@ class App extends React.Component {
                     requestClosing={() => onSetSettingsPaneOpen(false)}
                     initialValues={getInitialSettings()}
                     onSettingsUpdate={onSettingsChange}
-                    colors={colors}/>
+                    colors={colors}
+                    appElement={this}
+                />
                 <Instruments server={this.state.serverAddress} darkMode={this.state.darkMode} colors={colors} animation={this.state.animation}/>
                 <div className="open-menu with-shadow">
                     <button className="open-menu-wrapper"

@@ -132,15 +132,15 @@ i {
     text-align: right;
 }
 
-.numberdisplay-value-unit {
-    /*font-style: italic;*/
-    text-align: right;
-    font-size: 40%;
-    position: absolute;
-    /*position: relative;*/
-    top: 28%;
-    width: 35%;
-    height: 20%;
-    right: 15%;
-    /*float: left;*/
-}
+/*.numberdisplay-value-unit {*/
+/*    !*font-style: italic;*!*/
+/*    text-align: right;*/
+/*    font-size: 40%;*/
+/*    position: absolute;*/
+/*    !*position: relative;*!*/
+/*    top: 28%;*/
+/*    width: 35%;*/
+/*    height: 20%;*/
+/*    right: 15%;*/
+/*    !*float: left;*!*/
+/*}*/

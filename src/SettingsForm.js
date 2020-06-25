@@ -9,7 +9,7 @@ import * as PropTypes from "prop-types";
 
 const TextField = props => {
     const {label, input, meta, ...rest} = useFieldApi(props)
-    console.log(input, meta, rest)
+    // console.log(input, meta, rest)
     return (
         <div>
             <div className="form-field-title">{label}</div>
@@ -24,7 +24,7 @@ const TextField = props => {
 const Checkbox = props => {
     const { label, input } = useFieldApi(props)
 
-    console.log(input)
+    // // console.log(input)
     return (
         <div style={{display: "flex", flexDirection: "inline"}}>
 
@@ -63,7 +63,7 @@ const MyFormTemplate = props => {
     let {schema, formFields} = props;
     const {handleSubmit, onReset, onCancel} = useFormApi();
 
-    console.log(formFields)
+    // // console.log(formFields)
 
     return (
         <form className="form-template-parent" onSubmit={handleSubmit} onReset={onReset} onCancel={onCancel}>
@@ -140,11 +140,11 @@ const schema = {
 
 
 const SettingsForm = ({onSettingsUpdate, requestClosing, initialValues}) => {
-    console.log(myComponentMapper, schema)
+    // // console.log(myComponentMapper, schema)
 
 
     const test = (values, formApi) => {
-        console.log(values, formApi);
+        // // console.log(values, formApi);
         onSettingsUpdate(values);
         requestClosing();
     }

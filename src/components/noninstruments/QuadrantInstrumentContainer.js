@@ -50,7 +50,7 @@ class QuadrantInstrumentContainer extends React.Component {
             this.fitToContainer(this.probeCanvas.current);
             try {
                 this.child.current.onResize();
-                console.log("succ")
+                // console.log("succ")
             } catch (err) {}
         }, this.props.resizeDebounce));
 

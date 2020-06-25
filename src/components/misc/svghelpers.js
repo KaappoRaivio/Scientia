@@ -9,7 +9,7 @@ class Svghelpers {
 
         for (let i = 0; i < numberOfDivisions; i++) {
             let angle = angleProvider(i);
-            // console.log(angle);
+            // // console.log(angle);
 
             let actualLength = _.isFunction(length) ? length(i) : length;
 
@@ -53,14 +53,15 @@ class Svghelpers {
 const LineDivision = ({ center, radius, textRadius, length, numberOfLines, fontSize, angleProvider, textProvider, rotateText, strokeWidthMultiplier }) => {
     let lines = Svghelpers.getDivisionCoordinates(center, radius, length, numberOfLines, angleProvider);
     let textPositions = Svghelpers.getDivisionCoordinates(center, textRadius, 0, numberOfLines, angleProvider);
+    // console.log(lines, textPositions)
 
     return (
         <g strokeWidth={strokeWidthMultiplier ? radius * strokeWidthMultiplier : null}>
             {lines.map((item, index) => <line   key={index}
-                                                        x1={item.start.x}
-                                                        y1={item.start.y}
-                                                        x2={item.end.x}
-                                                        y2={item.end.y}
+                                                        x1={item.start.x || 0}
+                                                        y1={item.start.y || 0}
+                                                        x2={item.end.x || 0}
+                                                        y2={item.end.y || 0}
             />)
             }
             <g stroke={"none"}>
@@ -69,8 +70,8 @@ const LineDivision = ({ center, radius, textRadius, length, numberOfLines, fontS
                         <text
                             key={index}
                             alignmentBaseline={"middle"}
-                            transform={`rotate(${rotateText ? 180 - angleProvider(index) / Math.PI * 180 : 0}, ${item.start.x}, ${item.start.y})`}
-                            x={item.start.x} y={item.start.y} textAnchor="middle"
+                            transform={`rotate(${rotateText ? 180 - angleProvider(index) / Math.PI * 180 : 0}, ${item.start.x || 0}, ${item.start.y || 0})`}
+                            x={item.start.x || 0} y={item.start.y || 0} textAnchor="middle"
                             fontSize={_.isFunction(fontSize) ? fontSize(index) : fontSize}
                         >
                         {textProvider(index)}
@@ -91,7 +92,7 @@ export class LineDivisions extends React.Component {
         let {center, radius, divisions, rotateText, textRadius} = this.props;
         return <g>
             {divisions.map((division, index) => {
-                console.log(division.strokeWidthMultiplier)
+                // // console.log(division.strokeWidthMultiplier)
                 return <LineDivision
                     center={center}
                     radius={radius}

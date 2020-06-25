@@ -32,7 +32,7 @@ const Gauge = ({
                    value,
                    label,
                    suffix,
-                   unit,
+                   units,
 }) => {
 
 
@@ -75,13 +75,16 @@ const Gauge = ({
         }
     </>;
 
+    // console.log("asdasd", units);
+
     const lineWidth = 0.02;
     return <div className="gauge-parent" style={{width: width, height: height}}>
         <div className="gauge-number-display-value">
             <NumberDisplay width={width * 0.7} height={height * 0.35}
-                           label={label} suffix={suffix}
+                           label={label}
+                           suffix={suffix}
                            displayScale={displayScale} decimalPlaces={decimalPlaces || 0}
-                           unit={unit}
+                           units={units}
                            value={value}
                            centerLabel={true}
                            colors={colors}
@@ -132,7 +135,7 @@ Gauge.propTypes = {
     value: PropTypes.number.isRequired,
     label: PropTypes.string.isRequired,
     suffix: PropTypes.string.isRequired,
-    unit: PropTypes.string.isRequired,
+    units: PropTypes.string.isRequired,
 }
 class Sectors extends React.Component {
     static propTypes = {

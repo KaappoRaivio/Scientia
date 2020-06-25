@@ -9,7 +9,7 @@ class  VisualiserContainer extends React.Component {
         super(props);
 
         let data = /*[...Array(1000).keys()].map((_, index) => ({x: index, y: index}))*/ [{x: 0, y: 1}];
-        console.log(data);
+        // // console.log(data);
         this.state = {
             counter: 0,
             data,
@@ -36,14 +36,14 @@ class  VisualiserContainer extends React.Component {
         }
 
         const onMetadata = metadata => {
-            console.log(metadata)
+            // // console.log(metadata)
             this.setState({
                 displayScale: metadata.displayScale,
                 zones: metadata.zones,
                 units: metadata.units
             })
 
-            console.log(this.state)
+            // // console.log(this.state)
         }
 
         this.props.subscribe([this.props.path], onDelta, onMetadata)
@@ -61,12 +61,12 @@ class  VisualiserContainer extends React.Component {
             this.startTime = this.getTimeStamp();
             this.firstTime = false;
         }
+
         let trend = this.computeTrendDataPoint(this.state.data)
 
         this.setState(({data, trendData}) => {
             return {
                 data: this.concatData(data, {x: this.getTimeStamp() - this.startTime, y: this.converter(dataPoint)}),
-
                 trendData: this.concatData(trendData, trend),
 
             }
@@ -79,7 +79,12 @@ class  VisualiserContainer extends React.Component {
     }
 
     concatData(data, dataPoint) {
-        let newArray = data.slice();
+        let newArray;
+        if (data[0].x === 0 || data[0].y === 1) {
+            newArray = data.slice(1);
+        } else {
+            newArray = data.slice();
+        }
         newArray.push(dataPoint);
         return newArray;
         // return data.concat(
@@ -110,7 +115,7 @@ class  VisualiserContainer extends React.Component {
         width: PropTypes.number.isRequired,
         height: PropTypes.number.isRequired,
         ranges: PropTypes.arrayOf(PropTypes.number).isRequired,
-        unit: PropTypes.string.isRequired,
+        units: PropTypes.string.isRequired,
         fontSize: PropTypes.string.isRequired,
         trendlinePeriod: PropTypes.number.isRequired,
         animate: PropTypes.bool.isRequired,
@@ -120,7 +125,7 @@ class  VisualiserContainer extends React.Component {
     }
 
     render () {
-        const { width, fontSize, trendlinePeriod, animate, height, legend, numberOfPointsToShow, negate, colors } = this.props;
+        const { width, fontSize, trendlinePeriod, animate, height, legend, numberOfPointsToShow, negate, colors, ranges } = this.props;
         const { units, displayScale } = this.state;
         return <Visualiser
             legend={legend}
@@ -139,6 +144,8 @@ class  VisualiserContainer extends React.Component {
             trendlinePeriod={trendlinePeriod}
             numberOfPointsToShow={numberOfPointsToShow}
             negate={negate}
+
+            ranges={ranges}
         />
     }
 }

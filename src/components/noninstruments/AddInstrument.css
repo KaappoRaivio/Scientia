@@ -1,0 +1,13 @@
+.addinstrument-parent {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+.addinstrument-plus {
+    margin: 0;
+    font-size: 10em;
+}

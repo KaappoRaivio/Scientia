@@ -1,5 +1,5 @@
 .form-title {
-    font-size: 4em;
+    font-size: 5em;
     font-weight: bold;
     margin: 10px 0;
 }
@@ -7,7 +7,7 @@
 .form-field-title {
     width: 100%;
     clear: both;
-    font-size: 30px;
+    font-size: 1.75em;
     /*font-weight: bold;*/
     color: inherit !important;
 }
@@ -16,7 +16,6 @@
     width: 100%;
     clear: both;
     font-size: 3em;
-    font-weight: bold;
     margin-bottom: 10px;
 }
 

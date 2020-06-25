@@ -21,7 +21,7 @@ const isNull = obj => {
 }
 
 const isStillLoading = (...params) => {
-    // console.log(params.map(param => isNull(param)), params)
+    // // console.log(params.map(param => isNull(param)), params)
 
     return _.any(params, param => isNull(param));
 }
@@ -33,6 +33,7 @@ const getActiveZone = (value, zones) => {
 
 const NumberDisplay = ({decimalPlaces, height, label, suffix, units, value, displayScale, width, centerLabel, zones, colors, debug, darkMode}) => {
     if (isStillLoading(decimalPlaces, label, units, value, displayScale)) {
+        // console.log("asdasd", decimalPlaces, label, units, value, displayScale)
         return <NoData style={{fontWeight: "bold"}} width={width} height={height} colors={colors}/>
     }
 
@@ -48,7 +49,7 @@ const NumberDisplay = ({decimalPlaces, height, label, suffix, units, value, disp
 
     const activeZone = getActiveZone(value, zones || []);
     if (debug) {
-        // console.log(alarmCSSClass)
+        // // console.log(alarmCSSClass)
     }
 
     const alarmStyle = {

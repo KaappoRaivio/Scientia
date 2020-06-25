@@ -44,8 +44,11 @@ class GaugeContainer extends React.Component {
         };
 
         const onMetadata = (data, path) => {
+            // // console.log(data, path)
+
             this.setState(oldState => {
                 let interestingKey = oldState[path];
+                // console.log("asd", interestingKey, data, data.units);
                 return {
                     [path]: {
                         value: interestingKey.value,
@@ -66,6 +69,7 @@ class GaugeContainer extends React.Component {
     render () {
         const {path, width, animate, height, colors, darkMode} = this.props;
         const dataPath = this.state[path];
+        // console.log("asd", dataPath)
 
         return <Gauge
             zones={dataPath.zones}
@@ -76,7 +80,7 @@ class GaugeContainer extends React.Component {
             displayScale={dataPath.displayScale}
             value={dataPath.value}
             animate={animate}
-            unit={dataPath.units}
+            units={dataPath.units}
             label={dataPath.label}
             suffix={""}
             decimalPlaces={1}

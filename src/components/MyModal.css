@@ -26,6 +26,7 @@
 }
 
 .modal-parent {
+    font-size: 75%;
     position: fixed;
     width: 90%;
     left: 5%;

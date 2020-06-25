@@ -93,7 +93,7 @@ class Interpolator {
 
             if (this.angle) {
                 x = Math.max(Math.min(x, 1 / speed), 0);
-                // console.log(x, mod(k * x + b, 2 * Math.PI) / Math.PI * 180, k, deltaX);
+                // // console.log(x, mod(k * x + b, 2 * Math.PI) / Math.PI * 180, k, deltaX);
                 return mod(k*x + b, 2 * Math.PI);
                 
             } else {

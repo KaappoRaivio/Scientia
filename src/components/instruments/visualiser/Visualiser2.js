@@ -53,7 +53,7 @@ class Visualiser2 extends Component {
                 lines: []
             }
         }
-        console.log(this.props)
+        // // console.log(this.props)
         const data = {
             columns: [
                 ['data1', 30, 200, 100, 400, 150, 250],

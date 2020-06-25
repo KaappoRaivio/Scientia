@@ -38,9 +38,9 @@ const getYDomain = (data, length, possibleRanges, negate) => {
     }
 }
 
-const Visualiser = ({animate, colors, data, displayScale, height, legend, negate, numberOfPointsToShow, trendData, units, width}) => {
+const Visualiser = ({animate, colors, data, displayScale, height, ranges, legend, negate, numberOfPointsToShow, trendData, units, width}) => {
     if (displayScale == null || units == null || data == null) {
-        console.log(displayScale, units, data)
+        // // console.log(displayScale, units, data)
         return <NoData width={width} height={height} colors={colors}/>
     }
 
@@ -48,8 +48,8 @@ const Visualiser = ({animate, colors, data, displayScale, height, legend, negate
 
     const lineStyle = {stroke: primary, backgroundColor: background};
 
-    // let yDomain = getYDomain(props.data, props.numberOfPointsToShow, props.ranges, props.negate);
-    let yDomain = [displayScale.lower, displayScale.upper]
+    let yDomain = getYDomain(data, numberOfPointsToShow, ranges, negate);
+    // let yDomain = [displayScale.lower, displayScale.upper]
     let latestX = data[data.length - 1].x;
     let xDomain = [latestX - numberOfPointsToShow, latestX];
 
@@ -72,7 +72,7 @@ const Visualiser = ({animate, colors, data, displayScale, height, legend, negate
                     // yType={"log"}
             >
                 <HorizontalGridLines
-                    // style={{...lineStyle, strokeWidth: 0.5}}
+                    style={{...lineStyle}}
                 />
 
                 <LineSeries

@@ -17,32 +17,32 @@ class AutoFitTextBox extends React.Component {
     }
     componentDidUpdate(prevProps, prevState, snapshot) {
         // const textBBox = this.getTextBBox();
-        // console.log(this.props.height, textBBox.height, this.props.height / textBBox.height)
-        // console.log(this.props.width, textBBox.width, this.props.width / textBBox.width)
+        // // console.log(this.props.height, textBBox.height, this.props.height / textBBox.height)
+        // // console.log(this.props.width, textBBox.width, this.props.width / textBBox.width)
     }
 
     getTextBBox() {
-        // console.log(this.svgTextNode.current)
+        // // console.log(this.svgTextNode.current)
         return this.svgTextNode.current.getBBox();
     }
 
     getTextScale (textNode) {
         if (textNode === null) return this.props.initialFontSize;
-        // console.log(textNode)
+        // // console.log(textNode)
 
         const { width, height } = this.props;
         if (!this.bbox) {
-            console.log("not good")
+            // console.log("not good")
             this.bbox = this.getTextBBox();
         }
         const textBBox = this.bbox;
 
-        // console.log(textBBox)
+        // // console.log(textBBox)
 
         const widthScale = width / textBBox.width * this.props.initialFontSize;
         const heightScale = this.props.height;
         // const heightScale = height / (textBBox.height);
-        // console.log(textBBox.width, textBBox.height, width, height)
+        // // console.log(textBBox.width, textBBox.height, width, height)
 
         const scale = Math.min(widthScale, heightScale);
         return scale;
@@ -51,13 +51,13 @@ class AutoFitTextBox extends React.Component {
 
     render() {
         // const { scale } = this.state;
-        // console.log(scale)
+        // // console.log(scale)
         // const fontSize = window.getComputedStyle(this.svgTextNode.current).getPropertyValue("font-size");
-        // console.log(fontSize);
+        // // console.log(fontSize);
 
         // this.setState({ scale: scale});
         const scale = this.getTextScale(this.svgTextNode.current);
-        // console.log(scale, this.props.value.length)
+        // // console.log(scale, this.props.value.length)
         const {value, maxNumberOfDigits, initialFontSize, ...restOfTheProps} = this.props;
 
         return (

@@ -6,7 +6,7 @@ class DrawHelper {
         // this.canvas.translate(0.5, 0.5);
         // this.radius = radius;
         // this.arcCenterOffsetY = arcCenterOffsetY;
-        console.log(this.ctx.translate(0.5, 0.5))
+        // // console.log(this.ctx.translate(0.5, 0.5))
     }
 
     
@@ -49,12 +49,12 @@ class DrawHelper {
     }
 
     drawDivision(origin, radius, division, length, angleProvider, numberTextProvider, rotateNumbers) {
-        // console.log(origin, radius, division, length ,angleProvider, numberTextProvider)
+        // // console.log(origin, radius, division, length ,angleProvider, numberTextProvider)
         for (let i = 0; i < division; i++) {
             // let angleOffset = this.props.heading * Math.PI / 180;
             // let angleOffset = 0;
             let angle = angleProvider(i);
-            // console.log(angle)
+            // // console.log(angle)
 
             this.drawCompassLine(origin, angle, radius, length);
             

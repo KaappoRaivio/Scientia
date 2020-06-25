@@ -47,7 +47,7 @@ class WindContainer extends React.Component {
         };
 
         const onMetadata = (meta, path) => {
-            console.log(meta, path)
+            // // console.log(meta, path)
             if (path === "environment.wind.speedTrue") {
                 this.setState({displayScale: meta.displayScale})
             }

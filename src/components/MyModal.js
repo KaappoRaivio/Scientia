@@ -8,7 +8,7 @@ import "./MyModal.css"
 import SettingsForm from "../SettingsForm";
 // import { componentMapper } from '@data-driven-forms/pf4-component-mapper';
 
-const MyModal = ({colors, darkMode, isModalOpen, requestClosing, ...rest}) => {
+const MyModal = ({colors, darkMode, isModalOpen, requestClosing, appElement, ...rest}) => {
 
     // Modal.defaultStyles.content.border = "none";
     // Modal.defaultStyles.content.color = colors.primary;
@@ -22,7 +22,9 @@ const MyModal = ({colors, darkMode, isModalOpen, requestClosing, ...rest}) => {
                 content: {backgroundColor: colors.background, color: colors.primary}
             }}
             isOpen={isModalOpen}
-            onRequestClose={requestClosing}>
+            onRequestClose={requestClosing}
+            // appElement={appElement}
+        >
             <div>
                 <div className="modal-close" onClick={requestClosing}/>
                 <SettingsForm requestClosing={requestClosing} colors={colors} {...rest}/>
