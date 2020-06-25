@@ -251,7 +251,7 @@ class Instruments extends React.Component {
                         additionalProps: {
                             path: "environment.depth.belowTransducer",
                             ranges: [5, 10, 20, 40, 100],
-                            numberOfPointsToShow: 100,
+                            numberOfPointsToShow: 400,
                             negate: false,
                             upperBound: 100,
                             lowerBound: 0,

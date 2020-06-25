@@ -24,3 +24,18 @@
 .modal-close:after {
     transform: rotate(-45deg);
 }
+
+.modal-parent {
+    position: fixed;
+    width: 90%;
+    left: 5%;
+    top: 5%;
+    padding: 10px;
+
+    font-family: Roboto, sans-serif;
+}
+
+.modal-overlay {
+    /*color: ;*/
+    background-color: rgba(255, 255, 255, 0.5);
+}

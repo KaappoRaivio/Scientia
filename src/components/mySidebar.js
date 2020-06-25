@@ -46,7 +46,6 @@ class MySidebar extends React.Component {
                         </div>
 
                         <input className="address" value={this.state.address} onChange={onAddressChange}/>
-
                     </div>
 
                     <div className="setting with-shadow">

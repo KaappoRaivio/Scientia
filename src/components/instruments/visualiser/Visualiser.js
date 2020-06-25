@@ -1,6 +1,6 @@
 import {AreaSeries, HorizontalGridLines, LineSeries, XAxis, XYPlot, YAxis} from "react-vis";
 import React from "react";
-import NoData from "../../misc/NoData";
+import NoData from "../../noninstruments/NoData";
 // import ChartistGraph from "react-chartist";
 
 
@@ -69,10 +69,10 @@ const Visualiser = ({animate, colors, data, displayScale, height, legend, negate
                     xDomain={xDomain}
                     yDomain={yDomain}
                     getY={y => negate? -(y.y) : y.y}
-                    yType={"log"}
+                    // yType={"log"}
             >
                 <HorizontalGridLines
-                    style={{...lineStyle, strokeWidth: 0.5}}
+                    // style={{...lineStyle, strokeWidth: 0.5}}
                 />
 
                 <LineSeries
@@ -88,12 +88,12 @@ const Visualiser = ({animate, colors, data, displayScale, height, legend, negate
                     // yType={"log"}
                 /> : <span />}
 
-                <XAxis
-                    xDomain={xDomain}
-                    hideTicks
-                    style={lineStyle}
+                {/*<XAxis*/}
+                {/*    xDomain={xDomain}*/}
+                {/*    hideTicks*/}
+                {/*    style={lineStyle}*/}
 
-                />
+                {/*/>*/}
                 <YAxis
                     yDomain={yDomain}
                     style={{stroke: "none", fill: primary, fontSize: `70%`}}

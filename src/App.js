@@ -1,6 +1,6 @@
 import React from 'react';
 import './flat-remix.css';
-import "@patternfly/patternfly/patternfly.css"
+// import "@patternfly/patternfly/patternfly.css"
 
 import './App.css';
 
@@ -24,10 +24,10 @@ class App extends React.Component {
         let ws = "ws:" + url.split(":")[1] + ":3000"
 
         this.state = {
-            settingsPaneOpen: true,
+            settingsPaneOpen: false,
             serverAddress: ws,
 
-            darkMode: true,
+            darkMode: false,
             animation: true
         };
     }
@@ -110,7 +110,13 @@ class App extends React.Component {
 
         return (
             <div className="instruments" style={parentStyle}>
-                {/*<MySidebar settingsPaneOpen={this.state.settingsPaneOpen} initialAddress={this.state.serverAddress} initialDarkMode={this.state.darkMode} initialAnimation={this.state.animation} onSetSettingsPaneOpen={onSetSettingsPaneOpen} onSettingsChange={onSettingsChange} colors={colors}/>*/}
+                {/*<MySidebar sidebarOpen={this.state.settingsPaneOpen}*/}
+                {/*    initialAddress={this.state.serverAddress}*/}
+                {/*    initialDarkMode={this.state.darkMode}*/}
+                {/*    initialAnimation={this.state.animation}*/}
+                {/*    onSetSettingsPaneOpen={onSetSettingsPaneOpen}*/}
+                {/*    onSettingsChange={onSettingsChange}*/}
+                {/*    colors={colors}/>*/}
                 <MyModal isModalOpen={this.state.settingsPaneOpen}
                     requestClosing={() => onSetSettingsPaneOpen(false)}
                     initialValues={getInitialSettings()}

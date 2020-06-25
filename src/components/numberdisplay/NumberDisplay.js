@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import _ from "underscore";
 
 import {checkForZones} from "./zones";
-import NoData from "../misc/NoData";
+import NoData from "../noninstruments/NoData";
 
 const isNull = obj => {
     if (obj != null && typeof obj === "object") {

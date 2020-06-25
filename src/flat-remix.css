@@ -118,9 +118,9 @@ section, article, .section, .article, .paper {
 }
 
 hr {
-    width: 50%;
-    border: 3px solid #5c616c;
-    background-color: #5c616c;
+    width: 100%;
+    border: 0.5px solid lightgray;
+    /*background-color: #5c616c;*/
     border-radius: 4px;
 }
 
@@ -382,7 +382,7 @@ input[type=reset],
     border: 3px solid #272a34;
     background: #737680;
     line-height: 40px;
-    display: block;
+    display: inline;
     transition: border .2s .2s, text-shadow .2s .2s, background .2s .2s, transform .2s, color .2s .2s, box-shadow .2s;
     text-transform: capitalize;
 }
@@ -407,7 +407,7 @@ input[type=reset],
 
 .rounded-button:hover { transform: scale(1.04); }
 
-button:hover,
+.button:hover,
 input[type=submit]:hover,
 input[type=reset]:hover,
 .blue-button:hover, input.blue-button:hover,
