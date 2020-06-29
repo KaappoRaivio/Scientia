@@ -1,0 +1,10 @@
+{
+  "name": "delta_processor",
+  "version": "1.0.0",
+  "main": "DeltaAssembler.js",
+  "license": "MIT",
+  "type": "module",
+  "dependencies": {
+    "moving-median": "^1.0.0"
+  }
+}
