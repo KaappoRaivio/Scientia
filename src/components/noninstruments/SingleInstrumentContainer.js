@@ -60,12 +60,13 @@ class SingleInstrumentContainer extends React.Component {
         const props = {
             width: this.state.width,
             height: this.state.height,
-            subscribe: this.props.callback,
+            // subscribe: this.props.callback,
             ref: this.child,
             animate: this.props.animate,
             darkMode: this.props.darkMode,
             colors: this.props.colors,
             key: this.props.children.id,
+            data: this.props.data,
             ...this.props.additionalProps,
         };
 

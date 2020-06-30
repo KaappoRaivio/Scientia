@@ -28,7 +28,7 @@ const Wind = (props) => {
         <div className="wind" style={parentStyle}>
             <div className="wind-speed-display-wrapper">
                 <NumberDisplay
-                    value={props.speed * 3.6 / 1.852}
+                    value={props.speed.value * 3.6 / 1.852}
                     suffix=""
                     units="kts"
                     width={props.width / 1.5}
@@ -43,8 +43,8 @@ const Wind = (props) => {
                 />
             </div>
 
-            <Needle angle={props.angleApparent} radius={radiusPercent} color={colors.accent1} animate={props.animate}/>
-            <Needle angle={props.angleTrue} radius={radiusPercent} color={colors.accent2} animate={props.animate}/>
+            <Needle angle={props.angleApparent.value} radius={radiusPercent} color={colors.accent1} animate={props.animate}/>
+            <Needle angle={props.angleTrue.value} radius={radiusPercent} color={colors.accent2} animate={props.animate}/>
 
             <svg width={props.width} height={props.height}>
                 <circle
@@ -53,8 +53,6 @@ const Wind = (props) => {
                     r={radius}
                     strokeWidth={radius * 0.01}
                 />
-
-
 
                 <g>
                     {Svghelper.getSector(center.x, center.y, radius, 0.025 * props.width, -props.closeHaulAngle, 0, colors.closeHaulRight)}}

@@ -8,13 +8,6 @@ class WindContainer extends React.Component {
 
         this.state = {
             closeHaulAngle: 41,
-
-            angleTrueWater: null,
-            angleApparent: null,
-            speedTrue: null,
-            speedApparent: null,
-
-            displayScale: {lower: 0, upper: 20, type: "power", "power": 2}
         }
 
         this.divisions = [
@@ -30,53 +23,29 @@ class WindContainer extends React.Component {
         ]
     }
 
-    componentDidMount() {
-        this.subscribe()
-    }
-
-    subscribe() {
-        this.counter = 1;
-        const onDelta = (message) => {
-            let path = message.values[0].path.split(".")[2];
-
-            if (path in this.state) {
-                this.setState({
-                    [path]: message.values[0].value
-                })
-            }
-        };
-
-        const onMetadata = (meta, path) => {
-            // // console.log(meta, path)
-            if (path === "environment.wind.speedTrue") {
-                this.setState({displayScale: meta.displayScale})
-            }
-        }
-        this.props.subscribe(["environment.wind.speedTrue", "environment.wind.speedApparent",
-            "environment.wind.angleTrueWater", "environment.wind.angleApparent"], onDelta, onMetadata)
-    }
-
     render () {
+        const wind = (this.props.data.vessels.self.environment || {}).wind || {};
+
         let speed, speedQuality;
-        if (this.state.speedTrueWater !== null) {
-            speed = this.state.speedTrue;
+        if (wind.speedTrue !== null) {
+            speed = wind.speedTrue;
             speedQuality = "T";
         } else {
-            speed = this.state.speedApparent;
+            speed = wind.speedApparent;
             speedQuality = "A";
         }
 
         return <Wind
             width={this.props.width} height={this.props.height}
-            angleApparent={this.state.angleApparent}
-            angleTrue={this.state.angleTrueWater}
-            speed={speed}
+            angleApparent={wind.angleApparent || {}}
+            angleTrue={wind.angleTrueWater || {}}
+            speed={speed || {}}
             speedQuality={speedQuality}
             closeHaulAngle={this.state.closeHaulAngle}
             colors={this.props.colors} darkMode={this.props.darkMode}
             divisions={this.divisions}
             animate={this.props.animate}
-            displayScale={this.state.displayScale}
+            displayScale={((wind.speedTrue || {}).meta || {}).displayScale}
         />
     }
 }

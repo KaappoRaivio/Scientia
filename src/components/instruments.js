@@ -11,6 +11,7 @@ import VisualiserContainer from "./instruments/visualiser/VisualiserContainer";
 import QuadrantInstrumentContainer from "./noninstruments/QuadrantInstrumentContainer";
 import Visualiser2 from "./instruments/visualiser/Visualiser2";
 import AddInstrument from "./noninstruments/AddInstrument";
+import DeltaAssembler from "delta-processor"
 
 // const server_root = "ws://192.168.1.115:3000";
 
@@ -21,8 +22,19 @@ class Instruments extends React.Component {
         super(props);
 
         this.state = {
-            data: null
+            fullState: {
+                vessels: {
+                    self: {}
+                }
+            }
         };
+        const HTTPServerRoot = "http:" + this.props.server.split(":").slice(1, 10).join(":");
+        this.deltaAssembler = new DeltaAssembler(HTTPServerRoot, fullState => {
+            // console.log("Finalized delta: ", delta)
+            this.setState({
+                fullState
+            })
+        });
 
         this.resetWebsocket();
         this.subscribers = []
@@ -39,8 +51,8 @@ class Instruments extends React.Component {
                 "path": name,
                 "period": 1000,
                 "format": "delta",
-                "policy": "fixed",
-                // "minPeriod": 500
+                "policy": "instant",
+                "minPeriod": 1000
             }
         };
 
@@ -64,110 +76,88 @@ class Instruments extends React.Component {
         this.ws.onmessage = (event) => {
             const message = JSON.parse(event.data);
             // // console.log(message)
+            this.deltaAssembler.onDelta(message);
 
-            for (const subscriber of this.subscribers) {
-                try {
-                    message.updates.forEach(update => {
-                        update.values.forEach(value => {
-                            subscriber.paths.forEach(subscriberPath => {
-                                if (subscriberPath instanceof RegExp) {
-                                    if (subscriberPath.test(value.path)) {
-                                        subscriber.onDelta(update);
-                                    }
-                                } else if (typeof subscriberPath === "string") {
-                                    if (subscriberPath === value.path) {
-                                        subscriber.onDelta(update);
-                                    }
-                                } else {
-                                    throw new Error(`Encountered subscriber path ${subscriberPath} of unknown type!`);
-                                }
-                            })
-                        })
-                    });
-
-                } catch (err) {
-                    console.debug("Instruments.js onMessage error: ", err, message)
-                }
-            }
+        //     for (const subscriber of this.subscribers) {
+        //         try {
+        //             message.updates.forEach(update => {
+        //                 update.values.forEach(value => {
+        //                     subscriber.paths.forEach(subscriberPath => {
+        //                         if (subscriberPath instanceof RegExp) {
+        //                             if (subscriberPath.test(value.path)) {
+        //                                 subscriber.onDelta(update);
+        //                             }
+        //                         } else if (typeof subscriberPath === "string") {
+        //                             if (subscriberPath === value.path) {
+        //                                 subscriber.onDelta(update);
+        //                             }
+        //                         } else {
+        //                             throw new Error(`Encountered subscriber path ${subscriberPath} of unknown type!`);
+        //                         }
+        //                     })
+        //                 })
+        //             });
+        //
+        //         } catch (err) {
+        //             console.debug("Instruments.js onMessage error: ", err, message)
+        //         }
+        //     }
         };
+        // this.resetWebsocket();
     }
 
-    pathRegexToHTTP = path => "/".concat(path.toString()
-        .replace(/([\\+.])+/g, "/")
-        .concat("/"))
-        .replace(/\/+/g, "/")
+    // pathRegexToHTTP = path => "/".concat(path.toString()
+    //     .replace(/([\\+.])+/g, "/")
+    //     .concat("/"))
+    //     .replace(/\/+/g, "/")
+    //
+    // pathRegexToSignalkPath = path => this.pathRegexToHTTP(path)
+    //     .replace(/\/$/, "")
+    //     .replace(/^\//, "")
+    //     .replace(/\//g, ".")
+    //
+    //
+    // giveMetadata(paths, onMetadata) {
+    //     const HTTPServerRoot = "http:" + this.props.server.split(":").slice(1, 10).join(":");
+    //     const API = HTTPServerRoot + endpoint;
+    //
+    //     paths.forEach(path => {
+    //         fetch(API + "/api/vessels/self" + this.pathRegexToHTTP(path) + "meta")
+    //             .then(response => response.json())
+    //             .then(data => {
+    //                 // console.log("asdasdasd", data);
+    //                 return onMetadata(data, this.pathRegexToSignalkPath(path));
+    //             })
+    //             .catch(console.error)
+    //     })
+    // }
 
-    pathRegexToSignalkPath = path => this.pathRegexToHTTP(path)
-        .replace(/\/$/, "")
-        .replace(/^\//, "")
-        .replace(/\//g, ".")
+    // componentDidUpdate() {
+    //     this.resetWebsocket();
+    //     this.componentDidMount();
+    // }
 
-
-    giveMetadata(paths, onMetadata) {
-        const HTTPServerRoot = "http:" + this.props.server.split(":").slice(1, 10).join(":");
-        const API = HTTPServerRoot + endpoint;
-
-        paths.forEach(path => {
-            fetch(API + "/api/vessels/self" + this.pathRegexToHTTP(path) + "meta")
-                .then(response => response.json())
-                .then(data => {
-                    // console.log("asdasdasd", data);
-                    return onMetadata(data, this.pathRegexToSignalkPath(path));
-                })
-                .catch(console.error)
-        })
-    }
-
-    componentDidUpdate() {
-        this.resetWebsocket();
-        this.componentDidMount();
-    }
-
-    getSnapshotBeforeUpdate(prevProps) {
-        if (this.ws.readyState) {
-            this.ws.send(JSON.stringify({
-                "context": "*",
-                "unsubscribe": [{
-                    "path": "*"
-                }]
-            }))
-        }
-        this.ws.close(1000, `Changing server from ${prevProps.server}`)
-        return null;
-    }
+    // getSnapshotBeforeUpdate(prevProps) {
+    //     if (this.ws.readyState) {
+    //         this.ws.send(JSON.stringify({
+    //             "context": "*",
+    //             "unsubscribe": [{
+    //                 "path": "*"
+    //             }]
+    //         }))
+    //     }
+    //     this.ws.close(1000, `Changing server from ${prevProps.server}`)
+    //     return null;
+    // }
 
     render () {
         const subscribe = (paths, onDelta, onMetadata) => {
             this.subscribers.push({paths, onDelta, onMetadata})
-            this.giveMetadata(paths, onMetadata);
+            // this.giveMetadata(paths, onMetadata);
         };
 
 
         const instruments = [
-            {
-                type: "single",
-                instruments: [
-                    {
-                        component: TridataContainer,
-                        additionalProps: {
-                            paths: ["environment.depth.belowTransducer",
-                                "navigation.speedOverGround",
-                                // "performance.polarSpeedRatio",
-                                "performance.polarSpeed",
-                                "navigation.trip.log"
-                            ]
-                        }
-                    },
-                ]
-            },
-            {
-                type: "single",
-                instruments: [
-                    {
-                        component: WindContainer,
-                    }
-                ]
-            },
             // {
             //     type: "single",
             //     instruments: [
@@ -175,58 +165,38 @@ class Instruments extends React.Component {
             //             component: TridataContainer,
             //             additionalProps: {
             //                 paths: ["environment.depth.belowTransducer",
-            //                     "navigation.speedThroughWater",
-            //                     "performance.polarSpeedRatio"
-            //                 ]
+            //                     "navigation.speedOverGround",
+            //                     "performance.polarSpeed",
+            //                     "navigation.trip.log"
+            //                 ],
             //             }
             //         },
             //     ]
             // },
             {
-                type: "quadrant",
+                type: "single",
                 instruments: [
                     {
-                        component: GaugeContainer,
+                        component: WindContainer,
                         additionalProps: {
-                            path: "environment.depth.belowTransducer"
-                        }
-                    },
-                    {
-                        component: GaugeContainer,
-                        additionalProps: {
-                            path: "environment.wind.speedTrue"
-                        }
-                    },
-                    {
-                        component: GaugeContainer,
-                        additionalProps: {
-                            path: "performance.polarSpeedRatio"
-                        }
-                    },
-                    {
-                        component: GaugeContainer,
-                        additionalProps: {
-                            path: "steering.rudderAngle"
+                            // paths: [
+                            //     "environment.wind.speedTrue",
+                            //     "environment.wind.speedApparent",
+                            //     "environment.wind.angleTrueWater",
+                            //     "environment.wind.angleApparent"
+                            // ],
                         }
                     }
                 ]
             },
-            // {
-            //     type: "single",
-            //     instruments: [
-            //         {
-            //             component: Visualiser2,
-            //             additionalProps: {}
-            //         }
-            //     ]
-            // },
             // {
             //     type: "quadrant",
             //     instruments: [
             //         {
             //             component: GaugeContainer,
             //             additionalProps: {
-            //                 path: "environment.depth.belowTransducer"
+            //                 path: "environment.depth.belowTransducer",
+            //                 // path:
             //             }
             //         },
             //         {
@@ -238,70 +208,58 @@ class Instruments extends React.Component {
             //         {
             //             component: GaugeContainer,
             //             additionalProps: {
-            //                 path: "navigation.speedThroughWater"
+            //                 path: "performance.polarSpeedRatio"
             //             }
             //         },
             //         {
             //             component: GaugeContainer,
             //             additionalProps: {
-            //                 path: "performance.polarSpeedRatio"
+            //                 path: "steering.rudderAngle"
             //             }
-            //         },
+            //         }
             //     ]
             // },
-
-
-            {
-                type: "single",
-                instruments: [
-                    {
-                        component: VisualiserContainer,
-                        additionalProps: {
-                            path: "environment.depth.belowTransducer",
-                            ranges: [5, 10, 20, 40, 100],
-                            numberOfPointsToShow: 200,
-                            negate: true,
-                            upperBound: 100,
-                            lowerBound: 0,
-                            legend: "Depth",
-                            unit: "m",
-                            trendlinePeriod: 50,
-                            trendline: true
-                        }
-                    }
-                ]
-            },
-            {
-                type: "single",
-                instruments: [
-                    {
-                        component: VisualiserContainer,
-                        additionalProps: {
-                            path: "environment.wind.speedTrue",
-                            ranges: [10, 20, 50],
-                            numberOfPointsToShow: 200,
-                            negate: false,
-                            upperBound: 50,
-                            lowerBound: 0,
-                            legend: "Wind, speed true",
-                            unit: "m/s",
-                            trendlinePeriod: 20,
-                            trendline: true
-                        }
-                    }
-            ]
-            },
+            //
             // {
             //     type: "single",
             //     instruments: [
             //         {
-            //             component: AddInstrument,
+            //             component: VisualiserContainer,
             //             additionalProps: {
-            //                 onInstrumentAdded: null
+            //                 path: "environment.depth.belowTransducer",
+            //                 ranges: [5, 10, 20, 40, 100],
+            //                 numberOfPointsToShow: 200,
+            //                 negate: true,
+            //                 upperBound: 100,
+            //                 lowerBound: 0,
+            //                 legend: "Depth",
+            //                 unit: "m",
+            //                 trendlinePeriod: 50,
+            //                 trendline: true
             //             }
             //         }
             //     ]
-            // }
+            // },
+            // {
+            //     type: "single",
+            //     instruments: [
+            //         {
+            //             component: VisualiserContainer,
+            //             additionalProps: {
+            //                 path: "environment.wind.speedTrue",
+            //                 ranges: [10, 20, 50],
+            //                 numberOfPointsToShow: 200,
+            //                 negate: false,
+            //                 upperBound: 50,
+            //                 lowerBound: 0,
+            //                 legend: "Wind, speed true",
+            //                 unit: "m/s",
+            //                 trendlinePeriod: 20,
+            //                 trendline: true
+            //             }
+            //         }
+            //     ]
+            // },
         ];
 
         return (
@@ -309,6 +267,7 @@ class Instruments extends React.Component {
                 {instruments.map((instrument, index) => {
                     if (instrument.type === "single") {
                         const component = instrument.instruments[0];
+                        // const paths = component.addi
 
                         return <SingleInstrumentContainer
                             animate={this.props.animation}
@@ -316,7 +275,8 @@ class Instruments extends React.Component {
                             darkMode={this.props.darkMode}
                             colors={this.props.colors}
                             children={component.component}
-                            callback={subscribe}
+                            // callback={subscribe}
+                            data={this.state.fullState}
                             additionalProps={component.additionalProps}
                             resizeDebounce={0}
                         />;
