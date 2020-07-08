@@ -60,12 +60,12 @@ class QuadrantInstrumentContainer extends React.Component {
         const props = {
             width: this.state.width / 2 - 15,
             height: this.state.height / 2 - 10,
-            subscribe: this.props.callback,
             ref: this.child,
             animate: this.props.animate,
             darkMode: this.props.darkMode,
             colors: this.props.colors,
             key: this.props.children.id,
+            data: this.props.data
         };
 
         const parentStyle = {

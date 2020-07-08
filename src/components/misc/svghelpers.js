@@ -55,15 +55,18 @@ const LineDivision = ({ center, radius, textRadius, length, numberOfLines, fontS
     let textPositions = Svghelpers.getDivisionCoordinates(center, textRadius, 0, numberOfLines, angleProvider);
     // console.log(lines, textPositions)
 
+    let path = `${lines.map((line, index) => `M${line.start.x} ${line.start.y} L${line.end.x} ${line.end.y}`)} Z`
+
     return (
         <g strokeWidth={strokeWidthMultiplier ? radius * strokeWidthMultiplier : null}>
-            {lines.map((item, index) => <line   key={index}
-                                                        x1={item.start.x || 0}
-                                                        y1={item.start.y || 0}
-                                                        x2={item.end.x || 0}
-                                                        y2={item.end.y || 0}
-            />)
-            }
+            <path d={path} />
+            {/*{lines.map((item, index) => <line   key={index}*/}
+            {/*                                            x1={item.start.x || 0}*/}
+            {/*                                            y1={item.start.y || 0}*/}
+            {/*                                            x2={item.end.x || 0}*/}
+            {/*                                            y2={item.end.y || 0}*/}
+            {/*/>)*/}
+            {/*}*/}
             <g stroke={"none"}>
                 {
                     textPositions.map((item, index) =>

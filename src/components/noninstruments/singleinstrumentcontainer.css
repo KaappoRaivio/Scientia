@@ -23,19 +23,11 @@
     .single-flexbox-item {
         flex: 1 1 calc(50% - 20px);
     }
-    .single-flexbox-item:last-child {
-        flex-grow: 0;
-        flex-basis: calc(50%);
-    }
 }
 
 @media screen and (min-width: 600px) {
     .single-flexbox-item {
         flex: 1 1 calc(33.33% - 20px);
-    }
-    .single-flexbox-item:last-child {
-        flex-grow: 0;
-        flex-basis: calc(33.33%);
     }
 }
 
@@ -43,11 +35,20 @@
     .single-flexbox-item {
         flex: 1 1 calc(25% - 20px);
     }
-    .single-flexbox-item:last-child {
-        flex-grow: 0;
-        flex-basis: calc(25%);
+}
+
+@media screen and (min-width: 1000px) {
+    .single-flexbox-item {
+        flex: 1 1 calc(20% - 20px);
     }
 }
+
+@media screen and (min-width: 1200px) {
+    .single-flexbox-item {
+        flex: 1 1 calc(16% - 20px);
+    }
+}
+
 .single-flexbox-wrapper {
     position: absolute;
     width: 100%;

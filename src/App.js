@@ -21,19 +21,23 @@ class App extends React.Component {
         super(props);
 
         let url = window.location.href;
-        let ws = "ws:" + url.split(":")[1] + ":3000"
+        // let ws = "ws:" + url.split(":")[1] + ":3000"
+        let ws = "ws://192.168.1.151:3000"
 
         this.state = {
             settingsPaneOpen: false,
-            serverAddress: ws,
 
-            darkMode: false,
-            animation: false
+            settings: {
+                serverAddress: ws,
+                darkMode: false,
+                animation: false,
+                animationsAccordingToChargingStatus: true
+            },
         };
     }
 
     getColors () {
-        if (this.state.darkMode) {
+        if (this.state.settings.darkMode) {
             return {
                 primary: "#f00",
                 secondary: "#444",
@@ -70,13 +74,15 @@ class App extends React.Component {
 
 
     componentDidMount() {
-        navigator
-            .getBattery()
-            .then(battery => {
-                // // console.log(battery);
-                // this.setState({animation: battery.charging})
-            })
-            .catch(console.error);
+        if (this.state.settings.animationsAccordingToChargingStatus) {
+            navigator
+                .getBattery()
+                .then(battery => {
+                    // // console.log(battery);
+                    // this.setState({animation: battery.charging})
+                })
+                .catch(console.error);
+        }
     }
 
     render() {
@@ -87,11 +93,8 @@ class App extends React.Component {
         }
         //
         const onSettingsChange = (newSettings) => {
-            // // console.log(newSettings)
             this.setState({
-                serverAddress: newSettings.serverAddress,
-                darkMode: newSettings.darkMode,
-                animation: newSettings.animate
+                settings: newSettings,
             })
         }
 
@@ -103,20 +106,14 @@ class App extends React.Component {
         }
 
         const getInitialSettings = () => ({
-            animate: this.state.animation,
-            darkMode: this.state.darkMode,
-            serverAddress: this.state.serverAddress
+            animation: this.state.settings.animation,
+            darkMode: this.state.settings.darkMode,
+            serverAddress: this.state.settings.serverAddress,
+            animationsAccordingToChargingStatus: this.state.settings.animationsAccordingToChargingStatus
         })
 
         return (
             <div className="instruments" style={parentStyle}>
-                {/*<MySidebar sidebarOpen={this.state.settingsPaneOpen}*/}
-                {/*    initialAddress={this.state.serverAddress}*/}
-                {/*    initialDarkMode={this.state.darkMode}*/}
-                {/*    initialAnimation={this.state.animation}*/}
-                {/*    onSetSettingsPaneOpen={onSetSettingsPaneOpen}*/}
-                {/*    onSettingsChange={onSettingsChange}*/}
-                {/*    colors={colors}/>*/}
                 <MyModal isModalOpen={this.state.settingsPaneOpen}
                     requestClosing={() => onSetSettingsPaneOpen(false)}
                     initialValues={getInitialSettings()}
@@ -124,7 +121,7 @@ class App extends React.Component {
                     colors={colors}
                     appElement={this}
                 />
-                <Instruments server={this.state.serverAddress} darkMode={this.state.darkMode} colors={colors} animation={this.state.animation}/>
+                <Instruments settings={this.state.settings} colors={colors} />
                 <div className="open-menu with-shadow">
                     <button className="open-menu-wrapper"
                         onClick={() => onSetSettingsPaneOpen(true)}>

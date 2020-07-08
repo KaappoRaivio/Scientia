@@ -1,6 +1,8 @@
 import React from "react";
 import Wind from "./Wind";
 
+import { getByStringPath } from "delta-processor";
+
 class WindContainer extends React.Component {
     constructor(props) {
         super(props);
@@ -24,7 +26,8 @@ class WindContainer extends React.Component {
     }
 
     render () {
-        const wind = (this.props.data.vessels.self.environment || {}).wind || {};
+        // const wind = (this.props.data.vessels.self.environment || {}).wind || {};
+        const wind = getByStringPath("environment.wind", this.props.data.vessels.self, true);
 
         let speed, speedQuality;
         if (wind.speedTrue !== null) {

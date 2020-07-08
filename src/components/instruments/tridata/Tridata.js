@@ -2,14 +2,15 @@ import NumberDisplay from "../../numberdisplay/NumberDisplay";
 import React from "react";
 
 const Tridata = (props) => {
-    const commonUpperBound = props.values.map(value => value.displayScale.upper).reduce((a, b) => {
+    // console.log(props.values)
+    const commonUpperBound = props.values.map(value => (value.meta.displayScale || {}).upper).reduce((a, b) => {
         if (b === null || isNaN(b)) {
             return a
         }
         return a > b ? a : b;
     });
 
-    const commonLowerBound = props.values.map(value => value.displayScale.lower).reduce((a, b) => {
+    const commonLowerBound = props.values.map(value => (value.meta.displayScale || {}).lower).reduce((a, b) => {
         if (b === null || isNaN(b)) {
             return a
         }
@@ -31,16 +32,17 @@ const Tridata = (props) => {
 
     return <div style={parentStyle}>
         {props.values.map((value, index) => {
+            // console.log(value)
             return <NumberDisplay
                 key={index}
                 value={value.value}
 
                 suffix={""}
-                units={value.units}
-                label={value.label}
+                units={value.meta.units}
+                label={value.meta.displayName}
 
                 displayScale={commonDisplayScale}
-                decimalPlaces={value.decimalPlaces}
+                decimalPlaces={value.meta.decimalPlaces}
                 zones={value.zones}
 
                 fontSize={props.width / 4}

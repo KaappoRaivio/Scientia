@@ -7,10 +7,6 @@ class CompassContainer extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            heading: 0,
-        };
-
         this.divisions = [
             {
                 numberOfLines: 12,
@@ -24,26 +20,14 @@ class CompassContainer extends React.Component {
         ]
     }
 
-
-
-    componentDidMount() {
-        this.subscribe();
-    }
-
-    subscribe () {
-        this.onMessage = (message) => {
-            const extracted = message.values[0].value;
-            this.setState({heading: extracted / Math.PI * 180});
-        };
-        this.props.subscribe([/navigation\.courseOverGroundTrue/], this.onMessage);
-    }
-
     render () {
+        const navigation = this.props.data.vessels.self.navigation || {};
+
         return <Compass
             width={this.props.width}
             height={this.props.height}
 
-            heading={this.state.heading}
+            heading={navigation.courseOverGroundTrue}
             animate={this.props.animate}
             colors={this.props.colors}
             divisions={this.divisions}

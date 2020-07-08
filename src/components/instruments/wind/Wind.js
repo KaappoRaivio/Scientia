@@ -28,9 +28,9 @@ const Wind = (props) => {
         <div className="wind" style={parentStyle}>
             <div className="wind-speed-display-wrapper">
                 <NumberDisplay
-                    value={props.speed.value * 3.6 / 1.852}
+                    value={props.speed.value}
                     suffix=""
-                    units="kts"
+                    units={(props.speed.meta || {}).units}
                     width={props.width / 1.5}
                     height={props.height * 0.25}
                     upperBound={99}

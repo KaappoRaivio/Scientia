@@ -9,15 +9,8 @@ import {LineDivisions} from "../../misc/svghelpers";
 const Compass = (props) => {
     const center = getCenter(props);
     const radius = getRadius(props);
-
-    // const divisions = [
-    //     [12, 0.75, i => mod(180 - 360 / 12 * i, 360)],
-    //     [36, 0.5, i => ""],
-    //     [144, 0.25, i => ""]
-    // ];
-
-
     const colors = props.colors;
+    const heading = (props.heading || {}).value;
 
     const parentStyle = {
         width: props.width + "px",
@@ -28,15 +21,15 @@ const Compass = (props) => {
 
     let compassRotationStyle;
     if (props.animate) {
-        compassRotationStyle = {transform: `rotate(${-props.heading}deg)`};
+        compassRotationStyle = {transform: `rotate(${-heading}deg)`};
     } else {
-        compassRotationStyle = {transform: `rotate(${-props.heading}deg)`, transition: "none"};
+        compassRotationStyle = {transform: `rotate(${-heading}deg)`, transition: "none"};
     }
 
     return <div className="compass" style={parentStyle}>
         <NumberDisplay
             className="number"
-            value={props.heading}
+            value={heading}
             suffix="°"
             units="cog"
             width={props.width}
@@ -57,7 +50,7 @@ const Compass = (props) => {
                 r={radius}
                 fill={colors.background}
                 stroke={colors.primary}
-                strokeWidth={2}
+                strokeWidth={radius * 0.01}
             />
             <g fill={colors.primary} stroke={colors.primary} strokeWidth={radius * 0.01}>
                     <LineDivisions center={center} radius={radius} divisions={props.divisions} rotateText={true}/>
@@ -65,10 +58,6 @@ const Compass = (props) => {
         </svg>
     </div>
 }
-
-// const getCircleRadius = (canvasWidth, offsetY) => {
-//     return Math.sqrt((canvasWidth / 2) ** 2 + offsetY ** 2) / 1.05
-// }
 
 const getRadius = (props) => {
     return Math.max(props.width / 2 - 2, 0)
@@ -78,7 +67,4 @@ const getCenter = (props) => {
     return {x: props.width / 2, y: props.height / 2};
 }
 
-// const getCompassLineMaxLength = (props) => {
-//     return props.width / 2 / 10;
-// }
 export default Compass;

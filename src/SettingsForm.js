@@ -1,10 +1,11 @@
 import React from 'react';
 
 import FormRenderer, {componentTypes, useFieldApi, useFormApi} from '@data-driven-forms/react-form-renderer';
-import {componentMapper} from '@data-driven-forms/pf4-component-mapper';
 
 import "./SettingsForm.css";
 import Switch from "react-switch";
+import Slider, { Range } from "rc-slider";
+import "rc-slider/assets/index.css";
 import * as PropTypes from "prop-types";
 
 const TextField = props => {
@@ -35,7 +36,7 @@ const Checkbox = props => {
                     onColor={"#ff8686"}
                     onHandleColor={"#e62626"}
                     handleDiameter={30}
-                    uncheckedIcon={false}
+                    uncheckedIcon={false}  
                     checkedIcon={false}
                     boxShadow="0px 1px 5px rgba(0, 0, 0, 0.6)"
                     activeBoxShadow="0px 0px 1px 10px rgba(0, 0, 0, 0.2)"
@@ -45,6 +46,14 @@ const Checkbox = props => {
         </div>
     )
 }
+//
+// const Slider = props => {
+//     const { label, input } = useFieldApi(props);
+//
+//     return (
+//
+//     )
+// }
 
 const Section = props => {
     const { fields } = props;
@@ -117,8 +126,13 @@ const schema = {
             fields: [
                 {
                     component: componentTypes.SWITCH,
-                    name: "animate",
-                    label: "Animate"
+                    name: "animation",
+                    label: "Use animations"
+                },
+                {
+                    component: componentTypes.SWITCH,
+                    name: "animationsAccordingToChargingStatus",
+                    label: "Make animations enabled based on the charging status of the device"
                 },
             ]
         },
@@ -132,6 +146,12 @@ const schema = {
                     component: componentTypes.SWITCH,
                     name: "darkMode",
                     label: "Dark mode"
+                },
+                {
+                    component: componentTypes.TEXT_FIELD,
+                    name: "numberOfColumns",
+                    label: "Number of columns in the grid",
+                    initialValue: "5"
                 }
             ]
         }
@@ -140,11 +160,7 @@ const schema = {
 
 
 const SettingsForm = ({onSettingsUpdate, requestClosing, initialValues}) => {
-    // // console.log(myComponentMapper, schema)
-
-
-    const test = (values, formApi) => {
-        // // console.log(values, formApi);
+    const onSubmit = (values, formApi) => {
         onSettingsUpdate(values);
         requestClosing();
     }
@@ -154,7 +170,7 @@ const SettingsForm = ({onSettingsUpdate, requestClosing, initialValues}) => {
             initialValues={initialValues}
             componentMapper={myComponentMapper}
             FormTemplate={MyFormTemplate}
-            onSubmit={test}/>
+            onSubmit={onSubmit}/>
     );
 };
 

@@ -16,6 +16,7 @@
     "node-sass": "^4.14.1",
     "pipeline-js": "^1.0.2",
     "prop-types": "^15.7.2",
+    "rc-slider": "^9.3.1",
     "react": "^16.13.1",
     "react-c3js": "^0.1.20",
     "react-dom": "^16.13.1",
