@@ -7,8 +7,6 @@ import './App.css';
 import "react-vis/dist/style.css";
 import "chartist/dist/chartist.css";
 
-// import Modal from "react-modal";
-
 import Instruments from "./components/instruments"
 // import MySidebar from "./components/mySidebar";
 import Logo from "./components/Logo";
