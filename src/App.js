@@ -4,10 +4,10 @@ import './flat-remix.css';
 
 import './App.css';
 
-import Modal from "react-modal";
+// import Modal from "react-modal";
 
 import Instruments from "./components/instruments"
-import MySidebar from "./components/mySidebar";
+// import MySidebar from "./components/mySidebar";
 import Logo from "./components/Logo";
 import MyModal from "./components/MyModal";
 
