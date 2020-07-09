@@ -4,6 +4,9 @@ import './flat-remix.css';
 
 import './App.css';
 
+import "react-vis/dist/style.css";
+import "chartist/dist/chartist.css";
+
 // import Modal from "react-modal";
 
 import Instruments from "./components/instruments"
