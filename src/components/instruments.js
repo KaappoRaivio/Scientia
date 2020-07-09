@@ -136,18 +136,18 @@ class Instruments extends React.Component {
                     },
                 ]
             },
-            {
-                type: "single",
-                instruments: [
-                    {
-                        component: GaugeContainer,
-                        additionalProps: {
-                            // path: "performance.polarSpeedRatio"
-                            path: "steering.rudderAngle"
-                        }
-                    }
-                ]
-            },
+            // {
+            //     type: "single",
+            //     instruments: [
+            //         {
+            //             component: GaugeContainer,
+            //             additionalProps: {
+            //                 // path: "performance.polarSpeedRatio"
+            //                 path: "steering.rudderAngle"
+            //             }
+            //         }
+            //     ]
+            // },
             // {
             //     type: "quadrant",
             //     instruments: [
