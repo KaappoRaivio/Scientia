@@ -21,6 +21,7 @@ const MyModal = ({colors, darkMode, isModalOpen, requestClosing, appElement, ...
                 overlay: {backgroundColor: "rgba(0, 0, 0, 0.5)"},
                 content: {backgroundColor: colors.background, color: colors.primary}
             }}
+            ariaHideApp={false}
             isOpen={isModalOpen}
             onRequestClose={requestClosing}
             // appElement={appElement}

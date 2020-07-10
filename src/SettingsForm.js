@@ -161,6 +161,7 @@ const schema = {
 
 const SettingsForm = ({onSettingsUpdate, requestClosing, initialValues}) => {
     const onSubmit = (values, formApi) => {
+        // console.log(values)
         onSettingsUpdate(values);
         requestClosing();
     }

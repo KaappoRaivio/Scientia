@@ -30,14 +30,18 @@ class Instruments extends React.Component {
         const HTTPServerRoot = "http:" + serverAddress.split(":").slice(1, 10).join(":");
         this.deltaAssembler = new DeltaAssembler(HTTPServerRoot, fullState => this.setState({fullState}));
 
-        this.resetWebsocket();
+        // this.ws = new WebSocket(serverAddress + endpoint + "/stream/?subscribe=none");
+        this.initializeWebsocket();
     }
 
-    resetWebsocket () {
+    initializeWebsocket () {
+        try {
+            this.ws.close();
+        } catch (err) {
+            console.error(err);
+        }
+
         this.ws = new WebSocket(this.props.settings.serverAddress + endpoint + "/stream/?subscribe=none");
-    }
-
-    componentDidMount () {
         const preparePath = (name) => {
             return {
                 "path": name,
@@ -59,9 +63,30 @@ class Instruments extends React.Component {
 
         this.ws.onmessage = (event) => {
             const message = JSON.parse(event.data);
-            console.log("moi")
             this.deltaAssembler.onDelta(message);
         };
+
+        this.ws.onclose = (event) => {
+            console.log(event)
+            try {
+                this.ws.send(JSON.stringify({
+                        context: "vessels.self",
+                        unsubscribe : [
+                            "*"
+                        ]
+                    })
+                )
+            } catch (error) {}
+        }
+    }
+
+
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log(prevProps.settings.serverAddress, this.props.settings.serverAddress)
+        if (prevProps.settings.serverAddress !== this.props.settings.serverAddress) {
+            console.log("Switching!!!")
+            this.initializeWebsocket();
+        }
     }
 
     render () {
