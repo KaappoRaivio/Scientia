@@ -15,6 +15,13 @@ class QuadrantInstrumentContainer extends React.Component {
         this.probeCanvas = React.createRef();
         this.child = React.createRef();
 
+        this.resizer = this.debounce(() => {
+            this.fitToContainer(this.probeCanvas.current);
+            try {
+                this.child.current.onResize();
+                // console.log("succ")
+            } catch (err) {}
+        }, this.props.resizeDebounce)
     }
 
     debounce (func, wait, immediate) {
@@ -46,14 +53,13 @@ class QuadrantInstrumentContainer extends React.Component {
 
         this.fitToContainer(this.probeCanvas.current);
 
-        window.addEventListener("resize", this.debounce(() => {
-            this.fitToContainer(this.probeCanvas.current);
-            try {
-                this.child.current.onResize();
-                // console.log("succ")
-            } catch (err) {}
-        }, this.props.resizeDebounce));
+        window.addEventListener("resize", this.resizer);
 
+    }
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.forceResize) {
+            this.resizer()
+        }
     }
 
     render() {
@@ -64,7 +70,7 @@ class QuadrantInstrumentContainer extends React.Component {
             animate: this.props.animate,
             darkMode: this.props.darkMode,
             colors: this.props.colors,
-            key: this.props.children.id,
+            // key: this.props.children.id,
             data: this.props.data
         };
 

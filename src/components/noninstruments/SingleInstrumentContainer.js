@@ -15,6 +15,12 @@ class SingleInstrumentContainer extends React.Component {
         this.probeCanvas = React.createRef();
         this.child = React.createRef();
 
+        this.resizer = this.debounce(() => {
+            this.fitToContainer(this.probeCanvas.current);
+            try {
+                this.child.current.onResize();
+            } catch (err) {}
+        }, this.props.resizeDebounce);
     }
 
     debounce (func, wait, immediate) {
@@ -33,39 +39,39 @@ class SingleInstrumentContainer extends React.Component {
     };
 
     fitToContainer (canvas, ) {
-        canvas.style.width = "100%";
-        canvas.style.height ="100%";
+        try {
+            canvas.style.width = "100%";
+            canvas.style.height ="100%";
+    
+            this.setState({
+                width: Math.round(canvas.offsetWidth),
+                height: Math.round(canvas.offsetWidth)
+            });
+        } catch (e) {
 
-        this.setState({
-            width: Math.round(canvas.offsetWidth),
-            height: Math.round(canvas.offsetWidth)
-        });
+        }
     }
 
     componentDidMount() {
-
         this.fitToContainer(this.probeCanvas.current);
+        window.addEventListener("resize", this.resizer);
 
-        window.addEventListener("resize", this.debounce(() => {
-            this.fitToContainer(this.probeCanvas.current);
-            try {
-                this.child.current.onResize();
-                // console.log("succ")
-            } catch (err) {}
-        }, this.props.resizeDebounce));
+    }
 
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        if (this.props.forceResize) {
+            this.resizer()
+        }
     }
 
     render() {
         const props = {
             width: this.state.width,
             height: this.state.height,
-            // subscribe: this.props.callback,
             ref: this.child,
             animate: this.props.animate,
             darkMode: this.props.darkMode,
             colors: this.props.colors,
-            key: this.props.children.id,
             data: this.props.data,
             ...this.props.additionalProps,
         };
@@ -75,11 +81,11 @@ class SingleInstrumentContainer extends React.Component {
             fontSize: this.state.width / 10,
             color: this.props.colors.primary,
             // backgroundColor: this.props.colors.background,
-
         };
 
         return (
             <div className="single-flexbox-item with-shadow" style={parentStyle}>
+                <RemoveInstrument width={this.state.width} height={this.state.height} onRemoveClick={() => this.props.onRemoveClick(this.props.index)} />
                 <div className="single-flexbox-wrapper">
                     {
                         React.createElement(this.props.children,
@@ -91,6 +97,20 @@ class SingleInstrumentContainer extends React.Component {
             </div>
         )
     }
+}
+
+const RemoveInstrument = ({height, width, onRemoveClick}) => {
+    const svgSize = {width: width / 10, height: height / 10};
+
+    const lineLength = 0.75;
+
+    return <svg style={{right: 10, top: 10, position: "absolute", zIndex: 10}} width={svgSize.width} height={svgSize.height} onClick={onRemoveClick}>
+            <circle cx={svgSize.width / 2} cy={svgSize.height / 2} r={svgSize.width / 2} fill={"gray"} strokeWidth={0}/>
+            <g strokeWidth={svgSize.width * 0.1} stroke={"white"} strokeLinecap="round">
+                <line x1={svgSize.width * (1 - lineLength)} x2={svgSize.width * lineLength} y1={svgSize.height * (1 - lineLength)} y2={svgSize.height * lineLength} />
+                <line x2={svgSize.width * (1 - lineLength)} x1={svgSize.width * lineLength} y1={svgSize.height * (1 - lineLength)} y2={svgSize.height * lineLength} />
+            </g>
+        </svg>
 }
 
 export default SingleInstrumentContainer;

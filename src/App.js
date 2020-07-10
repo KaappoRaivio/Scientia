@@ -1,16 +1,21 @@
 import React from 'react';
 import './flat-remix.css';
-// import "@patternfly/patternfly/patternfly.css"
 
 import './App.css';
 
 import "react-vis/dist/style.css";
 import "chartist/dist/chartist.css";
 
+
 import Instruments from "./components/instruments"
 // import MySidebar from "./components/mySidebar";
 import Logo from "./components/Logo";
 import MyModal from "./components/MyModal";
+import WindContainer from "./components/instruments/wind/WindContainer";
+import CompassContainer from "./components/instruments/compass/CompassContainer";
+import TridataContainer from "./components/instruments/tridata/TridataContainer";
+import GaugeContainer from "./components/instruments/gauge/GaugeContainer";
+import AddInstrument from "./components/noninstruments/AddInstrument";
 
 if (process.env.NODE_ENV !== "production") {
     // const {whyDidYouUpdate} = require("why-did-you-update");
@@ -24,8 +29,6 @@ class App extends React.Component {
         let url = window.location.href;
         let ws = "ws:" + url.split(":")[1] + ":3000"
 
-        // let ws = "ws://192.168.1.151:3000";
-
         this.state = {
             settingsPaneOpen: false,
 
@@ -35,6 +38,8 @@ class App extends React.Component {
                 animation: false,
                 animationsAccordingToChargingStatus: true
             },
+
+            instruments: getInstruments()
         };
     }
 
@@ -74,14 +79,12 @@ class App extends React.Component {
         }
     }
 
-
     componentDidMount() {
         if (this.state.settings.animationsAccordingToChargingStatus) {
             navigator
                 .getBattery()
                 .then(battery => {
-                    // // console.log(battery);
-                    // this.setState({animation: battery.charging})
+                    this.setState({animation: battery.charging})
                 })
                 .catch(console.error);
         }
@@ -93,7 +96,7 @@ class App extends React.Component {
         const onSetSettingsPaneOpen = (open) => {
             this.setState({ settingsPaneOpen: open });
         }
-        //
+
         const onSettingsChange = (newSettings) => {
             // console.log(newSettings)
             this.setState({
@@ -115,6 +118,20 @@ class App extends React.Component {
             animationsAccordingToChargingStatus: this.state.settings.animationsAccordingToChargingStatus
         })
 
+        const onInstrumentAdded = instrument => {
+            this.setState(oldState => ({
+                instruments: oldState.instruments.concat(instrument)
+            }))
+        }
+
+        const onInstrumentRemoved = index => {
+            console.log("Instrument removed", index)
+            this.setState(oldState => ({
+                instruments: oldState.instruments.slice(0, index).concat(oldState.instruments.slice(index + 1))
+            }))
+            console.log(this.state)
+        }
+
         return (
             <div className="instruments" style={parentStyle}>
                 <MyModal isModalOpen={this.state.settingsPaneOpen}
@@ -124,7 +141,7 @@ class App extends React.Component {
                     colors={colors}
                     appElement={this}
                 />
-                <Instruments settings={this.state.settings} colors={colors} />
+                <Instruments settings={this.state.settings} colors={colors} instruments={this.state.instruments} onInstrumentAdded={onInstrumentAdded} onInstrumentRemoved={onInstrumentRemoved} />
                 <div className="open-menu with-shadow">
                     <button className="open-menu-wrapper"
                         onClick={() => onSetSettingsPaneOpen(true)}>
@@ -136,6 +153,155 @@ class App extends React.Component {
         );
     }
 }
+
+const getInstruments = () => [
+    {
+        type: "quadrant",
+        instruments: [
+            {
+                component: WindContainer,
+                additionalProps: {}
+            },
+            {
+                component: CompassContainer,
+                additionalProps: {}
+            },
+            {
+                component: TridataContainer,
+                additionalProps: {
+                    paths: [
+                        "environment.depth.belowTransducer",
+                        "navigation.speedOverGround",
+                        "performance.polarSpeed",
+                        "navigation.trip.log"
+                    ],
+                }
+            },
+            {
+                component: GaugeContainer,
+                additionalProps: {
+                    path: "environment.depth.belowTransducer"
+                }
+            }
+        ]
+    },
+    {
+        type: "single",
+        instruments: [
+            {
+                component: WindContainer,
+                additionalProps: {}
+            }
+        ]
+    },
+    {
+        type: "single",
+        instruments: [
+            {
+                component: CompassContainer,
+                additionalProps: {}
+            }
+        ]
+    },
+    {
+        type: "single",
+        instruments: [
+            {
+                component: TridataContainer,
+                additionalProps: {
+                    paths: ["environment.depth.belowTransducer",
+                        "navigation.speedOverGround",
+                        "performance.polarSpeed",
+                        "navigation.trip.log"
+                    ],
+                }
+            },
+        ]
+    },
+    // {
+    //     type: "single",
+    //     instruments: [
+    //         {
+    //             component: GaugeContainer,
+    //             additionalProps: {
+    //                 // path: "performance.polarSpeedRatio"
+    //                 path: "steering.rudderAngle"
+    //             }
+    //         }
+    //     ]
+    // },
+    // {
+    //     type: "quadrant",
+    //     instruments: [
+    //         {
+    //             component: GaugeContainer,
+    //             additionalProps: {
+    //                 path: "environment.depth.belowTransducer",
+    //                 // path:
+    //             }
+    //         },
+    //         {
+    //             component: GaugeContainer,
+    //             additionalProps: {
+    //                 path: "environment.wind.speedTrue"
+    //             }
+    //         },
+    //         {
+    //             component: GaugeContainer,
+    //             additionalProps: {
+    //                 path: "performance.polarSpeedRatio"
+    //             }
+    //         },
+    //         {
+    //             component: GaugeContainer,
+    //             additionalProps: {
+    //                 path: "steering.rudderAngle"
+    //             }
+    //         }
+    //     ]
+    // },
+    //
+    // {
+    //     type: "single",
+    //     instruments: [
+    //         {
+    //             component: VisualiserContainer,
+    //             additionalProps: {
+    //                 path: "environment.depth.belowTransducer",
+    //                 ranges: [5, 10, 20, 40, 100],
+    //                 numberOfPointsToShow: 200,
+    //                 negate: true,
+    //                 upperBound: 100,
+    //                 lowerBound: 0,
+    //                 legend: "Depth",
+    //                 unit: "m",
+    //                 trendlinePeriod: 50,
+    //                 trendline: true
+    //             }
+    //         }
+    //     ]
+    // },
+    // {
+    //     type: "single",
+    //     instruments: [
+    //         {
+    //             component: VisualiserContainer,
+    //             additionalProps: {
+    //                 path: "environment.wind.speedTrue",
+    //                 ranges: [10, 20, 50],
+    //                 numberOfPointsToShow: 200,
+    //                 negate: false,
+    //                 upperBound: 50,
+    //                 lowerBound: 0,
+    //                 legend: "Wind, speed true",
+    //                 unit: "m/s",
+    //                 trendlinePeriod: 20,
+    //                 trendline: true
+    //             }
+    //         }
+    //     ]
+    // },
+]
 
 
 export default App;

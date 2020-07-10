@@ -82,7 +82,6 @@ class Instruments extends React.Component {
 
 
     componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log(prevProps.settings.serverAddress, this.props.settings.serverAddress)
         if (prevProps.settings.serverAddress !== this.props.settings.serverAddress) {
             console.log("Switching!!!")
             this.initializeWebsocket();
@@ -90,197 +89,55 @@ class Instruments extends React.Component {
     }
 
     render () {
-        const instruments = [
-            {
-                type: "quadrant",
-                instruments: [
-                    {
-                        component: WindContainer,
-                        additionalProps: {
 
-                        }
-                    },
-                    {
-                        component: CompassContainer,
-                        additionalProps: {
-
-                        }
-                    },
-                    {
-                        component: TridataContainer,
-                        additionalProps: {
-                            paths: ["environment.depth.belowTransducer",
-                                "navigation.speedOverGround",
-                                "performance.polarSpeed",
-                                "navigation.trip.log"
-                            ],
-                        }
-                    },
-                    {
-                        component: GaugeContainer,
-                        additionalProps: {
-                            path: "environment.depth.belowTransducer"
-                        }
-                    }
-                ]
-            },
-            {
-                type: "single",
-                instruments: [
-                    {
-                        component: WindContainer,
-                        additionalProps: {
-
-                        }
-                    }
-                ]
-            },
-            {
-                type: "single",
-                instruments: [
-                    {
-                        component: CompassContainer,
-                        additionalProps: {
-
-                        }
-                    }
-                ]
-            },
-            {
-                type: "single",
-                instruments: [
-                    {
-                        component: TridataContainer,
-                        additionalProps: {
-                            paths: ["environment.depth.belowTransducer",
-                                "navigation.speedOverGround",
-                                "performance.polarSpeed",
-                                "navigation.trip.log"
-                            ],
-                        }
-                    },
-                ]
-            },
-            // {
-            //     type: "single",
-            //     instruments: [
-            //         {
-            //             component: GaugeContainer,
-            //             additionalProps: {
-            //                 // path: "performance.polarSpeedRatio"
-            //                 path: "steering.rudderAngle"
-            //             }
-            //         }
-            //     ]
-            // },
-            // {
-            //     type: "quadrant",
-            //     instruments: [
-            //         {
-            //             component: GaugeContainer,
-            //             additionalProps: {
-            //                 path: "environment.depth.belowTransducer",
-            //                 // path:
-            //             }
-            //         },
-            //         {
-            //             component: GaugeContainer,
-            //             additionalProps: {
-            //                 path: "environment.wind.speedTrue"
-            //             }
-            //         },
-            //         {
-            //             component: GaugeContainer,
-            //             additionalProps: {
-            //                 path: "performance.polarSpeedRatio"
-            //             }
-            //         },
-            //         {
-            //             component: GaugeContainer,
-            //             additionalProps: {
-            //                 path: "steering.rudderAngle"
-            //             }
-            //         }
-            //     ]
-            // },
-            //
-            // {
-            //     type: "single",
-            //     instruments: [
-            //         {
-            //             component: VisualiserContainer,
-            //             additionalProps: {
-            //                 path: "environment.depth.belowTransducer",
-            //                 ranges: [5, 10, 20, 40, 100],
-            //                 numberOfPointsToShow: 200,
-            //                 negate: true,
-            //                 upperBound: 100,
-            //                 lowerBound: 0,
-            //                 legend: "Depth",
-            //                 unit: "m",
-            //                 trendlinePeriod: 50,
-            //                 trendline: true
-            //             }
-            //         }
-            //     ]
-            // },
-            // {
-            //     type: "single",
-            //     instruments: [
-            //         {
-            //             component: VisualiserContainer,
-            //             additionalProps: {
-            //                 path: "environment.wind.speedTrue",
-            //                 ranges: [10, 20, 50],
-            //                 numberOfPointsToShow: 200,
-            //                 negate: false,
-            //                 upperBound: 50,
-            //                 lowerBound: 0,
-            //                 legend: "Wind, speed true",
-            //                 unit: "m/s",
-            //                 trendlinePeriod: 20,
-            //                 trendline: true
-            //             }
-            //         }
-            //     ]
-            // },
-        ];
 
         const { animation, darkMode } = this.props.settings;
-        const { colors } = this.props;
+        const { colors, instruments, onInstrumentAdded, onInstrumentRemoved } = this.props;
 
         return (
             <div className="flexbox-container">
-                {instruments.map((instrument, index) => {
-                    if (instrument.type === "single") {
-                        const component = instrument.instruments[0];
+                {
+                    instruments.map((instrument, index) => {
+                        if (instrument.type === "single") {
+                            const component = instrument.instruments[0];
 
-                        return <SingleInstrumentContainer
-                            animate={animation}
-                            darkMode={darkMode}
-                            colors={colors}
-                            children={component.component}
-                            data={this.state.fullState}
-                            additionalProps={component.additionalProps}
-                            resizeDebounce={0}
-                            key={index}
-                        />;
-                    } else if (instrument.type === "quadrant") {
-                        return <QuadrantInstrumentContainer
-                            animate={animation}
-                            darkMode={darkMode}
-                            colors={colors}
-                            data={this.state.fullState}
-                            children={instrument.instruments}
-                            resizeDebounce={0}
-                            key={index}
-                        />;
-
-                    }
-
-
+                            return <SingleInstrumentContainer
+                                animate={animation}
+                                darkMode={darkMode}
+                                colors={colors}
+                                children={component.component}
+                                data={this.state.fullState}
+                                additionalProps={component.additionalProps}
+                                resizeDebounce={0}
+                                forceResize={true}
+                                onRemoveClick={onInstrumentRemoved}
+                                index={index}
+                                // key={index}
+                            />;
+                        } else if (instrument.type === "quadrant") {
+                            return <QuadrantInstrumentContainer
+                                animate={animation}
+                                darkMode={darkMode}
+                                colors={colors}
+                                data={this.state.fullState}
+                                children={instrument.instruments}
+                                resizeDebounce={0}
+                                forceResize={true}
+                                // key={index}
+                            />;
+                        }
                     }
                 )}
+                <SingleInstrumentContainer
+                    children={AddInstrument}
+                    data={this.state.fullState}
+                    additionalProps={{onInstrumentAdded}}
+                    animate={animation}
+                    darkMode={darkMode}
+                    colors={colors}
+                    forceResize={true}
+
+                />
             </div>
         );
     }
