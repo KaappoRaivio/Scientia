@@ -2,6 +2,7 @@ import React from "react";
 
 import "../instruments.css"
 import "./singleinstrumentcontainer.css"
+import RemoveInstrument from "./RemoveInstrument";
 
 class SingleInstrumentContainer extends React.Component {
     constructor(props) {
@@ -80,12 +81,12 @@ class SingleInstrumentContainer extends React.Component {
             height: this.state.height,
             fontSize: this.state.width / 10,
             color: this.props.colors.primary,
-            // backgroundColor: this.props.colors.background,
+            backgroundColor: this.props.colors.background,
         };
 
         return (
             <div className="single-flexbox-item with-shadow" style={parentStyle}>
-                <RemoveInstrument width={this.state.width} height={this.state.height} onRemoveClick={() => this.props.onRemoveClick(this.props.index)} />
+                <RemoveInstrument width={this.state.width} height={this.state.height} onRemoveClick={() => this.props.onRemoveClick(this.props.index)} enabled={this.props.layoutEditingEnabled}/>
                 <div className="single-flexbox-wrapper">
                     {
                         React.createElement(this.props.children,
@@ -97,20 +98,6 @@ class SingleInstrumentContainer extends React.Component {
             </div>
         )
     }
-}
-
-const RemoveInstrument = ({height, width, onRemoveClick}) => {
-    const svgSize = {width: width / 10, height: height / 10};
-
-    const lineLength = 0.75;
-
-    return <svg style={{right: 10, top: 10, position: "absolute", zIndex: 10}} width={svgSize.width} height={svgSize.height} onClick={onRemoveClick}>
-            <circle cx={svgSize.width / 2} cy={svgSize.height / 2} r={svgSize.width / 2} fill={"gray"} strokeWidth={0}/>
-            <g strokeWidth={svgSize.width * 0.1} stroke={"white"} strokeLinecap="round">
-                <line x1={svgSize.width * (1 - lineLength)} x2={svgSize.width * lineLength} y1={svgSize.height * (1 - lineLength)} y2={svgSize.height * lineLength} />
-                <line x2={svgSize.width * (1 - lineLength)} x1={svgSize.width * lineLength} y1={svgSize.height * (1 - lineLength)} y2={svgSize.height * lineLength} />
-            </g>
-        </svg>
 }
 
 export default SingleInstrumentContainer;

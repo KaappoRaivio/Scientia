@@ -1,15 +1,8 @@
-import  React from "react";
-
-import CompassContainer from "./instruments/compass/CompassContainer"
-import TridataContainer from "./instruments/tridata/TridataContainer";
+import React from "react";
 
 import "./instruments.css"
 import SingleInstrumentContainer from "./noninstruments/SingleInstrumentContainer";
-import WindContainer from "./instruments/wind/WindContainer";
-import GaugeContainer from "./instruments/gauge/GaugeContainer";
-import VisualiserContainer from "./instruments/visualiser/VisualiserContainer";
 import QuadrantInstrumentContainer from "./noninstruments/QuadrantInstrumentContainer";
-import Visualiser2 from "./instruments/visualiser/Visualiser2";
 import AddInstrument from "./noninstruments/AddInstrument";
 import DeltaAssembler from "delta-processor"
 
@@ -92,7 +85,7 @@ class Instruments extends React.Component {
 
 
         const { animation, darkMode } = this.props.settings;
-        const { colors, instruments, onInstrumentAdded, onInstrumentRemoved } = this.props;
+        const { colors, instruments, onInstrumentAdded, onInstrumentRemoved, layoutEditingEnabled } = this.props;
 
         return (
             <div className="flexbox-container">
@@ -112,23 +105,31 @@ class Instruments extends React.Component {
                                 forceResize={true}
                                 onRemoveClick={onInstrumentRemoved}
                                 index={index}
-                                // key={index}
+                                layoutEditingEnabled={layoutEditingEnabled}
                             />;
                         } else if (instrument.type === "quadrant") {
-                            return <QuadrantInstrumentContainer
-                                animate={animation}
-                                darkMode={darkMode}
-                                colors={colors}
-                                data={this.state.fullState}
-                                children={instrument.instruments}
-                                resizeDebounce={0}
-                                forceResize={true}
-                                // key={index}
-                            />;
+                            return <QuadrantInstrumentContainer>
+                                {instrument.instruments.map(quadrant => {
+                                    return <SingleInstrumentContainer
+                                        animate={animation}
+                                        darkMode={darkMode}
+                                        colors={colors}
+                                        children={quadrant.component}
+                                        data={this.state.fullState}
+                                        additionalProps={quadrant.additionalProps}
+                                        resizeDebounce={0}
+                                        forceResize={true}
+                                        onRemoveClick={onInstrumentRemoved}
+                                        index={index}
+                                        layoutEditingEnabled={layoutEditingEnabled}
+                                    />;
+                                })}
+                            </QuadrantInstrumentContainer>;
                         }
                     }
                 )}
-                <SingleInstrumentContainer
+
+                {layoutEditingEnabled &&<SingleInstrumentContainer
                     children={AddInstrument}
                     data={this.state.fullState}
                     additionalProps={{onInstrumentAdded}}
@@ -137,7 +138,7 @@ class Instruments extends React.Component {
                     colors={colors}
                     forceResize={true}
 
-                />
+                />}
             </div>
         );
     }

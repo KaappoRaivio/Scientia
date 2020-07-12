@@ -67,6 +67,20 @@
     z-index: 10;
 }
 
+.remove-instrument {
+    right: 10px;
+    top: 10px;
+    position: absolute;
+    z-index: 10;
+    transition: opacity linear 0.2s;
+    opacity: 100%;
+}
+
+.disabled {
+    visibility: hidden;
+    opacity: 0%;
+}
+
 .probe {
     position: absolute;
     top: 0;

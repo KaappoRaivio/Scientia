@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './flat-remix.css';
 
 import './App.css';
@@ -17,6 +17,9 @@ import TridataContainer from "./components/instruments/tridata/TridataContainer"
 import GaugeContainer from "./components/instruments/gauge/GaugeContainer";
 import AddInstrument from "./components/noninstruments/AddInstrument";
 
+import Wrench from "./assets/wrench.svg"
+import Done from "./assets/done.svg"
+
 if (process.env.NODE_ENV !== "production") {
     // const {whyDidYouUpdate} = require("why-did-you-update");
     // whyDidYouUpdate(React);
@@ -30,6 +33,7 @@ class App extends React.Component {
         let ws = "ws:" + url.split(":")[1] + ":3000"
 
         this.state = {
+            layoutEditingEnabled: false,
             settingsPaneOpen: false,
 
             settings: {
@@ -141,17 +145,28 @@ class App extends React.Component {
                     colors={colors}
                     appElement={this}
                 />
-                <Instruments settings={this.state.settings} colors={colors} instruments={this.state.instruments} onInstrumentAdded={onInstrumentAdded} onInstrumentRemoved={onInstrumentRemoved} />
+                <Instruments settings={this.state.settings} colors={colors} instruments={this.state.instruments} onInstrumentAdded={onInstrumentAdded} onInstrumentRemoved={onInstrumentRemoved} layoutEditingEnabled={this.state.layoutEditingEnabled} />
                 <div className="open-menu with-shadow">
                     <button className="open-menu-wrapper"
                         onClick={() => onSetSettingsPaneOpen(true)}>
                         configure
                     </button>
+                    {/*<button className="open-menu-wrapper"*/}
+                    {/*        onClick={() => onSetSettingsPaneOpen(true)}>*/}
+                    {/*    configureasd*/}
+                    {/*</button>*/}
+                    <ToggleLayoutEditing editingEnabled={this.state.layoutEditingEnabled} onChanged={layoutEditingEnabled => this.setState({layoutEditingEnabled})}/>
                 </div>
                 <Logo />
             </div>
         );
     }
+}
+
+const ToggleLayoutEditing = ({ editingEnabled, onChanged }) => {
+    return <div onClick={() => onChanged(!editingEnabled)} className="configure-layout-wrapper">
+        <img className="configure-layout" src={editingEnabled ? Done : Wrench} alt="enable layout configuration" width="auto"/>
+    </div>
 }
 
 const getInstruments = () => [
@@ -186,26 +201,16 @@ const getInstruments = () => [
         ]
     },
     {
-        type: "single",
+        type: "quadrant",
         instruments: [
             {
                 component: WindContainer,
                 additionalProps: {}
-            }
-        ]
-    },
-    {
-        type: "single",
-        instruments: [
+            },
             {
                 component: CompassContainer,
                 additionalProps: {}
-            }
-        ]
-    },
-    {
-        type: "single",
-        instruments: [
+            },
             {
                 component: TridataContainer,
                 additionalProps: {
@@ -217,7 +222,7 @@ const getInstruments = () => [
                 }
             },
         ]
-    },
+    }
     // {
     //     type: "single",
     //     instruments: [
