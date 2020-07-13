@@ -61,7 +61,10 @@
 }
 
 .form-template-buttons {
-    float: bottom;
+    /*float: bottom;*/
+    bottom: 0;
+    margin-bottom: 3%;
+    display: inline;
 }
 .form-confirm {
     width: auto;

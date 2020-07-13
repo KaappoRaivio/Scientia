@@ -3,6 +3,47 @@ import React, {useState} from 'react';
 import plusIcon from "../../assets/plus_icon.svg"
 import "./AddInstrument.css"
 import TridataContainer from "../instruments/tridata/TridataContainer";
+import SettingsForm from "../../SettingsForm";
+import {componentTypes} from "@data-driven-forms/react-form-renderer";
+import WindContainer from "../instruments/wind/WindContainer";
+import GaugeContainer from "../instruments/gauge/GaugeContainer";
+import CompassContainer from "../instruments/compass/CompassContainer";
+import ReactDropdown from "react-dropdown";
+
+const schema = {
+    buttonsAtBottom: true,
+    dontShowApply: true,
+};
+
+const mergeFields = fields => {
+    if (fields == null || fields === []) return null;
+    return {...schema, fields}
+}
+
+const spinnerSchema = {
+    component: "select",
+    name: "instrument",
+    label: "Select instrument",
+    options: [
+        {
+            label: "Wind",
+            value: WindContainer
+        },
+        {
+            label: "Tridata",
+            value: TridataContainer
+        },
+        {
+            label: "Gauge",
+            value: GaugeContainer
+        },
+        {
+            label: "Compass",
+            value: CompassContainer
+        }
+    ]
+};
+
 
 const AddInstrument = ({onInstrumentAdded, width, height, colors, darkMode}) => {
 
@@ -12,6 +53,24 @@ const AddInstrument = ({onInstrumentAdded, width, height, colors, darkMode}) => 
     const center = {x: svgSize.x / 2, y: svgSize.y / 2};
 
     const [ plusPressed, setPlusPressed ] = useState(false);
+    const [ selectedItem, setSelectedItem ] = useState(spinnerSchema.options[1]);
+
+    const onConfirm = options => {
+        onInstrumentAdded({
+            type: "single",
+            instruments: [
+                {
+                    component: selectedItem.value,
+                    additionalProps: options
+                }
+            ]
+        });
+    }
+
+    const onSpinnerChange = selectedItem => {
+        setSelectedItem(selectedItem);
+        console.log(selectedItem)
+    }
 
     if (!plusPressed) {
         return (
@@ -24,25 +83,9 @@ const AddInstrument = ({onInstrumentAdded, width, height, colors, darkMode}) => 
             </div>
         );
     } else {
-        return <div onClick={() => {
-            setPlusPressed(false);
-            onInstrumentAdded({
-                type: "single",
-                instruments: [
-                    {
-                        component: TridataContainer,
-                        additionalProps: {
-                            paths: [
-                                "environment.depth.belowTransducer",
-                                "navigation.speedOverGround"
-                            ]
-                        }
-                    }
-                ]
-            });
-        }}>
-            Add instrument here
-
+        return <div style={{padding: "3%", fontSize: "25%", height: "80%", overflowY: "auto"}}>
+            <ReactDropdown value={selectedItem} onChange={onSpinnerChange} options={spinnerSchema.options} placeholder={spinnerSchema.label} />
+            <SettingsForm schema={mergeFields(selectedItem.value.schema) || schema} onSettingsUpdate={onConfirm} requestClosing={() => setPlusPressed(false)}/>
         </div>
     }
 };

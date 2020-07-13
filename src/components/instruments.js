@@ -1,6 +1,8 @@
 import React from "react";
 
 import "./instruments.css"
+import "./noninstruments/quadrandinstrumentcontainer.css"
+
 import SingleInstrumentContainer from "./noninstruments/SingleInstrumentContainer";
 import QuadrantInstrumentContainer from "./noninstruments/QuadrantInstrumentContainer";
 import AddInstrument from "./noninstruments/AddInstrument";
@@ -108,8 +110,8 @@ class Instruments extends React.Component {
                                 layoutEditingEnabled={layoutEditingEnabled}
                             />;
                         } else if (instrument.type === "quadrant") {
-                            return <QuadrantInstrumentContainer>
-                                {instrument.instruments.map(quadrant => {
+                            return <QuadrantInstrumentContainer layoutEditingEnabled={layoutEditingEnabled}>
+                                {[...instrument.instruments.map((quadrant, innerIndex) => {
                                     return <SingleInstrumentContainer
                                         animate={animation}
                                         darkMode={darkMode}
@@ -119,26 +121,50 @@ class Instruments extends React.Component {
                                         additionalProps={quadrant.additionalProps}
                                         resizeDebounce={0}
                                         forceResize={true}
-                                        onRemoveClick={onInstrumentRemoved}
-                                        index={index}
+                                        onRemoveClick={index => {
+                                            console.log(index, instrument.instruments);
+                                            instrument.instruments = instrument.instruments.slice(0, index).concat(instruments.slice(index + 1));
+                                            // instrument.instruments = [];
+                                        }}
+                                        index={innerIndex}
                                         layoutEditingEnabled={layoutEditingEnabled}
                                     />;
-                                })}
+                                }),
+                                ...[...Array(layoutEditingEnabled ? 4 - instrument.instruments.length : 0).fill(0)].map((_, index) =>
+                                    <SingleInstrumentContainer
+                                        animate={animation}
+                                        darkMode={darkMode}
+                                        colors={colors}
+                                        children={AddInstrument}
+                                        data={this.state.fullState}
+                                        additionalProps={{onInstrumentAdded: newInstrument => {
+                                                // instrument.instruments[4 - instrument.instruments.length + index] = newInstrument;
+                                                instrument.instruments.push(newInstrument.instruments[0])
+                                                console.log(newInstrument, index, instrument.instruments)
+                                            }}}
+                                        resizeDebounce={0}
+                                        forceResize={true}
+                                        onRemoveClick={onInstrumentRemoved}
+                                        index={index}
+                                        layoutEditingEnabled={false}
+                                    />
+                                )]}
                             </QuadrantInstrumentContainer>;
                         }
                     }
                 )}
 
-                {layoutEditingEnabled &&<SingleInstrumentContainer
-                    children={AddInstrument}
-                    data={this.state.fullState}
-                    additionalProps={{onInstrumentAdded}}
-                    animate={animation}
-                    darkMode={darkMode}
-                    colors={colors}
-                    forceResize={true}
-
-                />}
+                {layoutEditingEnabled &&
+                    <SingleInstrumentContainer
+                        children={AddInstrument}
+                        data={this.state.fullState}
+                        additionalProps={{onInstrumentAdded}}
+                        animate={animation}
+                        darkMode={darkMode}
+                        colors={colors}
+                        forceResize={true}
+                        layoutEditingEnabled={false}
+                    />}
             </div>
         );
     }

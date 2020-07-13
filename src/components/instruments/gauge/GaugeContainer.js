@@ -4,9 +4,25 @@ import Gauge from "./Gauge";
 import { getByStringPath, valueSkeleton } from "delta-processor";
 
 import PropTypes from "prop-types";
+import {componentTypes} from "@data-driven-forms/react-form-renderer";
+import validatorTypes from "@data-driven-forms/react-form-renderer/dist/cjs/validator-types";
 
 
 class GaugeContainer extends React.Component {
+    static schema = [
+        {
+            component: componentTypes.TEXT_FIELD,
+            name: "path",
+            placeholder: "Path",
+            validate: [
+                {
+                    type: validatorTypes.MIN_LENGTH,
+                    threshold: 1
+                }
+            ]
+        }
+    ];
+
     static propTypes = {
         width: PropTypes.number.isRequired,
         height: PropTypes.number.isRequired,

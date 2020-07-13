@@ -1,12 +1,17 @@
-import React from 'react';
+import React, {useState} from 'react';
 
 import FormRenderer, {componentTypes, useFieldApi, useFormApi} from '@data-driven-forms/react-form-renderer';
+import FieldArray from '@data-driven-forms/react-form-renderer/dist/cjs/field-array';
 
 import "./SettingsForm.css";
 import Switch from "react-switch";
 import Slider, { Range } from "rc-slider";
 import "rc-slider/assets/index.css";
 import * as PropTypes from "prop-types";
+
+import ReactDropdown from "react-dropdown";
+import 'react-dropdown/style.css';
+import Form from "@data-driven-forms/react-form-renderer/dist/cjs/form";
 
 const TextField = props => {
     const {label, input, meta, ...rest} = useFieldApi(props)
@@ -25,7 +30,6 @@ const TextField = props => {
 const Checkbox = props => {
     const { label, input } = useFieldApi(props)
 
-    // // console.log(input)
     return (
         <div style={{display: "flex", flexDirection: "inline"}}>
 
@@ -46,14 +50,36 @@ const Checkbox = props => {
         </div>
     )
 }
-//
-// const Slider = props => {
-//     const { label, input } = useFieldApi(props);
-//
-//     return (
-//
-//     )
-// }
+
+const DropDown = props => {
+    const api = useFieldApi(props);
+
+    // let [ currentlySelected, setCurrentlySelected ] = useState(null);
+
+    return <div>
+        <ReactDropdown value={api.input.value} onChange={api.input.onChange} options={api.options} placeholder={api.label} />
+    </div>
+}
+
+const MyFieldArray = props => {
+    const { fields, input, fieldKey, ...rest } = useFieldApi(props);
+    const { renderForm } = useFormApi();
+
+    // fields.push()
+
+    console.log(fields, rest, input, renderForm(fields));
+    return <div>
+        {renderForm(fields)}
+        <button className="button form-cancel" onClick={() => fields.push(
+        //     {
+        //     component: componentTypes.TEXT_FIELD,
+        //     name: `${fieldKey}.${fields.length}`,
+        //     placeholder: fields[0].placeholder
+        // }
+            {...fields[0], name: `${fieldKey}.${fields.length}`}
+        )}>Add</button>
+    </div>
+}
 
 const Section = props => {
     const { fields } = props;
@@ -69,22 +95,23 @@ const Section = props => {
 }
 
 const MyFormTemplate = props => {
-    let {schema, formFields} = props;
-    const {handleSubmit, onReset, onCancel} = useFormApi();
+    let { schema, formFields } = props;
+    const { handleSubmit, onCancel } = useFormApi();
 
-    // // console.log(formFields)
 
     return (
-        <form className="form-template-parent" onSubmit={handleSubmit} onReset={onReset} onCancel={onCancel}>
-            <h1 className="form-title">{schema.title}</h1>
+        <div className="form-template-parent" onSubmit={handleSubmit}>
+            {schema.title && <h1 className="form-title">{schema.title}</h1>}
             {formFields}
             <hr />
-            <div className="form-template-buttons" style={{display: "inline"}}>
-                <button className="button form-confirm with-shadow" type="submit">Ok</button>
-                <button className="button form-cancel" type="cancel">Cancel</button>
-                <button className="button form-cancel" type="apply">Apply</button>
+            <div className="form-template-buttons" style={{position: schema.buttonsAtBottom ? "absolute" : "static"}}>
+            <button className="button form-confirm with-shadow" type="submit" onClick={handleSubmit}>Ok</button>
+            <button className="button form-cancel" type="cancel" onClick={onCancel}>Cancel</button>
+
+            {/*<button>Ok</button>*/}
+            {!schema.dontShowApply && <button className="button form-cancel" type="apply">Apply</button>}
             </div>
-        </form>
+        </div>
     )
 };
 
@@ -97,72 +124,22 @@ const myComponentMapper = {
     [componentTypes.TEXT_FIELD]: TextField,
     [componentTypes.CHECKBOX]: Checkbox,
     [componentTypes.SWITCH]: Checkbox,
+    [componentTypes.SELECT]: DropDown,
     // [componentTypes.PLAIN_TEXT]: PlainText,
     [componentTypes.SUB_FORM]: Section,
+    [componentTypes.FIELD_ARRAY]: MyFieldArray,
     'custom-type': TextField
 }
 
-const schema = {
-    title: "Settings",
-    fields: [
-        {
-            component: componentTypes.SUB_FORM,
-            title: "General",
-            description: "",
-            name: "general",
-            fields: [
-                {
-                    component: componentTypes.TEXT_FIELD,
-                    name: 'serverAddress',
-                    label: 'Server address'
-                },
-            ]
-        },
-        {
-            component: componentTypes.SUB_FORM,
-            title: "Performance",
-            description: "",
-            name: "performance",
-            fields: [
-                {
-                    component: componentTypes.SWITCH,
-                    name: "animation",
-                    label: "Use animations"
-                },
-                {
-                    component: componentTypes.SWITCH,
-                    name: "animationsAccordingToChargingStatus",
-                    label: "Make animations enabled based on the charging status of the device"
-                },
-            ]
-        },
-        {
-            component: componentTypes.SUB_FORM,
-            title: "Appearance",
-            description: "",
-            name: "appearance",
-            fields: [
-                {
-                    component: componentTypes.SWITCH,
-                    name: "darkMode",
-                    label: "Dark mode"
-                },
-                {
-                    component: componentTypes.TEXT_FIELD,
-                    name: "numberOfColumns",
-                    label: "Number of columns in the grid",
-                    initialValue: "5"
-                }
-            ]
-        }
-    ]
-}
-
-
-const SettingsForm = ({onSettingsUpdate, requestClosing, initialValues}) => {
+const SettingsForm = ({onSettingsUpdate, requestClosing, initialValues, schema, buttonsInDocumentFlow}) => {
     const onSubmit = (values, formApi) => {
-        // console.log(values)
+        console.log(formApi, values)
         onSettingsUpdate(values);
+        requestClosing();
+    }
+
+    const onCancel = (values, formApi) => {
+        console.log("Canceling form!")
         requestClosing();
     }
 
@@ -171,7 +148,9 @@ const SettingsForm = ({onSettingsUpdate, requestClosing, initialValues}) => {
             initialValues={initialValues}
             componentMapper={myComponentMapper}
             FormTemplate={MyFormTemplate}
-            onSubmit={onSubmit}/>
+            onSubmit={onSubmit}
+            onCancel={onCancel}
+        />
     );
 };
 

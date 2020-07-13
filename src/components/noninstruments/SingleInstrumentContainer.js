@@ -17,7 +17,7 @@ class SingleInstrumentContainer extends React.Component {
         this.child = React.createRef();
 
         this.resizer = this.debounce(() => {
-            this.fitToContainer(this.probeCanvas.current);
+            this.setDimensions(this.probeCanvas.current);
             try {
                 this.child.current.onResize();
             } catch (err) {}
@@ -25,21 +25,28 @@ class SingleInstrumentContainer extends React.Component {
     }
 
     debounce (func, wait, immediate) {
-        var timeout;
-        return function() {
-            var context = this, args = arguments;
-            var later = function() {
+        let timeout;
+        return function () {
+            const context = this;
+            const args = arguments;
+            const later = () => {
                 timeout = null;
-                if (!immediate) func.apply(context, args);
+                if (!immediate) {
+                    func.apply(context, args);
+                }
             };
-            var callNow = immediate && !timeout;
+
+            const callNow = immediate && !timeout;
             clearTimeout(timeout);
             timeout = setTimeout(later, wait);
-            if (callNow) func.apply(context, args);
+
+            if (callNow) {
+                func.apply(context, args);
+            }
         };
     };
 
-    fitToContainer (canvas, ) {
+    setDimensions (canvas) {
         try {
             canvas.style.width = "100%";
             canvas.style.height ="100%";
@@ -48,15 +55,12 @@ class SingleInstrumentContainer extends React.Component {
                 width: Math.round(canvas.offsetWidth),
                 height: Math.round(canvas.offsetWidth)
             });
-        } catch (e) {
-
-        }
+        } catch (e) {}
     }
 
     componentDidMount() {
-        this.fitToContainer(this.probeCanvas.current);
+        this.setDimensions(this.probeCanvas.current);
         window.addEventListener("resize", this.resizer);
-
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {

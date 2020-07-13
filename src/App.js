@@ -33,7 +33,7 @@ class App extends React.Component {
         let ws = "ws:" + url.split(":")[1] + ":3000"
 
         this.state = {
-            layoutEditingEnabled: false,
+            layoutEditingEnabled: true,
             settingsPaneOpen: false,
 
             settings: {
@@ -119,7 +119,7 @@ class App extends React.Component {
             animation: this.state.settings.animation,
             darkMode: this.state.settings.darkMode,
             serverAddress: this.state.settings.serverAddress,
-            animationsAccordingToChargingStatus: this.state.settings.animationsAccordingToChargingStatus
+            animationsAccordingToChargingStatus: this.state.settings.animationsAccordingToChargingStatus,
         })
 
         const onInstrumentAdded = instrument => {
@@ -221,6 +221,17 @@ const getInstruments = () => [
                     ],
                 }
             },
+        ]
+    },
+    {
+        type: "single",
+        instruments: [
+            {
+                component: GaugeContainer,
+                additionalProps: {
+                    path: "performance.polarSpeedRatio"
+                }
+            }
         ]
     }
     // {
