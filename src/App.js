@@ -30,8 +30,8 @@ class App extends React.Component {
         super(props);
 
         let url = window.location.href;
-        let ws = "ws:" + url.split(":")[1] + ":3000"
-
+        // let ws = "ws:" + url.split(":")[1] + ":3000"
+        let ws = "ws://192.168.1.151:3000"
         this.state = {
             layoutEditingEnabled: false,
             settingsPaneOpen: false,
