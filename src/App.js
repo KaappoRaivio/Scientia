@@ -33,7 +33,7 @@ class App extends React.Component {
         let ws = "ws:" + url.split(":")[1] + ":3000"
 
         this.state = {
-            layoutEditingEnabled: true,
+            layoutEditingEnabled: false,
             settingsPaneOpen: false,
 
             settings: {
