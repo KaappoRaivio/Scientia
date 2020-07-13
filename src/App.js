@@ -15,7 +15,7 @@ import WindContainer from "./components/instruments/wind/WindContainer";
 import CompassContainer from "./components/instruments/compass/CompassContainer";
 import TridataContainer from "./components/instruments/tridata/TridataContainer";
 import GaugeContainer from "./components/instruments/gauge/GaugeContainer";
-import AddInstrument from "./components/noninstruments/AddInstrument";
+// import AddInstrument from "./components/noninstruments/AddInstrument";
 
 import Wrench from "./assets/wrench.svg"
 import Done from "./assets/done.svg"
