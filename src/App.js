@@ -20,10 +20,10 @@ import AddInstrument from "./components/noninstruments/AddInstrument";
 import Wrench from "./assets/wrench.svg"
 import Done from "./assets/done.svg"
 
-if (process.env.NODE_ENV !== "production") {
+// if (process.env.NODE_ENV !== "production") {
     // const {whyDidYouUpdate} = require("why-did-you-update");
     // whyDidYouUpdate(React);
-}
+// }
 
 class App extends React.Component {
     constructor(props) {
