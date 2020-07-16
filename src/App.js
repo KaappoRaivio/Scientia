@@ -207,7 +207,7 @@ const ToggleLayoutEditing = ({ editingEnabled, onChanged }) => {
 }
 
 const getInstruments = () => {
-    return [];
+    // return [];
     return [
         {
             type: "quadrant",
