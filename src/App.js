@@ -102,21 +102,21 @@ class App extends React.Component {
         //     method: 'POST',
         // };
 
-        console.log("asd")
-        this.login()
-            .then(response => {
-                fetch("http://localhost:3000/signalk/v1/applicationData/admin/testi/1.0/", {
-                    method: "POST",
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        key: "value"
-                    })
-                })
-                    .then(console.log)
-                    .catch(console.log)
-            })
-            .catch(console.log)
-
+        // console.log("asd")
+        // this.login()
+        //     .then(response => {
+        //         fetch("http://localhost:3000/signalk/v1/applicationData/admin/testi/1.0/", {
+        //             method: "POST",
+        //             headers: { 'Content-Type': 'application/json' },
+        //             body: JSON.stringify({
+        //                 key: "value"
+        //             })
+        //         })
+        //             .then(console.log)
+        //             .catch(console.log)
+        //     })
+        //     .catch(console.log)
+        //
 
 
 
