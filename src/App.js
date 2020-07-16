@@ -173,31 +173,30 @@ class App extends React.Component {
             console.log(this.state)
         }
 
-        // return (
-        //     <div className="instruments" style={parentStyle}>
-        //         <MyModal isModalOpen={this.state.settingsPaneOpen}
-        //             requestClosing={() => onSetSettingsPaneOpen(false)}
-        //             initialValues={getInitialSettings()}
-        //             onSettingsUpdate={onSettingsChange}
-        //             colors={colors}
-        //             appElement={this}
-        //         />
-        //         <Instruments settings={this.state.settings} colors={colors} instruments={this.state.instruments} onInstrumentAdded={onInstrumentAdded} onInstrumentRemoved={onInstrumentRemoved} layoutEditingEnabled={this.state.layoutEditingEnabled} />
-        //         <div className="open-menu with-shadow">
-        //             <button className="open-menu-wrapper"
-        //                 onClick={() => onSetSettingsPaneOpen(true)}>
-        //                 configure
-        //             </button>
-        //             {/*<button className="open-menu-wrapper"*/}
-        //             {/*        onClick={() => onSetSettingsPaneOpen(true)}>*/}
-        //             {/*    configureasd*/}
-        //             {/*</button>*/}
-        //             <ToggleLayoutEditing editingEnabled={this.state.layoutEditingEnabled} onChanged={layoutEditingEnabled => this.setState({layoutEditingEnabled})}/>
-        //         </div>
-        //         <Logo />
-        //     </div>
-        // );
-        return <div></div>
+        return (
+            <div className="instruments" style={parentStyle}>
+                <MyModal isModalOpen={this.state.settingsPaneOpen}
+                    requestClosing={() => onSetSettingsPaneOpen(false)}
+                    initialValues={getInitialSettings()}
+                    onSettingsUpdate={onSettingsChange}
+                    colors={colors}
+                    appElement={this}
+                />
+                <Instruments settings={this.state.settings} colors={colors} instruments={this.state.instruments} onInstrumentAdded={onInstrumentAdded} onInstrumentRemoved={onInstrumentRemoved} layoutEditingEnabled={this.state.layoutEditingEnabled} />
+                <div className="open-menu with-shadow">
+                    <button className="open-menu-wrapper"
+                        onClick={() => onSetSettingsPaneOpen(true)}>
+                        configure
+                    </button>
+                    {/*<button className="open-menu-wrapper"*/}
+                    {/*        onClick={() => onSetSettingsPaneOpen(true)}>*/}
+                    {/*    configureasd*/}
+                    {/*</button>*/}
+                    <ToggleLayoutEditing editingEnabled={this.state.layoutEditingEnabled} onChanged={layoutEditingEnabled => this.setState({layoutEditingEnabled})}/>
+                </div>
+                <Logo />
+            </div>
+        );
     }
 }
 
