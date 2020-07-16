@@ -123,8 +123,19 @@ class Instruments extends React.Component {
                                         forceResize={true}
                                         onRemoveClick={index => {
                                             console.log(index, instrument.instruments);
-                                            instrument.instruments = instrument.instruments.slice(0, index).concat(instruments.slice(index + 1));
                                             // instrument.instruments = [];
+                                            instrument.instruments = instrument.instruments.slice(0, index)
+                                                .concat({
+                                                    component: AddInstrument,
+                                                    additionalProps: {
+                                                        onInstrumentAdded: newInstrument => {
+                                                            console.log(newInstrument)
+                                                            instrument.instruments[index] = newInstrument.instruments[0];
+                                                        }
+                                                    }
+                                                })
+                                                .concat(instrument.instruments.slice(index + 1));
+                                            this.forceUpdate();
                                         }}
                                         index={innerIndex}
                                         layoutEditingEnabled={layoutEditingEnabled}

@@ -83,7 +83,44 @@ class App extends React.Component {
         }
     }
 
+    login = async () => {
+        const responsePromise = await fetch("http://localhost:3000/signalk/v1/auth/login", {
+            method: "POST",
+            // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                password: "admin",
+                username: "admin"
+            })
+        });
+        console.log(responsePromise)
+        return responsePromise;
+    }
+
     componentDidMount() {
+        // const requestOptions = {
+        //     method: 'POST',
+        // };
+
+        console.log("asd")
+        this.login()
+            .then(response => {
+                fetch("http://localhost:3000/signalk/v1/applicationData/admin/testi/1.0/", {
+                    method: "POST",
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        key: "value"
+                    })
+                })
+                    .then(console.log)
+                    .catch(console.log)
+            })
+            .catch(console.log)
+
+
+
+
+
         if (this.state.settings.animationsAccordingToChargingStatus) {
             navigator
                 .getBattery()
@@ -136,30 +173,31 @@ class App extends React.Component {
             console.log(this.state)
         }
 
-        return (
-            <div className="instruments" style={parentStyle}>
-                <MyModal isModalOpen={this.state.settingsPaneOpen}
-                    requestClosing={() => onSetSettingsPaneOpen(false)}
-                    initialValues={getInitialSettings()}
-                    onSettingsUpdate={onSettingsChange}
-                    colors={colors}
-                    appElement={this}
-                />
-                <Instruments settings={this.state.settings} colors={colors} instruments={this.state.instruments} onInstrumentAdded={onInstrumentAdded} onInstrumentRemoved={onInstrumentRemoved} layoutEditingEnabled={this.state.layoutEditingEnabled} />
-                <div className="open-menu with-shadow">
-                    <button className="open-menu-wrapper"
-                        onClick={() => onSetSettingsPaneOpen(true)}>
-                        configure
-                    </button>
-                    {/*<button className="open-menu-wrapper"*/}
-                    {/*        onClick={() => onSetSettingsPaneOpen(true)}>*/}
-                    {/*    configureasd*/}
-                    {/*</button>*/}
-                    <ToggleLayoutEditing editingEnabled={this.state.layoutEditingEnabled} onChanged={layoutEditingEnabled => this.setState({layoutEditingEnabled})}/>
-                </div>
-                <Logo />
-            </div>
-        );
+        // return (
+        //     <div className="instruments" style={parentStyle}>
+        //         <MyModal isModalOpen={this.state.settingsPaneOpen}
+        //             requestClosing={() => onSetSettingsPaneOpen(false)}
+        //             initialValues={getInitialSettings()}
+        //             onSettingsUpdate={onSettingsChange}
+        //             colors={colors}
+        //             appElement={this}
+        //         />
+        //         <Instruments settings={this.state.settings} colors={colors} instruments={this.state.instruments} onInstrumentAdded={onInstrumentAdded} onInstrumentRemoved={onInstrumentRemoved} layoutEditingEnabled={this.state.layoutEditingEnabled} />
+        //         <div className="open-menu with-shadow">
+        //             <button className="open-menu-wrapper"
+        //                 onClick={() => onSetSettingsPaneOpen(true)}>
+        //                 configure
+        //             </button>
+        //             {/*<button className="open-menu-wrapper"*/}
+        //             {/*        onClick={() => onSetSettingsPaneOpen(true)}>*/}
+        //             {/*    configureasd*/}
+        //             {/*</button>*/}
+        //             <ToggleLayoutEditing editingEnabled={this.state.layoutEditingEnabled} onChanged={layoutEditingEnabled => this.setState({layoutEditingEnabled})}/>
+        //         </div>
+        //         <Logo />
+        //     </div>
+        // );
+        return <div></div>
     }
 }
 
@@ -169,155 +207,158 @@ const ToggleLayoutEditing = ({ editingEnabled, onChanged }) => {
     </div>
 }
 
-const getInstruments = () => [
-    {
-        type: "quadrant",
-        instruments: [
-            {
-                component: WindContainer,
-                additionalProps: {}
-            },
-            {
-                component: CompassContainer,
-                additionalProps: {}
-            },
-            {
-                component: TridataContainer,
-                additionalProps: {
-                    paths: [
-                        "environment.depth.belowTransducer",
-                        "navigation.speedOverGround",
-                        "performance.polarSpeed",
-                        "navigation.trip.log"
-                    ],
+const getInstruments = () => {
+    return [];
+    return [
+        {
+            type: "quadrant",
+            instruments: [
+                {
+                    component: WindContainer,
+                    additionalProps: {}
+                },
+                {
+                    component: CompassContainer,
+                    additionalProps: {}
+                },
+                {
+                    component: TridataContainer,
+                    additionalProps: {
+                        paths: [
+                            "environment.depth.belowTransducer",
+                            "navigation.speedOverGround",
+                            "performance.polarSpeed",
+                            "navigation.trip.log"
+                        ],
+                    }
+                },
+                {
+                    component: GaugeContainer,
+                    additionalProps: {
+                        path: "environment.depth.belowTransducer"
+                    }
                 }
-            },
-            {
-                component: GaugeContainer,
-                additionalProps: {
-                    path: "environment.depth.belowTransducer"
+            ]
+        },
+        {
+            type: "quadrant",
+            instruments: [
+                {
+                    component: WindContainer,
+                    additionalProps: {}
+                },
+                {
+                    component: CompassContainer,
+                    additionalProps: {}
+                },
+                {
+                    component: TridataContainer,
+                    additionalProps: {
+                        paths: ["environment.depth.belowTransducer",
+                            "navigation.speedOverGround",
+                            "performance.polarSpeed",
+                            "navigation.trip.log"
+                        ],
+                    }
+                },
+            ]
+        },
+        {
+            type: "single",
+            instruments: [
+                {
+                    component: GaugeContainer,
+                    additionalProps: {
+                        path: "performance.polarSpeedRatio"
+                    }
                 }
-            }
-        ]
-    },
-    {
-        type: "quadrant",
-        instruments: [
-            {
-                component: WindContainer,
-                additionalProps: {}
-            },
-            {
-                component: CompassContainer,
-                additionalProps: {}
-            },
-            {
-                component: TridataContainer,
-                additionalProps: {
-                    paths: ["environment.depth.belowTransducer",
-                        "navigation.speedOverGround",
-                        "performance.polarSpeed",
-                        "navigation.trip.log"
-                    ],
-                }
-            },
-        ]
-    },
-    {
-        type: "single",
-        instruments: [
-            {
-                component: GaugeContainer,
-                additionalProps: {
-                    path: "performance.polarSpeedRatio"
-                }
-            }
-        ]
-    }
-    // {
-    //     type: "single",
-    //     instruments: [
-    //         {
-    //             component: GaugeContainer,
-    //             additionalProps: {
-    //                 // path: "performance.polarSpeedRatio"
-    //                 path: "steering.rudderAngle"
-    //             }
-    //         }
-    //     ]
-    // },
-    // {
-    //     type: "quadrant",
-    //     instruments: [
-    //         {
-    //             component: GaugeContainer,
-    //             additionalProps: {
-    //                 path: "environment.depth.belowTransducer",
-    //                 // path:
-    //             }
-    //         },
-    //         {
-    //             component: GaugeContainer,
-    //             additionalProps: {
-    //                 path: "environment.wind.speedTrue"
-    //             }
-    //         },
-    //         {
-    //             component: GaugeContainer,
-    //             additionalProps: {
-    //                 path: "performance.polarSpeedRatio"
-    //             }
-    //         },
-    //         {
-    //             component: GaugeContainer,
-    //             additionalProps: {
-    //                 path: "steering.rudderAngle"
-    //             }
-    //         }
-    //     ]
-    // },
-    //
-    // {
-    //     type: "single",
-    //     instruments: [
-    //         {
-    //             component: VisualiserContainer,
-    //             additionalProps: {
-    //                 path: "environment.depth.belowTransducer",
-    //                 ranges: [5, 10, 20, 40, 100],
-    //                 numberOfPointsToShow: 200,
-    //                 negate: true,
-    //                 upperBound: 100,
-    //                 lowerBound: 0,
-    //                 legend: "Depth",
-    //                 unit: "m",
-    //                 trendlinePeriod: 50,
-    //                 trendline: true
-    //             }
-    //         }
-    //     ]
-    // },
-    // {
-    //     type: "single",
-    //     instruments: [
-    //         {
-    //             component: VisualiserContainer,
-    //             additionalProps: {
-    //                 path: "environment.wind.speedTrue",
-    //                 ranges: [10, 20, 50],
-    //                 numberOfPointsToShow: 200,
-    //                 negate: false,
-    //                 upperBound: 50,
-    //                 lowerBound: 0,
-    //                 legend: "Wind, speed true",
-    //                 unit: "m/s",
-    //                 trendlinePeriod: 20,
-    //                 trendline: true
-    //             }
-    //         }
-    //     ]
-    // },
-]
+            ]
+        }
+        // {
+        //     type: "single",
+        //     instruments: [
+        //         {
+        //             component: GaugeContainer,
+        //             additionalProps: {
+        //                 // path: "performance.polarSpeedRatio"
+        //                 path: "steering.rudderAngle"
+        //             }
+        //         }
+        //     ]
+        // },
+        // {
+        //     type: "quadrant",
+        //     instruments: [
+        //         {
+        //             component: GaugeContainer,
+        //             additionalProps: {
+        //                 path: "environment.depth.belowTransducer",
+        //                 // path:
+        //             }
+        //         },
+        //         {
+        //             component: GaugeContainer,
+        //             additionalProps: {
+        //                 path: "environment.wind.speedTrue"
+        //             }
+        //         },
+        //         {
+        //             component: GaugeContainer,
+        //             additionalProps: {
+        //                 path: "performance.polarSpeedRatio"
+        //             }
+        //         },
+        //         {
+        //             component: GaugeContainer,
+        //             additionalProps: {
+        //                 path: "steering.rudderAngle"
+        //             }
+        //         }
+        //     ]
+        // },
+        //
+        // {
+        //     type: "single",
+        //     instruments: [
+        //         {
+        //             component: VisualiserContainer,
+        //             additionalProps: {
+        //                 path: "environment.depth.belowTransducer",
+        //                 ranges: [5, 10, 20, 40, 100],
+        //                 numberOfPointsToShow: 200,
+        //                 negate: true,
+        //                 upperBound: 100,
+        //                 lowerBound: 0,
+        //                 legend: "Depth",
+        //                 unit: "m",
+        //                 trendlinePeriod: 50,
+        //                 trendline: true
+        //             }
+        //         }
+        //     ]
+        // },
+        // {
+        //     type: "single",
+        //     instruments: [
+        //         {
+        //             component: VisualiserContainer,
+        //             additionalProps: {
+        //                 path: "environment.wind.speedTrue",
+        //                 ranges: [10, 20, 50],
+        //                 numberOfPointsToShow: 200,
+        //                 negate: false,
+        //                 upperBound: 50,
+        //                 lowerBound: 0,
+        //                 legend: "Wind, speed true",
+        //                 unit: "m/s",
+        //                 trendlinePeriod: 20,
+        //                 trendline: true
+        //             }
+        //         }
+        //     ]
+        // },
+    ];
+}
 
 
 export default App;

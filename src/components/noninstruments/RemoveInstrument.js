@@ -1,8 +1,10 @@
 import React from "react";
 
 const RemoveInstrument = ({height, width, onRemoveClick, enabled}) => {
-    const svgSize = {width: width / 10, height: height / 10};
+    // const svgSize = {width: width / 10, height: height / 10};
+    const svgSize = {width: 50, height: 50};
     const lineLength = 0.75;
+    // console.log(enabled)
 
     return <svg className={`remove-instrument ${enabled ? "" : "disabled"}`} width={svgSize.width}
                 height={svgSize.height} onClick={onRemoveClick}>

@@ -83,7 +83,7 @@ const AddInstrument = ({onInstrumentAdded, width, height, colors, darkMode}) => 
             </div>
         );
     } else {
-        return <div style={{padding: "3%", fontSize: "25%", height: "80%", overflowY: "auto"}}>
+        return <div style={{padding: "3%", fontSize: "14px", height: "80%", overflowY: "auto"}}>
             <ReactDropdown value={selectedItem} onChange={onSpinnerChange} options={spinnerSchema.options} placeholder={spinnerSchema.label} />
             <SettingsForm schema={mergeFields(selectedItem.value.schema) || schema} onSettingsUpdate={onConfirm} requestClosing={() => setPlusPressed(false)}/>
         </div>

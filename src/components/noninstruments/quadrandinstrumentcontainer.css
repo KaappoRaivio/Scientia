@@ -1,4 +1,11 @@
 .quadrant-flexbox {
+    /*padding-left: 10px;*/
+    /*padding-top: 10px;*/
+    /*padding-right: -10px;*/
+    /*padding-bottom: -10px;*/
+    /*margin-right: -10px !important;*/
+    /*margin-bottom: -10px !important;*/
+    /*margin: ;*/
     position: absolute;
     width: 100%;
     height: 100%;
@@ -10,5 +17,16 @@
     position: relative;
     height: 50%;
     width: 50%;
-    flex: 0 0 50%;
+    flex: 0 0 calc(50%);
+    /*margin-right: 10px;*/
+    /*margin: 0 !important;*/
+    /*margin: 10px;*/
+}
+
+.parasite {
+    /*margin: 0 0 -10px !important;*/
+}
+
+.parasite-item {
+    /*margin-bottom: 100px !important;*/
 }
