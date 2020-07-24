@@ -7,6 +7,7 @@ module.exports = function (app) {
 
     plugin.start = function (options, restartPlugin) {
         // Here we put our plugin logic
+        console.log("asdasdasdasdasdasd")
         app.debug('Plugin started');
     };
 

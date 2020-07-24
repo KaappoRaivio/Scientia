@@ -49,5 +49,11 @@
       "last 1 safari version"
     ]
   },
-  "devDependencies": {}
+  "main": "index.js",
+  "devDependencies": {},
+  "keywords": [
+    "signalk-webapp",
+    "signalk-node-server-plugin"
+  ],
+  "homepage": "scientia/"
 }
