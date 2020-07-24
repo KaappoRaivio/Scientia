@@ -24,6 +24,7 @@ import Done from "./assets/done.svg"
     // const {whyDidYouUpdate} = require("why-did-you-update");
     // whyDidYouUpdate(React);
 // }
+const appName = "scientia";
 
 class App extends React.Component {
     constructor(props) {
@@ -40,7 +41,10 @@ class App extends React.Component {
                 serverAddress: ws,
                 darkMode: false,
                 animation: false,
-                animationsAccordingToChargingStatus: true
+                animationsAccordingToChargingStatus: true,
+
+                username: "user",
+                password: "user"
             },
 
             instruments: getInstruments()
@@ -83,42 +87,31 @@ class App extends React.Component {
         }
     }
 
-    login = async () => {
-        const responsePromise = await fetch("http://localhost:3000/signalk/v1/auth/login", {
-            method: "POST",
-            // headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                password: "admin",
-                username: "admin"
-            })
-        });
-        console.log(responsePromise)
-        return responsePromise;
-    }
+    login = () => fetch("/signalk/v1/auth/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({username: "user", password: "user"})
+    }).then(response => {
+        if (response.ok) {
+            console.log("Successfully logged in!");
+            return response
+        } else {
+            throw new Error(`There was a problem with login: ${response.status}`)
+        }
+    })
 
     componentDidMount() {
-        // const requestOptions = {
-        //     method: 'POST',
-        // };
-
-        // console.log("asd")
-        // this.login()
-        //     .then(response => {
-        //         fetch("http://localhost:3000/signalk/v1/applicationData/admin/testi/1.0/", {
-        //             method: "POST",
-        //             headers: { 'Content-Type': 'application/json' },
-        //             body: JSON.stringify({
-        //                 key: "value"
-        //             })
-        //         })
-        //             .then(console.log)
-        //             .catch(console.log)
-        //     })
-        //     .catch(console.log)
-        //
-
-
+        this.login()
+            .then(response => {
+                fetch("/signalk/v1/applicationData/user/appname/1.0/test", {
+                    // credentials: 'include',
+                })
+                    .then(response => response.json())
+                    .then(console.log)
+            })
+            .catch(console.error)
 
 
         if (this.state.settings.animationsAccordingToChargingStatus) {
@@ -172,7 +165,6 @@ class App extends React.Component {
             }))
             console.log(this.state)
         }
-
         return (
             <div className="instruments" style={parentStyle}>
                 <MyModal isModalOpen={this.state.settingsPaneOpen}
@@ -204,6 +196,10 @@ const ToggleLayoutEditing = ({ editingEnabled, onChanged }) => {
     return <div onClick={() => onChanged(!editingEnabled)} className="configure-layout-wrapper">
         <img className="configure-layout" src={editingEnabled ? Done : Wrench} alt="enable layout configuration" width="auto"/>
     </div>
+}
+
+const saveInstruments = (instruments) => {
+    fetch()
 }
 
 const getInstruments = () => {
