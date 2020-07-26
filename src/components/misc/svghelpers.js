@@ -53,20 +53,13 @@ class Svghelpers {
 const LineDivision = ({ center, radius, textRadius, length, numberOfLines, fontSize, angleProvider, textProvider, rotateText, strokeWidthMultiplier }) => {
     let lines = Svghelpers.getDivisionCoordinates(center, radius, length, numberOfLines, angleProvider);
     let textPositions = Svghelpers.getDivisionCoordinates(center, textRadius, 0, numberOfLines, angleProvider);
-    // console.log(lines, textPositions)
 
     let path = `${lines.map((line, index) => `M${line.start.x} ${line.start.y} L${line.end.x} ${line.end.y}`)} Z`
 
     return (
         <g strokeWidth={strokeWidthMultiplier ? radius * strokeWidthMultiplier : null}>
             <path d={path} />
-            {/*{lines.map((item, index) => <line   key={index}*/}
-            {/*                                            x1={item.start.x || 0}*/}
-            {/*                                            y1={item.start.y || 0}*/}
-            {/*                                            x2={item.end.x || 0}*/}
-            {/*                                            y2={item.end.y || 0}*/}
-            {/*/>)*/}
-            {/*}*/}
+
             <g stroke={"none"}>
                 {
                     textPositions.map((item, index) =>
@@ -95,7 +88,6 @@ export class LineDivisions extends React.Component {
         let {center, radius, divisions, rotateText, textRadius} = this.props;
         return <g>
             {divisions.map((division, index) => {
-                // // console.log(division.strokeWidthMultiplier)
                 return <LineDivision
                     center={center}
                     radius={radius}
@@ -111,6 +103,20 @@ export class LineDivisions extends React.Component {
                 />
             })}
         </g>
+    }
+
+    static propTypes = {
+        center: PropTypes.shape({x: PropTypes.number.isRequired, y: PropTypes.number.isRequired}),
+        radius: PropTypes.number.isRequired,
+        divisions: PropTypes.arrayOf({
+            fontSize: PropTypes.number.isRequired,
+            lineLength: PropTypes.oneOf(PropTypes.func.isRequired, PropTypes.number.isRequired),
+            angleProvider: PropTypes.func.isRequired,
+            textProvider: PropTypes.func.isRequired,
+            strokeWidthMultiplier: PropTypes.number.isRequired
+        }),
+        rotateText: PropTypes.bool.isRequired,
+        textRadius: PropTypes.number
     }
 }
 
