@@ -88,6 +88,10 @@ class SingleInstrumentContainer extends React.Component {
             backgroundColor: this.props.colors.background,
         };
 
+        if (this.props.children == null) {
+            return <div></div>
+        }
+
         return (
             <div className="single-flexbox-item with-shadow" style={parentStyle}>
                 <RemoveInstrument width={this.state.width} height={this.state.height} onRemoveClick={() => this.props.onRemoveClick(this.props.index)} enabled={this.props.layoutEditingEnabled}/>
