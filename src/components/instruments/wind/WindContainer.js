@@ -4,7 +4,6 @@ import Wind from "./Wind";
 import { getByStringPath } from "delta-processor";
 
 class WindContainer extends React.Component {
-    static schema = [];
     constructor(props) {
         super(props);
         this.data = {};

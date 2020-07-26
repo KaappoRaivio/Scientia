@@ -1,14 +1,10 @@
 import React, {useState} from 'react';
-
-import plusIcon from "../../assets/plus_icon.svg"
 import "./AddInstrument.css"
-import TridataContainer from "../instruments/tridata/TridataContainer";
+
 import SettingsForm from "../../SettingsForm";
-import {componentTypes} from "@data-driven-forms/react-form-renderer";
-import WindContainer from "../instruments/wind/WindContainer";
-import GaugeContainer from "../instruments/gauge/GaugeContainer";
-import CompassContainer from "../instruments/compass/CompassContainer";
+
 import ReactDropdown from "react-dropdown";
+import {stringToClass} from "../instruments";
 
 const schema = {
     buttonsAtBottom: true,
@@ -27,19 +23,19 @@ const spinnerSchema = {
     options: [
         {
             label: "Wind",
-            value: WindContainer
+            value: "WindContainer"
         },
         {
             label: "Tridata",
-            value: TridataContainer
+            value: "TridataContainer"
         },
         {
             label: "Gauge",
-            value: GaugeContainer
+            value: "GaugeContainer"
         },
         {
             label: "Compass",
-            value: CompassContainer
+            value: "CompassContainer"
         }
     ]
 };
@@ -85,7 +81,7 @@ const AddInstrument = ({onInstrumentAdded, width, height, colors, darkMode}) => 
     } else {
         return <div style={{padding: "3%", fontSize: "14px", height: "80%", overflowY: "auto"}}>
             <ReactDropdown value={selectedItem} onChange={onSpinnerChange} options={spinnerSchema.options} placeholder={spinnerSchema.label} />
-            <SettingsForm schema={mergeFields(selectedItem.value.schema) || schema} onSettingsUpdate={onConfirm} requestClosing={() => setPlusPressed(false)}/>
+            <SettingsForm schema={mergeFields(stringToClass(selectedItem.value).schema || []) || schema} onSettingsUpdate={onConfirm} requestClosing={() => setPlusPressed(false)}/>
         </div>
     }
 };

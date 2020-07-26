@@ -1,4 +1,4 @@
-import {AreaSeries, HorizontalGridLines, LineSeries, XAxis, XYPlot, YAxis} from "react-vis";
+import {AreaSeries, HorizontalGridLines, LineSeries, XYPlot, YAxis} from "react-vis";
 import React from "react";
 import NoData from "../../noninstruments/NoData";
 // import ChartistGraph from "react-chartist";
@@ -44,7 +44,7 @@ const Visualiser = ({animate, colors, data, displayScale, height, ranges, legend
         return <NoData width={width} height={height} colors={colors}/>
     }
 
-    const {background, primary, accent1} = colors;
+    const {background, primary} = colors;
 
     const lineStyle = {stroke: primary, backgroundColor: background};
 

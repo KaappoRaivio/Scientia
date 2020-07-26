@@ -1,5 +1,4 @@
 import React from "react";
-import {mod} from "mathjs";
 
 
 import "./compass.css"

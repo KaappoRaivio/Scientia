@@ -1,7 +1,5 @@
 import React from 'react';
 
-// import TextBox from './TextBox';
-
 class AutoFitTextBox extends React.Component {
     constructor(props) {
         super(props);
@@ -9,43 +7,22 @@ class AutoFitTextBox extends React.Component {
         this.state = { scale: 1 };
     }
 
-    componentDidMount() {
-        // setTimeout(() => {
-        //
-        // }, 1000)
-        // setTimeout(this.componentDidMount.bind(this), 1000);
-    }
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        // const textBBox = this.getTextBBox();
-        // // console.log(this.props.height, textBBox.height, this.props.height / textBBox.height)
-        // // console.log(this.props.width, textBBox.width, this.props.width / textBBox.width)
-    }
-
     getTextBBox() {
-        // // console.log(this.svgTextNode.current)
         return this.svgTextNode.current.getBBox();
     }
 
     getTextScale (textNode) {
         if (textNode === null) return this.props.initialFontSize;
-        // // console.log(textNode)
 
         const { width, height } = this.props;
         if (!this.bbox) {
-            // console.log("not good")
             this.bbox = this.getTextBBox();
         }
         const textBBox = this.bbox;
 
-        // // console.log(textBBox)
 
         const widthScale = width / textBBox.width * this.props.initialFontSize;
-        const heightScale = this.props.height;
-        // const heightScale = height / (textBBox.height);
-        // // console.log(textBBox.width, textBBox.height, width, height)
-
-        const scale = Math.min(widthScale, heightScale);
-        return scale;
+        return Math.min(widthScale, height);
 
     }
 

@@ -11,7 +11,6 @@ const Wind = (props) => {
     const center = {x: props.width / 2, y: props.height / 2};
     const radius = Math.round(props.width / 2.1);
     const radiusPercent = radius / (props.width / 2) * 100 / 2;
-    const helper = new Svghelper();
 
     const colors = {
         ...props.colors,

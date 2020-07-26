@@ -9,6 +9,7 @@ import "./gauge.css"
 import NumberDisplay from "../../numberdisplay/NumberDisplay";
 import {PropTypes} from "prop-types";
 import {displayScaleToLineDivisionSteps} from "../DataStructures";
+import NoData from "../../noninstruments/NoData";
 
 const valueToPercentConverters = {
     "linear":      (upper, lower) => x => (x - lower) / (upper - lower),
@@ -46,6 +47,10 @@ const Gauge = ({
     const percentToAngle = x => {
         return start - (start - end) * x;
     };
+
+    if (displayScale == null) {
+        return <NoData colors={colors} height={height} width={width} />
+    }
 
     const valueToPercent = valueToPercentConverters[displayScale.type || "linear"](displayScale.upper, displayScale.lower, displayScale.power);
 
@@ -177,7 +182,6 @@ const getDivisions = (displayScale, valueToPercent, percentToangle) => {
     const scales = steps.map(step => math.range(ceilToNearestMultiple(lower || 0, step), ceilToNearestMultiple(upper || 0, step), step, true)._data);
     const values = scales.map(scale => scale.map(valueToPercent));
 
-    const smallestDivision = Math.min(...values.map(value => value.length));
     return values.map((value, index) => {
         return {
             numberOfLines: value.length,

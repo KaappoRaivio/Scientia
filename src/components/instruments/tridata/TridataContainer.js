@@ -2,8 +2,7 @@ import React from 'react';
 
 import "./tridata.css"
 import Tridata from "./Tridata";
-import {camelCaseToSentenceCase, valueSkeleton} from "../DataStructures";
-import { getByStringPath } from "delta-processor";
+import {getByStringPath} from "delta-processor";
 import {componentTypes} from "@data-driven-forms/react-form-renderer";
 import validatorTypes from "@data-driven-forms/react-form-renderer/dist/cjs/validator-types";
 
@@ -31,11 +30,7 @@ class TridataContainer extends React.Component {
     ];
 
     render () {
-        // const values = Object.keys(this.state).map(key => this.state[key]);
-        // const data = this.props.data
-        // console.log(this.props, this.props.paths)
         const values = this.props.paths.map(path => getByStringPath(path, this.props.data.vessels.self) || {meta: {displayScale: {}}});
-        // console.log(values)
 
         return <Tridata
                 width={this.props.width}

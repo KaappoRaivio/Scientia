@@ -99,8 +99,6 @@ class  VisualiserContainer extends React.Component {
             return {x: 0, y: 0}
         }
 
-        let lastPoint = this.state.data[this.state.data.length - 1];
-
         let x = this.getTimeStamp() - this.startTime;
         let y = dataPoints.map(a => a.y).reduce ((a, b) => a + b) / dataPoints.length;
 
