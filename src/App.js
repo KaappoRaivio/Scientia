@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import './flat-remix.css';
 
 import './App.css';
@@ -8,31 +8,23 @@ import "chartist/dist/chartist.css";
 
 
 import Instruments from "./components/instruments"
-// import MySidebar from "./components/mySidebar";
 import Logo from "./components/Logo";
 import MyModal from "./components/MyModal";
-import WindContainer from "./components/instruments/wind/WindContainer";
-import CompassContainer from "./components/instruments/compass/CompassContainer";
-import TridataContainer from "./components/instruments/tridata/TridataContainer";
-import GaugeContainer from "./components/instruments/gauge/GaugeContainer";
-// import AddInstrument from "./components/noninstruments/AddInstrument";
 
 import Wrench from "./assets/wrench.svg"
 import Done from "./assets/done.svg"
+import Package from "../package.json"
 
-// if (process.env.NODE_ENV !== "production") {
-    // const {whyDidYouUpdate} = require("why-did-you-update");
-    // whyDidYouUpdate(React);
-// }
-const appName = "scientia";
+export const appName = Package.name;
+export const appVersion = Package.version;
 
 class App extends React.Component {
     constructor(props) {
         super(props);
 
         let url = window.location.href;
-        // let ws = "ws:" + url.split(":")[1] + ":3000"
-        let ws = "ws://192.168.1.151:3000"
+        let ws = "ws:" + url.split(":")[1] + ":3000"
+        // let ws = "ws://192.168.1.151:3000"
         this.state = {
             layoutEditingEnabled: false,
             settingsPaneOpen: false,
@@ -47,7 +39,7 @@ class App extends React.Component {
                 password: "user"
             },
 
-            instruments: getInstruments()
+            instruments: []
         };
     }
 
@@ -87,31 +79,49 @@ class App extends React.Component {
         }
     }
 
-    login = () => fetch("/signalk/v1/auth/login", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({username: "user", password: "user"})
-    }).then(response => {
-        if (response.ok) {
-            console.log("Successfully logged in!");
-            return response
-        } else {
-            throw new Error(`There was a problem with login: ${response.status}`)
-        }
-    })
+    login = () => {
+        const { username, password } = this.state.settings;
+
+        return fetch("/signalk/v1/auth/login", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({username, password})
+        }).then(response => {
+            if (response.ok) {
+                console.log("Successfully logged in!");
+                return response
+            } else {
+                throw new Error(`There was a problem with login: ${response.status}`)
+            }
+        });
+    }
 
     componentDidMount() {
         this.login()
-            .then(response => {
-                fetch("/signalk/v1/applicationData/user/appname/1.0/test", {
-                    // credentials: 'include',
-                })
-                    .then(response => response.json())
-                    .then(console.log)
+            .then(() => {
+                getInstruments(this.state.settings.username)
+                    .then(instruments => {
+                        console.log(instruments)
+                        this.setState({instruments});
+                    })
+                // getInstruments("paska")
+                //     .then(instruments => {
+                //         saveInstruments(this.state.settings.username, instruments)
+                //             .then(response => console.log("Asdasd", response))
+                //     })
             })
-            .catch(console.error)
+            // .then(response => {
+
+            //         .catch(console.error)
+            //     // fetch("/signalk/v1/applicationData/user/appname/1.0/test", {
+            //     //     // credentials: 'include',
+            //     // })
+            //     //     .then(response => response.json())
+            //     //     .then(console.log)
+            // })
+            // .catch(console.error)
 
 
         if (this.state.settings.animationsAccordingToChargingStatus) {
@@ -155,16 +165,32 @@ class App extends React.Component {
         const onInstrumentAdded = instrument => {
             this.setState(oldState => ({
                 instruments: oldState.instruments.concat(instrument)
-            }))
+            }), () => {
+                saveInstruments(this.state.settings.username, this.state.instruments)
+            })
         }
 
         const onInstrumentRemoved = index => {
             console.log("Instrument removed", index)
             this.setState(oldState => ({
                 instruments: oldState.instruments.slice(0, index).concat(oldState.instruments.slice(index + 1))
-            }))
+            }), () => {
+                saveInstruments(this.state.settings.username, this.state.instruments)
+            })
             console.log(this.state)
         }
+
+        const onInstrumentChanged = (index, instrument) => {
+            console.log("Instrument changed", index, instrument)
+            this.setState(oldState => ({
+                instruments: oldState.instruments.slice(0, index)
+                    .concat(instrument)
+                    .concat(oldState.instruments.slice(index + 1))
+            }), () => {
+                saveInstruments(this.state.settings.username, this.state.instruments)
+            })
+        }
+
         return (
             <div className="instruments" style={parentStyle}>
                 <MyModal isModalOpen={this.state.settingsPaneOpen}
@@ -174,7 +200,13 @@ class App extends React.Component {
                     colors={colors}
                     appElement={this}
                 />
-                <Instruments settings={this.state.settings} colors={colors} instruments={this.state.instruments} onInstrumentAdded={onInstrumentAdded} onInstrumentRemoved={onInstrumentRemoved} layoutEditingEnabled={this.state.layoutEditingEnabled} />
+                <Instruments settings={this.state.settings}
+                             colors={colors}
+                             instruments={this.state.instruments}
+                             onInstrumentAdded={onInstrumentAdded}
+                             onInstrumentRemoved={onInstrumentRemoved}
+                             onInstrumentChanged={onInstrumentChanged}
+                             layoutEditingEnabled={this.state.layoutEditingEnabled} />
                 <div className="open-menu with-shadow">
                     <button className="open-menu-wrapper"
                         onClick={() => onSetSettingsPaneOpen(true)}>
@@ -198,161 +230,94 @@ const ToggleLayoutEditing = ({ editingEnabled, onChanged }) => {
     </div>
 }
 
-const saveInstruments = (instruments) => {
-    fetch()
+const saveInstruments = (username, instruments) => {
+    fetch(`/signalk/v1/applicationData/${username}/${appName}/${appVersion}/layout`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify(instruments)
+    })
+        .then(response => response.ok ? console.log("Saved instruments successfully!") : console.log("There was a problem saving the insruments: " + response.status))
 }
 
-const getInstruments = () => {
-    // return [];
-    return [
-        {
-            type: "quadrant",
-            instruments: [
-                {
-                    component: WindContainer,
-                    additionalProps: {}
-                },
-                {
-                    component: CompassContainer,
-                    additionalProps: {}
-                },
-                {
-                    component: TridataContainer,
-                    additionalProps: {
-                        paths: [
-                            "environment.depth.belowTransducer",
-                            "navigation.speedOverGround",
-                            "performance.polarSpeed",
-                            "navigation.trip.log"
-                        ],
+const getInstruments = (username) => {
+    return fetch(`/signalk/v1/applicationData/${username}/${appName}/${appVersion}/layout`)
+        .then(response => {
+            console.log(response)
+            if (response.ok) {
+                return response.json();
+
+            } else {
+                throw new Error("Problem with response: " + response.status);
+            }
+        })
+        .catch(error => [
+            {
+                type: "quadrant",
+                instruments: [
+                    // {
+                    //     component: WindContainer,
+                    //     additionalProps: {}
+                    // },
+                    {
+                        component: "CompassContainer",
+                        additionalProps: {}
+                    },
+                    {
+                        component: "TridataContainer",
+                        additionalProps: {
+                            paths: [
+                                "environment.depth.belowTransducer",
+                                "navigation.speedOverGround",
+                                "performance.polarSpeed",
+                                "navigation.trip.log"
+                            ],
+                        }
+                    },
+                    {
+                        component: "GaugeContainer",
+                        additionalProps: {
+                            path: "environment.depth.belowTransducer"
+                        }
                     }
-                },
-                {
-                    component: GaugeContainer,
-                    additionalProps: {
-                        path: "environment.depth.belowTransducer"
+                ]
+            },
+            {
+                type: "quadrant",
+                instruments: [
+                    {
+                        component: "WindContainer",
+                        additionalProps: {}
+                    },
+                    {
+                        component: "CompassContainer",
+                        additionalProps: {}
+                    },
+                    {
+                        component: "TridataContainer",
+                        additionalProps: {
+                            paths: ["environment.depth.belowTransducer",
+                                "navigation.speedOverGround",
+                                "performance.polarSpeed",
+                                "navigation.trip.log"
+                            ],
+                        }
+                    },
+                ]
+            },
+            {
+                type: "single",
+                instruments: [
+                    {
+                        component: "GaugeContainer",
+                        additionalProps: {
+                            path: "performance.polarSpeedRatio"
+                        }
                     }
-                }
-            ]
-        },
-        {
-            type: "quadrant",
-            instruments: [
-                {
-                    component: WindContainer,
-                    additionalProps: {}
-                },
-                {
-                    component: CompassContainer,
-                    additionalProps: {}
-                },
-                {
-                    component: TridataContainer,
-                    additionalProps: {
-                        paths: ["environment.depth.belowTransducer",
-                            "navigation.speedOverGround",
-                            "performance.polarSpeed",
-                            "navigation.trip.log"
-                        ],
-                    }
-                },
-            ]
-        },
-        {
-            type: "single",
-            instruments: [
-                {
-                    component: GaugeContainer,
-                    additionalProps: {
-                        path: "performance.polarSpeedRatio"
-                    }
-                }
-            ]
-        }
-        // {
-        //     type: "single",
-        //     instruments: [
-        //         {
-        //             component: GaugeContainer,
-        //             additionalProps: {
-        //                 // path: "performance.polarSpeedRatio"
-        //                 path: "steering.rudderAngle"
-        //             }
-        //         }
-        //     ]
-        // },
-        // {
-        //     type: "quadrant",
-        //     instruments: [
-        //         {
-        //             component: GaugeContainer,
-        //             additionalProps: {
-        //                 path: "environment.depth.belowTransducer",
-        //                 // path:
-        //             }
-        //         },
-        //         {
-        //             component: GaugeContainer,
-        //             additionalProps: {
-        //                 path: "environment.wind.speedTrue"
-        //             }
-        //         },
-        //         {
-        //             component: GaugeContainer,
-        //             additionalProps: {
-        //                 path: "performance.polarSpeedRatio"
-        //             }
-        //         },
-        //         {
-        //             component: GaugeContainer,
-        //             additionalProps: {
-        //                 path: "steering.rudderAngle"
-        //             }
-        //         }
-        //     ]
-        // },
-        //
-        // {
-        //     type: "single",
-        //     instruments: [
-        //         {
-        //             component: VisualiserContainer,
-        //             additionalProps: {
-        //                 path: "environment.depth.belowTransducer",
-        //                 ranges: [5, 10, 20, 40, 100],
-        //                 numberOfPointsToShow: 200,
-        //                 negate: true,
-        //                 upperBound: 100,
-        //                 lowerBound: 0,
-        //                 legend: "Depth",
-        //                 unit: "m",
-        //                 trendlinePeriod: 50,
-        //                 trendline: true
-        //             }
-        //         }
-        //     ]
-        // },
-        // {
-        //     type: "single",
-        //     instruments: [
-        //         {
-        //             component: VisualiserContainer,
-        //             additionalProps: {
-        //                 path: "environment.wind.speedTrue",
-        //                 ranges: [10, 20, 50],
-        //                 numberOfPointsToShow: 200,
-        //                 negate: false,
-        //                 upperBound: 50,
-        //                 lowerBound: 0,
-        //                 legend: "Wind, speed true",
-        //                 unit: "m/s",
-        //                 trendlinePeriod: 20,
-        //                 trendline: true
-        //             }
-        //         }
-        //     ]
-        // },
-    ];
+                ]
+            }
+    ]);
 }
 
 
