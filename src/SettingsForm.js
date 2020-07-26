@@ -1,21 +1,17 @@
-import React, {useState} from 'react';
+import React from 'react';
 
 import FormRenderer, {componentTypes, useFieldApi, useFormApi} from '@data-driven-forms/react-form-renderer';
-import FieldArray from '@data-driven-forms/react-form-renderer/dist/cjs/field-array';
 
 import "./SettingsForm.css";
 import Switch from "react-switch";
-import Slider, { Range } from "rc-slider";
 import "rc-slider/assets/index.css";
 import * as PropTypes from "prop-types";
 
 import ReactDropdown from "react-dropdown";
 import 'react-dropdown/style.css';
-import Form from "@data-driven-forms/react-form-renderer/dist/cjs/form";
 
 const TextField = props => {
     const {label, input, meta, ...rest} = useFieldApi(props)
-    // console.log(input, meta, rest)
     return (
         <div>
             <div className="form-field-title">{label}</div>
@@ -54,28 +50,18 @@ const Checkbox = props => {
 const DropDown = props => {
     const api = useFieldApi(props);
 
-    // let [ currentlySelected, setCurrentlySelected ] = useState(null);
-
     return <div>
         <ReactDropdown value={api.input.value} onChange={api.input.onChange} options={api.options} placeholder={api.label} />
     </div>
 }
 
 const MyFieldArray = props => {
-    const { fields, input, fieldKey, ...rest } = useFieldApi(props);
+    const { fields, fieldKey } = useFieldApi(props);
     const { renderForm } = useFormApi();
 
-    // fields.push()
-
-    console.log(fields, rest, input, renderForm(fields));
     return <div>
         {renderForm(fields)}
         <button className="button form-cancel" onClick={() => fields.push(
-        //     {
-        //     component: componentTypes.TEXT_FIELD,
-        //     name: `${fieldKey}.${fields.length}`,
-        //     placeholder: fields[0].placeholder
-        // }
             {...fields[0], name: `${fieldKey}.${fields.length}`}
         )}>Add</button>
     </div>
