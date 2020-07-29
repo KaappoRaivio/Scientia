@@ -45,7 +45,7 @@ const Wind = (props) => {
             <Needle angle={props.angleApparent.value} radius={radiusPercent} color={colors.accent1} animate={props.animate}/>
             <Needle angle={props.angleTrue.value} radius={radiusPercent} color={colors.accent2} animate={props.animate}/>
 
-            <svg width={props.width} height={props.height}>
+            <svg className="wind-svg" width={props.width} height={props.height}>
                 <circle
                     cx={center.x}
                     cy={center.y}
@@ -59,7 +59,7 @@ const Wind = (props) => {
                 </g> : null
 
                 <g fill={props.colors.primary} strokeWidth={radius * 0.01}>
-                    <LineDivisions radius={radius} center={center} divisions={props.divisions}  />
+                    <LineDivisions radius={radius} center={center} divisions={props.divisions} rotateText={false} />
                 </g>
             </svg>
         </div>

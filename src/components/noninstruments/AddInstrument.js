@@ -52,6 +52,7 @@ const AddInstrument = ({onInstrumentAdded, width, height, colors, darkMode}) => 
     const [ selectedItem, setSelectedItem ] = useState(spinnerSchema.options[1]);
 
     const onConfirm = options => {
+        console.log("moi")
         onInstrumentAdded({
             type: "single",
             instruments: [

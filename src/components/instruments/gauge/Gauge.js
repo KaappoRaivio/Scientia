@@ -112,7 +112,7 @@ const Gauge = ({
 
 
             <g stroke={colors.secondary} fill={colors.secondary} strokeWidth={radius * lineWidth}>
-                <LineDivisions center={center} radius={radius} textRadius={radius * 0.8} divisions={divisions}/>
+                <LineDivisions center={center} radius={radius} textRadius={radius * 0.8} divisions={divisions} rotateText={false}/>
             </g>
 
             {darkenIfNight()}

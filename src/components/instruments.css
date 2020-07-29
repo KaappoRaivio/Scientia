@@ -13,3 +13,39 @@
 
   background-color: inherit;
 }
+
+/*.flexbox-container:after {*/
+/*  content: "";*/
+/*  flex-grow: 1;*/
+/*}*/
+
+
+/*@media screen and (min-width: 400px) {*/
+/*  .flexbox-container:after {*/
+/*    flex-basis: calc(50% - 20px);*/
+/*  }*/
+/*}*/
+
+/*@media screen and (min-width: 600px) {*/
+/*  .flexbox-container:after {*/
+/*    flex-basis: calc(33.33% - 20px);*/
+/*  }*/
+/*}*/
+
+/*@media screen and (min-width: 800px) {*/
+/*  .flexbox-container:after {*/
+/*    flex-basis: calc(25% - 20px);*/
+/*  }*/
+/*}*/
+
+/*@media screen and (min-width: 1000px) {*/
+/*  .flexbox-container:after {*/
+/*    flex-basis: calc(20% - 20px);*/
+/*  }*/
+/*}*/
+
+/*@media screen and (min-width: 1200px) {*/
+/*  .flexbox-container:after {*/
+/*    flex-basis: calc(16% - 20px);*/
+/*  }*/
+/*}*/
