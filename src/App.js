@@ -191,6 +191,13 @@ class App extends React.Component {
             })
         }
 
+        // return <div style={{display: "grid"}}>
+        //     <div>asd</div>
+        //     <div>asd</div>
+        //     <div>asd</div>
+        //     <div>asd</div>
+        //     <div>asd</div>
+        // </div>
         return (
             <div className="instruments" style={parentStyle}>
                 <MyModal isModalOpen={this.state.settingsPaneOpen}
