@@ -91,11 +91,11 @@ const MyFormTemplate = props => {
             {formFields}
             <hr />
             <div className="form-template-buttons" style={{position: schema.buttonsAtBottom ? "absolute" : "static"}}>
-            <button className="button form-confirm with-shadow" type="submit" onClick={handleSubmit}>Ok</button>
-            <button className="button form-cancel" type="cancel" onClick={onCancel}>Cancel</button>
+                <button className="button form-confirm with-shadow" type="submit" onClick={handleSubmit}>Ok</button>
+                <button className="button form-cancel" type="cancel" onClick={onCancel}>Cancel</button>
 
-            {/*<button>Ok</button>*/}
-            {!schema.dontShowApply && <button className="button form-cancel" type="apply">Apply</button>}
+                {/*<button>Ok</button>*/}
+                {!schema.dontShowApply && <button className="button form-cancel" type="apply">Apply</button>}
             </div>
         </div>
     )
@@ -130,7 +130,7 @@ const SettingsForm = ({onSettingsUpdate, requestClosing, initialValues, schema, 
     }
 
     return (
-        <FormRenderer style={{height: "100%"}} schema={schema}
+        <FormRenderer style={{position: "relative", height: "100%"}} schema={schema}
             initialValues={initialValues}
             componentMapper={myComponentMapper}
             FormTemplate={MyFormTemplate}

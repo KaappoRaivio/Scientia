@@ -38,8 +38,8 @@ class GaugeContainer extends React.Component {
         const value = getByStringPath(path, data.vessels.self);
         // console.log(value)
 
-        if (path === "performance.polarSpeed")
-            console.log(value)
+        // if (path === "performance.polarSpeed")
+        //     console.log(value)
 
         // return <NonNull colors={colors} height={height} width={width} value={value} displayScaleUpper={value.meta.displayScale.upper} displayScaleLower={value.meta.displayScale.lower}>
         return <Gauge

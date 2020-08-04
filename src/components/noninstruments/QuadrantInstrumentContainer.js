@@ -7,10 +7,10 @@ import SingleInstrumentContainer from "./SingleInstrumentContainer";
 import PropTypes from "prop-types"
 
 const QuadrantInstrumentContainer = ({ index, onInstrumentChanged, children, layoutEditingEnabled, animation, darkMode, colors, data }) => {
-    return <div className="single-flexbox-item">
-        <div className="quadrant-flexbox">
+    return <div className="single-grid-item">
+        <div className="quadrant-grid">
             {
-                children.map(child => <div className="quadrant-flexbox-item">
+                children.map(child => <div className="quadrant-grid-item">
                     {child}
                 </div>)
             }

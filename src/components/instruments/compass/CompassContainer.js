@@ -21,13 +21,13 @@ class CompassContainer extends React.Component {
     }
 
     render () {
-        const navigation = this.props.data.vessels.self.navigation || {};
+        const heading = this.props?.data?.vessels?.self?.navigation?.courseOverGroundTrue;
 
         return <Compass
             width={this.props.width}
             height={this.props.height}
 
-            heading={navigation.courseOverGroundTrue}
+            heading={heading}
             animate={this.props.animate}
             colors={this.props.colors}
             divisions={this.divisions}

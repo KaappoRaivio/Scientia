@@ -23,21 +23,36 @@ const spinnerSchema = {
     options: [
         {
             label: "Wind",
-            value: "WindContainer"
+            value: {
+                component: "WindContainer",
+            }
         },
         {
             label: "Tridata",
-            value: "TridataContainer"
+            value: {
+                component: "TridataContainer",
+            }
         },
         {
             label: "Gauge",
-            value: "GaugeContainer"
+            value: {
+                component: "GaugeContainer",
+            }
         },
         {
             label: "Compass",
-            value: "CompassContainer"
+            value: {
+                component: "CompassContainer",
+            }
+        },
+        {
+            label: "Quadrant...",
+            value: {
+                components: [],
+                type: "quadrant"
+            }
         }
-    ]
+    ].sort((a  , b) => a.label.localeCompare(b.label))
 };
 
 
@@ -49,19 +64,26 @@ const AddInstrument = ({onInstrumentAdded, width, height, colors, darkMode}) => 
     const center = {x: svgSize.x / 2, y: svgSize.y / 2};
 
     const [ plusPressed, setPlusPressed ] = useState(false);
-    const [ selectedItem, setSelectedItem ] = useState(spinnerSchema.options[1]);
+    const [ selectedItem, setSelectedItem ] = useState(spinnerSchema.options[0]);
 
     const onConfirm = options => {
-        console.log("moi")
-        onInstrumentAdded({
-            type: "single",
-            instruments: [
-                {
-                    component: selectedItem.value,
-                    additionalProps: options
-                }
-            ]
-        });
+        if (selectedItem.value.type === "quadrant") {
+            console.log("quadrant")
+            onInstrumentAdded({
+                type: "quadrant",
+                instruments: selectedItem.value.components
+            })
+        } else {
+            onInstrumentAdded({
+                type: "single",
+                instruments: [
+                    {
+                        component: selectedItem.value.component,
+                        additionalProps: options
+                    }
+                ]
+            });
+        }
     }
 
     const onSpinnerChange = selectedItem => {
@@ -80,9 +102,12 @@ const AddInstrument = ({onInstrumentAdded, width, height, colors, darkMode}) => 
             </div>
         );
     } else {
-        return <div style={{padding: "3%", fontSize: "14px", height: "80%", overflowY: "auto"}}>
-            <ReactDropdown value={selectedItem} onChange={onSpinnerChange} options={spinnerSchema.options} placeholder={spinnerSchema.label} />
-            <SettingsForm schema={mergeFields(stringToClass(selectedItem.value).schema || []) || schema} onSettingsUpdate={onConfirm} requestClosing={() => setPlusPressed(false)}/>
+        return <div style={{padding: "3%", fontSize: "50%", height: "80%", overflowY: "auto"}}>
+            <ReactDropdown style={{position: "absolute"}} value={selectedItem} onChange={onSpinnerChange} options={spinnerSchema.options} placeholder={spinnerSchema.label} />
+            <SettingsForm schema={mergeFields(stringToClass(selectedItem.value.component)?.schema || [])} onSettingsUpdate={onConfirm} requestClosing={() => {
+                setPlusPressed(false);
+                setSelectedItem(spinnerSchema.options[0])
+            }}/>
         </div>
     }
 };

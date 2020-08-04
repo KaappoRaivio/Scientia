@@ -1,55 +1,12 @@
-.single-flexbox-item {
+.single-grid-item {
     position: relative;
-
-    flex: 1 0 100%;
-
-    /*margin: auto;*/
-    /*margin-right: 10px;*/
-    /*margin-bottom: 3%;*/
-
     background-color: inherit;
-    fill: white;
-    /*margin: 0;*/
-    /*stroke: black;*/
-    transition: flex-grow linear 1s;
 }
 
-
-.single-flexbox-item:after {
+.single-grid-item:after {
     content: "";
     display: block;
     padding-bottom: 100%;
-}
-
-
-@media screen and (min-width: 400px) {
-    .single-flexbox-item {
-        flex: 1 1 calc(50% - 20px);
-    }
-}
-
-@media screen and (min-width: 600px) {
-    .single-flexbox-item {
-        flex: 1 1 calc(33.33% - 20px);
-    }
-}
-
-@media screen and (min-width: 800px) {
-    .single-flexbox-item {
-        flex: 1 1 calc(25% - 20px);
-    }
-}
-
-@media screen and (min-width: 1000px) {
-    .single-flexbox-item {
-        flex: 1 1 calc(20% - 20px);
-    }
-}
-
-@media screen and (min-width: 1200px) {
-    .single-flexbox-item {
-        flex: 1 1 calc(16% - 20px);
-    }
 }
 
 .single-flexbox-wrapper {
@@ -76,7 +33,6 @@
     position: absolute;
     z-index: 10;
     transition: opacity linear 0.2s;
-    opacity: 100%;
 }
 
 .disabled {
@@ -86,6 +42,8 @@
 
 .probe {
     position: absolute;
+    width: 100%;
+    height: 100%;
     top: 0;
     left: 0;
     z-index: -10;

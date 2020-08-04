@@ -9,7 +9,7 @@ const Compass = (props) => {
     const center = getCenter(props);
     const radius = getRadius(props);
     const colors = props.colors;
-    const heading = (props.heading || {}).value;
+    const heading = props.heading?.value;
 
     const parentStyle = {
         width: props.width + "px",

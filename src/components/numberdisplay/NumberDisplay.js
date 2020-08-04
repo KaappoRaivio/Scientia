@@ -32,7 +32,7 @@ const getActiveZone = (value, zones) => {
 }
 
 const NumberDisplay = ({decimalPlaces, height, label, suffix, units, value, displayScale, width, centerLabel, zones, colors, debug, darkMode}) => {
-    if (isStillLoading(decimalPlaces, label, units, value, displayScale)) {
+    if (isStillLoading(decimalPlaces, label, units, value, displayScale?.upper, displayScale?.lower)) {
         // console.log("asdasd", decimalPlaces, label, units, value, displayScale)
         return <NoData style={{fontWeight: "bold"}} width={width} height={height} colors={colors}/>
     }

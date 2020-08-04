@@ -9,16 +9,14 @@ class SingleInstrumentContainer extends React.Component {
         super(props);
 
         this.probe = React.createRef();
-        this.child = React.createRef();
     }
 
     render() {
-        const sideLength = (this.probe.current || {}).offsetWidth || 0;
+        const sideLength = this.probe.current?.offsetWidth || 0;
 
         const props = {
             width: sideLength,
             height: sideLength,
-            ref: this.child,
             animate: this.props.animate,
             darkMode: this.props.darkMode,
             colors: this.props.colors,
@@ -38,7 +36,7 @@ class SingleInstrumentContainer extends React.Component {
         }
 
         return (
-            <div className="single-flexbox-item with-shadow" style={parentStyle}>
+            <div className="single-grid-item with-shadow" style={parentStyle}>
                 <RemoveInstrument width={sideLength} height={sideLength} onRemoveClick={() => this.props.onRemoveClick(this.props.index)} enabled={this.props.layoutEditingEnabled}/>
                 <div className="single-flexbox-wrapper">
                     {
@@ -46,7 +44,7 @@ class SingleInstrumentContainer extends React.Component {
                             props,
                             [])
                     }
-                    <div style={{position: "absolute", width: "100%", height: "100%", zIndex: -1000}} ref={this.probe}/>
+                    <div className="probe" ref={this.probe}/>
                 </div>
             </div>
         )

@@ -3,22 +3,21 @@ import React from "react";
 
 const Tridata = (props) => {
     // console.log(props.values)
-    const commonUpperBound = props.values.map(value => (value.meta.displayScale || {}).upper).reduce((a, b) => {
-        if (b === null || isNaN(b)) {
-            return a
+    const commonUpperBound = props.values.map(value => value.meta.displayScale?.upper)?.reduce((a, b) => {
+        if (b == null || isNaN(b)) {
+            return null;
         }
         return a > b ? a : b;
     });
 
-    const commonLowerBound = props.values.map(value => (value.meta.displayScale || {}).lower).reduce((a, b) => {
-        if (b === null || isNaN(b)) {
-            return a
+    const commonLowerBound = props.values.map(value => value.meta.displayScale?.lower)?.reduce((a, b) => {
+        if (b == null || isNaN(b)) {
+            return null;
         }
         return a < b ? a : b;
     });
 
     const commonDisplayScale = {lower: commonLowerBound, upper: commonUpperBound};
-
     const colors = props.colors;
 
     const parentStyle = {

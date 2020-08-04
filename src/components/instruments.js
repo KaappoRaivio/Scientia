@@ -121,8 +121,7 @@ class Instruments extends React.Component {
                                 index={index}
                                 colors={colors}
                                 animation={animation}
-                                data={instrument.instruments}
-                                >
+                                data={instrument.instruments}>
                                 {[
                                     ...instrument.instruments.map((quadrant, innerIndex) => {
                                         // console.log(quadrant, stringToClass(quadrant.component))

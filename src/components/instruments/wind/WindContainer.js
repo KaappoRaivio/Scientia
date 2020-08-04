@@ -28,6 +28,7 @@ class WindContainer extends React.Component {
     render () {
         // const wind = (this.props.data.vessels.self.environment || {}).wind || {};
         const wind = getByStringPath("environment.wind", this.props.data.vessels.self, true);
+        console.log(wind)
 
         let speed, speedQuality;
         if (wind.speedTrue !== null) {
@@ -48,7 +49,7 @@ class WindContainer extends React.Component {
             colors={this.props.colors} darkMode={this.props.darkMode}
             divisions={this.divisions}
             animate={this.props.animate}
-            displayScale={((wind.speedTrue || {}).meta || {}).displayScale}
+            displayScale={wind?.speedTrue?.meta?.displayScale}
         />
     }
 }

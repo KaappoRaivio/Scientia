@@ -17,7 +17,13 @@ class TridataContainer extends React.Component {
                 {
                     component: componentTypes.TEXT_FIELD,
                     name: "paths.0",
-                    placeholder: "Path"
+                    placeholder: "Path",
+                    validate: [
+                        {
+                            type: validatorTypes.MIN_LENGTH,
+                            threshold: 1
+                        }
+                    ]
                 }
             ],
             validate: [
@@ -30,7 +36,7 @@ class TridataContainer extends React.Component {
     ];
 
     render () {
-        const values = this.props.paths.map(path => getByStringPath(path, this.props.data.vessels.self) || {meta: {displayScale: {}}});
+        const values = this.props?.paths ? this.props.paths.map(path => getByStringPath(path, this.props.data.vessels.self)) : [];
 
         return <Tridata
                 width={this.props.width}

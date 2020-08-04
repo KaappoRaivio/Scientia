@@ -67,6 +67,7 @@
     display: inline;
 }
 .form-confirm {
+    /*font-size: 50%;*/
     width: auto;
     margin-right: 7.5px;
     padding: 0 15px;
