@@ -23,8 +23,6 @@ const Wind = (props) => {
         fill: colors.background,
     };
 
-    console.log(props.angleApparent, props.angleTrue, colors, radiusPercent)
-
     return (
         <div className="wind" style={parentStyle}>
             <div className="wind-speed-display-wrapper">
@@ -49,8 +47,8 @@ const Wind = (props) => {
                 <circle
                     cx={center.x}
                     cy={center.y}
-                    r={radius}
-                    strokeWidth={radius * 0.01}
+                    r={radius + radius * 0.01}
+                    strokeWidth={radius * 0.02}
                 />
 
                 <g>
@@ -62,8 +60,7 @@ const Wind = (props) => {
                     <LineDivisions radius={radius} center={center} divisions={props.divisions} rotateText={false} />
                 </g>
             </svg>
-            {/*<Needle angle={1} radius={radiusPercent} color={"red"} animate={props.animate}/>*/}
-            {/*<Needle angle={2} radius={radiusPercent} color={"orange"} animate={props.animate}/>*/}
+
             <Needle angle={props.angleApparent.value} radius={radiusPercent} color={colors.accent1} animate={props.animate}/>
             <Needle angle={props.angleTrue.value} radius={radiusPercent} color={colors.accent2} animate={props.animate}/>
 

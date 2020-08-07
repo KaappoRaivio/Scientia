@@ -19,16 +19,9 @@ class Instruments extends React.Component {
     constructor (props) {
         super(props);
 
-        this.state = {
-            fullState: {
-                vessels: {
-                    self: {}
-                }
-            }
-        };
         const { serverAddress } = this.props.settings;
         const HTTPServerRoot = "http:" + serverAddress.split(":").slice(1, 10).join(":");
-        this.deltaAssembler = new DeltaAssembler(HTTPServerRoot, fullState => this.setState({fullState}));
+        this.deltaAssembler = new DeltaAssembler(HTTPServerRoot, fullState => this.props.onNewSignalkState(fullState));
 
         // this.ws = new WebSocket(serverAddress + endpoint + "/stream/?subscribe=none");
     }
@@ -92,7 +85,7 @@ class Instruments extends React.Component {
 
 
         const { animation, darkMode } = this.props.settings;
-        const { colors, instruments, onInstrumentAdded, onInstrumentRemoved, onInstrumentChanged, layoutEditingEnabled } = this.props;
+        const { colors, instruments, onInstrumentAdded, onInstrumentRemoved, onInstrumentChanged, layoutEditingEnabled, signalkState } = this.props;
 
         return (
             <div className="flexbox-container">
@@ -106,7 +99,7 @@ class Instruments extends React.Component {
                                 darkMode={darkMode}
                                 colors={colors}
                                 children={stringToClass(component.component)}
-                                data={this.state.fullState}
+                                data={signalkState}
                                 additionalProps={component.additionalProps}
                                 resizeDebounce={0}
                                 forceResize={true}
@@ -130,7 +123,7 @@ class Instruments extends React.Component {
                                             darkMode={darkMode}
                                             colors={colors}
                                             children={stringToClass(quadrant.component)}
-                                            data={this.state.fullState}
+                                            data={signalkState}
                                             additionalProps={quadrant.additionalProps}
                                             resizeDebounce={0}
                                             forceResize={true}
@@ -173,7 +166,7 @@ class Instruments extends React.Component {
                 {layoutEditingEnabled &&
                     <SingleInstrumentContainer
                         children={AddInstrument}
-                        data={this.state.fullState}
+                        data={signalkState}
                         additionalProps={{onInstrumentAdded}}
                         animate={animation}
                         darkMode={darkMode}

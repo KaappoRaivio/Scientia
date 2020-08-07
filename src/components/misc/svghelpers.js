@@ -64,10 +64,13 @@ const LineDivision = ({ center, radius, textRadius, length, numberOfLines, fontS
                 {
                     textPositions.map((item, index) =>
                         <text
+                            // fontWeight={""}
                             key={index}
                             alignmentBaseline={"middle"}
                             transform={`rotate(${rotateText ? 180 - angleProvider(index) / Math.PI * 180 : 0}, ${item.start.x || 0}, ${item.start.y || 0})`}
-                            x={item.start.x || 0} y={item.start.y || 0} textAnchor="middle"
+                            x={item.start.x || 0}
+                            y={item.start.y || 0}
+                            textAnchor="middle"
                             fontSize={_.isFunction(fontSize) ? fontSize(index) : fontSize}
                         >
                         {textProvider(index)}

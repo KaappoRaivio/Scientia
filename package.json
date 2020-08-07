@@ -25,6 +25,7 @@
     "react-sidebar": "^3.0.2",
     "react-switch": "^5.0.1",
     "react-vis": "^1.11.7",
+    "react-weathericons": "^1.0.4",
     "recompose": "^0.30.0",
     "regression": "^2.0.1",
     "underscore": "^1.10.2",

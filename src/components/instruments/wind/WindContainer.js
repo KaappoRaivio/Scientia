@@ -18,7 +18,7 @@ class WindContainer extends React.Component {
                 lineLength: 0.15,
                 textProvider: i => Math.abs(180 - (2 * Math.PI / 12 * i / Math.PI * 180).toFixed(0)),
                 angleProvider: i => 2 * Math.PI / 12 * i,
-                fontSize: "80%"
+                fontSize: "90%"
             },
             {numberOfLines: 36, lineLength: 0.1, textProvider: i => "", angleProvider: i => 2 * Math.PI / 36 * i},
             {numberOfLines: 144, lineLength: 0.05, textProvider: i => "", angleProvider: i => 2 * Math.PI / 144 * i},
@@ -26,9 +26,7 @@ class WindContainer extends React.Component {
     }
 
     render () {
-        // const wind = (this.props.data.vessels.self.environment || {}).wind || {};
         const wind = getByStringPath("environment.wind", this.props.data.vessels.self, true);
-        console.log(wind)
 
         let speed, speedQuality;
         if (wind.speedTrue !== null) {

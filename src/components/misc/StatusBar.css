@@ -7,17 +7,15 @@
 
 .statusbar-parent {
     display: flex;
+    align-items: center;
+    justify-content: center;
     flex-direction: row;
 
-    font-size: 125%;
-    /*margin-left: 10px;*/
-    /*margin-right: 10px;*/
+    font-size: 100%;
     margin-bottom: 10px;
-    /*margin-top: 10px;*/
     padding: 5px 10px;
-    /*background-color: #eee;*/
     font-family: 'Orbitron', sans-serif;
-    color: #aaa;
+    /*color: #aaa;*/
 }
 
 .statusbar-left {

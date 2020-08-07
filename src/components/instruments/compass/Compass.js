@@ -46,10 +46,10 @@ const Compass = (props) => {
             <circle
                 cx={center.x}
                 cy={center.y}
-                r={radius}
+                r={radius + radius * 0.01}
                 fill={colors.background}
                 stroke={colors.primary}
-                strokeWidth={radius * 0.01}
+                strokeWidth={radius * 0.02}
             />
             <g fill={colors.primary} stroke={colors.primary} strokeWidth={radius * 0.01}>
                     <LineDivisions center={center} radius={radius} divisions={props.divisions} rotateText={true}/>

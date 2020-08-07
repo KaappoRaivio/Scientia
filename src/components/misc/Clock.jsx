@@ -23,7 +23,7 @@ const Clock = props => {
 };
 
 const ClockComponent = ({hours, minutes, seconds}) => (
-    <div style={{display: "inline"}}>
+    <div style={{display: "inline", fontSize: "1.5em", fontVariantNumeric: "tabular-nums"}}>
         {hours}.{minutes.padStart(2, "0")}:{seconds.padStart(2, "0")}
     </div>
 )

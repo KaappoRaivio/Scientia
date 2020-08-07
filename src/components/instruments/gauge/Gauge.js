@@ -193,7 +193,7 @@ const getDivisions = (displayScale, valueToPercent, percentToangle) => {
             },
             textProvider: i => "",
             angleProvider: i => percentToangle(value[i]) / 180 * Math.PI + Math.PI,
-            strokeWidthMultiplier: 1 / (index + 1) * 0.01
+            strokeWidthMultiplier: 1 / (index + 1) * 0.015
         };
     });
 }

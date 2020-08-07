@@ -40,7 +40,13 @@ class App extends React.Component {
                 password: "user"
             },
 
-            instruments: []
+            instruments: [],
+
+            signalkState: {
+                vessels: {
+                    self: {}
+                }
+            }
         };
     }
 
@@ -126,12 +132,16 @@ class App extends React.Component {
 
 
         if (this.state.settings.animationsAccordingToChargingStatus) {
-            // navigator
-            //     .getBattery()
-            //     .then(battery => {
-            //         this.setState({animation: battery.charging})
-            //     })
-            //     .catch(console.error);
+            try {
+                navigator
+                    .getBattery()
+                    .then(battery => {
+                        this.setState({animation: battery.charging})
+                    })
+                    .catch(console.error);
+            } catch (e) {
+                console.error(e);
+            }
         }
     }
 
@@ -192,6 +202,11 @@ class App extends React.Component {
             })
         }
 
+        const onNewSignalkState = newState => {
+            // console.log("asd")
+            this.setState({signalkState: newState})
+        }
+
         // return <div style={{display: "grid"}}>
         //     <div>asd</div>
         //     <div>asd</div>
@@ -208,14 +223,16 @@ class App extends React.Component {
                     colors={colors}
                     appElement={this}
                 />
-                <StatusBar />
+                <StatusBar signalkState={this.state.signalkState} />
                 <Instruments settings={this.state.settings}
                              colors={colors}
                              instruments={this.state.instruments}
                              onInstrumentAdded={onInstrumentAdded}
                              onInstrumentRemoved={onInstrumentRemoved}
                              onInstrumentChanged={onInstrumentChanged}
-                             layoutEditingEnabled={this.state.layoutEditingEnabled} />
+                             layoutEditingEnabled={this.state.layoutEditingEnabled}
+                             onNewSignalkState={onNewSignalkState}
+                             signalkState={this.state.signalkState}/>
                 <div className="open-menu with-shadow">
                     <button className="open-menu-wrapper"
                         onClick={() => onSetSettingsPaneOpen(true)}>
@@ -258,59 +275,6 @@ const getInstruments = (username) => {
             }
         })
         .catch(error => [
-            // {
-            //     type: "quadrant",
-            //     instruments: [
-            //         // {
-            //         //     component: WindContainer,
-            //         //     additionalProps: {}
-            //         // },
-            //         {
-            //             component: "CompassContainer",
-            //             additionalProps: {}
-            //         },
-            //         {
-            //             component: "TridataContainer",
-            //             additionalProps: {
-            //                 paths: [
-            //                     "environment.depth.belowTransducer",
-            //                     "navigation.speedOverGround",
-            //                     "performance.polarSpeed",
-            //                     "navigation.trip.log"
-            //                 ],
-            //             }
-            //         },
-            //         {
-            //             component: "GaugeContainer",
-            //             additionalProps: {
-            //                 path: "environment.depth.belowTransducer"
-            //             }
-            //         }
-            //     ]
-            // },
-            // {
-            //     type: "quadrant",
-            //     instruments: [
-            //         {
-            //             component: "WindContainer",
-            //             additionalProps: {}
-            //         },
-            //         {
-            //             component: "CompassContainer",
-            //             additionalProps: {}
-            //         },
-            //         {
-            //             component: "TridataContainer",
-            //             additionalProps: {
-            //                 paths: ["environment.depth.belowTransducer",
-            //                     "navigation.speedOverGround",
-            //                     "performance.polarSpeed",
-            //                     "navigation.trip.log"
-            //                 ],
-            //             }
-            //         },
-            //     ]
-            // },
             {
                 type: "single",
                 instruments: [
@@ -382,6 +346,15 @@ const getInstruments = (username) => {
                 instruments: [
                     {
                         component: "WindContainer",
+                        additionalProps: {}
+                    }
+                ]
+            },
+            {
+                type: "single",
+                instruments: [
+                    {
+                        component: "CompassContainer",
                         additionalProps: {}
                     }
                 ]

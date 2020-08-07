@@ -1,0 +1,16 @@
+.windicon-parent {
+    width: 1em;
+    height: 1em;
+
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+@keyframes rotate {
+    from {
+        transform: rotate(0turn);
+    }
+    to {
+        transform: rotate(1turn);
+    }
+}
