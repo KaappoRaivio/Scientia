@@ -6,15 +6,18 @@ import Weather from "./Weather";
 
 import "../../assets/weather-icons-master/css/weather-icons.min.css"
 
-const StatusBar = ({ colors, darkMode, signalkState }) => (
-    <div className="statusbar-parent with-shadow">
-        <div className="statusbar-left">
-            <Clock/>
+const StatusBar = ({ colors, darkMode, signalkState }) => {
+    // console.log(signalkState)
+    return (
+        <div className="statusbar-parent with-shadow">
+            <div className="statusbar-left">
+                <Clock/>
+            </div>
+            <div className="statusbar-right">
+                <Weather signalkState={signalkState} colors={colors} darkMode={darkMode}/>
+            </div>
         </div>
-        <div className="statusbar-right">
-            <Weather signalkState={signalkState}/>
-        </div>
-    </div>
-);
+    );
+};
 
 export default StatusBar;

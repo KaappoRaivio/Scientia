@@ -15,6 +15,7 @@ import Wrench from "./assets/wrench.svg"
 import Done from "./assets/done.svg"
 import Package from "../package.json"
 import StatusBar from "./components/misc/StatusBar";
+import MyLoginForm from "./components/logic/MyLoginForm";
 
 export const appName = Package.name;
 export const appVersion = Package.version;
@@ -86,50 +87,18 @@ class App extends React.Component {
         }
     }
 
-    login = () => {
-        const { username, password } = this.state.settings;
-
-        return fetch("/signalk/v1/auth/login", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify({username, password})
-        }).then(response => {
-            if (response.ok) {
-                console.log("Successfully logged in!");
-                return response
-            } else {
-                throw new Error(`There was a problem with login: ${response.status}`)
-            }
-        });
-    }
-
     componentDidMount() {
-        this.login()
-            .then(() => {
+        // this.login()
+        //     .then(() => {
                 getInstruments(this.state.settings.username)
                     .then(instruments => {
                         console.log(instruments)
                         this.setState({instruments});
                     })
-                // getInstruments("paska")
-                //     .then(instruments => {
-                //         saveInstruments(this.state.settings.username, instruments)
-                //             .then(response => console.log("Asdasd", response))
-                //     })
-            })
-            // .then(response => {
-
-            //         .catch(console.error)
-            //     // fetch("/signalk/v1/applicationData/user/appname/1.0/test", {
-            //     //     // credentials: 'include',
-            //     // })
-            //     //     .then(response => response.json())
-            //     //     .then(console.log)
             // })
-            // .catch(console.error)
-
+            // .then(() => {
+            //     fetch(`/signalk/v1/applicationData/${username}/${appName}/${appVersion}/apiKey`)
+            // })
 
         if (this.state.settings.animationsAccordingToChargingStatus) {
             try {
@@ -157,13 +126,6 @@ class App extends React.Component {
             this.setState({
                 settings: newSettings,
             })
-        }
-
-        const parentStyle = {
-            stroke: colors.primary,
-            fill: colors.background,
-            color: colors.primary,
-            backgroundColor: colors.background
         }
 
         const getInitialSettings = () => ({
@@ -203,45 +165,47 @@ class App extends React.Component {
         }
 
         const onNewSignalkState = newState => {
-            // console.log("asd")
             this.setState({signalkState: newState})
         }
 
-        // return <div style={{display: "grid"}}>
-        //     <div>asd</div>
-        //     <div>asd</div>
-        //     <div>asd</div>
-        //     <div>asd</div>
-        //     <div>asd</div>
-        // </div>
+
+        const parentStyle = {
+            stroke: colors.primary,
+            fill: colors.background,
+            color: colors.primary,
+            backgroundColor: colors.background
+        }
+
         return (
-            <div className="instruments" style={parentStyle}>
-                <MyModal isModalOpen={this.state.settingsPaneOpen}
-                    requestClosing={() => onSetSettingsPaneOpen(false)}
-                    initialValues={getInitialSettings()}
-                    onSettingsUpdate={onSettingsChange}
-                    colors={colors}
-                    appElement={this}
-                />
-                <StatusBar signalkState={this.state.signalkState} />
-                <Instruments settings={this.state.settings}
-                             colors={colors}
-                             instruments={this.state.instruments}
-                             onInstrumentAdded={onInstrumentAdded}
-                             onInstrumentRemoved={onInstrumentRemoved}
-                             onInstrumentChanged={onInstrumentChanged}
-                             layoutEditingEnabled={this.state.layoutEditingEnabled}
-                             onNewSignalkState={onNewSignalkState}
-                             signalkState={this.state.signalkState}/>
-                <div className="open-menu with-shadow">
-                    <button className="open-menu-wrapper"
-                        onClick={() => onSetSettingsPaneOpen(true)}>
-                        configure
-                    </button>
-                    <ToggleLayoutEditing editingEnabled={this.state.layoutEditingEnabled} onChanged={layoutEditingEnabled => this.setState({layoutEditingEnabled})}/>
+            <MyLoginForm colors={colors}>
+                <div className="instruments" style={parentStyle}>
+                    <MyModal isModalOpen={this.state.settingsPaneOpen}
+                        requestClosing={() => onSetSettingsPaneOpen(false)}
+                        initialValues={getInitialSettings()}
+                        onSettingsUpdate={onSettingsChange}
+                        colors={colors}
+                        appElement={this}
+                    />
+                    <StatusBar signalkState={this.state.signalkState} colors={colors} darkMode={this.state.settings.darkMode} />
+                    <Instruments settings={this.state.settings}
+                                 colors={colors}
+                                 instruments={this.state.instruments}
+                                 onInstrumentAdded={onInstrumentAdded}
+                                 onInstrumentRemoved={onInstrumentRemoved}
+                                 onInstrumentChanged={onInstrumentChanged}
+                                 layoutEditingEnabled={this.state.layoutEditingEnabled}
+                                 onNewSignalkState={onNewSignalkState}
+                                 signalkState={this.state.signalkState}/>
+                    <div className="open-menu with-shadow">
+                        <button className="open-menu-wrapper"
+                            onClick={() => onSetSettingsPaneOpen(true)}>
+                            configure
+                        </button>
+                        <ToggleLayoutEditing editingEnabled={this.state.layoutEditingEnabled} onChanged={layoutEditingEnabled => this.setState({layoutEditingEnabled})}/>
+                    </div>
+                    <Logo />
                 </div>
-                <Logo />
-            </div>
+            </MyLoginForm>
         );
     }
 }

@@ -12,13 +12,12 @@ import 'react-dropdown/style.css';
 
 const TextField = props => {
     const {label, input, meta, ...rest} = useFieldApi(props)
+    console.log(meta)
     return (
         <div>
             <div className="form-field-title">{label}</div>
             <input className="form-field-text" {...input} {...rest} id={input.name}/>
-            {meta.error
-                ? <p>{meta.error}</p>
-                : null}
+            {meta.error && meta.touched && <span className="form-field-title red">{meta.error}</span>}
         </div>
     )
 }
@@ -88,11 +87,12 @@ const MyFormTemplate = props => {
     return (
         <div className="form-template-parent" onSubmit={handleSubmit}>
             {schema.title && <h1 className="form-title">{schema.title}</h1>}
+            {schema.explanation && <h2 className="form-subsection">{schema.explanation}</h2>}
             {formFields}
             <hr />
             <div className="form-template-buttons" style={{position: schema.buttonsAtBottom ? "absolute" : "static"}}>
-                <button className="button form-confirm with-shadow" type="submit" onClick={handleSubmit}>Ok</button>
-                <button className="button form-cancel" type="cancel" onClick={onCancel}>Cancel</button>
+                <button className="button form-confirm with-shadow" type="submit" onClick={handleSubmit}>{schema.okButtonText || "Ok"}</button>
+                {!schema.dontShowCancel && <button className="button form-cancel" type="cancel" onClick={onCancel}>Cancel</button>}
 
                 {/*<button>Ok</button>*/}
                 {!schema.dontShowApply && <button className="button form-cancel" type="apply">Apply</button>}

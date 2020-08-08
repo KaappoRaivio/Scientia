@@ -4,16 +4,17 @@ import WeatherIcons from "react-weathericons";
 import "./Weather.css"
 
 import iconMap from "../../assets/icons.json";
-import Wind from "../instruments/wind/Wind";
+import _ from "underscore";
+import NoData from "../noninstruments/NoData";
 
 class Weather extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            icon: "cloudy",
-            temperature: "probably freezing",
-            windDirection: 0,
-            windSpeed: 0,
+            icon: null,
+            temperature: null,
+            windDirection: null,
+            windSpeed: null,
         };
     }
 
@@ -29,27 +30,40 @@ class Weather extends React.Component {
                     });
                 });
         }
-        updateWeather(this.props.signalkState?.vessels?.self?.navigation?.position || {latitude: null, longitude: null});
-        setInterval(() => updateWeather(this.props.signalkState?.vessels?.self?.navigation?.position || {latitude: null, longitude: null}), 120000)
+        setTimeout(() => {
+            const position = this.props.signalkState?.vessels?.self?.navigation?.position?.value;
+            console.log(position)
+            updateWeather(position || {latitude: null, longitude: null});
+            setInterval(() => updateWeather(position || {latitude: null, longitude: null}), 120000)
+        }, 5000)
     }
 
     render() {
         return (
             <div style={{fontSize: "125%"}}>
-                <WeatherComponent icon={this.state.icon}
-                                  temperature={this.state.temperature}
-                                  windDirection={this.state.windDirection}
-                                  windSpeed={this.state.windSpeed}/>
+                <WeatherComponent
+                    colors={this.props.colors}
+                    darkMode={this.props.darkMode}
+                    icon={this.state.icon}
+                    temperature={this.state.temperature}
+                    windDirection={this.state.windDirection}
+                    windSpeed={this.state.windSpeed}/>
             </div>
         );
     }
 }
 
-const WeatherComponent = ({icon, temperature, windDirection, windSpeed}) => {
+const WeatherComponent = ({icon, temperature, windDirection, windSpeed, colors, darkMode}) => {
+    if (_.any([icon, temperature, windDirection, windSpeed].map(x => x == null))) {
+        return <div style={{position: "absolute", right: 0, top:0, display: "inline"}}>
+            <NoData width={"1em"} height={"1em"} colors={colors} />
+        </div>
+    }
+
     return <div style={{display: "inline"}}>
         {temperature} °C 
         <span style={{fontSize: "150%"}}>
-            <WeatherIcons name={`day-${icon}`} size={"1x"}/>
+            <WeatherIcons name={`day-${icon}`} />
         </span>
         <span>
             <WindIcon direction={windDirection } />
@@ -68,21 +82,11 @@ const WindIcon = ({direction}) => (
 )
 
 const apiKey = "743fcf245791b649c2cef6919c661f27";
-//
-// const getPosition = () => (
-//     fetch("/signalk/v1/api/vessels/self/navigation/position")
-//         .then(response => response.json())
-//         .then(json => {
-//             console.log("Position", json)
-//             return json;
-//         })
-// )
 
 const getWeather = ({latitude, longitude}) =>
     fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`)
         .then(res => res.json())
         .then(json => {
-            console.log("weather", json);
             return json;
         })
 

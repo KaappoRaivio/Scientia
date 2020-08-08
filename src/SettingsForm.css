@@ -35,6 +35,10 @@
     color: inherit !important;
     /*font-family: "Space Mono", monospace;*/
 }
+.red {
+    color: #f00 !important;
+    font-weight: bold;
+}
 
 .form-field-switch {
     margin-right: 10px;

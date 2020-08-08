@@ -8,7 +8,7 @@
     box-sizing: border-box;
 }
 
-.no-data-parent {
+.o-data-parent {
     height: 100%;
     width: 100%;
     display: flex;
