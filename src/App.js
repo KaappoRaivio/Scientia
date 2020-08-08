@@ -6,6 +6,7 @@ import './App.css';
 import "react-vis/dist/style.css";
 import "chartist/dist/chartist.css";
 
+import fallbackInstruments from "./assets/fallbackInstruments.json"
 
 import Instruments from "./components/instruments"
 import Logo from "./components/Logo";
@@ -17,8 +18,12 @@ import Package from "../package.json"
 import StatusBar from "./components/misc/StatusBar";
 import MyLoginForm from "./components/logic/MyLoginForm";
 
+import cookie from "react-cookies";
+
 export const appName = Package.name;
 export const appVersion = Package.version;
+
+const COOKIE_USERNAME = "username";
 
 class App extends React.Component {
     constructor(props) {
@@ -31,14 +36,18 @@ class App extends React.Component {
             layoutEditingEnabled: false,
             settingsPaneOpen: false,
 
+            login: {
+                waiting: true,
+                loggedIn: null,
+                code: null,
+                username: cookie.load(COOKIE_USERNAME),
+            },
+
             settings: {
                 serverAddress: ws,
                 darkMode: false,
                 animation: false,
                 animationsAccordingToChargingStatus: true,
-
-                username: "user",
-                password: "user"
             },
 
             instruments: [],
@@ -49,6 +58,11 @@ class App extends React.Component {
                 }
             }
         };
+        console.log(this.state.login.username);
+    }
+
+    saveUsername (username) {
+        cookie.save(COOKIE_USERNAME, username)
     }
 
     getColors () {
@@ -88,17 +102,24 @@ class App extends React.Component {
     }
 
     componentDidMount() {
-        // this.login()
-        //     .then(() => {
-                getInstruments(this.state.settings.username)
-                    .then(instruments => {
-                        console.log(instruments)
-                        this.setState({instruments});
-                    })
-            // })
-            // .then(() => {
-            //     fetch(`/signalk/v1/applicationData/${username}/${appName}/${appVersion}/apiKey`)
-            // })
+        if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+            this.setState({
+                instruments: fallbackInstruments,
+                login: {waiting: false, loggedIn: true}
+            })
+        } else {
+            testLoginValidity(this.state.login.username)
+                .then(valid => {
+                    this.setState({login: {waiting: false, loggedIn: valid}})
+                    if (valid) {
+                        getInstruments(this.state.login.username)
+                            .then(instruments => {
+                                console.log(instruments)
+                                this.setState({instruments});
+                            })
+                    }
+                })
+        }
 
         if (this.state.settings.animationsAccordingToChargingStatus) {
             try {
@@ -139,7 +160,7 @@ class App extends React.Component {
             this.setState(oldState => ({
                 instruments: oldState.instruments.concat(instrument)
             }), () => {
-                saveInstruments(this.state.settings.username, this.state.instruments)
+                saveInstruments(this.state.login.username, this.state.instruments)
             })
         }
 
@@ -148,7 +169,7 @@ class App extends React.Component {
             this.setState(oldState => ({
                 instruments: oldState.instruments.slice(0, index).concat(oldState.instruments.slice(index + 1))
             }), () => {
-                saveInstruments(this.state.settings.username, this.state.instruments)
+                saveInstruments(this.state.login.username, this.state.instruments)
             })
             console.log(this.state)
         }
@@ -160,7 +181,7 @@ class App extends React.Component {
                     .concat(instrument)
                     .concat(oldState.instruments.slice(index + 1))
             }), () => {
-                saveInstruments(this.state.settings.username, this.state.instruments)
+                saveInstruments(this.state.login.username, this.state.instruments)
             })
         }
 
@@ -168,6 +189,22 @@ class App extends React.Component {
             this.setState({signalkState: newState})
         }
 
+        const onLogin = (username, password) => {
+            login(username, password)
+                .then(status => {
+                    if (status === 200) {
+                        this.setState({login: {waiting: false, loggedIn: true, code: null}})
+                        this.saveUsername(username)
+                        getInstruments(username)
+                            .then(instruments => {
+                                console.log(instruments)
+                                this.setState({instruments});
+                            })
+                    } else {
+                        this.setState({login: {waiting: false, loggedIn: false, code: status}})
+                    }
+                })
+        }
 
         const parentStyle = {
             stroke: colors.primary,
@@ -177,7 +214,7 @@ class App extends React.Component {
         }
 
         return (
-            <MyLoginForm colors={colors}>
+            <MyLoginForm colors={colors} onLogin={onLogin} loggedIn={this.state.login.loggedIn} waiting={this.state.login.waiting} code={this.state.login.code}>
                 <div className="instruments" style={parentStyle}>
                     <MyModal isModalOpen={this.state.settingsPaneOpen}
                         requestClosing={() => onSetSettingsPaneOpen(false)}
@@ -186,7 +223,10 @@ class App extends React.Component {
                         colors={colors}
                         appElement={this}
                     />
-                    <StatusBar signalkState={this.state.signalkState} colors={colors} darkMode={this.state.settings.darkMode} />
+                    <StatusBar signalkState={this.state.signalkState} colors={colors} darkMode={this.state.settings.darkMode} onLogout={() => {
+                        logout()
+                        this.setState({login: {waiting: false, loggedIn: false}})
+                    }}/>
                     <Instruments settings={this.state.settings}
                                  colors={colors}
                                  instruments={this.state.instruments}
@@ -216,6 +256,40 @@ const ToggleLayoutEditing = ({ editingEnabled, onChanged }) => {
     </div>
 }
 
+const login = (username, password) => {
+    return fetch("/signalk/v1/auth/login", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({username, password})
+    }).then(response => {
+        console.log(response)
+        if (response.status === 200) {
+            console.log("Successfully logged in!");
+        } else {
+            console.log(`There was a problem with login: ${response.status}`)
+        }
+        return response.status;
+    });
+}
+
+const logout = () => {
+    fetch("/signalk/v1/auth/logout", {
+        method: "PUT"
+    })
+        .then(console.log)
+}
+
+const testLoginValidity = username => {
+    return fetch(`/signalk/v1/applicationData/${username}/${appName}/${appVersion}/layout`)
+        .then(res => {
+            console.log(res);
+            return res;
+        })
+        .then(res => res.status === 200)
+}
+
 const saveInstruments = (username, instruments) => {
     fetch(`/signalk/v1/applicationData/${username}/${appName}/${appVersion}/layout`, {
         method: "POST",
@@ -227,103 +301,19 @@ const saveInstruments = (username, instruments) => {
         .then(response => response.ok ? console.log("Saved instruments successfully!") : console.log("There was a problem saving the insruments: " + response.status))
 }
 
+
 const getInstruments = (username) => {
     return fetch(`/signalk/v1/applicationData/${username}/${appName}/${appVersion}/layout`)
         .then(response => {
             console.log(response)
-            if (response.ok) {
+            if (response.status === 200) {
                 return response.json();
 
             } else {
                 throw new Error("Problem with response: " + response.status);
             }
         })
-        .catch(error => [
-            {
-                type: "single",
-                instruments: [
-                    {
-                        component: "GaugeContainer",
-                        additionalProps: {
-                            path: "performance.polarSpeedRatio"
-                        }
-                    }
-                ]
-            },
-            {
-                type: "single",
-                instruments: [
-                    {
-                        component: "GaugeContainer",
-                        additionalProps: {
-                            path: "environment.depth.belowTransducer"
-                        }
-                    }
-                ]
-            },
-            {
-                type: "quadrant",
-                instruments: [
-                    {
-                        component: "GaugeContainer",
-                        additionalProps: {
-                            path: "navigation.speedOverGround"
-                        }
-                    },
-                    {
-                        component: "GaugeContainer",
-                        additionalProps: {
-                            path: "navigation.speedThroughWater"
-                        }
-                    },
-                    {
-                        component: "GaugeContainer",
-                        additionalProps: {
-                            path: "performance.polarSpeed"
-                        }
-                    },
-                    {
-                        component: "GaugeContainer",
-                        additionalProps: {
-                            path: "performance.polarSpeedRatio"
-                        }
-                    }
-                ]
-            },
-            {
-                type: "single",
-                instruments: [
-                    {
-                        component: "TridataContainer",
-                        additionalProps: {
-                            paths: [
-                                "navigation.speedThroughWater",
-                                "environment.depth.belowTransducer",
-                                "navigation.trip.log"
-                            ]
-                        }
-                    }
-                ]
-            },
-            {
-                type: "single",
-                instruments: [
-                    {
-                        component: "WindContainer",
-                        additionalProps: {}
-                    }
-                ]
-            },
-            {
-                type: "single",
-                instruments: [
-                    {
-                        component: "CompassContainer",
-                        additionalProps: {}
-                    }
-                ]
-            }
-    ]);
+        .catch(error => fallbackInstruments);
 }
 
 

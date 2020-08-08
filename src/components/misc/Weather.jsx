@@ -40,7 +40,7 @@ class Weather extends React.Component {
 
     render() {
         return (
-            <div style={{fontSize: "125%"}}>
+            <div style={{fontSize: "125%", display: "inline"}}>
                 <WeatherComponent
                     colors={this.props.colors}
                     darkMode={this.props.darkMode}
