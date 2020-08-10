@@ -1,7 +1,7 @@
 import React from "react";
 
 import "./Instruments.css";
-import "./instruments/helpers/quadrandinstrumentcontainer.css";
+import "./helpers/QuadrantInstrumentContainer.css";
 
 import SingleInstrumentContainer from "./helpers/SingleInstrumentContainer";
 import QuadrantInstrumentContainer from "./helpers/QuadrantInstrumentContainer";

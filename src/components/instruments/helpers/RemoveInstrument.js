@@ -1,6 +1,6 @@
 import React from "react";
 
-import "./singleinstrumentcontainer.css";
+import "./SingleInstrumentContainer.css";
 
 const RemoveInstrument = ({ height, width, onRemoveClick, enabled }) => {
 	const svgSize = { width: width / 12, height: height / 12 };

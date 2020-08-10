@@ -1,6 +1,5 @@
 import React from "react";
 import * as PropTypes from "prop-types";
-import isEqual from "react-fast-compare";
 import _ from "underscore";
 
 class SvgHelpers {

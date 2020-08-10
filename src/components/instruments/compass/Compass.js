@@ -1,7 +1,7 @@
 import React from "react";
 
-import "./compass.css";
-import NumberDisplay from "../../numberdisplay/NumberDisplay";
+import "./Compass.css";
+import NumberDisplay from "../helpers/numberdisplay/NumberDisplay";
 import { LineTickSections } from "../helpers/svgHelpers";
 
 const Compass = props => {

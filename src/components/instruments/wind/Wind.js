@@ -1,6 +1,6 @@
 import React from "react";
 
-import NumberDisplay from "../../numberdisplay/NumberDisplay.js";
+import NumberDisplay from "../helpers/numberdisplay/NumberDisplay.js";
 import Needle from "./Needle";
 import Svghelper, { LineTickSections } from "../helpers/svgHelpers";
 

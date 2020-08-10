@@ -1,7 +1,7 @@
 import React from "react";
 
 import "../Instruments.css";
-import "./singleinstrumentcontainer.css";
+import "./SingleInstrumentContainer.css";
 import RemoveInstrument from "./RemoveInstrument";
 
 class SingleInstrumentContainer extends React.Component {

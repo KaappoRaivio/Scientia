@@ -6,7 +6,7 @@ import * as math from "mathjs";
 import Needle from "../wind/Needle";
 
 import "./gauge.css";
-import NumberDisplay from "../../numberdisplay/NumberDisplay";
+import NumberDisplay from "../helpers/numberdisplay/NumberDisplay";
 import { PropTypes } from "prop-types";
 import NoData from "../helpers/NoData";
 

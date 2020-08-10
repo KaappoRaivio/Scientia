@@ -1,6 +1,6 @@
 import React from "react";
 
-import "./quadrandinstrumentcontainer.css";
+import "./QuadrantInstrumentContainer.css";
 import AddInstrument from "./AddInstrument";
 import SingleInstrumentContainer from "./SingleInstrumentContainer";
 

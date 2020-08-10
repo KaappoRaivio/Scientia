@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import "./AddInstrument.css";
 
-import SettingsForm from "../../SettingsForm";
+import SettingsForm from "../../settings/SettingsForm";
 
 import ReactDropdown from "react-dropdown";
-import { stringToClass } from "../instruments";
+import { stringToClass } from "../Instruments";
 
 const schema = {
 	buttonsAtBottom: true,
