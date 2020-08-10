@@ -14,10 +14,7 @@ class Logo extends React.Component {
 
 	handleButtonPress() {
 		this.buttonPressTimer = setTimeout(() => {
-			let win = window.open(
-				"https://github.com/KaappoRaivio/Scientia",
-				"_blank"
-			);
+			let win = window.open("https://github.com/KaappoRaivio/Scientia", "_blank");
 			win.focus();
 		}, 7000);
 	}
@@ -34,18 +31,12 @@ class Logo extends React.Component {
 				onTouchEnd={this.handleButtonRelease}
 				onMouseDown={this.handleButtonPress}
 				onMouseUp={this.handleButtonRelease}
-				onMouseLeave={this.handleButtonRelease}
-			>
+				onMouseLeave={this.handleButtonRelease}>
 				{/*<a className="logo-link" href={"https://github.com/KaappoRaivio/Scientia"} target="_blank"*/}
 				{/*   rel="noopener noreferrer">*/}
 				{/*</a>*/}
 				<div className="logo">
-					<img
-						src={LogoAsset}
-						width="200px"
-						alt="Logo"
-						onDragStart={(e) => e.preventDefault()}
-					/>
+					<img src={LogoAsset} width="200px" alt="Logo" onDragStart={e => e.preventDefault()} />
 				</div>
 				<b className="name">Scientia</b> <br />
 				<span className="author">Kaappo Raivio</span>

@@ -4,13 +4,7 @@ import isEqual from "react-fast-compare";
 import _ from "underscore";
 
 class Svghelpers {
-	static getDivisionCoordinates(
-		center,
-		radius,
-		length,
-		numberOfDivisions,
-		angleProvider
-	) {
+	static getDivisionCoordinates(center, radius, length, numberOfDivisions, angleProvider) {
 		let lines = [];
 
 		for (let i = 0; i < numberOfDivisions; i++) {
@@ -20,11 +14,7 @@ class Svghelpers {
 			let actualLength = _.isFunction(length) ? length(i) : length;
 
 			let start = this.polarToCartesian(angle, radius, center);
-			let end = this.polarToCartesian(
-				angle,
-				radius - actualLength,
-				center
-			);
+			let end = this.polarToCartesian(angle, radius - actualLength, center);
 
 			lines.push({ start: start, end: end });
 		}
@@ -54,38 +44,11 @@ class Svghelpers {
 		// return `M${x} ${y} ${cx1} ${cy1} A${cr} ${cr} 0 0 ${1} ${cx2} ${cy2}Z`;
 	}
 
-	static getSector(
-		centerX,
-		centerY,
-		radius,
-		width,
-		startAngle,
-		endAngle,
-		fillColor,
-		key
-	) {
+	static getSector(centerX, centerY, radius, width, startAngle, endAngle, fillColor, key) {
 		return (
 			<g key={key}>
-				<path
-					d={this.getSectorPath(
-						centerX,
-						centerY,
-						radius,
-						90 + startAngle,
-						90 + endAngle
-					)}
-					fill={fillColor}
-				/>
-				<path
-					d={this.getSectorPath(
-						centerX,
-						centerY,
-						radius - width,
-						90 + startAngle,
-						90 + endAngle
-					)}
-					fillOpacity={1}
-				/>
+				<path d={this.getSectorPath(centerX, centerY, radius, 90 + startAngle, 90 + endAngle)} fill={fillColor} />
+				<path d={this.getSectorPath(centerX, centerY, radius - width, 90 + startAngle, 90 + endAngle)} fillOpacity={1} />
 			</g>
 		);
 	}
@@ -103,32 +66,13 @@ const LineDivision = ({
 	rotateText,
 	strokeWidthMultiplier,
 }) => {
-	let lines = Svghelpers.getDivisionCoordinates(
-		center,
-		radius,
-		length,
-		numberOfLines,
-		angleProvider
-	);
-	let textPositions = Svghelpers.getDivisionCoordinates(
-		center,
-		textRadius,
-		0,
-		numberOfLines,
-		angleProvider
-	);
+	let lines = Svghelpers.getDivisionCoordinates(center, radius, length, numberOfLines, angleProvider);
+	let textPositions = Svghelpers.getDivisionCoordinates(center, textRadius, 0, numberOfLines, angleProvider);
 
-	let path = `${lines.map(
-		(line, index) =>
-			`M${line.start.x} ${line.start.y} L${line.end.x} ${line.end.y}`
-	)} Z`;
+	let path = `${lines.map((line, index) => `M${line.start.x} ${line.start.y} L${line.end.x} ${line.end.y}`)} Z`;
 
 	return (
-		<g
-			strokeWidth={
-				strokeWidthMultiplier ? radius * strokeWidthMultiplier : null
-			}
-		>
+		<g strokeWidth={strokeWidthMultiplier ? radius * strokeWidthMultiplier : null}>
 			<path d={path} />
 
 			<g stroke={"none"}>
@@ -137,18 +81,13 @@ const LineDivision = ({
 						// fontWeight={""}
 						key={index}
 						alignmentBaseline={"middle"}
-						transform={`rotate(${
-							rotateText
-								? 180 - (angleProvider(index) / Math.PI) * 180
-								: 0
-						}, ${item.start.x || 0}, ${item.start.y || 0})`}
+						transform={`rotate(${rotateText ? 180 - (angleProvider(index) / Math.PI) * 180 : 0}, ${item.start.x || 0}, ${
+							item.start.y || 0
+						})`}
 						x={item.start.x || 0}
 						y={item.start.y || 0}
 						textAnchor="middle"
-						fontSize={
-							_.isFunction(fontSize) ? fontSize(index) : fontSize
-						}
-					>
+						fontSize={_.isFunction(fontSize) ? fontSize(index) : fontSize}>
 						{textProvider(index)}
 					</text>
 				))}
@@ -171,24 +110,15 @@ export class LineDivisions extends React.Component {
 						<LineDivision
 							center={center}
 							radius={radius}
-							textRadius={
-								textRadius ||
-								radius - 1.5 * division.lineLength * radius
-							}
-							length={
-								_.isFunction(division.lineLength)
-									? (i) => division.lineLength(i) * radius
-									: division.lineLength * radius
-							}
+							textRadius={textRadius || radius - 1.5 * division.lineLength * radius}
+							length={_.isFunction(division.lineLength) ? i => division.lineLength(i) * radius : division.lineLength * radius}
 							fontSize={division.fontSize}
 							angleProvider={division.angleProvider}
 							textProvider={division.textProvider}
 							numberOfLines={division.numberOfLines}
 							rotateText={rotateText}
 							key={index}
-							strokeWidthMultiplier={
-								division.strokeWidthMultiplier
-							}
+							strokeWidthMultiplier={division.strokeWidthMultiplier}
 						/>
 					);
 				})}
@@ -204,10 +134,7 @@ export class LineDivisions extends React.Component {
 		radius: PropTypes.number.isRequired,
 		divisions: PropTypes.arrayOf({
 			fontSize: PropTypes.number.isRequired,
-			lineLength: PropTypes.oneOf(
-				PropTypes.func.isRequired,
-				PropTypes.number.isRequired
-			),
+			lineLength: PropTypes.oneOf(PropTypes.func.isRequired, PropTypes.number.isRequired),
 			angleProvider: PropTypes.func.isRequired,
 			textProvider: PropTypes.func.isRequired,
 			strokeWidthMultiplier: PropTypes.number.isRequired,

@@ -8,9 +8,7 @@ class VisualiserContainer extends React.Component {
 	constructor(props) {
 		super(props);
 
-		let data = /*[...Array(1000).keys()].map((_, index) => ({x: index, y: index}))*/ [
-			{ x: 0, y: 1 },
-		];
+		let data = /*[...Array(1000).keys()].map((_, index) => ({x: index, y: index}))*/ [{ x: 0, y: 1 }];
 		// // console.log(data);
 		this.state = {
 			counter: 0,
@@ -25,19 +23,19 @@ class VisualiserContainer extends React.Component {
 		if (this.props.convert) {
 			this.converter = this.props.convert;
 		} else {
-			this.converter = (x) => x;
+			this.converter = x => x;
 		}
 
 		this.firstTime = true;
 	}
 
 	subscribe() {
-		const onDelta = (message) => {
+		const onDelta = message => {
 			let value = message.values[0];
 			this.addData(value.value);
 		};
 
-		const onMetadata = (metadata) => {
+		const onMetadata = metadata => {
 			// // console.log(metadata)
 			this.setState({
 				displayScale: metadata.displayScale,
@@ -95,18 +93,13 @@ class VisualiserContainer extends React.Component {
 	}
 
 	computeTrendDataPoint(data) {
-		let dataPoints = data.slice(
-			Math.max(data.length - this.props.trendlinePeriod, 0),
-			data.length
-		);
+		let dataPoints = data.slice(Math.max(data.length - this.props.trendlinePeriod, 0), data.length);
 		if (!dataPoints.length) {
 			return { x: 0, y: 0 };
 		}
 
 		let x = this.getTimeStamp() - this.startTime;
-		let y =
-			dataPoints.map((a) => a.y).reduce((a, b) => a + b) /
-			dataPoints.length;
+		let y = dataPoints.map(a => a.y).reduce((a, b) => a + b) / dataPoints.length;
 
 		if (x < 0) {
 			return { x: 0, y: 1 };
@@ -129,18 +122,7 @@ class VisualiserContainer extends React.Component {
 	};
 
 	render() {
-		const {
-			width,
-			fontSize,
-			trendlinePeriod,
-			animate,
-			height,
-			legend,
-			numberOfPointsToShow,
-			negate,
-			colors,
-			ranges,
-		} = this.props;
+		const { width, fontSize, trendlinePeriod, animate, height, legend, numberOfPointsToShow, negate, colors, ranges } = this.props;
 		const { units, displayScale } = this.state;
 		return (
 			<Visualiser

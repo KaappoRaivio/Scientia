@@ -10,12 +10,7 @@ const RemoveInstrument = ({ height, width, onRemoveClick, enabled }) => {
 
 	// return <div className="remove-instrument">Remove</div>
 	return (
-		<svg
-			className={`remove-instrument ${enabled ? "" : "disabled"}`}
-			width={svgSize.width}
-			height={svgSize.height}
-			onClick={onRemoveClick}
-		>
+		<svg className={`remove-instrument ${enabled ? "" : "disabled"}`} width={svgSize.width} height={svgSize.height} onClick={onRemoveClick}>
 			<g strokeWidth={1.5} stroke={"gray"} strokeLinecap="round">
 				<line
 					x1={svgSize.width * (1 - lineLength)}

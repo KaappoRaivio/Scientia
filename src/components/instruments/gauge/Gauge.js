@@ -12,15 +12,10 @@ import { displayScaleToLineDivisionSteps } from "../DataStructures";
 import NoData from "../../noninstruments/NoData";
 
 const valueToPercentConverters = {
-	linear: (upper, lower) => (x) => (x - lower) / (upper - lower),
-	logarithmic: (upper, lower) => (x) =>
-		(Math.log10(x) - Math.log10(lower)) /
-		(Math.log10(upper) - Math.log10(lower)),
-	squareroot: (upper, lower) => (x) =>
-		(Math.sqrt(x) - Math.sqrt(lower)) /
-		(Math.sqrt(upper) - Math.sqrt(lower)),
-	power: (upper, lower, power) => (x) =>
-		(x ** power - lower ** power) / (upper ** power - lower ** power),
+	linear: (upper, lower) => x => (x - lower) / (upper - lower),
+	logarithmic: (upper, lower) => x => (Math.log10(x) - Math.log10(lower)) / (Math.log10(upper) - Math.log10(lower)),
+	squareroot: (upper, lower) => x => (Math.sqrt(x) - Math.sqrt(lower)) / (Math.sqrt(upper) - Math.sqrt(lower)),
+	power: (upper, lower, power) => x => (x ** power - lower ** power) / (upper ** power - lower ** power),
 };
 
 const Gauge = ({
@@ -47,7 +42,7 @@ const Gauge = ({
 	let start = 135;
 	let end = -135;
 
-	const percentToAngle = (x) => {
+	const percentToAngle = x => {
 		return start - (start - end) * x;
 	};
 
@@ -55,49 +50,28 @@ const Gauge = ({
 		return <NoData colors={colors} height={height} width={width} />;
 	}
 
-	const valueToPercent = valueToPercentConverters[
-		displayScale.type || "linear"
-	](displayScale.upper, displayScale.lower, displayScale.power);
+	const valueToPercent = valueToPercentConverters[displayScale.type || "linear"](displayScale.upper, displayScale.lower, displayScale.power);
 
-	const divisions = getDivisions(
-		displayScale,
-		valueToPercent,
-		percentToAngle
-	);
+	const divisions = getDivisions(displayScale, valueToPercent, percentToAngle);
 
 	let limitedValue = Math.min(displayScale.upper, value);
-	let needleAngle =
-		(-percentToAngle(valueToPercent(limitedValue)) / 180) * Math.PI;
+	let needleAngle = (-percentToAngle(valueToPercent(limitedValue)) / 180) * Math.PI;
 
-	let sectors = zones.map((zone) => {
+	let sectors = zones.map(zone => {
 		const lowerLimit = zone.lower || displayScale.lower;
 		const upperLimit = zone.upper || displayScale.upper;
 
 		return {
 			startAngle: percentToAngle(valueToPercent(lowerLimit)),
 			endAngle: percentToAngle(valueToPercent(upperLimit)),
-			fillColor:
-				colors[
-					"value" + zone.state[0].toUpperCase() + zone.state.slice(1)
-				],
+			fillColor: colors["value" + zone.state[0].toUpperCase() + zone.state.slice(1)],
 		};
 	});
 
 	let sectorWidth = radius * 0.2;
 
 	const darkenIfNight = () => (
-		<>
-			{darkMode ? (
-				<rect
-					x={0}
-					y={0}
-					width={width}
-					height={height}
-					fill={"rgba(0, 0, 0, 0.5)"}
-					stroke={"none"}
-				/>
-			) : null}
-		</>
+		<>{darkMode ? <rect x={0} y={0} width={width} height={height} fill={"rgba(0, 0, 0, 0.5)"} stroke={"none"} /> : null}</>
 	);
 
 	// console.log("asdasd", units);
@@ -122,12 +96,7 @@ const Gauge = ({
 				/>
 			</div>
 
-			<svg
-				className="gauge-gauge"
-				width={width}
-				height={height}
-				xmlns="http://www.w3.org/2000/svg"
-			>
+			<svg className="gauge-gauge" width={width} height={height} xmlns="http://www.w3.org/2000/svg">
 				<g className="gauge-sectors">
 					<Sectors
 						width={width}
@@ -147,52 +116,18 @@ const Gauge = ({
 					r={radius + (radius * lineWidth) / 2}
 					strokeWidth={radius * lineWidth}
 				/>
-				<g
-					stroke={"black"}
-					strokeWidth={(radius * lineWidth) / 2}
-					fill={colors.background}
-				>
-					{Svghelpers.getSector(
-						center.x,
-						center.y,
-						radius,
-						radius,
-						math.mod(start, 360),
-						math.mod(end, 360),
-						colors.backgroundColor
-					)}
+				<g stroke={"black"} strokeWidth={(radius * lineWidth) / 2} fill={colors.background}>
+					{Svghelpers.getSector(center.x, center.y, radius, radius, math.mod(start, 360), math.mod(end, 360), colors.backgroundColor)}
 				</g>
-				<circle
-					stroke={"none"}
-					fill={colors.background}
-					cx={center.x}
-					cy={center.y}
-					r={radius - sectorWidth}
-				/>
+				<circle stroke={"none"} fill={colors.background} cx={center.x} cy={center.y} r={radius - sectorWidth} />
 
-				<g
-					stroke={colors.secondary}
-					fill={colors.secondary}
-					strokeWidth={radius * lineWidth}
-				>
-					<LineDivisions
-						center={center}
-						radius={radius}
-						textRadius={radius * 0.8}
-						divisions={divisions}
-						rotateText={false}
-					/>
+				<g stroke={colors.secondary} fill={colors.secondary} strokeWidth={radius * lineWidth}>
+					<LineDivisions center={center} radius={radius} textRadius={radius * 0.8} divisions={divisions} rotateText={false} />
 				</g>
 
 				{darkenIfNight()}
 			</svg>
-			<Needle
-				angle={needleAngle}
-				radius={radiusPercent}
-				color={colors.accent2}
-				animate={animate}
-				demo={false}
-			/>
+			<Needle angle={needleAngle} radius={radiusPercent} color={colors.accent2} animate={animate} demo={false} />
 		</div>
 	);
 };
@@ -240,69 +175,39 @@ class Sectors extends React.Component {
 	}
 
 	render() {
-		let {
-			sectors,
-			backgroundColor,
-			center,
-			radius,
-			sectorWidth,
-		} = this.props;
+		let { sectors, backgroundColor, center, radius, sectorWidth } = this.props;
 
 		return (
 			<g stroke={"none"} fill={backgroundColor}>
 				{sectors.map((item, index) => {
-					return Svghelpers.getSector(
-						center.x,
-						center.y,
-						radius,
-						sectorWidth,
-						item.startAngle,
-						item.endAngle,
-						item.fillColor,
-						index
-					);
+					return Svghelpers.getSector(center.x, center.y, radius, sectorWidth, item.startAngle, item.endAngle, item.fillColor, index);
 				})}
 			</g>
 		);
 	}
 }
 
-const ceilToNearestMultiple = (number, multiple) =>
-	Math.ceil(number / multiple) * multiple;
+const ceilToNearestMultiple = (number, multiple) => Math.ceil(number / multiple) * multiple;
 
 const getDivisions = (displayScale, valueToPercent, percentToangle) => {
 	const steps = displayScaleToLineDivisionSteps(displayScale);
 
 	const { upper, lower } = displayScale;
 
-	const scales = steps.map(
-		(step) =>
-			math.range(
-				ceilToNearestMultiple(lower || 0, step),
-				ceilToNearestMultiple(upper || 0, step),
-				step,
-				true
-			)._data
-	);
-	const values = scales.map((scale) => scale.map(valueToPercent));
+	const scales = steps.map(step => math.range(ceilToNearestMultiple(lower || 0, step), ceilToNearestMultiple(upper || 0, step), step, true)._data);
+	const values = scales.map(scale => scale.map(valueToPercent));
 
 	return values.map((value, index) => {
 		return {
 			numberOfLines: value.length,
-			lineLength: (i) => {
+			lineLength: i => {
 				let derivative = value[i + 1] - value[i] || 0.1;
-				let normalizer = Math.max(
-					...value.map(
-						(_, innerIndex) =>
-							value[innerIndex + 1] - value[innerIndex] || 0.1
-					)
-				);
+				let normalizer = Math.max(...value.map((_, innerIndex) => value[innerIndex + 1] - value[innerIndex] || 0.1));
 
 				return Math.cbrt(derivative / normalizer) / 5;
 			},
-			textProvider: (i) => "",
-			angleProvider: (i) =>
-				(percentToangle(value[i]) / 180) * Math.PI + Math.PI,
+			textProvider: i => "",
+			angleProvider: i => (percentToangle(value[i]) / 180) * Math.PI + Math.PI,
 			strokeWidthMultiplier: (1 / (index + 1)) * 0.015,
 		};
 	});

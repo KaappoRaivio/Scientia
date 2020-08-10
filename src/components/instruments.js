@@ -15,15 +15,7 @@ import VisualiserContainer from "./instruments/visualiser/VisualiserContainer";
 class Instruments extends React.Component {
 	render() {
 		const { animation, darkMode } = this.props.settings;
-		const {
-			colors,
-			instruments,
-			onInstrumentAdded,
-			onInstrumentRemoved,
-			onInstrumentChanged,
-			layoutEditingEnabled,
-			signalkState,
-		} = this.props;
+		const { colors, instruments, onInstrumentAdded, onInstrumentRemoved, onInstrumentChanged, layoutEditingEnabled, signalkState } = this.props;
 
 		return (
 			<div className="flexbox-container">
@@ -54,73 +46,40 @@ class Instruments extends React.Component {
 								index={index}
 								colors={colors}
 								animation={animation}
-								data={instrument.instruments}
-							>
+								data={instrument.instruments}>
 								{[
-									...instrument.instruments.map(
-										(quadrant, innerIndex) => {
-											// console.log(quadrant, stringToClass(quadrant.component))
-											return (
-												<SingleInstrumentContainer
-													animate={animation}
-													darkMode={darkMode}
-													colors={colors}
-													children={stringToClass(
-														quadrant.component
-													)}
-													data={signalkState}
-													additionalProps={
-														quadrant.additionalProps
-													}
-													resizeDebounce={0}
-													forceResize={true}
-													onRemoveClick={(_) => {
-														console.log(
-															index,
-															innerIndex,
-															_,
-															instrument.instruments
-														);
+									...instrument.instruments.map((quadrant, innerIndex) => {
+										// console.log(quadrant, stringToClass(quadrant.component))
+										return (
+											<SingleInstrumentContainer
+												animate={animation}
+												darkMode={darkMode}
+												colors={colors}
+												children={stringToClass(quadrant.component)}
+												data={signalkState}
+												additionalProps={quadrant.additionalProps}
+												resizeDebounce={0}
+												forceResize={true}
+												onRemoveClick={_ => {
+													let newInstruments = instrument.instruments
+														.slice(0, innerIndex)
+														.concat(instrument.instruments.slice(innerIndex + 1));
 
-														let newInstruments = instrument.instruments
-															.slice(
-																0,
-																innerIndex
-															)
-															.concat(
-																instrument.instruments.slice(
-																	innerIndex +
-																		1
-																)
-															);
-														console.log(
-															newInstruments
-														);
-
-														onInstrumentChanged(
-															index,
-															{
-																type:
-																	"quadrant",
-																instruments: newInstruments,
-															}
-														);
-													}}
-													index={innerIndex}
-													layoutEditingEnabled={
-														layoutEditingEnabled
-													}
-												/>
-											);
-										}
-									),
+													onInstrumentChanged(index, {
+														type: "quadrant",
+														instruments: newInstruments,
+													});
+												}}
+												index={innerIndex}
+												layoutEditingEnabled={layoutEditingEnabled}
+											/>
+										);
+									}),
 								]}
 							</QuadrantInstrumentContainer>
 						);
 					} else {
-						return (
-							<div>Unknown instrument type {instrument.type}</div>
-						);
+						return <div>Unknown instrument type {instrument.type}</div>;
 					}
 				})}
 
@@ -141,7 +100,7 @@ class Instruments extends React.Component {
 	}
 }
 
-export const stringToClass = (string) =>
+export const stringToClass = string =>
 	({
 		CompassContainer: CompassContainer,
 		WindContainer: WindContainer,

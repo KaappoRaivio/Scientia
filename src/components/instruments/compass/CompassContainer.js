@@ -11,28 +11,27 @@ class CompassContainer extends React.Component {
 			{
 				numberOfLines: 12,
 				lineLength: 0.15,
-				textProvider: (i) => mod(180 - (360 / 12) * i, 360),
-				angleProvider: (i) => ((2 * Math.PI) / 12) * i,
+				textProvider: i => mod(180 - (360 / 12) * i, 360),
+				angleProvider: i => ((2 * Math.PI) / 12) * i,
 				fontSize: "80%",
 			},
 			{
 				numberOfLines: 36,
 				lineLength: 0.1,
-				textProvider: (i) => "",
-				angleProvider: (i) => ((2 * Math.PI) / 36) * i,
+				textProvider: i => "",
+				angleProvider: i => ((2 * Math.PI) / 36) * i,
 			},
 			{
 				numberOfLines: 144,
 				lineLength: 0.05,
-				textProvider: (i) => "",
-				angleProvider: (i) => ((2 * Math.PI) / 144) * i,
+				textProvider: i => "",
+				angleProvider: i => ((2 * Math.PI) / 144) * i,
 			},
 		];
 	}
 
 	render() {
-		const heading = this.props?.data?.vessels?.self?.navigation
-			?.courseOverGroundTrue;
+		const heading = this.props?.data?.vessels?.self?.navigation?.courseOverGroundTrue;
 
 		return (
 			<Compass

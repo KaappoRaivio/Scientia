@@ -68,7 +68,7 @@ class Interpolator {
 		let latest = this.dataPoints[this.dataPoints.length - 1];
 		let other = this.dataPoints[this.dataPoints.length - 2];
 
-		return (x) => {
+		return x => {
 			let deltaX = latest[0] - other[0];
 
 			let deltaY = 0;
@@ -93,17 +93,13 @@ class Interpolator {
 				// // console.log(x, mod(k * x + b, 2 * Math.PI) / Math.PI * 180, k, deltaX);
 				return mod(k * x + b, 2 * Math.PI);
 			} else {
-				return k > 0
-					? Math.min(k * x + b, latest[1])
-					: Math.max(k * x + b, latest[1]);
+				return k > 0 ? Math.min(k * x + b, latest[1]) : Math.max(k * x + b, latest[1]);
 			}
 		};
 	}
 
 	magicTruthTable(k, y, t) {
-		let cond = [k > 0, y < Math.PI, t > Math.PI]
-			.map((k) => (k ? "1" : "0"))
-			.join("");
+		let cond = [k > 0, y < Math.PI, t > Math.PI].map(k => (k ? "1" : "0")).join("");
 
 		const table = {
 			"000": Math.min,

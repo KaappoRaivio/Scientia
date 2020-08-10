@@ -6,27 +6,14 @@ import SingleInstrumentContainer from "./SingleInstrumentContainer";
 
 import PropTypes from "prop-types";
 
-const QuadrantInstrumentContainer = ({
-	index,
-	onInstrumentChanged,
-	children,
-	layoutEditingEnabled,
-	animation,
-	darkMode,
-	colors,
-	data,
-}) => {
+const QuadrantInstrumentContainer = ({ index, onInstrumentChanged, children, layoutEditingEnabled, animation, darkMode, colors, data }) => {
 	return (
 		<div className="single-grid-item">
 			<div className="quadrant-grid">
-				{children.map((child) => (
+				{children.map(child => (
 					<div className="quadrant-grid-item">{child}</div>
 				))}
-				{[
-					...Array(
-						layoutEditingEnabled ? 4 - children.length : 0
-					).fill(0),
-				].map((_, innerIndex) => (
+				{[...Array(layoutEditingEnabled ? 4 - children.length : 0).fill(0)].map((_, innerIndex) => (
 					<SingleInstrumentContainer
 						animate={animation}
 						darkMode={darkMode}
@@ -34,17 +21,12 @@ const QuadrantInstrumentContainer = ({
 						children={AddInstrument}
 						data={{}}
 						additionalProps={{
-							onInstrumentAdded: (newInstrument) => {
+							onInstrumentAdded: newInstrument => {
 								// instrument.instruments[4 - instrument.instruments.length + index] = newInstrument;
-								console.log(
-									newInstrument,
-									data.concat(newInstrument)
-								);
+								console.log(newInstrument, data.concat(newInstrument));
 								onInstrumentChanged(index, {
 									type: "quadrant",
-									instruments: data.concat(
-										newInstrument.instruments[0]
-									),
+									instruments: data.concat(newInstrument.instruments[0]),
 								});
 							},
 						}}

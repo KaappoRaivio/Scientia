@@ -420,8 +420,7 @@ input.green-button {
 	background: #737680;
 	line-height: 40px;
 	display: inline;
-	transition: border 0.2s 0.2s, text-shadow 0.2s 0.2s, background 0.2s 0.2s,
-		transform 0.2s, color 0.2s 0.2s, box-shadow 0.2s;
+	transition: border 0.2s 0.2s, text-shadow 0.2s 0.2s, background 0.2s 0.2s, transform 0.2s, color 0.2s 0.2s, box-shadow 0.2s;
 	text-transform: capitalize;
 }
 
@@ -430,8 +429,7 @@ input.green-button {
 	cursor: pointer;
 	height: 56px;
 	width: 56px;
-	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-		0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 	text-shadow: 0 0 1px;
 	border-radius: 100%;
 	font-size: 35px;
@@ -441,8 +439,7 @@ input.green-button {
 	background: #8c42ab;
 	font-weight: 100;
 	display: block;
-	transition: text-shadow 0.2s 0.2s, background 0.2s 0.2s, transform 0.2s,
-		color 0.2s 0.2s, box-shadow 0.2s;
+	transition: text-shadow 0.2s 0.2s, background 0.2s 0.2s, transform 0.2s, color 0.2s 0.2s, box-shadow 0.2s;
 }
 
 .rounded-button:hover {
@@ -459,8 +456,7 @@ input.red-button:hover,
 .green-button:hover,
 input.green-button:hover {
 	transform: scale(1.03);
-	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-		0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 
 button:active,
@@ -516,8 +512,7 @@ input.green-button {
 
 .paper {
 	font-size: 16px;
-	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-		0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 	padding: 10px 20px;
 	background-color: #fff;
 	margin-top: 20px;
@@ -526,8 +521,7 @@ input.green-button {
 }
 
 .with-shadow {
-	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14),
-		0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+	box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 
 .selectable,

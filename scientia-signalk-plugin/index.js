@@ -3,8 +3,7 @@ module.exports = function (app) {
 
 	plugin.id = "Scientia";
 	plugin.name = "Scientia";
-	plugin.description =
-		"Scientia for Signal K developed and maintained by Kaappo Raivio";
+	plugin.description = "Scientia for Signal K developed and maintained by Kaappo Raivio";
 
 	plugin.start = function (options, restartPlugin) {
 		// Here we put our plugin logic

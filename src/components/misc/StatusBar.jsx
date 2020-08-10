@@ -15,11 +15,7 @@ const StatusBar = ({ colors, darkMode, signalkState, onLogout }) => {
 				<Clock />
 			</div>
 			<div className="statusbar-right">
-				<Weather
-					signalkState={signalkState}
-					colors={colors}
-					darkMode={darkMode}
-				/>
+				<Weather signalkState={signalkState} colors={colors} darkMode={darkMode} />
 				<Logout onLogout={onLogout} />
 			</div>
 		</div>

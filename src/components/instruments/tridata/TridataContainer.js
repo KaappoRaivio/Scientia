@@ -36,20 +36,10 @@ class TridataContainer extends React.Component {
 	];
 
 	render() {
-		const values = this.props?.paths
-			? this.props.paths.map((path) =>
-					getByStringPath(path, this.props.data.vessels.self)
-			  )
-			: [];
+		const values = this.props?.paths ? this.props.paths.map(path => getByStringPath(path, this.props.data.vessels.self)) : [];
 
 		return (
-			<Tridata
-				width={this.props.width}
-				height={this.props.height}
-				values={values}
-				colors={this.props.colors}
-				darkMode={this.props.darkMode}
-			/>
+			<Tridata width={this.props.width} height={this.props.height} values={values} colors={this.props.colors} darkMode={this.props.darkMode} />
 		);
 	}
 }

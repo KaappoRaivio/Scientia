@@ -11,7 +11,7 @@ const schema = {
 	dontShowApply: true,
 };
 
-const mergeFields = (fields) => {
+const mergeFields = fields => {
 	if (fields == null || fields === []) return null;
 	return { ...schema, fields };
 };
@@ -55,13 +55,7 @@ const spinnerSchema = {
 	].sort((a, b) => a.label.localeCompare(b.label)),
 };
 
-const AddInstrument = ({
-	onInstrumentAdded,
-	width,
-	height,
-	colors,
-	darkMode,
-}) => {
+const AddInstrument = ({ onInstrumentAdded, width, height, colors, darkMode }) => {
 	const lineWidth = 3;
 
 	const svgSize = { x: width / 2.5, y: height / 2.5 };
@@ -70,7 +64,7 @@ const AddInstrument = ({
 	const [plusPressed, setPlusPressed] = useState(false);
 	const [selectedItem, setSelectedItem] = useState(spinnerSchema.options[0]);
 
-	const onConfirm = (options) => {
+	const onConfirm = options => {
 		if (selectedItem.value.type === "quadrant") {
 			console.log("quadrant");
 			onInstrumentAdded({
@@ -90,43 +84,18 @@ const AddInstrument = ({
 		}
 	};
 
-	const onSpinnerChange = (selectedItem) => {
+	const onSpinnerChange = selectedItem => {
 		setSelectedItem(selectedItem);
 		console.log(selectedItem);
 	};
 
 	if (!plusPressed) {
 		return (
-			<div
-				onClick={() => setPlusPressed(true)}
-				className="addinstrument-parent"
-			>
-				<svg
-					width={svgSize.x}
-					height={svgSize.y}
-					strokeWidth={lineWidth}
-					stroke={colors.primary}
-				>
-					<line
-						x1={center.x}
-						y1={lineWidth / 2}
-						x2={center.x}
-						y2={svgSize.y - lineWidth / 2}
-						strokeLinecap={"round"}
-					/>
-					<line
-						x1={lineWidth / 2}
-						y1={center.y}
-						x2={svgSize.x - lineWidth / 2}
-						y2={center.x}
-						strokeLinecap={"round"}
-					/>
-					<rect
-						width={width}
-						height={height}
-						fill={darkMode ? "none" : "rgba(255, 255, 255, 0.75)"}
-						stroke={"none"}
-					/>
+			<div onClick={() => setPlusPressed(true)} className="addinstrument-parent">
+				<svg width={svgSize.x} height={svgSize.y} strokeWidth={lineWidth} stroke={colors.primary}>
+					<line x1={center.x} y1={lineWidth / 2} x2={center.x} y2={svgSize.y - lineWidth / 2} strokeLinecap={"round"} />
+					<line x1={lineWidth / 2} y1={center.y} x2={svgSize.x - lineWidth / 2} y2={center.x} strokeLinecap={"round"} />
+					<rect width={width} height={height} fill={darkMode ? "none" : "rgba(255, 255, 255, 0.75)"} stroke={"none"} />
 				</svg>
 			</div>
 		);
@@ -138,8 +107,7 @@ const AddInstrument = ({
 					fontSize: "50%",
 					height: "80%",
 					overflowY: "auto",
-				}}
-			>
+				}}>
 				<ReactDropdown
 					style={{ position: "absolute" }}
 					value={selectedItem}
@@ -148,10 +116,7 @@ const AddInstrument = ({
 					placeholder={spinnerSchema.label}
 				/>
 				<SettingsForm
-					schema={mergeFields(
-						stringToClass(selectedItem.value.component)?.schema ||
-							[]
-					)}
+					schema={mergeFields(stringToClass(selectedItem.value.component)?.schema || [])}
 					onSettingsUpdate={onConfirm}
 					requestClosing={() => {
 						setPlusPressed(false);

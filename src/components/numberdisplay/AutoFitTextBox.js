@@ -20,8 +20,7 @@ class AutoFitTextBox extends React.Component {
 		}
 		const textBBox = this.bbox;
 
-		const widthScale =
-			(width / textBBox.width) * this.props.initialFontSize;
+		const widthScale = (width / textBBox.width) * this.props.initialFontSize;
 		return Math.min(widthScale, height);
 	}
 
@@ -34,12 +33,7 @@ class AutoFitTextBox extends React.Component {
 		// this.setState({ scale: scale});
 		const scale = this.getTextScale(this.svgTextNode.current);
 		// // console.log(scale, this.props.value.length)
-		const {
-			value,
-			maxNumberOfDigits,
-			initialFontSize,
-			...restOfTheProps
-		} = this.props;
+		const { value, maxNumberOfDigits, initialFontSize, ...restOfTheProps } = this.props;
 
 		return (
 			<text

@@ -12,7 +12,7 @@ export default class WebSocketManager {
 		}
 
 		this.ws = new WebSocket(address);
-		const preparePath = (name) => ({
+		const preparePath = name => ({
 			path: name,
 			period: 1000,
 			format: "delta",
@@ -29,12 +29,12 @@ export default class WebSocketManager {
 			);
 		};
 
-		this.ws.onmessage = (event) => {
+		this.ws.onmessage = event => {
 			const message = JSON.parse(event.data);
 			onDelta(message);
 		};
 
-		this.ws.onclose = (event) => {
+		this.ws.onclose = event => {
 			console.log("Closing websocket");
 			try {
 				this.ws.send(

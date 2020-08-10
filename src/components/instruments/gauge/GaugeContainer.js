@@ -32,15 +32,7 @@ class GaugeContainer extends React.Component {
 	};
 
 	render() {
-		const {
-			path,
-			width,
-			animate,
-			height,
-			colors,
-			darkMode,
-			data,
-		} = this.props;
+		const { path, width, animate, height, colors, darkMode, data } = this.props;
 
 		const value = getByStringPath(path, data.vessels.self);
 		// console.log(value)

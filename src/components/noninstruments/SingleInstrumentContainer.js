@@ -40,9 +40,7 @@ class SingleInstrumentContainer extends React.Component {
 				<RemoveInstrument
 					width={sideLength}
 					height={sideLength}
-					onRemoveClick={() =>
-						this.props.onRemoveClick(this.props.index)
-					}
+					onRemoveClick={() => this.props.onRemoveClick(this.props.index)}
 					enabled={this.props.layoutEditingEnabled}
 				/>
 				<div className="single-flexbox-wrapper">

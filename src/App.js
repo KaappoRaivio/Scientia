@@ -37,14 +37,9 @@ class App extends React.Component {
 		let ws = "ws:" + url.split(":")[1] + ":3000";
 		// let ws = "ws://192.168.1.151:3000"
 		const HTTPServerRoot = "http:" + ws.split(":").slice(1, 10).join(":");
-		this.deltaAssembler = new DeltaAssembler(
-			HTTPServerRoot,
-			(signalkState) => this.setState({ signalkState })
-		);
+		this.deltaAssembler = new DeltaAssembler(HTTPServerRoot, signalkState => this.setState({ signalkState }));
 		const webSocketUrl = ws + endpoint + "/stream/?subscribe=none";
-		this.socketManager = new WebSocketManager(webSocketUrl, (delta) =>
-			this.deltaAssembler.onDelta(delta)
-		);
+		this.socketManager = new WebSocketManager(webSocketUrl, delta => this.deltaAssembler.onDelta(delta));
 
 		this.state = {
 			layoutEditingEnabled: false,
@@ -115,7 +110,7 @@ class App extends React.Component {
 
 	componentDidMount() {
 		if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
-			this.setState((oldState) => ({
+			this.setState(oldState => ({
 				instruments: fallbackInstruments,
 				login: _.extend(oldState.login, {
 					waiting: false,
@@ -123,20 +118,18 @@ class App extends React.Component {
 				}),
 			}));
 		} else {
-			testLoginValidity(this.state.login.username).then((valid) => {
-				this.setState((oldState) => ({
+			testLoginValidity(this.state.login.username).then(valid => {
+				this.setState(oldState => ({
 					login: _.extend(oldState.login, {
 						waiting: false,
 						loggedIn: valid,
 					}),
 				}));
 				if (valid) {
-					getInstruments(this.state.login.username).then(
-						(instruments) => {
-							console.log(instruments);
-							this.setState({ instruments });
-						}
-					);
+					getInstruments(this.state.login.username).then(instruments => {
+						console.log(instruments);
+						this.setState({ instruments });
+					});
 				}
 			});
 		}
@@ -147,7 +140,7 @@ class App extends React.Component {
 			try {
 				navigator
 					.getBattery()
-					.then((battery) => {
+					.then(battery => {
 						this.setState({ animation: battery.charging });
 					})
 					.catch(console.error);
@@ -160,11 +153,11 @@ class App extends React.Component {
 	render() {
 		const colors = this.getColors();
 
-		const onSetSettingsPaneOpen = (open) => {
+		const onSetSettingsPaneOpen = open => {
 			this.setState({ settingsPaneOpen: open });
 		};
 
-		const onSettingsChange = (newSettings) => {
+		const onSettingsChange = newSettings => {
 			this.setState({
 				settings: newSettings,
 			});
@@ -174,37 +167,28 @@ class App extends React.Component {
 			animation: this.state.settings.animation,
 			darkMode: this.state.settings.darkMode,
 			serverAddress: this.state.settings.serverAddress,
-			animationsAccordingToChargingStatus: this.state.settings
-				.animationsAccordingToChargingStatus,
+			animationsAccordingToChargingStatus: this.state.settings.animationsAccordingToChargingStatus,
 		});
 
-		const onInstrumentAdded = (instrument) => {
+		const onInstrumentAdded = instrument => {
 			this.setState(
-				(oldState) => ({
+				oldState => ({
 					instruments: oldState.instruments.concat(instrument),
 				}),
 				() => {
-					saveInstruments(
-						this.state.login.username,
-						this.state.instruments
-					);
+					saveInstruments(this.state.login.username, this.state.instruments);
 				}
 			);
 		};
 
-		const onInstrumentRemoved = (index) => {
+		const onInstrumentRemoved = index => {
 			console.log("Instrument removed", index);
 			this.setState(
-				(oldState) => ({
-					instruments: oldState.instruments
-						.slice(0, index)
-						.concat(oldState.instruments.slice(index + 1)),
+				oldState => ({
+					instruments: oldState.instruments.slice(0, index).concat(oldState.instruments.slice(index + 1)),
 				}),
 				() => {
-					saveInstruments(
-						this.state.login.username,
-						this.state.instruments
-					);
+					saveInstruments(this.state.login.username, this.state.instruments);
 				}
 			);
 			console.log(this.state);
@@ -213,23 +197,20 @@ class App extends React.Component {
 		const onInstrumentChanged = (index, instrument) => {
 			console.log("Instrument changed", index, instrument);
 			this.setState(
-				(oldState) => ({
+				oldState => ({
 					instruments: oldState.instruments
 						.slice(0, index)
 						.concat(instrument)
 						.concat(oldState.instruments.slice(index + 1)),
 				}),
 				() => {
-					saveInstruments(
-						this.state.login.username,
-						this.state.instruments
-					);
+					saveInstruments(this.state.login.username, this.state.instruments);
 				}
 			);
 		};
 
 		const onLogin = (username, password) => {
-			login(username, password).then((status) => {
+			login(username, password).then(status => {
 				if (status === 200) {
 					this.setState({
 						login: {
@@ -240,7 +221,7 @@ class App extends React.Component {
 						},
 					});
 					this.saveUsername(username);
-					getInstruments(username).then((instruments) => {
+					getInstruments(username).then(instruments => {
 						console.log(instruments);
 						this.setState({ instruments });
 					});
@@ -272,8 +253,7 @@ class App extends React.Component {
 				onLogin={onLogin}
 				loggedIn={this.state.login.loggedIn}
 				waiting={this.state.login.waiting}
-				code={this.state.login.code}
-			>
+				code={this.state.login.code}>
 				<div className="instruments" style={parentStyle}>
 					<MyModal
 						isModalOpen={this.state.settingsPaneOpen}
@@ -307,17 +287,12 @@ class App extends React.Component {
 						signalkState={this.state.signalkState}
 					/>
 					<div className="open-menu with-shadow">
-						<button
-							className="open-menu-wrapper"
-							onClick={() => onSetSettingsPaneOpen(true)}
-						>
+						<button className="open-menu-wrapper" onClick={() => onSetSettingsPaneOpen(true)}>
 							configure
 						</button>
 						<ToggleLayoutEditing
 							editingEnabled={this.state.layoutEditingEnabled}
-							onChanged={(layoutEditingEnabled) =>
-								this.setState({ layoutEditingEnabled })
-							}
+							onChanged={layoutEditingEnabled => this.setState({ layoutEditingEnabled })}
 						/>
 					</div>
 					<Logo />
@@ -329,16 +304,8 @@ class App extends React.Component {
 
 const ToggleLayoutEditing = ({ editingEnabled, onChanged }) => {
 	return (
-		<div
-			onClick={() => onChanged(!editingEnabled)}
-			className="configure-layout-wrapper"
-		>
-			<img
-				className="configure-layout"
-				src={editingEnabled ? Done : Wrench}
-				alt="enable layout configuration"
-				width="auto"
-			/>
+		<div onClick={() => onChanged(!editingEnabled)} className="configure-layout-wrapper">
+			<img className="configure-layout" src={editingEnabled ? Done : Wrench} alt="enable layout configuration" width="auto" />
 		</div>
 	);
 };
@@ -350,7 +317,7 @@ const login = (username, password) => {
 			"Content-Type": "application/json",
 		},
 		body: JSON.stringify({ username, password }),
-	}).then((response) => {
+	}).then(response => {
 		console.log(response);
 		if (response.status === 200) {
 			console.log("Successfully logged in!");
@@ -367,42 +334,30 @@ const logout = () => {
 	}).then(console.log);
 };
 
-const testLoginValidity = (username) => {
-	return fetch(
-		`/signalk/v1/applicationData/${username}/${appName}/${appVersion}/layout`
-	)
-		.then((res) => {
+const testLoginValidity = username => {
+	return fetch(`/signalk/v1/applicationData/${username}/${appName}/${appVersion}/layout`)
+		.then(res => {
 			console.log(res);
 			return res;
 		})
-		.then((res) => res.status === 200);
+		.then(res => res.status === 200);
 };
 
 const saveInstruments = (username, instruments) => {
-	fetch(
-		`/signalk/v1/applicationData/${username}/${appName}/${appVersion}/layout`,
-		{
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(instruments),
-		}
-	).then((response) =>
-		response.ok
-			? console.log("Saved instruments successfully!")
-			: console.log(
-					"There was a problem saving the insruments: " +
-						response.status
-			  )
+	fetch(`/signalk/v1/applicationData/${username}/${appName}/${appVersion}/layout`, {
+		method: "POST",
+		headers: {
+			"Content-Type": "application/json",
+		},
+		body: JSON.stringify(instruments),
+	}).then(response =>
+		response.ok ? console.log("Saved instruments successfully!") : console.log("There was a problem saving the insruments: " + response.status)
 	);
 };
 
-const getInstruments = (username) => {
-	return fetch(
-		`/signalk/v1/applicationData/${username}/${appName}/${appVersion}/layout`
-	)
-		.then((response) => {
+const getInstruments = username => {
+	return fetch(`/signalk/v1/applicationData/${username}/${appName}/${appVersion}/layout`)
+		.then(response => {
 			console.log(response);
 			if (response.status === 200) {
 				return response.json();
@@ -410,7 +365,7 @@ const getInstruments = (username) => {
 				throw new Error("Problem with response: " + response.status);
 			}
 		})
-		.catch((error) => fallbackInstruments);
+		.catch(error => fallbackInstruments);
 };
 
 export default App;

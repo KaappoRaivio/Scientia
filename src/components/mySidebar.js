@@ -17,15 +17,15 @@ class MySidebar extends React.Component {
 	}
 
 	render() {
-		const onColourPaletteChange = (night) => {
+		const onColourPaletteChange = night => {
 			this.setState({ darkMode: night });
 		};
 
-		const onAnimationChange = (animation) => {
+		const onAnimationChange = animation => {
 			this.setState({ animation: animation });
 		};
 
-		const onAddressChange = (event) => {
+		const onAddressChange = event => {
 			this.setState({ address: event.target.value });
 			event.preventDefault();
 		};
@@ -42,11 +42,7 @@ class MySidebar extends React.Component {
 						<div className="setting with-shadow">
 							<div className="setting-title">Server address</div>
 
-							<input
-								className="address"
-								value={this.state.address}
-								onChange={onAddressChange}
-							/>
+							<input className="address" value={this.state.address} onChange={onAddressChange} />
 						</div>
 
 						<div className="setting with-shadow">
@@ -93,25 +89,21 @@ class MySidebar extends React.Component {
 							</div>
 						</div>
 
-						<button
-							className="button confirm with-shadow"
-							onClick={onConfirmButtonPress}
-						>
+						<button className="button confirm with-shadow" onClick={onConfirmButtonPress}>
 							OK
 						</button>
 					</div>
 				}
 				open={this.props.sidebarOpen}
 				onSetOpen={this.props.onSetSidebarOpen}
-				styles={getSidebarStyle(this.props.colors)}
-			>
+				styles={getSidebarStyle(this.props.colors)}>
 				<div />
 			</Sidebar>
 		);
 	}
 }
 
-const getSidebarStyle = (colors) => {
+const getSidebarStyle = colors => {
 	return {
 		sidebar: {
 			width: 400,

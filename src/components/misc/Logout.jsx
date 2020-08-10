@@ -12,13 +12,8 @@ const Logout = ({ onLogout }) => {
 				width: "1em",
 				height: "1em",
 			}}
-			onClick={onLogout}
-		>
-			<img
-				style={{ position: "relative", width: "1em", height: "1em" }}
-				src={logout}
-				alt={"log out"}
-			/>
+			onClick={onLogout}>
+			<img style={{ position: "relative", width: "1em", height: "1em" }} src={logout} alt={"log out"} />
 		</div>
 	);
 };

@@ -7,12 +7,8 @@ import "./NoData.css";
 const NoData = ({ height, width, colors, reasons }) => (
 	<div style={{ height: height, width: width }}>
 		<div className="no-data-parent">
-			<div
-				className="no-data"
-				style={{ backgroundColor: colors["valueAlert"] }}
-			>
-				No data{" "}
-				{reasons && reasons.length && `, missing ${reasons.join(", ")}`}
+			<div className="no-data" style={{ backgroundColor: colors["valueAlert"] }}>
+				No data {reasons && reasons.length && `, missing ${reasons.join(", ")}`}
 			</div>
 		</div>
 	</div>

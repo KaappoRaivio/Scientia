@@ -1,10 +1,6 @@
 import React from "react";
 
-import FormRenderer, {
-	componentTypes,
-	useFieldApi,
-	useFormApi,
-} from "@data-driven-forms/react-form-renderer";
+import FormRenderer, { componentTypes, useFieldApi, useFormApi } from "@data-driven-forms/react-form-renderer";
 
 import "./SettingsForm.css";
 import Switch from "react-switch";
@@ -14,25 +10,18 @@ import * as PropTypes from "prop-types";
 import ReactDropdown from "react-dropdown";
 import "react-dropdown/style.css";
 
-const TextField = (props) => {
+const TextField = props => {
 	const { label, input, meta, ...rest } = useFieldApi(props);
 	return (
 		<div>
 			<div className="form-field-title">{label}</div>
-			<input
-				className="form-field-text"
-				{...input}
-				{...rest}
-				id={input.name}
-			/>
-			{meta.error && meta.touched && (
-				<span className="form-field-title red">{meta.error}</span>
-			)}
+			<input className="form-field-text" {...input} {...rest} id={input.name} />
+			{meta.error && meta.touched && <span className="form-field-title red">{meta.error}</span>}
 		</div>
 	);
 };
 
-const Checkbox = (props) => {
+const Checkbox = props => {
 	const { label, input } = useFieldApi(props);
 
 	return (
@@ -56,22 +45,17 @@ const Checkbox = (props) => {
 	);
 };
 
-const DropDown = (props) => {
+const DropDown = props => {
 	const api = useFieldApi(props);
 
 	return (
 		<div>
-			<ReactDropdown
-				value={api.input.value}
-				onChange={api.input.onChange}
-				options={api.options}
-				placeholder={api.label}
-			/>
+			<ReactDropdown value={api.input.value} onChange={api.input.onChange} options={api.options} placeholder={api.label} />
 		</div>
 	);
 };
 
-const MyFieldArray = (props) => {
+const MyFieldArray = props => {
 	const { fields, fieldKey } = useFieldApi(props);
 	const { renderForm } = useFormApi();
 
@@ -85,15 +69,14 @@ const MyFieldArray = (props) => {
 						...fields[0],
 						name: `${fieldKey}.${fields.length}`,
 					})
-				}
-			>
+				}>
 				Add
 			</button>
 		</div>
 	);
 };
 
-const Section = (props) => {
+const Section = props => {
 	const { fields } = props;
 	const { renderForm } = useFormApi();
 	const { title } = useFieldApi(props);
@@ -101,44 +84,33 @@ const Section = (props) => {
 	return (
 		<div className="form-field-container with-shadow">
 			<div className="form-subsection">{title}</div>
-			{renderForm(fields).map((field) => (
+			{renderForm(fields).map(field => (
 				<div className="form-subsection-field">{field}</div>
 			))}
 		</div>
 	);
 };
 
-const MyFormTemplate = (props) => {
+const MyFormTemplate = props => {
 	let { schema, formFields } = props;
 	const { handleSubmit, onCancel } = useFormApi();
 
 	return (
 		<div className="form-template-parent" onSubmit={handleSubmit}>
 			{schema.title && <h1 className="form-title">{schema.title}</h1>}
-			{schema.explanation && (
-				<h2 className="form-subsection">{schema.explanation}</h2>
-			)}
+			{schema.explanation && <h2 className="form-subsection">{schema.explanation}</h2>}
 			{formFields}
 			<hr />
 			<div
 				className="form-template-buttons"
 				style={{
 					position: schema.buttonsAtBottom ? "absolute" : "static",
-				}}
-			>
-				<button
-					className="button form-confirm with-shadow"
-					type="submit"
-					onClick={handleSubmit}
-				>
+				}}>
+				<button className="button form-confirm with-shadow" type="submit" onClick={handleSubmit}>
 					{schema.okButtonText || "Ok"}
 				</button>
 				{!schema.dontShowCancel && (
-					<button
-						className="button form-cancel"
-						type="cancel"
-						onClick={onCancel}
-					>
+					<button className="button form-cancel" type="cancel" onClick={onCancel}>
 						Cancel
 					</button>
 				)}
@@ -170,13 +142,7 @@ const myComponentMapper = {
 	"custom-type": TextField,
 };
 
-const SettingsForm = ({
-	onSettingsUpdate,
-	requestClosing,
-	initialValues,
-	schema,
-	buttonsInDocumentFlow,
-}) => {
+const SettingsForm = ({ onSettingsUpdate, requestClosing, initialValues, schema, buttonsInDocumentFlow }) => {
 	const onSubmit = (values, formApi) => {
 		console.log(formApi, values);
 		onSettingsUpdate(values);

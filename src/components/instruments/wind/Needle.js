@@ -2,7 +2,7 @@ import * as React from "react";
 
 import "./needle.css";
 
-const Needle = (props) => {
+const Needle = props => {
 	if (props.angle === null) {
 		return <div />;
 	}
@@ -25,10 +25,7 @@ const Needle = (props) => {
 	return (
 		<div className="wrapper" style={{ height: `${props.radius}%` }}>
 			<div className="needleTest" style={style}>
-				<div
-					className="needle"
-					style={{ backgroundColor: props.color }}
-				/>
+				<div className="needle" style={{ backgroundColor: props.color }} />
 			</div>
 		</div>
 	);

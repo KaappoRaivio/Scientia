@@ -43,21 +43,10 @@ class DrawHelper {
 		let y = origin[1] + 0.5;
 		// let x = origin[0];
 		// let y = origin[1];
-		return [
-			x + Math.sin(Math.PI - angle) * radius,
-			y + Math.cos(Math.PI - angle) * radius,
-		];
+		return [x + Math.sin(Math.PI - angle) * radius, y + Math.cos(Math.PI - angle) * radius];
 	}
 
-	drawDivision(
-		origin,
-		radius,
-		division,
-		length,
-		angleProvider,
-		numberTextProvider,
-		rotateNumbers
-	) {
+	drawDivision(origin, radius, division, length, angleProvider, numberTextProvider, rotateNumbers) {
 		// // console.log(origin, radius, division, length ,angleProvider, numberTextProvider)
 		for (let i = 0; i < division; i++) {
 			// let angleOffset = this.props.heading * Math.PI / 180;
@@ -68,13 +57,7 @@ class DrawHelper {
 			this.drawCompassLine(origin, angle, radius, length);
 
 			let angleText = numberTextProvider(i);
-			this.drawAngleText(
-				origin,
-				angle,
-				radius - length * 1.5,
-				angleText,
-				rotateNumbers
-			);
+			this.drawAngleText(origin, angle, radius - length * 1.5, angleText, rotateNumbers);
 		}
 	}
 

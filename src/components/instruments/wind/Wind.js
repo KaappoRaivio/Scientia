@@ -6,7 +6,7 @@ import Svghelper, { LineDivisions } from "../../misc/svghelpers";
 
 import "./wind.css";
 
-const Wind = (props) => {
+const Wind = props => {
 	const center = { x: props.width / 2, y: props.height / 2 };
 	const radius = Math.round(props.width / 2.1);
 	const radiusPercent = ((radius / (props.width / 2)) * 100) / 2;
@@ -42,61 +42,24 @@ const Wind = (props) => {
 			</div>
 
 			<svg className="wind-svg" width={props.width} height={props.height}>
-				<circle
-					cx={center.x}
-					cy={center.y}
-					r={radius + radius * 0.01}
-					strokeWidth={radius * 0.02}
-				/>
+				<circle cx={center.x} cy={center.y} r={radius + radius * 0.01} strokeWidth={radius * 0.02} />
 				<g>
-					{Svghelper.getSector(
-						center.x,
-						center.y,
-						radius,
-						0.025 * props.width,
-						-props.closeHaulAngle,
-						0,
-						colors.closeHaulRight
-					)}
-					}
-					{Svghelper.getSector(
-						center.x,
-						center.y,
-						radius,
-						0.025 * props.width,
-						props.closeHaulAngle,
-						0,
-						colors.closeHaulLeft
-					)}
+					{Svghelper.getSector(center.x, center.y, radius, 0.025 * props.width, -props.closeHaulAngle, 0, colors.closeHaulRight)}}
+					{Svghelper.getSector(center.x, center.y, radius, 0.025 * props.width, props.closeHaulAngle, 0, colors.closeHaulLeft)}
 				</g>{" "}
 				: null
 				<g fill={props.colors.primary} strokeWidth={radius * 0.01}>
-					<LineDivisions
-						radius={radius}
-						center={center}
-						divisions={props.divisions}
-						rotateText={false}
-					/>
+					<LineDivisions radius={radius} center={center} divisions={props.divisions} rotateText={false} />
 				</g>
 			</svg>
 
-			<Needle
-				angle={props.angleApparent.value}
-				radius={radiusPercent}
-				color={colors.accent1}
-				animate={props.animate}
-			/>
-			<Needle
-				angle={props.angleTrue.value}
-				radius={radiusPercent}
-				color={colors.accent2}
-				animate={props.animate}
-			/>
+			<Needle angle={props.angleApparent.value} radius={radiusPercent} color={colors.accent1} animate={props.animate} />
+			<Needle angle={props.angleTrue.value} radius={radiusPercent} color={colors.accent2} animate={props.animate} />
 		</div>
 	);
 };
 
-const getAdditionalColors = (darkMode) => {
+const getAdditionalColors = darkMode => {
 	if (darkMode) {
 		return {
 			closeHaulRight: "rgba(0, 200, 0, 0)",

@@ -1,6 +1,6 @@
 export const checkForZones = (zones, value) => {
 	// // console.log(value)
-	let result = zones.map((zone) => [zone.state, isIn(zone, value)]);
+	let result = zones.map(zone => [zone.state, isIn(zone, value)]);
 
 	let map = {};
 
@@ -18,7 +18,5 @@ export const checkForZones = (zones, value) => {
 };
 
 const isIn = (zone, value) => {
-	return (
-		(zone.upper || Infinity) >= value && (zone.lower || -Infinity) <= value
-	);
+	return (zone.upper || Infinity) >= value && (zone.lower || -Infinity) <= value;
 };

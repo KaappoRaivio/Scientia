@@ -13,14 +13,7 @@ const NonNull = ({ children, colors, height, width, ...rest }) => {
 
 	if (missing.length) {
 		console.log(missing);
-		return (
-			<NoData
-				colors={colors}
-				height={height}
-				width={width}
-				reasons={missing}
-			/>
-		);
+		return <NoData colors={colors} height={height} width={width} reasons={missing} />;
 	} else {
 		return children;
 	}

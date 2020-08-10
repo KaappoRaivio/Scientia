@@ -19,8 +19,8 @@ class Weather extends React.Component {
 	}
 
 	componentDidMount() {
-		const updateWeather = (position) => {
-			getWeather(position).then((json) => {
+		const updateWeather = position => {
+			getWeather(position).then(json => {
 				this.setState({
 					icon: iconMap[json?.weather?.[0]?.id]?.icon,
 					temperature: Math.round(json?.main?.temp - 273.15),
@@ -30,17 +30,10 @@ class Weather extends React.Component {
 			});
 		};
 		setTimeout(() => {
-			const position = this.props.signalkState?.vessels?.self?.navigation
-				?.position?.value;
+			const position = this.props.signalkState?.vessels?.self?.navigation?.position?.value;
 			console.log(position);
 			updateWeather(position || { latitude: null, longitude: null });
-			setInterval(
-				() =>
-					updateWeather(
-						position || { latitude: null, longitude: null }
-					),
-				120000
-			);
+			setInterval(() => updateWeather(position || { latitude: null, longitude: null }), 120000);
 		}, 5000);
 	}
 
@@ -60,19 +53,8 @@ class Weather extends React.Component {
 	}
 }
 
-const WeatherComponent = ({
-	icon,
-	temperature,
-	windDirection,
-	windSpeed,
-	colors,
-	darkMode,
-}) => {
-	if (
-		_.any(
-			[icon, temperature, windDirection, windSpeed].map((x) => x == null)
-		)
-	) {
+const WeatherComponent = ({ icon, temperature, windDirection, windSpeed, colors, darkMode }) => {
+	if (_.any([icon, temperature, windDirection, windSpeed].map(x => x == null))) {
 		return (
 			<div
 				style={{
@@ -80,8 +62,7 @@ const WeatherComponent = ({
 					right: 0,
 					top: 0,
 					display: "inline",
-				}}
-			>
+				}}>
 				<NoData width={"1em"} height={"1em"} colors={colors} />
 			</div>
 		);
@@ -102,12 +83,7 @@ const WeatherComponent = ({
 };
 
 const WindIcon = ({ direction }) => (
-	<svg
-		className="windicon-parent"
-		style={{ transform: `rotate(${direction + 180}deg)` }}
-		stroke={"black"}
-		strokeWidth={1}
-	>
+	<svg className="windicon-parent" style={{ transform: `rotate(${direction + 180}deg)` }} stroke={"black"} strokeWidth={1}>
 		{/*<circle cx="50%" cy="50%" r="50%" fill="orange" />*/}
 		<line x1={"50%"} x2={"50%"} y1={"0%"} y2={"100%"} />
 		<line x1={"25%"} x2={"50%"} y1={"60%"} y2={"100%"} />
@@ -118,11 +94,9 @@ const WindIcon = ({ direction }) => (
 const apiKey = "743fcf245791b649c2cef6919c661f27";
 
 const getWeather = ({ latitude, longitude }) =>
-	fetch(
-		`http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`
-	)
-		.then((res) => res.json())
-		.then((json) => {
+	fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`)
+		.then(res => res.json())
+		.then(json => {
 			return json;
 		});
 

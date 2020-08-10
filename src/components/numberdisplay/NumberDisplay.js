@@ -7,7 +7,7 @@ import _ from "underscore";
 import { checkForZones } from "./zones";
 import NoData from "../noninstruments/NoData";
 
-const isNull = (obj) => {
+const isNull = obj => {
 	if (obj != null && typeof obj === "object") {
 		for (let member in obj) {
 			if (obj[member] == null) {
@@ -23,7 +23,7 @@ const isNull = (obj) => {
 const isStillLoading = (...params) => {
 	// // console.log(params.map(param => isNull(param)), params)
 
-	return _.any(params, (param) => isNull(param));
+	return _.any(params, param => isNull(param));
 };
 
 const getActiveZone = (value, zones) => {
@@ -31,52 +31,18 @@ const getActiveZone = (value, zones) => {
 	return "value" + zone[0].toUpperCase() + zone.slice(1);
 };
 
-const NumberDisplay = ({
-	decimalPlaces,
-	height,
-	label,
-	suffix,
-	units,
-	value,
-	displayScale,
-	width,
-	centerLabel,
-	zones,
-	colors,
-	debug,
-	darkMode,
-}) => {
-	if (
-		isStillLoading(
-			decimalPlaces,
-			label,
-			units,
-			value,
-			displayScale?.upper,
-			displayScale?.lower
-		)
-	) {
+const NumberDisplay = ({ decimalPlaces, height, label, suffix, units, value, displayScale, width, centerLabel, zones, colors, debug, darkMode }) => {
+	if (isStillLoading(decimalPlaces, label, units, value, displayScale?.upper, displayScale?.lower)) {
 		// console.log("asdasd", decimalPlaces, label, units, value, displayScale)
-		return (
-			<NoData
-				style={{ fontWeight: "bold" }}
-				width={width}
-				height={height}
-				colors={colors}
-			/>
-		);
+		return <NoData style={{ fontWeight: "bold" }} width={width} height={height} colors={colors} />;
 	}
 
 	const actualWidth = width * 0.94;
 	const actualHeight = height * 0.84;
 
-	let valueMaxLength = Math.max(
-		Math.trunc(displayScale.upper).toString().length,
-		Math.trunc(displayScale.lower).toString().length
-	);
+	let valueMaxLength = Math.max(Math.trunc(displayScale.upper).toString().length, Math.trunc(displayScale.lower).toString().length);
 
-	let textMaxLength =
-		valueMaxLength + ".".length + decimalPlaces + suffix.length;
+	let textMaxLength = valueMaxLength + ".".length + decimalPlaces + suffix.length;
 	if (value === null) {
 		value = 0;
 	}
@@ -88,31 +54,14 @@ const NumberDisplay = ({
 
 	const alarmStyle = {
 		backgroundColor: colors[activeZone],
-		animation: ["valueAlarm", "valueEmergency"].includes(activeZone)
-			? "blink 0.5s infinite steps(1, end)"
-			: "none",
+		animation: ["valueAlarm", "valueEmergency"].includes(activeZone) ? "blink 0.5s infinite steps(1, end)" : "none",
 	};
 
 	return (
-		<div
-			className="numberdisplay-wrapper"
-			style={{ width: `${width}px`, height: `${height}px` }}
-		>
+		<div className="numberdisplay-wrapper" style={{ width: `${width}px`, height: `${height}px` }}>
 			<div className={`numberdisplay-parent`} style={alarmStyle}>
-				<svg
-					className="numberdisplay-svg"
-					width={`${actualWidth}px`}
-					height={`${actualHeight}px`}
-					fill={"black"}
-					stroke={"none"}
-				>
-					<g
-						fill={
-							activeZone !== "valueNormal" && darkMode
-								? colors.secondary
-								: colors.primary
-						}
-					>
+				<svg className="numberdisplay-svg" width={`${actualWidth}px`} height={`${actualHeight}px`} fill={"black"} stroke={"none"}>
+					<g fill={activeZone !== "valueNormal" && darkMode ? colors.secondary : colors.primary}>
 						{/*<g fill={colors.secondary}>*/}
 						{centerLabel ? (
 							<AutoFitTextBox

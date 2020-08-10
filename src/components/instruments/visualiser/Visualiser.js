@@ -1,10 +1,4 @@
-import {
-	AreaSeries,
-	HorizontalGridLines,
-	LineSeries,
-	XYPlot,
-	YAxis,
-} from "react-vis";
+import { AreaSeries, HorizontalGridLines, LineSeries, XYPlot, YAxis } from "react-vis";
 import React from "react";
 import NoData from "../../noninstruments/NoData";
 // import ChartistGraph from "react-chartist";
@@ -22,7 +16,7 @@ const truncate = (data, length) => {
 const getYDomain = (data, length, possibleRanges, negate) => {
 	let slice = data.slice(Math.max(data.length - length, 0), data.length);
 
-	let absMax = Math.max(...slice.map((item) => item.y).map(Math.abs));
+	let absMax = Math.max(...slice.map(item => item.y).map(Math.abs));
 
 	let closest = possibleRanges.reduce((accumulator, current) => {
 		if (current > absMax && accumulator < absMax) {
@@ -43,20 +37,7 @@ const getYDomain = (data, length, possibleRanges, negate) => {
 	}
 };
 
-const Visualiser = ({
-	animate,
-	colors,
-	data,
-	displayScale,
-	height,
-	ranges,
-	legend,
-	negate,
-	numberOfPointsToShow,
-	trendData,
-	units,
-	width,
-}) => {
+const Visualiser = ({ animate, colors, data, displayScale, height, ranges, legend, negate, numberOfPointsToShow, trendData, units, width }) => {
 	if (displayScale == null || units == null || data == null) {
 		// // console.log(displayScale, units, data)
 		return <NoData width={width} height={height} colors={colors} />;
@@ -75,10 +56,7 @@ const Visualiser = ({
 	truncate(trendData, numberOfPointsToShow);
 
 	return (
-		<div
-			className="parent with-shadow"
-			style={{ color: primary, backgroundColor: background }}
-		>
+		<div className="parent with-shadow" style={{ color: primary, backgroundColor: background }}>
 			{/*<ChartistGraph type="Line" data={simpleLineChartData}  options={options}/>*/}
 			<div className="legend" style={{ height: height * 0.1 }}>
 				{legend}, {units}
@@ -90,7 +68,7 @@ const Visualiser = ({
 				height={height * 0.846}
 				xDomain={xDomain}
 				yDomain={yDomain}
-				getY={(y) => (negate ? -y.y : y.y)}
+				getY={y => (negate ? -y.y : y.y)}
 				// yType={"log"}
 			>
 				<HorizontalGridLines style={{ ...lineStyle }} />
@@ -122,10 +100,7 @@ const Visualiser = ({
 				{/*    style={lineStyle}*/}
 
 				{/*/>*/}
-				<YAxis
-					yDomain={yDomain}
-					style={{ stroke: "none", fill: primary, fontSize: `70%` }}
-				/>
+				<YAxis yDomain={yDomain} style={{ stroke: "none", fill: primary, fontSize: `70%` }} />
 			</XYPlot>
 		</div>
 	);

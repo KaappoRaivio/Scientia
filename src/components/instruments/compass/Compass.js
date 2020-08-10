@@ -4,7 +4,7 @@ import "./compass.css";
 import NumberDisplay from "../../numberdisplay/NumberDisplay";
 import { LineDivisions } from "../../misc/svghelpers";
 
-const Compass = (props) => {
+const Compass = props => {
 	const center = getCenter(props);
 	const radius = getRadius(props);
 	const colors = props.colors;
@@ -45,12 +45,7 @@ const Compass = (props) => {
 				displayScale={{ lower: 0, upper: 360, type: "linear" }}
 			/>
 
-			<svg
-				className="compassRose"
-				width={props.width}
-				height={props.height}
-				style={compassRotationStyle}
-			>
+			<svg className="compassRose" width={props.width} height={props.height} style={compassRotationStyle}>
 				<circle
 					cx={center.x}
 					cy={center.y}
@@ -59,28 +54,19 @@ const Compass = (props) => {
 					stroke={colors.primary}
 					strokeWidth={radius * 0.02}
 				/>
-				<g
-					fill={colors.primary}
-					stroke={colors.primary}
-					strokeWidth={radius * 0.01}
-				>
-					<LineDivisions
-						center={center}
-						radius={radius}
-						divisions={props.divisions}
-						rotateText={true}
-					/>
+				<g fill={colors.primary} stroke={colors.primary} strokeWidth={radius * 0.01}>
+					<LineDivisions center={center} radius={radius} divisions={props.divisions} rotateText={true} />
 				</g>
 			</svg>
 		</div>
 	);
 };
 
-const getRadius = (props) => {
+const getRadius = props => {
 	return Math.max(props.width / 2 - 2, 0);
 };
 
-const getCenter = (props) => {
+const getCenter = props => {
 	return { x: props.width / 2, y: props.height / 2 };
 };
 

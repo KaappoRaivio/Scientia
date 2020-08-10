@@ -8,14 +8,7 @@ import validatorTypes from "@data-driven-forms/react-form-renderer/dist/cjs/vali
 
 class MyLoginForm extends Component {
 	render() {
-		const {
-			children,
-			colors,
-			onLogin,
-			loggedIn,
-			waiting,
-			code,
-		} = this.props;
+		const { children, colors, onLogin, loggedIn, waiting, code } = this.props;
 
 		if (waiting) {
 			return <div>...</div>;
@@ -32,13 +25,7 @@ class MyLoginForm extends Component {
 		return (
 			<div className="loginform-parent">
 				<div className="loginform">
-					<SettingsForm
-						requestClosing={() => {}}
-						colors={colors}
-						schema={schema}
-						onSettingsUpdate={onLoginPress}
-						initialValues={{}}
-					/>
+					<SettingsForm requestClosing={() => {}} colors={colors} schema={schema} onSettingsUpdate={onLoginPress} initialValues={{}} />
 				</div>
 				{code === 401 && <span>Wrong username or password</span>}
 			</div>

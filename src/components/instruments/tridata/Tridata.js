@@ -1,10 +1,10 @@
 import NumberDisplay from "../../numberdisplay/NumberDisplay";
 import React from "react";
 
-const Tridata = (props) => {
+const Tridata = props => {
 	// console.log(props.values)
 	const commonUpperBound = props.values
-		.map((value) => value.meta.displayScale?.upper)
+		.map(value => value.meta.displayScale?.upper)
 		?.reduce((a, b) => {
 			if (b == null || isNaN(b)) {
 				return null;
@@ -13,7 +13,7 @@ const Tridata = (props) => {
 		});
 
 	const commonLowerBound = props.values
-		.map((value) => value.meta.displayScale?.lower)
+		.map(value => value.meta.displayScale?.lower)
 		?.reduce((a, b) => {
 			if (b == null || isNaN(b)) {
 				return null;

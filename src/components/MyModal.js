@@ -39,8 +39,7 @@ const schema = {
 				{
 					component: componentTypes.SWITCH,
 					name: "animationsAccordingToChargingStatus",
-					label:
-						"Make animations enabled based on the charging status of the device",
+					label: "Make animations enabled based on the charging status of the device",
 				},
 			],
 		},
@@ -65,14 +64,7 @@ const schema = {
 	],
 };
 
-const MyModal = ({
-	colors,
-	darkMode,
-	isModalOpen,
-	requestClosing,
-	appElement,
-	...rest
-}) => {
+const MyModal = ({ colors, darkMode, isModalOpen, requestClosing, appElement, ...rest }) => {
 	// Modal.defaultStyles.content.border = "none";
 	// Modal.defaultStyles.content.color = colors.primary;
 	// Modal.defaultStyles.content.background = colors.background;
@@ -95,12 +87,7 @@ const MyModal = ({
 		>
 			<div>
 				<div className="modal-close" onClick={requestClosing} />
-				<SettingsForm
-					requestClosing={requestClosing}
-					colors={colors}
-					schema={schema}
-					{...rest}
-				/>
+				<SettingsForm requestClosing={requestClosing} colors={colors} schema={schema} {...rest} />
 			</div>
 		</Modal>
 	);

@@ -68,13 +68,7 @@ class Visualiser2 extends Component {
 		//     maxValues={4}
 		// />
 
-		return (
-			<C3Chart
-				style={{ height: this.props.height, width: this.props.width }}
-				grid={grid}
-				data={data}
-			/>
-		);
+		return <C3Chart style={{ height: this.props.height, width: this.props.width }} grid={grid} data={data} />;
 	}
 }
 
