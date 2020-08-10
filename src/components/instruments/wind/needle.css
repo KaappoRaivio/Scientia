@@ -1,40 +1,39 @@
 .wrapper {
-    position: absolute;
-    width: 1%;
-    left: 49.5%;
-    top: 50%;
+	position: absolute;
+	width: 1%;
+	left: 49.5%;
+	top: 50%;
 
-    z-index: 0;
+	z-index: 0;
 }
 
-
 .needleTest {
-    position: relative;
+	position: relative;
 
-    width: 100%;
-    height: 100%;
+	width: 100%;
+	height: 100%;
 
-    transform-origin: top;
-    transition: transform 0.2s ease-in-out;
+	transform-origin: top;
+	transition: transform 0.2s ease-in-out;
 }
 
 .needle {
-    background-color: #61dafb;
-    width: 100%;
-    height: 40%;
-    top: 60%;
-    position: relative;
+	background-color: #61dafb;
+	width: 100%;
+	height: 40%;
+	top: 60%;
+	position: relative;
 }
 
 @keyframes needle {
-    0% {
-        transform: rotate(45deg);
-    }
-    50% {
-        transform: rotate(315deg);
-    }
+	0% {
+		transform: rotate(45deg);
+	}
+	50% {
+		transform: rotate(315deg);
+	}
 
-    100% {
-        transform: rotate(45deg);
-    }
+	100% {
+		transform: rotate(45deg);
+	}
 }

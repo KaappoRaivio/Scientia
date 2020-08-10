@@ -1,3 +1,3 @@
-export const displayScaleToLineDivisionSteps = displayScale => {
-    return [displayScale.upper / 10, displayScale.upper / 20];
-}
+export const displayScaleToLineDivisionSteps = (displayScale) => {
+	return [displayScale.upper / 10, displayScale.upper / 20];
+};

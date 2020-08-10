@@ -1,53 +1,51 @@
 .sidebar-wrapper {
-    padding: 10px;
-    transform: translateZ(-10px);
+	padding: 10px;
+	transform: translateZ(-10px);
 }
 
 .setting {
-    padding: 10px;
-    margin-bottom: 10px;
+	padding: 10px;
+	margin-bottom: 10px;
 }
 
 .setting-title {
-    width: 100%;
-    clear: both;
-    font-size: 2em;
-    font-weight: bold;
+	width: 100%;
+	clear: both;
+	font-size: 2em;
+	font-weight: bold;
 }
 
 .address {
-    border: none !important;
-    border-bottom: 1px solid !important;
-    width: 100%;
-    background: inherit !important;
-    color: inherit !important;
+	border: none !important;
+	border-bottom: 1px solid !important;
+	width: 100%;
+	background: inherit !important;
+	color: inherit !important;
 }
 
 .confirm {
-    width: calc(100% - 10px);
-    margin: 5px;
+	width: calc(100% - 10px);
+	margin: 5px;
 
-
-    border: none !important;
-    background-color: inherit;
-    color: inherit;
+	border: none !important;
+	background-color: inherit;
+	color: inherit;
 }
 
 .confirm:active {
-    background: inherit !important;
+	background: inherit !important;
 }
 
 .color-scheme {
-    width: 100%;
+	width: 100%;
 }
 
-
 .sidebar-toggle-switch {
-    float: right;
+	float: right;
 }
 
 .night-mode {
-    /*width: 100%;*/
-    height: 100%;
-    margin: 10px;
+	/*width: 100%;*/
+	height: 100%;
+	margin: 10px;
 }

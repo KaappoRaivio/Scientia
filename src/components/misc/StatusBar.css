@@ -1,31 +1,31 @@
-@import url('https://fonts.googleapis.com/css2?family=Orbitron&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Orbitron&display=swap");
 
 @font-face {
-    font-family: digital;
-    src: url(../../../src/assets/digital-7.mono.ttf);
+	font-family: digital;
+	src: url(../../../src/assets/digital-7.mono.ttf);
 }
 
 .statusbar-parent {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: row;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: row;
 
-    font-size: 100%;
-    margin-bottom: 10px;
-    padding: 5px 10px;
-    font-family: 'Orbitron', sans-serif;
-    /*color: #aaa;*/
+	font-size: 100%;
+	margin-bottom: 10px;
+	padding: 5px 10px;
+	font-family: "Orbitron", sans-serif;
+	/*color: #aaa;*/
 }
 
 .statusbar-left {
-    flex: 1 0 50%;
-    text-align: left;
-    display: inline;
+	flex: 1 0 50%;
+	text-align: left;
+	display: inline;
 }
 
 .statusbar-right {
-    flex: 1 0 50%;
-    text-align: right;
-    display: inline;
+	flex: 1 0 50%;
+	text-align: right;
+	display: inline;
 }

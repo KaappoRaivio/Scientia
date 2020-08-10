@@ -1,39 +1,39 @@
 /* .container { */
-    /* position: relative; */
-    /* text-align: center; */
-    /* float: left; */
-    /* width: 100%;
+/* position: relative; */
+/* text-align: center; */
+/* float: left; */
+/* width: 100%;
     height: 100%; */
 
-    /* margin: 5px; */
-    /* padding: 100px; */
+/* margin: 5px; */
+/* padding: 100px; */
 /* } */
 
 .compass {
-    position: relative;
-    overflow: hidden;
+	position: relative;
+	overflow: hidden;
 }
 
 .compassRose {
-    /*bottom: -50%;*/
-    left: 0;
-    top: 50%;
-    position: absolute;
-    /*position:relative;*/
-    /*position:absolute;*/
+	/*bottom: -50%;*/
+	left: 0;
+	top: 50%;
+	position: absolute;
+	/*position:relative;*/
+	/*position:absolute;*/
 
-    transition: transform 0.5s ease;
-    transform: rotate(0deg);
+	transition: transform 0.5s ease;
+	transform: rotate(0deg);
 }
 
 canvas.background {
-    position: absolute;
-    left: 0;
-    top: 0;
+	position: absolute;
+	left: 0;
+	top: 0;
 }
 
 .number {
-    position: absolute;
-    left: 50%;
-    border: green;
+	position: absolute;
+	left: 50%;
+	border: green;
 }

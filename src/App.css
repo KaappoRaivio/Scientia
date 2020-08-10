@@ -2,74 +2,74 @@
 @import url("https://fonts.googleapis.com/css2?family=Inconsolata:wght@200;300;400;500;600;700;800;900&display=swap");
 
 * {
-  box-sizing: border-box;
+	box-sizing: border-box;
 }
 
-html, body, input {
-  width: 100%;
-  height: 100%;
-  font-family: "Space Mono", "Courier New", monospace !important;
-  /*font-family: "Comic Sans MS", sans-serif;*/
+html,
+body,
+input {
+	width: 100%;
+	height: 100%;
+	font-family: "Space Mono", "Courier New", monospace !important;
+	/*font-family: "Comic Sans MS", sans-serif;*/
 
-  /*font-family: "Inconsolata", monospace !important;*/
-
+	/*font-family: "Inconsolata", monospace !important;*/
 }
 
 .open-menu {
-  margin-left: 10px !important;
-  margin-right: 10px !important;
-  /*margin-top: 10px;*/
-  padding: 10px;
-  text-align: center;
-  /*height: 10px;*/
-  /*width: 100%;*/
-  position: relative;
+	margin-left: 10px !important;
+	margin-right: 10px !important;
+	/*margin-top: 10px;*/
+	padding: 10px;
+	text-align: center;
+	/*height: 10px;*/
+	/*width: 100%;*/
+	position: relative;
 }
 
 .open-menu-wrapper {
-  border: none;
-  background: none;
-  text-transform: capitalize;
-  color: #5c616c;
-  font-family: inherit !important;
+	border: none;
+	background: none;
+	text-transform: capitalize;
+	color: #5c616c;
+	font-family: inherit !important;
 }
 
 .open-menu-wrapper:active {
-  background: none !important;
+	background: none !important;
 }
 
 .configure-layout-wrapper {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  height: calc(100% - 20px);
-  width: 22px;
-  /*width: auto;*/
-  filter: grayscale(100%) opacity(25%);
-  z-index: 100000;
-  transition: filter 0.2s linear, transform 5s ease-out;
-
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	height: calc(100% - 20px);
+	width: 22px;
+	/*width: auto;*/
+	filter: grayscale(100%) opacity(25%);
+	z-index: 100000;
+	transition: filter 0.2s linear, transform 5s ease-out;
 }
 
 .configure-layout-wrapper:hover {
-  filter: none;
+	filter: none;
 }
 
 .configure-layout {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  /*right: 0;*/
+	position: relative;
+	width: 100%;
+	height: 100%;
+	/*right: 0;*/
 }
 
 .instruments {
-  width: 100vw;
-  height: 100vh;
-  position: relative;
-  text-align: left;
-  overflow-x: hidden;
+	width: 100vw;
+	height: 100vh;
+	position: relative;
+	text-align: left;
+	overflow-x: hidden;
 
-  transform: translateZ(0); /* Prevent repaint on scroll */
+	transform: translateZ(0); /* Prevent repaint on scroll */
 
-  background-color: black;
+	background-color: black;
 }
