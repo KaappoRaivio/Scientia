@@ -55,7 +55,9 @@
     ]
   },
   "main": "index.js",
-  "devDependencies": {},
+  "devDependencies": {
+    "prettier": "^2.0.5"
+  },
   "keywords": [
     "signalk-webapp",
     "signalk-node-server-plugin"

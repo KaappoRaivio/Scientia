@@ -6,84 +6,15 @@ import "./noninstruments/quadrandinstrumentcontainer.css"
 import SingleInstrumentContainer from "./noninstruments/SingleInstrumentContainer";
 import QuadrantInstrumentContainer from "./noninstruments/QuadrantInstrumentContainer";
 import AddInstrument from "./noninstruments/AddInstrument";
-import DeltaAssembler from "delta-processor"
 import WindContainer from "./instruments/wind/WindContainer";
 import CompassContainer from "./instruments/compass/CompassContainer";
 import TridataContainer from "./instruments/tridata/TridataContainer";
 import GaugeContainer from "./instruments/gauge/GaugeContainer";
 import VisualiserContainer from "./instruments/visualiser/VisualiserContainer";
 
-const endpoint = "/signalk/v1";
 
 class Instruments extends React.Component {
-    constructor (props) {
-        super(props);
-
-        const { serverAddress } = this.props.settings;
-        const HTTPServerRoot = "http:" + serverAddress.split(":").slice(1, 10).join(":");
-        this.deltaAssembler = new DeltaAssembler(HTTPServerRoot, fullState => this.props.onNewSignalkState(fullState));
-
-        // this.ws = new WebSocket(serverAddress + endpoint + "/stream/?subscribe=none");
-    }
-
-    initializeWebsocket () {
-        try {
-            this.ws.close();
-        } catch (ignored) {}
-
-        this.ws = new WebSocket(this.props.settings.serverAddress + endpoint + "/stream/?subscribe=none");
-        const preparePath = (name) => {
-            return {
-                "path": name,
-                "period": 1000,
-                "format": "delta",
-                "policy": "instant",
-                "minPeriod": 1000
-            }
-        };
-
-        this.ws.onopen = () => {
-            this.ws.send(JSON.stringify({
-                context: "vessels.self",
-                subscribe: [
-                    preparePath("*"),
-                ]
-            }))
-        };
-
-        this.ws.onmessage = (event) => {
-            const message = JSON.parse(event.data);
-            this.deltaAssembler.onDelta(message);
-        };
-
-        this.ws.onclose = (event) => {
-            console.log(event)
-            try {
-                this.ws.send(JSON.stringify({
-                        context: "vessels.self",
-                        unsubscribe : [
-                            "*"
-                        ]
-                    })
-                )
-            } catch (error) {}
-        }
-    }
-    componentDidMount() {
-        this.initializeWebsocket();
-    }
-
-
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        if (prevProps.settings.serverAddress !== this.props.settings.serverAddress) {
-            console.log("Switching!!!")
-            this.initializeWebsocket();
-        }
-    }
-
     render () {
-
-
         const { animation, darkMode } = this.props.settings;
         const { colors, instruments, onInstrumentAdded, onInstrumentRemoved, onInstrumentChanged, layoutEditingEnabled, signalkState } = this.props;
 
@@ -135,20 +66,7 @@ class Instruments extends React.Component {
 
                                                 onInstrumentChanged(index, {
                                                     type: "quadrant",
-                                                    // instruments: [],
                                                     instruments: newInstruments
-                                                    // instruments: instrument.instruments.slice(0, innerIndex)
-                                                    //     .concat({
-                                                    //         component: "AddInstrument",
-                                                    //         additionalProps: {
-                                                    //             onInstrumentAdded: newInstrument => {
-                                                    //                 // console.log(newInstrument)
-                                                    //                 // instrument.instruments[index] = newInstrument.instruments[0];
-                                                    //             }
-                                                    //         }
-                                                    //     })
-                                                    //
-                                                        // .concat(instrument.instruments.slice(index + 1))
                                                     }
                                                 );
                                             }}

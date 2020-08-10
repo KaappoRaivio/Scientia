@@ -19,7 +19,6 @@ class MyLoginForm extends Component {
         }
 
         const onLoginPress = ({username, password}) => {
-            console.log(username, password);
             onLogin(username, password);
         }
 

@@ -46,7 +46,7 @@ const Compass = (props) => {
             <circle
                 cx={center.x}
                 cy={center.y}
-                r={radius + radius * 0.01}
+                r={radius - radius * 0.01}
                 fill={colors.background}
                 stroke={colors.primary}
                 strokeWidth={radius * 0.02}

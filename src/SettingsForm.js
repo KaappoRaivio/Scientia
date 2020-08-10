@@ -12,7 +12,6 @@ import 'react-dropdown/style.css';
 
 const TextField = props => {
     const {label, input, meta, ...rest} = useFieldApi(props)
-    console.log(meta)
     return (
         <div>
             <div className="form-field-title">{label}</div>

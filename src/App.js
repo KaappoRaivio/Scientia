@@ -19,11 +19,16 @@ import StatusBar from "./components/misc/StatusBar";
 import MyLoginForm from "./components/logic/MyLoginForm";
 
 import cookie from "react-cookies";
+import DeltaAssembler from "delta-processor";
+import WebSocketManager from "./WebSocketManager";
+import _ from "underscore"
 
 export const appName = Package.name;
 export const appVersion = Package.version;
 
+
 const COOKIE_USERNAME = "username";
+const endpoint = "/signalk/v1"
 
 class App extends React.Component {
     constructor(props) {
@@ -32,6 +37,11 @@ class App extends React.Component {
         let url = window.location.href;
         let ws = "ws:" + url.split(":")[1] + ":3000"
         // let ws = "ws://192.168.1.151:3000"
+        const HTTPServerRoot = "http:" + ws.split(":").slice(1, 10).join(":");
+        this.deltaAssembler = new DeltaAssembler(HTTPServerRoot, signalkState => this.setState({signalkState}));
+        const webSocketUrl = ws + endpoint + "/stream/?subscribe=none"
+        this.socketManager = new WebSocketManager(webSocketUrl, delta => this.deltaAssembler.onDelta(delta));
+
         this.state = {
             layoutEditingEnabled: false,
             settingsPaneOpen: false,
@@ -58,14 +68,14 @@ class App extends React.Component {
                 }
             }
         };
-        console.log(this.state.login.username);
     }
 
-    saveUsername (username) {
+
+    saveUsername(username) {
         cookie.save(COOKIE_USERNAME, username)
     }
 
-    getColors () {
+    getColors() {
         if (this.state.settings.darkMode) {
             return {
                 primary: "#f00",
@@ -103,14 +113,14 @@ class App extends React.Component {
 
     componentDidMount() {
         if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-            this.setState({
+            this.setState(oldState => ({
                 instruments: fallbackInstruments,
-                login: {waiting: false, loggedIn: true}
-            })
+                login: _.extend(oldState.login, {waiting: false, loggedIn: true})
+            }));
         } else {
             testLoginValidity(this.state.login.username)
                 .then(valid => {
-                    this.setState({login: {waiting: false, loggedIn: valid}})
+                    this.setState(oldState => ({login: _.extend(oldState.login, {waiting: false, loggedIn: valid})}))
                     if (valid) {
                         getInstruments(this.state.login.username)
                             .then(instruments => {
@@ -120,6 +130,8 @@ class App extends React.Component {
                     }
                 })
         }
+
+        this.socketManager.open();
 
         if (this.state.settings.animationsAccordingToChargingStatus) {
             try {
@@ -139,11 +151,10 @@ class App extends React.Component {
         const colors = this.getColors();
 
         const onSetSettingsPaneOpen = (open) => {
-            this.setState({ settingsPaneOpen: open });
+            this.setState({settingsPaneOpen: open});
         }
 
         const onSettingsChange = (newSettings) => {
-            // console.log(newSettings)
             this.setState({
                 settings: newSettings,
             })
@@ -185,15 +196,12 @@ class App extends React.Component {
             })
         }
 
-        const onNewSignalkState = newState => {
-            this.setState({signalkState: newState})
-        }
 
         const onLogin = (username, password) => {
             login(username, password)
                 .then(status => {
                     if (status === 200) {
-                        this.setState({login: {waiting: false, loggedIn: true, code: null}})
+                        this.setState({login: {waiting: false, loggedIn: true, code: null, username}})
                         this.saveUsername(username)
                         getInstruments(username)
                             .then(instruments => {
@@ -201,9 +209,11 @@ class App extends React.Component {
                                 this.setState({instruments});
                             })
                     } else {
-                        this.setState({login: {waiting: false, loggedIn: false, code: status}})
+                        this.setState({login: {waiting: false, loggedIn: false, code: status, username}})
                     }
                 })
+
+            this.socketManager.open();
         }
 
         const parentStyle = {
@@ -214,17 +224,20 @@ class App extends React.Component {
         }
 
         return (
-            <MyLoginForm colors={colors} onLogin={onLogin} loggedIn={this.state.login.loggedIn} waiting={this.state.login.waiting} code={this.state.login.code}>
+            <MyLoginForm colors={colors} onLogin={onLogin} loggedIn={this.state.login.loggedIn}
+                         waiting={this.state.login.waiting} code={this.state.login.code}>
                 <div className="instruments" style={parentStyle}>
                     <MyModal isModalOpen={this.state.settingsPaneOpen}
-                        requestClosing={() => onSetSettingsPaneOpen(false)}
-                        initialValues={getInitialSettings()}
-                        onSettingsUpdate={onSettingsChange}
-                        colors={colors}
-                        appElement={this}
+                             requestClosing={() => onSetSettingsPaneOpen(false)}
+                             initialValues={getInitialSettings()}
+                             onSettingsUpdate={onSettingsChange}
+                             colors={colors}
+                             appElement={this}
                     />
-                    <StatusBar signalkState={this.state.signalkState} colors={colors} darkMode={this.state.settings.darkMode} onLogout={() => {
+                    <StatusBar signalkState={this.state.signalkState} colors={colors}
+                               darkMode={this.state.settings.darkMode} onLogout={() => {
                         logout()
+                        this.socketManager.close();
                         this.setState({login: {waiting: false, loggedIn: false}})
                     }}/>
                     <Instruments settings={this.state.settings}
@@ -234,25 +247,27 @@ class App extends React.Component {
                                  onInstrumentRemoved={onInstrumentRemoved}
                                  onInstrumentChanged={onInstrumentChanged}
                                  layoutEditingEnabled={this.state.layoutEditingEnabled}
-                                 onNewSignalkState={onNewSignalkState}
+                                 loggedIn={this.state.login.loggedIn}
                                  signalkState={this.state.signalkState}/>
                     <div className="open-menu with-shadow">
                         <button className="open-menu-wrapper"
-                            onClick={() => onSetSettingsPaneOpen(true)}>
+                                onClick={() => onSetSettingsPaneOpen(true)}>
                             configure
                         </button>
-                        <ToggleLayoutEditing editingEnabled={this.state.layoutEditingEnabled} onChanged={layoutEditingEnabled => this.setState({layoutEditingEnabled})}/>
+                        <ToggleLayoutEditing editingEnabled={this.state.layoutEditingEnabled}
+                                             onChanged={layoutEditingEnabled => this.setState({layoutEditingEnabled})}/>
                     </div>
-                    <Logo />
+                    <Logo/>
                 </div>
             </MyLoginForm>
         );
     }
 }
 
-const ToggleLayoutEditing = ({ editingEnabled, onChanged }) => {
+const ToggleLayoutEditing = ({editingEnabled, onChanged}) => {
     return <div onClick={() => onChanged(!editingEnabled)} className="configure-layout-wrapper">
-        <img className="configure-layout" src={editingEnabled ? Done : Wrench} alt="enable layout configuration" width="auto"/>
+        <img className="configure-layout" src={editingEnabled ? Done : Wrench} alt="enable layout configuration"
+             width="auto"/>
     </div>
 }
 
