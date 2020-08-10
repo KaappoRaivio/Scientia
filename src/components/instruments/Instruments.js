@@ -1,16 +1,16 @@
 import React from "react";
 
-import "./instruments.css";
-import "./noninstruments/quadrandinstrumentcontainer.css";
+import "./Instruments.css";
+import "./instruments/helpers/quadrandinstrumentcontainer.css";
 
-import SingleInstrumentContainer from "./noninstruments/SingleInstrumentContainer";
-import QuadrantInstrumentContainer from "./noninstruments/QuadrantInstrumentContainer";
-import AddInstrument from "./noninstruments/AddInstrument";
-import WindContainer from "./instruments/wind/WindContainer";
-import CompassContainer from "./instruments/compass/CompassContainer";
-import TridataContainer from "./instruments/tridata/TridataContainer";
-import GaugeContainer from "./instruments/gauge/GaugeContainer";
-import VisualiserContainer from "./instruments/visualiser/VisualiserContainer";
+import SingleInstrumentContainer from "./helpers/SingleInstrumentContainer";
+import QuadrantInstrumentContainer from "./helpers/QuadrantInstrumentContainer";
+import AddInstrument from "./helpers/AddInstrument";
+import WindContainer from "./wind/WindContainer";
+import CompassContainer from "./compass/CompassContainer";
+import TridataContainer from "./tridata/TridataContainer";
+import GaugeContainer from "./gauge/GaugeContainer";
+import VisualiserContainer from "./visualiser/VisualiserContainer";
 
 class Instruments extends React.Component {
 	render() {

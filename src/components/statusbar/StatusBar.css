@@ -2,7 +2,7 @@
 
 @font-face {
 	font-family: digital;
-	src: url(../../../src/assets/digital-7.mono.ttf);
+	src: url(src/assets/digital-7.mono.ttf);
 }
 
 .statusbar-parent {

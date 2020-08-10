@@ -5,7 +5,7 @@ import "./Weather.css";
 
 import iconMap from "../../assets/icons.json";
 import _ from "underscore";
-import NoData from "../noninstruments/NoData";
+import NoData from "../instruments/helpers/NoData";
 
 class Weather extends React.Component {
 	constructor(props) {

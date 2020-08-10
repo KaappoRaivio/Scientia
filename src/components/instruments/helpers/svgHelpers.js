@@ -3,7 +3,7 @@ import * as PropTypes from "prop-types";
 import isEqual from "react-fast-compare";
 import _ from "underscore";
 
-class Svghelpers {
+class SvgHelpers {
 	static getDivisionCoordinates(center, radius, length, numberOfDivisions, angleProvider) {
 		let lines = [];
 
@@ -30,18 +30,17 @@ class Svghelpers {
 	}
 
 	static getSectorPath(x, y, radius, a1, a2) {
-		const degtorad = Math.PI / 180;
-		const cr = radius;
-		const cx1 = Math.cos(degtorad * a2) * cr + x;
-		const cy1 = -Math.sin(degtorad * a2) * cr + y;
-		const cx2 = Math.cos(degtorad * a1) * cr + x;
-		const cy2 = -Math.sin(degtorad * a1) * cr + y;
+		const radians = Math.PI / 180;
+
+		const cx1 = Math.cos(radians * a2) * radius + x;
+		const cy1 = -Math.sin(radians * a2) * radius + y;
+		const cx2 = Math.cos(radians * a1) * radius + x;
+		const cy2 = -Math.sin(radians * a1) * radius + y;
 
 		const otherWay = a1 < a2 ? "1" : "0";
 		const large = a1 - a2 > 180 ? "1" : "0";
 
-		return `M${x} ${y} ${cx1} ${cy1} A${cr} ${cr} 0 ${large} ${otherWay} ${cx2} ${cy2}Z`;
-		// return `M${x} ${y} ${cx1} ${cy1} A${cr} ${cr} 0 0 ${1} ${cx2} ${cy2}Z`;
+		return `M${x} ${y} ${cx1} ${cy1} A${radius} ${radius} 0 ${large} ${otherWay} ${cx2} ${cy2}Z`;
 	}
 
 	static getSector(centerX, centerY, radius, width, startAngle, endAngle, fillColor, key) {
@@ -54,7 +53,7 @@ class Svghelpers {
 	}
 }
 
-const LineDivision = ({
+const LineTickSection = ({
 	center,
 	radius,
 	textRadius,
@@ -66,8 +65,8 @@ const LineDivision = ({
 	rotateText,
 	strokeWidthMultiplier,
 }) => {
-	let lines = Svghelpers.getDivisionCoordinates(center, radius, length, numberOfLines, angleProvider);
-	let textPositions = Svghelpers.getDivisionCoordinates(center, textRadius, 0, numberOfLines, angleProvider);
+	let lines = SvgHelpers.getDivisionCoordinates(center, radius, length, numberOfLines, angleProvider);
+	let textPositions = SvgHelpers.getDivisionCoordinates(center, textRadius, 0, numberOfLines, angleProvider);
 
 	let path = `${lines.map((line, index) => `M${line.start.x} ${line.start.y} L${line.end.x} ${line.end.y}`)} Z`;
 
@@ -78,7 +77,6 @@ const LineDivision = ({
 			<g stroke={"none"}>
 				{textPositions.map((item, index) => (
 					<text
-						// fontWeight={""}
 						key={index}
 						alignmentBaseline={"middle"}
 						transform={`rotate(${rotateText ? 180 - (angleProvider(index) / Math.PI) * 180 : 0}, ${item.start.x || 0}, ${
@@ -96,18 +94,14 @@ const LineDivision = ({
 	);
 };
 
-export class LineDivisions extends React.Component {
-	shouldComponentUpdate(nextProps, nextState, nextContext) {
-		return !isEqual(this.props, nextProps);
-	}
-
+export class LineTickSections extends React.Component {
 	render() {
 		let { center, radius, divisions, rotateText, textRadius } = this.props;
 		return (
 			<g>
 				{divisions.map((division, index) => {
 					return (
-						<LineDivision
+						<LineTickSection
 							center={center}
 							radius={radius}
 							textRadius={textRadius || radius - 1.5 * division.lineLength * radius}
@@ -134,7 +128,7 @@ export class LineDivisions extends React.Component {
 		radius: PropTypes.number.isRequired,
 		divisions: PropTypes.arrayOf({
 			fontSize: PropTypes.number.isRequired,
-			lineLength: PropTypes.oneOf(PropTypes.func.isRequired, PropTypes.number.isRequired),
+			lineLength: PropTypes.oneOf([PropTypes.func.isRequired, PropTypes.number.isRequired]).isRequired,
 			angleProvider: PropTypes.func.isRequired,
 			textProvider: PropTypes.func.isRequired,
 			strokeWidthMultiplier: PropTypes.number.isRequired,
@@ -144,4 +138,4 @@ export class LineDivisions extends React.Component {
 	};
 }
 
-export default Svghelpers;
+export default SvgHelpers;

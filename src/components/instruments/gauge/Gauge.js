@@ -1,6 +1,6 @@
 import React from "react";
 
-import Svghelpers, { LineDivisions } from "../../misc/svghelpers";
+import SvgHelpers, { LineTickSections } from "../helpers/svgHelpers";
 // import {mod, round, range} from "mathjs";
 import * as math from "mathjs";
 import Needle from "../wind/Needle";
@@ -8,8 +8,7 @@ import Needle from "../wind/Needle";
 import "./gauge.css";
 import NumberDisplay from "../../numberdisplay/NumberDisplay";
 import { PropTypes } from "prop-types";
-import { displayScaleToLineDivisionSteps } from "../DataStructures";
-import NoData from "../../noninstruments/NoData";
+import NoData from "../helpers/NoData";
 
 const valueToPercentConverters = {
 	linear: (upper, lower) => x => (x - lower) / (upper - lower),
@@ -117,12 +116,12 @@ const Gauge = ({
 					strokeWidth={radius * lineWidth}
 				/>
 				<g stroke={"black"} strokeWidth={(radius * lineWidth) / 2} fill={colors.background}>
-					{Svghelpers.getSector(center.x, center.y, radius, radius, math.mod(start, 360), math.mod(end, 360), colors.backgroundColor)}
+					{SvgHelpers.getSector(center.x, center.y, radius, radius, math.mod(start, 360), math.mod(end, 360), colors.backgroundColor)}
 				</g>
 				<circle stroke={"none"} fill={colors.background} cx={center.x} cy={center.y} r={radius - sectorWidth} />
 
 				<g stroke={colors.secondary} fill={colors.secondary} strokeWidth={radius * lineWidth}>
-					<LineDivisions center={center} radius={radius} textRadius={radius * 0.8} divisions={divisions} rotateText={false} />
+					<LineTickSections center={center} radius={radius} textRadius={radius * 0.8} divisions={divisions} rotateText={false} />
 				</g>
 
 				{darkenIfNight()}
@@ -180,7 +179,7 @@ class Sectors extends React.Component {
 		return (
 			<g stroke={"none"} fill={backgroundColor}>
 				{sectors.map((item, index) => {
-					return Svghelpers.getSector(center.x, center.y, radius, sectorWidth, item.startAngle, item.endAngle, item.fillColor, index);
+					return SvgHelpers.getSector(center.x, center.y, radius, sectorWidth, item.startAngle, item.endAngle, item.fillColor, index);
 				})}
 			</g>
 		);
@@ -189,6 +188,9 @@ class Sectors extends React.Component {
 
 const ceilToNearestMultiple = (number, multiple) => Math.ceil(number / multiple) * multiple;
 
+export const displayScaleToLineDivisionSteps = displayScale => {
+	return [displayScale.upper / 10, displayScale.upper / 20];
+};
 const getDivisions = (displayScale, valueToPercent, percentToangle) => {
 	const steps = displayScaleToLineDivisionSteps(displayScale);
 

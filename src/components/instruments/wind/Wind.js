@@ -2,7 +2,7 @@ import React from "react";
 
 import NumberDisplay from "../../numberdisplay/NumberDisplay.js";
 import Needle from "./Needle";
-import Svghelper, { LineDivisions } from "../../misc/svghelpers";
+import Svghelper, { LineTickSections } from "../helpers/svgHelpers";
 
 import "./wind.css";
 
@@ -49,7 +49,7 @@ const Wind = props => {
 				</g>{" "}
 				: null
 				<g fill={props.colors.primary} strokeWidth={radius * 0.01}>
-					<LineDivisions radius={radius} center={center} divisions={props.divisions} rotateText={false} />
+					<LineTickSections radius={radius} center={center} divisions={props.divisions} rotateText={false} />
 				</g>
 			</svg>
 

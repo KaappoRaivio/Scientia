@@ -3,7 +3,7 @@ import React from "react";
 
 import Sidebar from "react-sidebar";
 
-import "./sidebar.css";
+import "./Sidebar.css";
 
 class MySidebar extends React.Component {
 	constructor(props) {

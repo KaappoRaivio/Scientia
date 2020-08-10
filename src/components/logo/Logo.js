@@ -1,6 +1,6 @@
 import React from "react";
 
-import LogoAsset from "../assets/favicon.svg";
+import LogoAsset from "../../assets/favicon.svg";
 
 import "./Logo.css";
 

@@ -8,19 +8,19 @@ import "chartist/dist/chartist.css";
 
 import fallbackInstruments from "./assets/fallbackInstruments.json";
 
-import Instruments from "./components/instruments";
-import Logo from "./components/Logo";
-import MyModal from "./components/MyModal";
+import Instruments from "./components/instruments/Instruments";
+import Logo from "./components/logo/Logo";
+import SettingsDialog from "./components/skeletons/SettingsDialog";
 
 import Wrench from "./assets/wrench.svg";
 import Done from "./assets/done.svg";
 import Package from "../package.json";
-import StatusBar from "./components/misc/StatusBar";
-import MyLoginForm from "./components/logic/MyLoginForm";
+import StatusBar from "./components/statusbar/StatusBar";
+import MyLoginForm from "./components/login/MyLoginForm";
 
 import cookie from "react-cookies";
 import DeltaAssembler from "delta-processor";
-import WebSocketManager from "./WebSocketManager";
+import WebSocketManager from "./components/skeletons/WebSocketManager";
 import _ from "underscore";
 
 export const appName = Package.name;
@@ -255,7 +255,7 @@ class App extends React.Component {
 				waiting={this.state.login.waiting}
 				code={this.state.login.code}>
 				<div className="instruments" style={parentStyle}>
-					<MyModal
+					<SettingsDialog
 						isModalOpen={this.state.settingsPaneOpen}
 						requestClosing={() => onSetSettingsPaneOpen(false)}
 						initialValues={getInitialSettings()}

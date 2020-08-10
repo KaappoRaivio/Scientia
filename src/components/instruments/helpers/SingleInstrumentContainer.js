@@ -1,6 +1,6 @@
 import React from "react";
 
-import "../instruments.css";
+import "../Instruments.css";
 import "./singleinstrumentcontainer.css";
 import RemoveInstrument from "./RemoveInstrument";
 

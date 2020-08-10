@@ -1,6 +1,6 @@
 import { AreaSeries, HorizontalGridLines, LineSeries, XYPlot, YAxis } from "react-vis";
 import React from "react";
-import NoData from "../../noninstruments/NoData";
+import NoData from "../helpers/NoData";
 // import ChartistGraph from "react-chartist";
 
 const truncate = (data, length) => {

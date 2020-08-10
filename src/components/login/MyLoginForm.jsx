@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
 import { componentTypes } from "@data-driven-forms/react-form-renderer";
-import SettingsForm from "../../SettingsForm";
+import SettingsForm from "../settings/SettingsForm";
 
 import "./MyLoginForm.css";
 import validatorTypes from "@data-driven-forms/react-form-renderer/dist/cjs/validator-types";

@@ -2,7 +2,7 @@ import React from "react";
 
 import "./compass.css";
 import NumberDisplay from "../../numberdisplay/NumberDisplay";
-import { LineDivisions } from "../../misc/svghelpers";
+import { LineTickSections } from "../helpers/svgHelpers";
 
 const Compass = props => {
 	const center = getCenter(props);
@@ -55,7 +55,7 @@ const Compass = props => {
 					strokeWidth={radius * 0.02}
 				/>
 				<g fill={colors.primary} stroke={colors.primary} strokeWidth={radius * 0.01}>
-					<LineDivisions center={center} radius={radius} divisions={props.divisions} rotateText={true} />
+					<LineTickSections center={center} radius={radius} divisions={props.divisions} rotateText={true} />
 				</g>
 			</svg>
 		</div>
