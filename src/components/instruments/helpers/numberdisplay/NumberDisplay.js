@@ -4,7 +4,7 @@ import AutoFitTextBox from "./AutoFitTextBox";
 import PropTypes from "prop-types";
 import _ from "underscore";
 
-import { checkForZones } from "./zones";
+import { checkForZones } from "./Zones";
 import NoData from "../NoData";
 
 const isNull = obj => {
