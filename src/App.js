@@ -23,6 +23,8 @@ import DeltaAssembler from "delta-processor";
 import WebSocketManager from "./components/skeletons/WebSocketManager";
 import _ from "underscore";
 
+import update from "immutability-helper";
+
 export const appName = Package.name;
 export const appVersion = Package.version;
 
@@ -110,29 +112,34 @@ class App extends React.Component {
 
 	componentDidMount() {
 		if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
-			this.setState(oldState => ({
-				instruments: fallbackInstruments,
-				login: _.extend(oldState.login, {
-					waiting: false,
-					loggedIn: true,
-				}),
-			}));
+			this.setState(oldState =>
+				update(oldState, {
+					login: {
+						waiting: { $set: false },
+						loggedIn: { $set: true },
+					},
+				})
+			);
 		} else {
 			testLoginValidity(this.state.login.username).then(valid => {
-				this.setState(oldState => ({
-					login: _.extend(oldState.login, {
-						waiting: false,
-						loggedIn: valid,
-					}),
-				}));
-				if (valid) {
-					getInstruments(this.state.login.username).then(instruments => {
-						console.log(instruments);
-						this.setState({ instruments });
-					});
-				}
+				this.setState(oldState =>
+					update(oldState, {
+						login: {
+							waiting: { $set: false },
+							loggedIn: { $set: valid },
+						},
+					})
+				);
+
+				// if (valid) {
+				// }
+				// No need to handle invalid login here, the login screen will be displayed anyway.
 			});
 		}
+
+		getInstruments(this.state.login.username).then(instruments => {
+			this.setState({ instruments });
+		});
 
 		this.socketManager.open();
 
@@ -141,7 +148,23 @@ class App extends React.Component {
 				navigator
 					.getBattery()
 					.then(battery => {
-						this.setState({ animation: battery.charging });
+						const setCharging = charging =>
+							this.setState(oldState =>
+								update(oldState, {
+									settings: {
+										animation: { $set: charging },
+									},
+								})
+							);
+						let charging = battery.charging;
+						if (battery.level > 0.98) charging = true;
+						setCharging(charging);
+
+						battery.addEventListener("chargingchange", () => {
+							let charging = battery.charging;
+							if (battery.level > 0.98) charging = true;
+							setCharging(charging);
+						});
 					})
 					.catch(console.error);
 			} catch (e) {
@@ -158,9 +181,7 @@ class App extends React.Component {
 		};
 
 		const onSettingsChange = newSettings => {
-			this.setState({
-				settings: newSettings,
-			});
+			this.setState({ settings: newSettings });
 		};
 
 		const getInitialSettings = () => ({
@@ -172,26 +193,17 @@ class App extends React.Component {
 
 		const onInstrumentAdded = instrument => {
 			this.setState(
-				oldState => ({
-					instruments: oldState.instruments.concat(instrument),
-				}),
-				() => {
-					saveInstruments(this.state.login.username, this.state.instruments);
-				}
+				oldState => ({ instruments: oldState.instruments.concat(instrument) }),
+				() => saveInstruments(this.state.login.username, this.state.instruments)
 			);
 		};
 
 		const onInstrumentRemoved = index => {
 			console.log("Instrument removed", index);
 			this.setState(
-				oldState => ({
-					instruments: oldState.instruments.slice(0, index).concat(oldState.instruments.slice(index + 1)),
-				}),
-				() => {
-					saveInstruments(this.state.login.username, this.state.instruments);
-				}
+				oldState => ({ instruments: oldState.instruments.slice(0, index).concat(oldState.instruments.slice(index + 1)) }),
+				() => saveInstruments(this.state.login.username, this.state.instruments)
 			);
-			console.log(this.state);
 		};
 
 		const onInstrumentChanged = (index, instrument) => {
@@ -203,9 +215,7 @@ class App extends React.Component {
 						.concat(instrument)
 						.concat(oldState.instruments.slice(index + 1)),
 				}),
-				() => {
-					saveInstruments(this.state.login.username, this.state.instruments);
-				}
+				() => saveInstruments(this.state.login.username, this.state.instruments)
 			);
 		};
 
@@ -310,6 +320,15 @@ const ToggleLayoutEditing = ({ editingEnabled, onChanged }) => {
 	);
 };
 
+const testLoginValidity = username => {
+	return fetch(`/signalk/v1/applicationData/${username}/${appName}/${appVersion}/layout`)
+		.then(res => {
+			console.log(res);
+			return res;
+		})
+		.then(res => res.status === 200);
+};
+
 const login = (username, password) => {
 	return fetch("/signalk/v1/auth/login", {
 		method: "POST",
@@ -332,15 +351,6 @@ const logout = () => {
 	fetch("/signalk/v1/auth/logout", {
 		method: "PUT",
 	}).then(console.log);
-};
-
-const testLoginValidity = username => {
-	return fetch(`/signalk/v1/applicationData/${username}/${appName}/${appVersion}/layout`)
-		.then(res => {
-			console.log(res);
-			return res;
-		})
-		.then(res => res.status === 200);
 };
 
 const saveInstruments = (username, instruments) => {
