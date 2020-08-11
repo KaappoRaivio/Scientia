@@ -1,4 +1,4 @@
-.flexbox-container {
+.instrument-grid-container {
 	padding: 0 10px 10px;
 	display: grid;
 	grid-template-columns: repeat(1, 1fr);
@@ -11,37 +11,37 @@
 }
 
 @media screen and (min-width: 300px) {
-	.flexbox-container {
+	.instrument-grid-container {
 		grid-template-columns: repeat(2, 1fr);
 	}
 }
 
 @media screen and (min-width: 600px) {
-	.flexbox-container {
+	.instrument-grid-container {
 		grid-template-columns: repeat(3, 1fr);
 	}
 }
 
 @media screen and (min-width: 900px) {
-	.flexbox-container {
+	.instrument-grid-container {
 		grid-template-columns: repeat(4, 1fr);
 	}
 }
 
 @media screen and (min-width: 1200px) {
-	.flexbox-container {
+	.instrument-grid-container {
 		grid-template-columns: repeat(5, 1fr);
 	}
 }
 
 @media screen and (min-width: 1500px) {
-	.flexbox-container {
+	.instrument-grid-container {
 		grid-template-columns: repeat(6, 1fr);
 	}
 }
 
 @media screen and (min-width: 1800px) {
-	.flexbox-container {
+	.instrument-grid-container {
 		grid-template-columns: repeat(7, 1fr);
 	}
 }
