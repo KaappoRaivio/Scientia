@@ -6,24 +6,25 @@ import "./App.css";
 import "react-vis/dist/style.css";
 import "chartist/dist/chartist.css";
 
-import fallbackInstruments from "./assets/fallbackInstruments.json";
+import update from "immutability-helper";
+import cookie from "react-cookies";
 
 import Instruments from "./components/instruments/Instruments";
-import Logo from "./components/logo/Logo";
 import SettingsDialog from "./components/skeletons/SettingsDialog";
+import StatusBar from "./components/statusbar/StatusBar";
+import MyLoginForm from "./components/login/MyLoginForm";
+import Logo from "./components/logo/Logo";
 
 import Wrench from "./assets/wrench.svg";
 import Done from "./assets/done.svg";
-import Package from "../package.json";
-import StatusBar from "./components/statusbar/StatusBar";
-import MyLoginForm from "./components/login/MyLoginForm";
 
-import cookie from "react-cookies";
 import DeltaAssembler from "delta-processor";
-import WebSocketManager from "./components/skeletons/WebSocketManager";
-import _ from "underscore";
 
-import update from "immutability-helper";
+import WebSocketManager from "./components/managers/WebSocketManager";
+import LoginManager from "./components/managers/LoginManager";
+import LayoutManager from "./components/managers/LayoutManager";
+
+import Package from "../package.json";
 
 export const appName = Package.name;
 export const appVersion = Package.version;
@@ -42,6 +43,7 @@ class App extends React.Component {
 		this.deltaAssembler = new DeltaAssembler(HTTPServerRoot, signalkState => this.setState({ signalkState }));
 		const webSocketUrl = ws + endpoint + "/stream/?subscribe=none";
 		this.socketManager = new WebSocketManager(webSocketUrl, delta => this.deltaAssembler.onDelta(delta));
+		this.layoutManager = new LayoutManager(appName, appVersion);
 
 		this.state = {
 			layoutEditingEnabled: false,
@@ -121,7 +123,7 @@ class App extends React.Component {
 				})
 			);
 		} else {
-			testLoginValidity(this.state.login.username).then(valid => {
+			LoginManager.testLoginValidity(this.state.login.username).then(valid => {
 				this.setState(oldState =>
 					update(oldState, {
 						login: {
@@ -130,14 +132,10 @@ class App extends React.Component {
 						},
 					})
 				);
-
-				// if (valid) {
-				// }
-				// No need to handle invalid login here, the login screen will be displayed anyway.
 			});
 		}
 
-		getInstruments(this.state.login.username).then(instruments => {
+		this.layoutManager.getInstruments(this.state.login.username).then(instruments => {
 			this.setState({ instruments });
 		});
 
@@ -180,10 +178,6 @@ class App extends React.Component {
 			this.setState({ settingsPaneOpen: open });
 		};
 
-		const onSettingsChange = newSettings => {
-			this.setState({ settings: newSettings });
-		};
-
 		const getInitialSettings = () => ({
 			animation: this.state.settings.animation,
 			darkMode: this.state.settings.darkMode,
@@ -194,7 +188,7 @@ class App extends React.Component {
 		const onInstrumentAdded = instrument => {
 			this.setState(
 				oldState => ({ instruments: oldState.instruments.concat(instrument) }),
-				() => saveInstruments(this.state.login.username, this.state.instruments)
+				() => this.layoutManager.saveInstruments(this.state.login.username, this.state.instruments)
 			);
 		};
 
@@ -202,7 +196,7 @@ class App extends React.Component {
 			console.log("Instrument removed", index);
 			this.setState(
 				oldState => ({ instruments: oldState.instruments.slice(0, index).concat(oldState.instruments.slice(index + 1)) }),
-				() => saveInstruments(this.state.login.username, this.state.instruments)
+				() => this.layoutManager.saveInstruments(this.state.login.username, this.state.instruments)
 			);
 		};
 
@@ -215,12 +209,12 @@ class App extends React.Component {
 						.concat(instrument)
 						.concat(oldState.instruments.slice(index + 1)),
 				}),
-				() => saveInstruments(this.state.login.username, this.state.instruments)
+				() => this.layoutManager.saveInstruments(this.state.login.username, this.state.instruments)
 			);
 		};
 
 		const onLogin = (username, password) => {
-			login(username, password).then(status => {
+			LoginManager.login(username, password).then(status => {
 				if (status === 200) {
 					this.setState({
 						login: {
@@ -231,8 +225,7 @@ class App extends React.Component {
 						},
 					});
 					this.saveUsername(username);
-					getInstruments(username).then(instruments => {
-						console.log(instruments);
+					this.layoutManager.getInstruments(username).then(instruments => {
 						this.setState({ instruments });
 					});
 				} else {
@@ -259,6 +252,7 @@ class App extends React.Component {
 
 		return (
 			<MyLoginForm
+				style={parentStyle}
 				colors={colors}
 				onLogin={onLogin}
 				loggedIn={this.state.login.loggedIn}
@@ -269,7 +263,9 @@ class App extends React.Component {
 						isModalOpen={this.state.settingsPaneOpen}
 						requestClosing={() => onSetSettingsPaneOpen(false)}
 						initialValues={getInitialSettings()}
-						onSettingsUpdate={onSettingsChange}
+						onSettingsUpdate={newSettings => {
+							this.setState({ settings: newSettings });
+						}}
 						colors={colors}
 						appElement={this}
 					/>
@@ -278,7 +274,7 @@ class App extends React.Component {
 						colors={colors}
 						darkMode={this.state.settings.darkMode}
 						onLogout={() => {
-							logout();
+							LoginManager.logout();
 							this.socketManager.close();
 							this.setState({
 								login: { waiting: false, loggedIn: false },
@@ -318,64 +314,6 @@ const ToggleLayoutEditing = ({ editingEnabled, onChanged }) => {
 			<img className="configure-layout" src={editingEnabled ? Done : Wrench} alt="enable layout configuration" width="auto" />
 		</div>
 	);
-};
-
-const testLoginValidity = username => {
-	return fetch(`/signalk/v1/applicationData/${username}/${appName}/${appVersion}/layout`)
-		.then(res => {
-			console.log(res);
-			return res;
-		})
-		.then(res => res.status === 200);
-};
-
-const login = (username, password) => {
-	return fetch("/signalk/v1/auth/login", {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify({ username, password }),
-	}).then(response => {
-		console.log(response);
-		if (response.status === 200) {
-			console.log("Successfully logged in!");
-		} else {
-			console.log(`There was a problem with login: ${response.status}`);
-		}
-		return response.status;
-	});
-};
-
-const logout = () => {
-	fetch("/signalk/v1/auth/logout", {
-		method: "PUT",
-	}).then(console.log);
-};
-
-const saveInstruments = (username, instruments) => {
-	fetch(`/signalk/v1/applicationData/${username}/${appName}/${appVersion}/layout`, {
-		method: "POST",
-		headers: {
-			"Content-Type": "application/json",
-		},
-		body: JSON.stringify(instruments),
-	}).then(response =>
-		response.ok ? console.log("Saved instruments successfully!") : console.log("There was a problem saving the insruments: " + response.status)
-	);
-};
-
-const getInstruments = username => {
-	return fetch(`/signalk/v1/applicationData/${username}/${appName}/${appVersion}/layout`)
-		.then(response => {
-			console.log(response);
-			if (response.status === 200) {
-				return response.json();
-			} else {
-				throw new Error("Problem with response: " + response.status);
-			}
-		})
-		.catch(error => fallbackInstruments);
 };
 
 export default App;
