@@ -215,6 +215,7 @@ class App extends React.Component {
 
 		const onLogin = (username, password) => {
 			LoginManager.login(username, password).then(status => {
+				console.log(status);
 				if (status === 200) {
 					this.setState({
 						login: {

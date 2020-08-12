@@ -11,27 +11,29 @@ class LoginManager {
 	}
 
 	static login(username, password) {
-		return fetch("/signalk/v1/auth/login", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ username, password }),
-		}).then(response => {
-			console.log(response);
-			if (response.status === 200) {
-				console.log("Successfully logged in!");
-			} else {
-				console.log(`There was a problem with login: ${response.status}`);
-			}
-			return response.status;
-		});
+		return window
+			.fetch("/signalk/v1/auth/login", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ username, password }),
+			})
+			.then(response => {
+				if (response.status === 200) {
+					console.log("Successfully logged in!");
+				} else {
+					console.log(`There was a problem with login: ${response.status}`);
+				}
+				return response.status;
+			})
+			.catch(e => console.log("error", e));
 	}
 
 	static logout() {
-		fetch("/signalk/v1/auth/logout", {
+		return fetch("/signalk/v1/auth/logout", {
 			method: "PUT",
-		}).then(console.log);
+		}).then(res => res.status);
 	}
 }
 

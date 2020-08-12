@@ -11,6 +11,7 @@
 		"chartist": "^0.11.4",
 		"immutability-helper": "^3.1.1",
 		"mathjs": "^6.6.4",
+		"msw": "^0.20.5",
 		"pipeline-js": "^1.0.2",
 		"prop-types": "^15.7.2",
 		"rc-slider": "^9.3.1",

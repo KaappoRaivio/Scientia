@@ -14,7 +14,9 @@ const TextField = props => {
 	const { label, input, meta, ...rest } = useFieldApi(props);
 	return (
 		<div>
-			<div className="form-field-title">{label}</div>
+			<label htmlFor={input.name} className="form-field-title">
+				{label}
+			</label>
 			<input className="form-field-text" {...input} {...rest} id={input.name} />
 			{meta.error && meta.touched && <span className="form-field-title red">{meta.error}</span>}
 		</div>
