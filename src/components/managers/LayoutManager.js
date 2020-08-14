@@ -1,13 +1,14 @@
 import fallbackInstruments from "../../assets/fallbackInstruments.json";
 
 class LayoutManager {
-	constructor(appName, appVersion) {
+	constructor(appName, appVersion, baseUrl = "") {
 		this.appname = appName;
 		this.appVersion = appVersion;
+		this.baseUrl = baseUrl;
 	}
 
 	saveInstruments(username, instruments) {
-		fetch(`/signalk/v1/applicationData/${username}/${this.appName}/${this.appVersion}/layout`, {
+		fetch(`${this.baseUrl}/signalk/v1/applicationData/${username}/${this.appName}/${this.appVersion}/layout`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -21,7 +22,7 @@ class LayoutManager {
 	}
 
 	getInstruments(username) {
-		return fetch(`/signalk/v1/applicationData/${username}/${this.appName}/${this.appVersion}/layout`)
+		return fetch(`${this.baseUrl}/signalk/v1/applicationData/${username}/${this.appName}/${this.appVersion}/layout`)
 			.then(response => {
 				console.log(response);
 				if (response.status === 200) {

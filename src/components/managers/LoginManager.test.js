@@ -4,7 +4,7 @@ import { rest } from "msw";
 import { setupServer } from "msw/node";
 
 import LoginManager from "./LoginManager";
-import { render, fireEvent, screen, waitFor } from "@testing-library/react";
+import { render, fireEvent, screen } from "@testing-library/react";
 
 import App from "../../App";
 import { appName, appVersion } from "../../App";
@@ -48,10 +48,10 @@ it("should allow user to logout", () => {
 	return expect(LoginManager.logout()).resolves.toEqual(200);
 });
 
-test("the login form should work", async () => {
-	render(<App />);
-	expect.assertions(2);
+test("the login form should work in production", async () => {
+	render(<App production={true} />);
 
+	expect.assertions(2);
 	console.log((await screen.findAllByRole("textbox")).length);
 	console.log(screen.getByLabelText(/username/i).type);
 	console.log(screen.getByLabelText(/password/i).type);

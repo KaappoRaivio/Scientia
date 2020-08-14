@@ -8,7 +8,6 @@ class SvgHelpers {
 
 		for (let i = 0; i < numberOfDivisions; i++) {
 			let angle = angleProvider(i);
-			// // console.log(angle);
 
 			let actualLength = _.isFunction(length) ? length(i) : length;
 
