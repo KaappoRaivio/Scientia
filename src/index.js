@@ -10,10 +10,12 @@ import * as serviceWorker from "./serviceWorker";
 
 import "./flat-remix.css";
 
+let production = !(!process.env.NODE_ENV || process.env.NODE_ENV === "development");
+
 ReactDOM.render(
 	<React.StrictMode>
 		<DndProvider backend={HTML5Backend}>
-			<App />
+			<App production={production} />
 		</DndProvider>
 	</React.StrictMode>,
 	document.getElementById("root")

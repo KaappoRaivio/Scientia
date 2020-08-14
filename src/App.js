@@ -38,12 +38,14 @@ class App extends React.Component {
 
 		let url = window.location.href;
 		let ws = "ws:" + url.split(":")[1] + ":3000";
-		// let ws = "ws://192.168.1.151:3000"
-		const HTTPServerRoot = "http:" + ws.split(":").slice(1, 10).join(":");
-		this.deltaAssembler = new DeltaAssembler(HTTPServerRoot, signalkState => this.setState({ signalkState }));
 		const webSocketUrl = ws + endpoint + "/stream/?subscribe=none";
+		const HTTPServerRoot = "http:" + ws.split(":").slice(1, 10).join(":");
+
+		this.deltaAssembler = new DeltaAssembler(HTTPServerRoot, signalkState => this.setState({ signalkState }));
 		this.socketManager = new WebSocketManager(webSocketUrl, delta => this.deltaAssembler.onDelta(delta));
-		this.layoutManager = new LayoutManager(appName, appVersion);
+		this.layoutManager = new LayoutManager(appName, appVersion, this.isProduction ? "" : HTTPServerRoot);
+
+		this.isProduction = props.production;
 
 		this.state = {
 			layoutEditingEnabled: false,
@@ -77,8 +79,8 @@ class App extends React.Component {
 		cookie.save(COOKIE_USERNAME, username);
 	}
 
-	getColors() {
-		if (this.state.settings.darkMode) {
+	static getColors(darkMode) {
+		if (darkMode) {
 			return {
 				primary: "#f00",
 				secondary: "#444",
@@ -113,16 +115,7 @@ class App extends React.Component {
 	}
 
 	componentDidMount() {
-		if (!process.env.NODE_ENV || process.env.NODE_ENV === "development") {
-			this.setState(oldState =>
-				update(oldState, {
-					login: {
-						waiting: { $set: false },
-						loggedIn: { $set: true },
-					},
-				})
-			);
-		} else {
+		if (this.isProduction) {
 			LoginManager.testLoginValidity(this.state.login.username).then(valid => {
 				this.setState(oldState =>
 					update(oldState, {
@@ -133,6 +126,15 @@ class App extends React.Component {
 					})
 				);
 			});
+		} else {
+			this.setState(oldState =>
+				update(oldState, {
+					login: {
+						waiting: { $set: false },
+						loggedIn: { $set: true },
+					},
+				})
+			);
 		}
 
 		this.layoutManager.getInstruments(this.state.login.username).then(instruments => {
@@ -172,7 +174,7 @@ class App extends React.Component {
 	}
 
 	render() {
-		const colors = this.getColors();
+		const colors = App.getColors(this.state.settings.darkMode);
 
 		const onSetSettingsPaneOpen = open => {
 			this.setState({ settingsPaneOpen: open });
