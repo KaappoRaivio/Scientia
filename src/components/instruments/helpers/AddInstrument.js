@@ -23,36 +23,63 @@ const spinnerSchema = {
 	options: [
 		{
 			label: "Wind",
-			value: {
-				component: "WindContainer",
-			},
+			// value: {
+			// 	component: "WindContainer",
+			// },
+			value: "WindContainer",
 		},
 		{
 			label: "Tridata",
-			value: {
-				component: "TridataContainer",
-			},
+			// value: {
+			// 	component: "TridataContainer",
+			// },
+			value: "TridataContainer",
 		},
 		{
 			label: "Gauge",
-			value: {
-				component: "GaugeContainer",
-			},
+			// value: {
+			// 	component: "GaugeContainer",
+			// },
+			value: "GaugeContainer",
 		},
 		{
 			label: "Compass",
-			value: {
-				component: "CompassContainer",
-			},
+			// value: {
+			// 	component: "CompassContainer",
+			// },
+			value: "CompassContainer",
 		},
 		{
 			label: "Quadrant...",
-			value: {
-				components: [],
-				type: "quadrant",
-			},
+			// value: {
+			// 	components: [],
+			// 	type: "quadrant",
+			// },
+			value: "quadrant",
 		},
 	].sort((a, b) => a.label.localeCompare(b.label)),
+};
+
+const stringToObject = {
+	WindContainer: {
+		component: "WindContainer",
+	},
+	TridataContainer: {
+		component: "TridataContainer",
+	},
+	GaugeContainer: {
+		component: "GaugeContainer",
+	},
+	CompassContainer: {
+		component: "CompassContainer",
+	},
+	quadrant: {
+		label: "Quadrant...",
+		value: {
+			components: [],
+			type: "quadrant",
+		},
+	},
 };
 
 const AddInstrument = ({ onInstrumentAdded, width, height, colors, darkMode }) => {
@@ -85,19 +112,19 @@ const AddInstrument = ({ onInstrumentAdded, width, height, colors, darkMode }) =
 	};
 
 	const onSpinnerChange = selectedItem => {
-		setSelectedItem(selectedItem);
 		console.log(selectedItem);
+		setSelectedItem(selectedItem);
 	};
 
 	if (!plusPressed) {
 		return (
-			<div onClick={() => setPlusPressed(true)} className="addinstrument-parent">
+			<button onClick={() => setPlusPressed(true)} className="addinstrument-parent" style={{ backgroundColor: colors.background }}>
 				<svg width={svgSize.x} height={svgSize.y} strokeWidth={lineWidth} stroke={colors.primary}>
 					<line x1={center.x} y1={lineWidth / 2} x2={center.x} y2={svgSize.y - lineWidth / 2} strokeLinecap={"round"} />
 					<line x1={lineWidth / 2} y1={center.y} x2={svgSize.x - lineWidth / 2} y2={center.x} strokeLinecap={"round"} />
-					<rect width={width} height={height} fill={darkMode ? "none" : "rgba(255, 255, 255, 0.75)"} stroke={"none"} />
+					<rect width={svgSize.x} height={svgSize.y} fill={darkMode ? "none" : "rgba(255, 255, 255, 0.75)"} stroke={"none"} />
 				</svg>
-			</div>
+			</button>
 		);
 	} else {
 		return (
@@ -116,7 +143,7 @@ const AddInstrument = ({ onInstrumentAdded, width, height, colors, darkMode }) =
 					placeholder={spinnerSchema.label}
 				/>
 				<SettingsForm
-					schema={mergeFields(stringToClass(selectedItem.value.component)?.schema || [])}
+					schema={mergeFields(stringToClass(stringToObject[selectedItem.value].component)?.schema || [])}
 					onSettingsUpdate={onConfirm}
 					requestClosing={() => {
 						setPlusPressed(false);
