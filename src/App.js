@@ -42,7 +42,11 @@ class App extends React.Component {
 		const HTTPServerRoot = "http:" + ws.split(":").slice(1, 10).join(":");
 
 		this.deltaAssembler = new DeltaAssembler(HTTPServerRoot, signalkState => this.setState({ signalkState }));
-		this.socketManager = new WebSocketManager(webSocketUrl, delta => this.deltaAssembler.onDelta(delta));
+		this.socketManager = new WebSocketManager(
+			webSocketUrl,
+			delta => this.deltaAssembler.onDelta(delta),
+			status => this.setState({ websocket: { status } })
+		);
 		this.layoutManager = new LayoutManager(appName, appVersion, this.isProduction ? "" : HTTPServerRoot);
 
 		this.isProduction = props.production;
@@ -62,7 +66,11 @@ class App extends React.Component {
 				serverAddress: ws,
 				darkMode: false,
 				animation: false,
-				animationsAccordingToChargingStatus: true,
+				animationsAccordingToChargingStatus: false,
+			},
+
+			websocket: {
+				status: WebSocketManager.STATUS_UNKNOWN,
 			},
 
 			instruments: [],
@@ -274,6 +282,7 @@ class App extends React.Component {
 					/>
 					<StatusBar
 						signalkState={this.state.signalkState}
+						socketStatus={this.state.websocket.status}
 						colors={colors}
 						darkMode={this.state.settings.darkMode}
 						onLogout={() => {
