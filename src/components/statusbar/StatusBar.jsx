@@ -6,12 +6,14 @@ import Weather from "./Weather";
 
 import "../../assets/weather-icons-master/css/weather-icons.min.css";
 import Logout from "./Logout";
+import ConnectionStatus from "./ConnectionStatus";
 
-const StatusBar = ({ colors, darkMode, signalkState, onLogout }) => {
+const StatusBar = ({ colors, darkMode, signalkState, onLogout, socketStatus }) => {
 	// console.log(signalkState)
 	return (
 		<div className="statusbar-parent with-shadow">
 			<div className="statusbar-left">
+				<ConnectionStatus connectionStatus={socketStatus} />
 				<Clock />
 			</div>
 			<div className="statusbar-right">

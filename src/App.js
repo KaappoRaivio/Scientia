@@ -38,14 +38,7 @@ class App extends React.Component {
 
 		let url = window.location.href;
 		let ws = "ws:" + url.split(":")[1] + ":3000";
-		const webSocketUrl = ws + endpoint + "/stream/?subscribe=none";
 		const HTTPServerRoot = "http:" + ws.split(":").slice(1, 10).join(":");
-
-		this.deltaAssembler = new DeltaAssembler(HTTPServerRoot, signalkState => this.setState({ signalkState }));
-		this.socketManager = new WebSocketManager(webSocketUrl, delta => this.deltaAssembler.onDelta(delta));
-		this.layoutManager = new LayoutManager(appName, appVersion, this.isProduction ? "" : HTTPServerRoot);
-
-		this.isProduction = props.production;
 
 		this.state = {
 			layoutEditingEnabled: false,
@@ -62,7 +55,11 @@ class App extends React.Component {
 				serverAddress: ws,
 				darkMode: false,
 				animation: false,
-				animationsAccordingToChargingStatus: true,
+				animationsAccordingToChargingStatus: false,
+			},
+
+			websocket: {
+				status: WebSocketManager.STATUS_UNKNOWN,
 			},
 
 			instruments: [],
@@ -73,6 +70,18 @@ class App extends React.Component {
 				},
 			},
 		};
+		const webSocketUrl = this.state.settings.serverAddress;
+
+		this.deltaAssembler = new DeltaAssembler(HTTPServerRoot, signalkState => this.setState({ signalkState }));
+		this.socketManager = new WebSocketManager(
+			webSocketUrl,
+			delta => this.deltaAssembler.onDelta(delta),
+			status => this.setState({ websocket: { status } }),
+			endpoint + "/stream/?subscribe=none"
+		);
+		this.layoutManager = new LayoutManager(appName, appVersion, this.isProduction ? "" : HTTPServerRoot);
+
+		this.isProduction = props.production;
 	}
 
 	saveUsername(username) {
@@ -267,6 +276,7 @@ class App extends React.Component {
 						requestClosing={() => onSetSettingsPaneOpen(false)}
 						initialValues={getInitialSettings()}
 						onSettingsUpdate={newSettings => {
+							this.socketManager.changeAddress(newSettings.serverAddress);
 							this.setState({ settings: newSettings });
 						}}
 						colors={colors}
@@ -274,6 +284,7 @@ class App extends React.Component {
 					/>
 					<StatusBar
 						signalkState={this.state.signalkState}
+						socketStatus={this.state.websocket.status}
 						colors={colors}
 						darkMode={this.state.settings.darkMode}
 						onLogout={() => {
