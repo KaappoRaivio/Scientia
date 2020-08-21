@@ -40,6 +40,19 @@ class App extends React.Component {
 		let ws = "ws:" + url.split(":")[1] + ":3000";
 		const HTTPServerRoot = "http:" + ws.split(":").slice(1, 10).join(":");
 
+<<<<<<< HEAD
+=======
+		this.deltaAssembler = new DeltaAssembler(HTTPServerRoot, signalkState => this.setState({ signalkState }));
+		this.socketManager = new WebSocketManager(
+			webSocketUrl,
+			delta => this.deltaAssembler.onDelta(delta),
+			status => this.setState({ websocket: { status } })
+		);
+		this.layoutManager = new LayoutManager(appName, appVersion, this.isProduction ? "" : HTTPServerRoot);
+
+		this.isProduction = props.production;
+
+>>>>>>> 0ed8e9d526855e083240a53953a854aaf2f0219d
 		this.state = {
 			layoutEditingEnabled: false,
 			settingsPaneOpen: false,
