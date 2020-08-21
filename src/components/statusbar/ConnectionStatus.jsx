@@ -17,11 +17,7 @@ const mapper = {
 
 const ConnectionStatus = ({ connectionStatus }) => {
 	return (
-<<<<<<< HEAD
 		<div style={{ marginRight: "10px", display: "inline", fontSize: "1.5em", height: "1em" }}>
-=======
-		<div style={{ display: "inline", fontSize: "1.5em", height: "1em" }}>
->>>>>>> 0ed8e9d526855e083240a53953a854aaf2f0219d
 			<img style={{ height: "1em" }} src={mapper[connectionStatus]} alt="" />
 		</div>
 	);

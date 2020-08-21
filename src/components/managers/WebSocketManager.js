@@ -5,7 +5,6 @@ export default class WebSocketManager {
 	static STATUS_CONNECTED = 3;
 	static STATUS_ERROR = 4;
 
-<<<<<<< HEAD
 	constructor(address, onDelta, onStatusChangeCallback, endpoint) {
 		this.address = address;
 		this.onDelta = onDelta;
@@ -20,12 +19,6 @@ export default class WebSocketManager {
 			this.address = newAddress;
 			this.open();
 		}
-=======
-	constructor(address, onDelta, onStatusChangeCallback) {
-		this.address = address;
-		this.onDelta = onDelta;
-		this.onStatusChangeCallback = onStatusChangeCallback;
->>>>>>> 0ed8e9d526855e083240a53953a854aaf2f0219d
 	}
 
 	initializeWebsocket(address, onDelta) {
@@ -37,11 +30,8 @@ export default class WebSocketManager {
 
 		this.onStatusChangeCallback(WebSocketManager.STATUS_CONNECTING);
 
-<<<<<<< HEAD
 		this.ws = new WebSocket(address + this.endpoint);
-=======
-		this.ws = new WebSocket(address);
->>>>>>> 0ed8e9d526855e083240a53953a854aaf2f0219d
+
 		const preparePath = name => ({
 			path: name,
 			period: 1000,
