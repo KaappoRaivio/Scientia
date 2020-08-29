@@ -70,7 +70,6 @@
 	display: inline;
 }
 .form-confirm {
-	/*font-size: 50%;*/
 	width: auto;
 	margin-right: 7.5px;
 	padding: 0 15px;
@@ -78,6 +77,11 @@
 	border: none !important;
 	background: none;
 	color: inherit;
+}
+
+.small {
+	padding: 0 5px !important;
+	font-size: 75%;
 }
 
 .form-cancel {

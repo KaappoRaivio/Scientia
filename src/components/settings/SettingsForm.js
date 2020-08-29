@@ -95,6 +95,7 @@ const Section = props => {
 
 const MyFormTemplate = props => {
 	let { schema, formFields } = props;
+	console.log(schema);
 	const { handleSubmit, onCancel } = useFormApi();
 
 	return (
@@ -108,18 +109,18 @@ const MyFormTemplate = props => {
 				style={{
 					position: schema.buttonsAtBottom ? "absolute" : "static",
 				}}>
-				<button className="button form-confirm with-shadow" type="submit" onClick={handleSubmit}>
+				<button className={`button ${schema.isQuadrant ? "small" : ""} form-confirm with-shadow`} type="submit" onClick={handleSubmit}>
 					{schema.okButtonText || "Ok"}
 				</button>
 				{!schema.dontShowCancel && (
-					<button className="button form-cancel" type="cancel" onClick={onCancel}>
+					<button className={`button ${schema.isQuadrant ? "small" : ""} form-cancel`} type="cancel" onClick={onCancel}>
 						Cancel
 					</button>
 				)}
 
 				{/*<button>Ok</button>*/}
 				{!schema.dontShowApply && (
-					<button className="button form-cancel" type="apply">
+					<button className={`button ${schema.isQuadrant ? "small" : ""} form-cancel`} type="apply">
 						Apply
 					</button>
 				)}

@@ -5,10 +5,27 @@ import AddInstrument from "./AddInstrument";
 import SingleInstrumentContainer from "./SingleInstrumentContainer";
 
 import PropTypes from "prop-types";
+import RemoveInstrument from "./RemoveInstrument";
 
-const QuadrantInstrumentContainer = ({ index, onInstrumentChanged, children, layoutEditingEnabled, animation, darkMode, colors, data }) => {
+const QuadrantInstrumentContainer = ({
+	index,
+	onInstrumentChanged,
+	onRemoveClick,
+	children,
+	layoutEditingEnabled,
+	animation,
+	darkMode,
+	colors,
+	data,
+}) => {
+	const sideLength = 300;
+
 	return (
 		<div className="single-grid-item">
+			{!children.length && (
+				<RemoveInstrument width={sideLength} height={sideLength} onRemoveClick={() => onRemoveClick(index)} enabled={layoutEditingEnabled} />
+			)}
+
 			<div className="quadrant-grid">
 				{children.map(child => (
 					<div className="quadrant-grid-item">{child}</div>
@@ -29,6 +46,7 @@ const QuadrantInstrumentContainer = ({ index, onInstrumentChanged, children, lay
 									instruments: data.concat(newInstrument.instruments[0]),
 								});
 							},
+							isQuadrant: true,
 						}}
 						resizeDebounce={0}
 						forceResize={true}
