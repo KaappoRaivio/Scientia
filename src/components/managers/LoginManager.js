@@ -1,13 +1,11 @@
-import { appName, appVersion } from "../../App";
-
 class LoginManager {
 	static testLoginValidity(username) {
-		return fetch(`/signalk/v1/applicationData/${username}/${appName}/${appVersion}/layout`)
-			.then(res => {
-				console.log(res);
-				return res;
-			})
-			.then(res => res.status === 200);
+		return fetch("/loginStatus")
+			.then(res => res.json())
+			.then(json => {
+				console.log(json);
+				return json.status === "loggedIn";
+			});
 	}
 
 	static login(username, password) {
