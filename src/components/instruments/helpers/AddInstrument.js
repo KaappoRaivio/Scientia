@@ -11,11 +11,6 @@ const schema = {
 	dontShowApply: true,
 };
 
-const mergeFields = fields => {
-	if (fields == null || fields === []) return null;
-	return { ...schema, fields };
-};
-
 const spinnerSchema = {
 	component: "select",
 	name: "instrument",
@@ -62,19 +57,26 @@ const spinnerSchema = {
 
 const stringToObject = {
 	WindContainer: {
-		component: "WindContainer",
+		value: {
+			component: "WindContainer",
+		},
 	},
 	TridataContainer: {
-		component: "TridataContainer",
+		value: {
+			component: "TridataContainer",
+		},
 	},
 	GaugeContainer: {
-		component: "GaugeContainer",
+		value: {
+			component: "GaugeContainer",
+		},
 	},
 	CompassContainer: {
-		component: "CompassContainer",
+		value: {
+			component: "CompassContainer",
+		},
 	},
 	quadrant: {
-		label: "Quadrant...",
 		value: {
 			components: [],
 			type: "quadrant",
@@ -82,7 +84,7 @@ const stringToObject = {
 	},
 };
 
-const AddInstrument = ({ onInstrumentAdded, width, height, colors, darkMode }) => {
+const AddInstrument = ({ onInstrumentAdded, width, height, colors, darkMode, isQuadrant }) => {
 	const lineWidth = 3;
 
 	const svgSize = { x: width / 2.5, y: height / 2.5 };
@@ -92,18 +94,19 @@ const AddInstrument = ({ onInstrumentAdded, width, height, colors, darkMode }) =
 	const [selectedItem, setSelectedItem] = useState(spinnerSchema.options[0]);
 
 	const onConfirm = options => {
-		if (selectedItem.value.type === "quadrant") {
+		const item = stringToObject[selectedItem.value].value;
+		if (item.type === "quadrant") {
 			console.log("quadrant");
 			onInstrumentAdded({
 				type: "quadrant",
-				instruments: selectedItem.value.components,
+				instruments: item.components,
 			});
 		} else {
 			onInstrumentAdded({
 				type: "single",
 				instruments: [
 					{
-						component: selectedItem.value.component,
+						component: item.component,
 						additionalProps: options,
 					},
 				],
@@ -127,6 +130,11 @@ const AddInstrument = ({ onInstrumentAdded, width, height, colors, darkMode }) =
 			</button>
 		);
 	} else {
+		const localSchema = {
+			...schema,
+			isQuadrant,
+			fields: stringToClass(stringToObject[selectedItem.value].value.component)?.schema || [],
+		};
 		return (
 			<div
 				style={{
@@ -143,7 +151,7 @@ const AddInstrument = ({ onInstrumentAdded, width, height, colors, darkMode }) =
 					placeholder={spinnerSchema.label}
 				/>
 				<SettingsForm
-					schema={mergeFields(stringToClass(stringToObject[selectedItem.value].component)?.schema || [])}
+					schema={localSchema}
 					onSettingsUpdate={onConfirm}
 					requestClosing={() => {
 						setPlusPressed(false);
