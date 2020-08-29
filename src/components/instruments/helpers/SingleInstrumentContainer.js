@@ -11,6 +11,10 @@ class SingleInstrumentContainer extends React.Component {
 		this.probe = React.createRef();
 	}
 
+	onRemoveClick = () => {
+		this.props.onRemoveClick(this.props.index);
+	};
+
 	render() {
 		const sideLength = this.probe.current?.offsetWidth || 0;
 
@@ -32,7 +36,7 @@ class SingleInstrumentContainer extends React.Component {
 		};
 
 		if (this.props.children == null) {
-			return <div>No children</div>;
+			return <div>No asd children</div>;
 		}
 
 		return (
@@ -40,7 +44,7 @@ class SingleInstrumentContainer extends React.Component {
 				<RemoveInstrument
 					width={sideLength}
 					height={sideLength}
-					onRemoveClick={() => this.props.onRemoveClick(this.props.index)}
+					onRemoveClick={this.onRemoveClick}
 					enabled={this.props.layoutEditingEnabled}
 				/>
 				<div className="single-flexbox-wrapper">

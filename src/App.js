@@ -182,78 +182,84 @@ class App extends React.Component {
 		}
 	}
 
-	render() {
-		const colors = App.getColors(this.state.settings.darkMode);
+	onSetSettingsPaneOpen = open => {
+		this.setState({ settingsPaneOpen: open });
+	};
 
-		const onSetSettingsPaneOpen = open => {
-			this.setState({ settingsPaneOpen: open });
-		};
+	getInitialSettings = () => ({
+		animation: this.state.settings.animation,
+		darkMode: this.state.settings.darkMode,
+		serverAddress: this.state.settings.serverAddress,
+		animationsAccordingToChargingStatus: this.state.settings.animationsAccordingToChargingStatus,
+	});
 
-		const getInitialSettings = () => ({
-			animation: this.state.settings.animation,
-			darkMode: this.state.settings.darkMode,
-			serverAddress: this.state.settings.serverAddress,
-			animationsAccordingToChargingStatus: this.state.settings.animationsAccordingToChargingStatus,
+	onInstrumentAdded = instrument => {
+		this.setState(
+			oldState => ({ instruments: oldState.instruments.concat(instrument) }),
+			() => this.layoutManager.saveInstruments(this.state.login.username, this.state.instruments)
+		);
+	};
+
+	onInstrumentRemoved = index => {
+		console.log("Instrument removed", index);
+		this.setState(
+			oldState => ({ instruments: oldState.instruments.slice(0, index).concat(oldState.instruments.slice(index + 1)) }),
+			() => this.layoutManager.saveInstruments(this.state.login.username, this.state.instruments)
+		);
+	};
+
+	onInstrumentChanged = (index, instrument) => {
+		console.log("Instrument changed", index, instrument);
+		this.setState(
+			oldState => ({
+				instruments: oldState.instruments
+					.slice(0, index)
+					.concat(instrument)
+					.concat(oldState.instruments.slice(index + 1)),
+			}),
+			() => this.layoutManager.saveInstruments(this.state.login.username, this.state.instruments)
+		);
+	};
+
+	onLogin = (username, password) => {
+		LoginManager.login(username, password).then(status => {
+			console.log(status);
+			if (status === 200) {
+				this.setState({
+					login: {
+						waiting: false,
+						loggedIn: true,
+						code: null,
+						username,
+					},
+				});
+				this.saveUsername(username);
+				this.layoutManager.getInstruments(username).then(instruments => {
+					this.setState({ instruments });
+				});
+			} else {
+				this.setState({
+					login: {
+						waiting: false,
+						loggedIn: false,
+						code: status,
+						username,
+					},
+				});
+			}
 		});
 
-		const onInstrumentAdded = instrument => {
-			this.setState(
-				oldState => ({ instruments: oldState.instruments.concat(instrument) }),
-				() => this.layoutManager.saveInstruments(this.state.login.username, this.state.instruments)
-			);
-		};
-
-		const onInstrumentRemoved = index => {
-			console.log("Instrument removed", index);
-			this.setState(
-				oldState => ({ instruments: oldState.instruments.slice(0, index).concat(oldState.instruments.slice(index + 1)) }),
-				() => this.layoutManager.saveInstruments(this.state.login.username, this.state.instruments)
-			);
-		};
-
-		const onInstrumentChanged = (index, instrument) => {
-			console.log("Instrument changed", index, instrument);
-			this.setState(
-				oldState => ({
-					instruments: oldState.instruments
-						.slice(0, index)
-						.concat(instrument)
-						.concat(oldState.instruments.slice(index + 1)),
-				}),
-				() => this.layoutManager.saveInstruments(this.state.login.username, this.state.instruments)
-			);
-		};
-
-		const onLogin = (username, password) => {
-			LoginManager.login(username, password).then(status => {
-				console.log(status);
-				if (status === 200) {
-					this.setState({
-						login: {
-							waiting: false,
-							loggedIn: true,
-							code: null,
-							username,
-						},
-					});
-					this.saveUsername(username);
-					this.layoutManager.getInstruments(username).then(instruments => {
-						this.setState({ instruments });
-					});
-				} else {
-					this.setState({
-						login: {
-							waiting: false,
-							loggedIn: false,
-							code: status,
-							username,
-						},
-					});
-				}
-			});
-
-			this.socketManager.open();
-		};
+		this.socketManager.open();
+	};
+	onLogout = () => {
+		LoginManager.logout();
+		this.socketManager.close();
+		this.setState({
+			login: { waiting: false, loggedIn: false },
+		});
+	};
+	render() {
+		const colors = App.getColors(this.state.settings.darkMode);
 
 		const parentStyle = {
 			stroke: colors.primary,
@@ -266,15 +272,15 @@ class App extends React.Component {
 			<MyLoginForm
 				style={parentStyle}
 				colors={colors}
-				onLogin={onLogin}
+				onLogin={this.onLogin}
 				loggedIn={this.state.login.loggedIn}
 				waiting={this.state.login.waiting}
 				code={this.state.login.code}>
 				<div className="instruments" style={parentStyle}>
 					<SettingsDialog
 						isModalOpen={this.state.settingsPaneOpen}
-						requestClosing={() => onSetSettingsPaneOpen(false)}
-						initialValues={getInitialSettings()}
+						requestClosing={() => this.onSetSettingsPaneOpen(false)}
+						initialValues={this.getInitialSettings()}
 						onSettingsUpdate={newSettings => {
 							this.socketManager.changeAddress(newSettings.serverAddress);
 							this.setState({ settings: newSettings });
@@ -287,27 +293,21 @@ class App extends React.Component {
 						socketStatus={this.state.websocket.status}
 						colors={colors}
 						darkMode={this.state.settings.darkMode}
-						onLogout={() => {
-							LoginManager.logout();
-							this.socketManager.close();
-							this.setState({
-								login: { waiting: false, loggedIn: false },
-							});
-						}}
+						onLogout={this.onLogout}
 					/>
 					<Instruments
 						settings={this.state.settings}
 						colors={colors}
 						instruments={this.state.instruments}
-						onInstrumentAdded={onInstrumentAdded}
-						onInstrumentRemoved={onInstrumentRemoved}
-						onInstrumentChanged={onInstrumentChanged}
+						onInstrumentAdded={this.onInstrumentAdded}
+						onInstrumentRemoved={this.onInstrumentRemoved}
+						onInstrumentChanged={this.onInstrumentChanged}
 						layoutEditingEnabled={this.state.layoutEditingEnabled}
 						loggedIn={this.state.login.loggedIn}
 						signalkState={this.state.signalkState}
 					/>
 					<div className="open-menu with-shadow">
-						<button className="open-menu-wrapper" onClick={() => onSetSettingsPaneOpen(true)}>
+						<button className="open-menu-wrapper" onClick={() => this.onSetSettingsPaneOpen(true)}>
 							configure
 						</button>
 						<ToggleLayoutEditing
