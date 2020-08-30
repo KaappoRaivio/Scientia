@@ -1,7 +1,12 @@
 {
-	"name": "scientia",
+	"name": "signalk-scientia-kraivio",
 	"description": "A webapp plugin for signalk-server-node with beautiful graphics.",
-	"version": "0.1.0",
+	"version": "0.1.1",
+	"author": {
+		"name": "Kaappo Raivio",
+		"email": "kaappo.raivio@gmail.com",
+		"url": "kaapporaivio.me"
+	},
 	"license": "GPL-3.0-or-later",
 	"dependencies": {
 		"@data-driven-forms/react-form-renderer": "^2.5.3",
@@ -30,7 +35,8 @@
 		"start": "PORT=3001 react-scripts start",
 		"build": "react-scripts build",
 		"test": "react-scripts test",
-		"eject": "react-scripts eject"
+		"eject": "react-scripts eject",
+		"mypublish": "./scripts/myPublish.sh"
 	},
 	"eslintConfig": {
 		"extends": "react-app"
@@ -60,5 +66,5 @@
 		"signalk-webapp",
 		"signalk-node-server-plugin"
 	],
-	"homepage": "scientia/"
+	"homepage": "signalk-scientia-kraivio/"
 }

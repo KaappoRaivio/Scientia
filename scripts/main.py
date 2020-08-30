@@ -9,6 +9,7 @@ s = requests.Session()
 a = s.post("http://localhost:3000/signalk/v1/auth/login", json={"username": "user", "password": "user"})
 # b = s.get("http://localhost:3000/signalk/v1/applicationData/user/scientia/0.1.0/layout")
 c = s.post("http://localhost:3000/signalk/v1/applicationData/user/scientia/0.1.0/layout", json=[])
+d = s.post("http://localhost:3000/signalk/v1/applicationData/user/scientia/0.1.0/apiKey", json={})
 # =yaml.load("""[
 #             {
 #                 type: "quadrant",
