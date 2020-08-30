@@ -1,13 +1,13 @@
 import requests, pprint, yaml
 
-s = requests.Session()
 
-s.post("http://localhost:3000/signalk/v1/auth/login", json={"username": "user", "password": "user"})
 
 #a = s.post("http://localhost:3000/signalk/v1/applicationData/user/appname/1.0/test", json={"foo": 4, "bar": 5})
 #print(a)
-b = s.get("http://localhost:3000/signalk/v1/applicationData/user/scientia/0.1.0/layout")
 
+s = requests.Session()
+a = s.post("http://localhost:3000/signalk/v1/auth/login", json={"username": "user", "password": "user"})
+# b = s.get("http://localhost:3000/signalk/v1/applicationData/user/scientia/0.1.0/layout")
 c = s.post("http://localhost:3000/signalk/v1/applicationData/user/scientia/0.1.0/layout", json=[])
 # =yaml.load("""[
 #             {
@@ -71,6 +71,7 @@ c = s.post("http://localhost:3000/signalk/v1/applicationData/user/scientia/0.1.0
 #                 ]
 #             }]"""))
 
-pprint.pprint(b.json())
+# pprint.pprint(b.json())
+
 print(c)
 

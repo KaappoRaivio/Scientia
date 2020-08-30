@@ -4,7 +4,7 @@ import "./flat-remix.css";
 import "./App.css";
 
 import "react-vis/dist/style.css";
-import "chartist/dist/chartist.css";
+// import "chartist/dist/chartist.css";
 
 import update from "immutability-helper";
 import cookie from "react-cookies";
@@ -43,6 +43,7 @@ class App extends React.Component {
 		this.state = {
 			layoutEditingEnabled: false,
 			settingsPaneOpen: false,
+			apiKey: "",
 
 			login: {
 				waiting: true,
@@ -147,7 +148,11 @@ class App extends React.Component {
 		}
 
 		this.layoutManager.getInstruments(this.state.login.username).then(instruments => {
-			this.setState({ instruments });
+			this.setState({ instruments, layoutEditingEnabled: !instruments.length });
+		});
+		this.layoutManager.getApiKey(this.state.login.username).then(apiKey => {
+			console.log(apiKey);
+			this.setState({ apiKey });
 		});
 
 		this.socketManager.open();
@@ -221,7 +226,7 @@ class App extends React.Component {
 		);
 	};
 
-	onLogin = (username, password) => {
+	onLogin = (username, password, apiKey) => {
 		LoginManager.login(username, password).then(status => {
 			console.log(status);
 			if (status === 200) {
@@ -235,7 +240,11 @@ class App extends React.Component {
 				});
 				this.saveUsername(username);
 				this.layoutManager.getInstruments(username).then(instruments => {
-					this.setState({ instruments });
+					this.setState({ instruments, layoutEditingEnabled: !instruments.length });
+				});
+				this.layoutManager.storeApiKey(username, apiKey).then(ok => {
+					console.log(ok, apiKey);
+					this.setState({ apiKey });
 				});
 			} else {
 				this.setState({
@@ -258,6 +267,23 @@ class App extends React.Component {
 			login: { waiting: false, loggedIn: false },
 		});
 	};
+
+	setLayoutEditingEnabled = layoutEditingEnabled => {
+		return this.setState({ layoutEditingEnabled });
+	};
+	closeSettingsPane = () => {
+		this.onSetSettingsPaneOpen(false);
+	};
+
+	openSettingsPane = () => {
+		this.onSetSettingsPaneOpen(true);
+	};
+
+	onSettingsUpdate = newSettings => {
+		this.socketManager.changeAddress(newSettings.serverAddress);
+		this.setState({ settings: newSettings });
+	};
+	// 743fcf245791b649c2cef6919c661f27
 	render() {
 		const colors = App.getColors(this.state.settings.darkMode);
 
@@ -269,6 +295,7 @@ class App extends React.Component {
 		};
 
 		return (
+			// <div>asdasd</div>
 			<MyLoginForm
 				style={parentStyle}
 				colors={colors}
@@ -279,16 +306,14 @@ class App extends React.Component {
 				<div className="instruments" style={parentStyle}>
 					<SettingsDialog
 						isModalOpen={this.state.settingsPaneOpen}
-						requestClosing={() => this.onSetSettingsPaneOpen(false)}
+						requestClosing={this.closeSettingsPane}
 						initialValues={this.getInitialSettings()}
-						onSettingsUpdate={newSettings => {
-							this.socketManager.changeAddress(newSettings.serverAddress);
-							this.setState({ settings: newSettings });
-						}}
+						onSettingsUpdate={this.onSettingsUpdate}
 						colors={colors}
 						appElement={this}
 					/>
 					<StatusBar
+						apiKey={this.state.apiKey}
 						signalkState={this.state.signalkState}
 						socketStatus={this.state.websocket.status}
 						colors={colors}
@@ -307,13 +332,10 @@ class App extends React.Component {
 						signalkState={this.state.signalkState}
 					/>
 					<div className="open-menu with-shadow">
-						<button className="open-menu-wrapper" onClick={() => this.onSetSettingsPaneOpen(true)}>
+						<button className="open-menu-wrapper" onClick={this.openSettingsPane}>
 							configure
 						</button>
-						<ToggleLayoutEditing
-							editingEnabled={this.state.layoutEditingEnabled}
-							onChanged={layoutEditingEnabled => this.setState({ layoutEditingEnabled })}
-						/>
+						<ToggleLayoutEditing editingEnabled={this.state.layoutEditingEnabled} onChange={this.setLayoutEditingEnabled} />
 					</div>
 					<Logo />
 				</div>
@@ -322,10 +344,10 @@ class App extends React.Component {
 	}
 }
 
-const ToggleLayoutEditing = ({ editingEnabled, onChanged }) => {
+const ToggleLayoutEditing = ({ editingEnabled, onChange }) => {
 	return (
-		<div onClick={() => onChanged(!editingEnabled)} className="configure-layout-wrapper">
-			<img className="configure-layout" src={editingEnabled ? Done : Wrench} alt="enable layout configuration" width="auto" />
+		<div onClick={() => onChange(!editingEnabled)} className="configure-layout-wrapper">
+			<img className="configure-layout" src={editingEnabled ? Done : Wrench} alt="toggle layout editing" width="auto" />
 		</div>
 	);
 };

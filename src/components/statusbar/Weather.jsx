@@ -19,8 +19,8 @@ class Weather extends React.Component {
 	}
 
 	componentDidMount() {
-		const updateWeather = position => {
-			getWeather(position).then(json => {
+		const updateWeather = (position, apiKey) => {
+			getWeather(position, apiKey).then(json => {
 				this.setState({
 					icon: iconMap[json?.weather?.[0]?.id]?.icon,
 					temperature: Math.round(json?.main?.temp - 273.15),
@@ -32,8 +32,8 @@ class Weather extends React.Component {
 		setTimeout(() => {
 			const position = this.props.signalkState?.vessels?.self?.navigation?.position?.value;
 			console.log(position);
-			updateWeather(position || { latitude: null, longitude: null });
-			setInterval(() => updateWeather(position || { latitude: null, longitude: null }), 120000);
+			updateWeather(position || { latitude: null, longitude: null }, this.props.apiKey);
+			setInterval(() => updateWeather(position || { latitude: null, longitude: null }, this.props.apiKey), 120000);
 		}, 5000);
 	}
 
@@ -91,9 +91,9 @@ const WindIcon = ({ direction }) => (
 	</svg>
 );
 
-const apiKey = "743fcf245791b649c2cef6919c661f27";
+// const apiKey = "";
 
-const getWeather = ({ latitude, longitude }) =>
+const getWeather = ({ latitude, longitude }, apiKey) =>
 	fetch(`http://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${apiKey}`)
 		.then(res => res.json())
 		.then(json => {

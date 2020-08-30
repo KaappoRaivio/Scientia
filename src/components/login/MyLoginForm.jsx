@@ -18,8 +18,8 @@ class MyLoginForm extends Component {
 			return children;
 		}
 
-		const onLoginPress = ({ username, password }) => {
-			onLogin(username, password);
+		const onLoginPress = ({ username, password, weatherApiKey }) => {
+			onLogin(username, password, weatherApiKey);
 		};
 
 		return (
@@ -58,6 +58,11 @@ const schema = {
 					type: validatorTypes.REQUIRED,
 				},
 			],
+		},
+		{
+			component: componentTypes.TEXT_FIELD,
+			name: "weatherApiKey",
+			label: "Api key to OpenWeatherMap, if you have it.",
 		},
 	],
 	dontShowApply: true,

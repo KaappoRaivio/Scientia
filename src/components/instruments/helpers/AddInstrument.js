@@ -85,7 +85,7 @@ const stringToObject = {
 };
 
 const AddInstrument = ({ onInstrumentAdded, width, height, colors, darkMode, isQuadrant }) => {
-	const lineWidth = 3;
+	const lineWidth = 5;
 
 	const svgSize = { x: width / 2.5, y: height / 2.5 };
 	const center = { x: svgSize.x / 2, y: svgSize.y / 2 };

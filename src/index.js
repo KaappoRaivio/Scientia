@@ -1,9 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
 
-import { HTML5Backend } from "react-dnd-html5-backend";
-import { DndProvider } from "react-dnd";
-
 import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
@@ -14,9 +11,7 @@ let production = !(!process.env.NODE_ENV || process.env.NODE_ENV === "developmen
 
 ReactDOM.render(
 	<React.StrictMode>
-		<DndProvider backend={HTML5Backend}>
-			<App production={production} />
-		</DndProvider>
+		<App production={production} />
 	</React.StrictMode>,
 	document.getElementById("root")
 );
