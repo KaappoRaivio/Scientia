@@ -1,8 +1,8 @@
 module.exports = function (app) {
 	let plugin = {};
 
-	plugin.id = "Scientia";
-	plugin.name = "Scientia";
+	plugin.id = "signalk-scientia-kraivio";
+	plugin.name = "signalk-scientia-kraivio";
 	plugin.description = "Scientia for SignalK developed and maintained by Kaappo Raivio";
 
 	plugin.start = function (options, restartPlugin) {
