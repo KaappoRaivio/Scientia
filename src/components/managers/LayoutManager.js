@@ -33,7 +33,8 @@ class LayoutManager {
 			})
 			.catch(error => {
 				this.saveInstruments(username, []);
-				return fallbackInstruments;
+				// return fallbackInstruments;
+				return [];
 			});
 	}
 
