@@ -31,7 +31,10 @@ class LayoutManager {
 					throw new Error("Problem with response: " + response.status);
 				}
 			})
-			.catch(error => fallbackInstruments);
+			.catch(error => {
+				this.saveInstruments(username, []);
+				return fallbackInstruments;
+			});
 	}
 
 	storeApiKey(username, key) {

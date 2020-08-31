@@ -6,9 +6,10 @@ import requests, pprint, yaml
 #print(a)
 
 s = requests.Session()
-a = s.post("http://localhost:3000/signalk/v1/auth/login", json={"username": "scientia-test", "password": "scientia-best"})
+a = s.post("http://localhost:3000/signalk/v1/auth/login", json={"username": "user", "password": "user"})
 # b = s.get("http://localhost:3000/signalk/v1/applicationData/user/scientia/0.1.0/layout")
-c = s.post("http://localhost:3000/signalk/v1/applicationData/scientia-test/signalk-scientia-kraivio/0.1.4/layout", json=[])
+# c = s.post("http://localhost:3000/signalk/v1/applicationData/scientia-test/signalk-scientia-kraivio/0.1.4/layout", json=[])
+c = s.post("http://localhost:3000/signalk/v1/applicationData/user/signalk-scientia-kraivio/0.1.5/layout", json=[])
 print(a)
 print(c)
 # d = s.post("http://localhost:3000/signalk/v1/applicationData/user/scientia/0.1.0/apiKey", json={})
