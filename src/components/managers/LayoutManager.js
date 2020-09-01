@@ -8,7 +8,7 @@ class LayoutManager {
 	}
 
 	saveInstruments(username, instruments) {
-		fetch(`${this.baseUrl}/signalk/v1/applicationData/${username}/${this.appName}/${this.appVersion}/layout`, {
+		fetch(`${this.baseUrl}/signalk/v1/applicationData/user/${this.appName}/${this.appVersion}/${username}/layout`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -22,7 +22,7 @@ class LayoutManager {
 	}
 
 	getInstruments(username) {
-		return fetch(`${this.baseUrl}/signalk/v1/applicationData/${username}/${this.appName}/${this.appVersion}/layout`)
+		return fetch(`${this.baseUrl}/signalk/v1/applicationData/user/${this.appName}/${this.appVersion}/${username}/layout`)
 			.then(response => {
 				console.log(response);
 				if (response.status === 200) {
@@ -39,7 +39,7 @@ class LayoutManager {
 	}
 
 	storeApiKey(username, key) {
-		fetch(`${this.baseUrl}/signalk/v1/applicationData/${username}/${this.appName}/${this.appVersion}/apiKey`, {
+		fetch(`${this.baseUrl}/signalk/v1/applicationData/user/${this.appName}/${this.appVersion}/${username}/apiKey`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -52,7 +52,7 @@ class LayoutManager {
 	}
 
 	getApiKey(username) {
-		return fetch(`${this.baseUrl}/signalk/v1/applicationData/${username}/${this.appName}/${this.appVersion}/apiKey`)
+		return fetch(`${this.baseUrl}/signalk/v1/applicationData/user/${this.appName}/${this.appVersion}/${username}/apiKey`)
 			.then(response => {
 				console.log(response);
 				if (response.status === 200) {

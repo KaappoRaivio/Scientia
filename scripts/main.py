@@ -1,81 +1,26 @@
 import requests, pprint, yaml
 
+root = "localhost"
 
+def login(s, username, password):
+	return s.post(f"http://{root}:3000/signalk/v1/auth/login", json={"username": username, "password": password})
 
-#a = s.post("http://localhost:3000/signalk/v1/applicationData/user/appname/1.0/test", json={"foo": 4, "bar": 5})
-#print(a)
+def get(s, username, path):
+	return s.get(f"http://{root}:3000/signalk/v1/applicationData/user/signalk-scientia-kraivio/0.1.8/{username}/{path}")
+
+def set(s, username, path, json):
+	return s.post(f"http://{root}:3000/signalk/v1/applicationData/user/signalk-scientia-kraivio/0.1.8/{username}/{path}", json=json)
+
 
 s = requests.Session()
-a = s.post("http://localhost:3000/signalk/v1/auth/login", json={"username": "user", "password": "user"})
-# b = s.get("http://localhost:3000/signalk/v1/applicationData/user/scientia/0.1.0/layout")
-# c = s.post("http://localhost:3000/signalk/v1/applicationData/scientia-test/signalk-scientia-kraivio/0.1.4/layout", json=[])
-c = s.post("http://localhost:3000/signalk/v1/applicationData/user/signalk-scientia-kraivio/0.1.5/layout", json=[])
-print(a)
-print(c)
-# d = s.post("http://localhost:3000/signalk/v1/applicationData/user/scientia/0.1.0/apiKey", json={})
-# =yaml.load("""[
-#             {
-#                 type: "quadrant",
-#                 instruments: [
-#                     {
-#                         component: "CompassContainer",
-#                         additionalProps: {}
-#                     },
-#                     {
-#                         component: "TridataContainer",
-#                         additionalProps: {
-#                             paths: [
-#                                 "environment.depth.belowTransducer",
-#                                 "navigation.speedOverGround",
-#                                 "performance.polarSpeed",
-#                                 "navigation.trip.log"
-#                             ],
-#                         }
-#                     },
-#                     {
-#                         component: "GaugeContainer",
-#                         additionalProps: {
-#                             path: "environment.depth.belowTransducer"
-#                         }
-#                     }
-#                 ]
-#             },
-#             {
-#                 type: "quadrant",
-#                 instruments: [
-#                     {
-#                         component: "WindContainer",
-#                         additionalProps: {}
-#                     },
-#                     {
-#                         component: "CompassContainer",
-#                         additionalProps: {}
-#                     },
-#                     {
-#                         component: "TridataContainer",
-#                         additionalProps: {
-#                             paths: ["environment.depth.belowTransducer",
-#                                 "navigation.speedOverGround",
-#                                 "performance.polarSpeed",
-#                                 "navigation.trip.log"
-#                             ],
-#                         }
-#                     },
-#                 ]
-#             },
-#             {
-#                 type: "single",
-#                 instruments: [
-#                     {
-#                         component: "GaugeContainer",
-#                         additionalProps: {
-#                             path: "performance.polarSpeedRatio"
-#                         }
-#                     }
-#                 ]
-#             }]"""))
+username = "admin"
+password = "admin"
 
-# pprint.pprint(b.json())
-
-print(c)
-
+# username = "scientia-test"
+# password = "scientia-best"
+#
+# username = "nohyphen"
+# password = "nohyphen"
+print(login(s, username, password))
+print(set(s, username, "layout", [{'type': 'single', 'instruments': [{'component': 'CompassContainer', 'additionalProps': {}}]}]))
+print(get(s, username, "layout"), get(s, username, "layout").json())
