@@ -26,11 +26,12 @@ _Please note the Scientia is currently in development, and more features will be
 - [ ] Saving the settings on the server (coming **very** soon)
 - [ ] Customiseable colors scheme
 - [ ] Customiseable units
-
-<img src="./src/assets/readme/gauge1.gif" style="float: left; margin-right: 1%; box-shadow: 0 2.5px 2.5px gray" width="24%"/>
-<img src="./src/assets/readme/numeric.gif" style="float: left; margin-right: 1%; box-shadow: 0px 2.5px 2.5px gray" width="24%"/>
-<img src="./src/assets/readme/compass.gif" style="float: left; margin-right: 1%; box-shadow: 0px 2.5px 2.5px gray" width="24%"/>
-<img src="./src/assets/readme/wind.gif" style="float: left; margin-right: 1%; box-shadow: 0px 2.5px 2.5px gray" width="24%"/>
+<div style="display: inline;">
+    <img src="./src/assets/readme/gauge1.gif" style="float: left; margin-right: 1%; box-shadow: 0 2.5px 2.5px gray" width="24%"/>
+    <img src="./src/assets/readme/numeric.gif" style="float: left; margin-right: 1%; box-shadow: 0px 2.5px 2.5px gray" width="24%"/>
+    <img src="./src/assets/readme/compass.gif" style="float: left; margin-right: 1%; box-shadow: 0px 2.5px 2.5px gray" width="24%"/>
+    <img src="./src/assets/readme/wind.gif" style="float: left; margin-right: 1%; box-shadow: 0px 2.5px 2.5px gray" width="24%"/>
+</div>
 
 
 ## Design objectives
