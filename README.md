@@ -43,7 +43,10 @@ Another important factor is that I want a robust solution. This means that **no 
 (although it's possible to sub-divide the grid), and not be resizeable.  
 
 The third objective is to make processing the information easier by **representing it in the best way possible**.
-
+<div style="display: inline;">
+    <img src="./src/assets/readme/concept1.png" style="float: left; margin-right: 1%; box-shadow: 0 2.5px 2.5px gray" width="49%"/>
+    <img src="./src/assets/readme/concept2.png" style="float: left; margin-right: 1%; box-shadow: 0 2.5px 2.5px gray" width="49%"/>
+</div>
 ## Installation
 I really appreciate your interest!
 1. [Install the signalk server](https://github.com/SignalK/signalk-server#installation).
