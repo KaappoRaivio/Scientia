@@ -49,7 +49,7 @@ const NumberDisplay = ({ decimalPlaces, height, label, suffix, units, value, dis
 
 	const activeZone = getActiveZone(value, zones || []);
 	if (debug) {
-		// // console.log(alarmCSSClass)
+		console.log(activeZone);
 	}
 
 	const alarmStyle = {

@@ -95,7 +95,6 @@ const Section = props => {
 
 const MyFormTemplate = props => {
 	let { schema, formFields } = props;
-	console.log(schema);
 	const { handleSubmit, onCancel } = useFormApi();
 
 	return (

@@ -38,7 +38,6 @@ const Tridata = props => {
 	return (
 		<div style={parentStyle}>
 			{props.values.map((value, index) => {
-				// console.log(value)
 				return (
 					<NumberDisplay
 						key={index}
@@ -48,7 +47,7 @@ const Tridata = props => {
 						label={value.meta.displayName}
 						displayScale={commonDisplayScale}
 						decimalPlaces={value.meta.decimalPlaces}
-						zones={value.zones}
+						zones={value.meta.zones}
 						fontSize={props.width / 4}
 						width={props.width}
 						height={props.height / props.values.length}

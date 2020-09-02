@@ -31,7 +31,6 @@ class Weather extends React.Component {
 		};
 		setTimeout(() => {
 			const position = this.props.signalkState?.vessels?.self?.navigation?.position?.value;
-			console.log(position);
 			updateWeather(position || { latitude: null, longitude: null }, this.props.apiKey);
 			setInterval(() => updateWeather(position || { latitude: null, longitude: null }, this.props.apiKey), 120000);
 		}, 5000);

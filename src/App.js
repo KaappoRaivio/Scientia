@@ -72,6 +72,7 @@ class App extends React.Component {
 			},
 		};
 		const webSocketUrl = this.state.settings.serverAddress;
+		this.isProduction = props.production;
 
 		this.deltaAssembler = new DeltaAssembler(HTTPServerRoot, signalkState => this.setState({ signalkState }));
 		this.socketManager = new WebSocketManager(
@@ -80,9 +81,7 @@ class App extends React.Component {
 			status => this.setState({ websocket: { status } }),
 			endpoint + "/stream/?subscribe=none"
 		);
-		this.layoutManager = new LayoutManager(appName, appVersion, this.isProduction ? "" : HTTPServerRoot);
-
-		this.isProduction = props.production;
+		this.layoutManager = new LayoutManager(appName, appVersion, this.isProduction ? "" : HTTPServerRoot, this.isProduction);
 	}
 
 	saveUsername(username) {
@@ -148,10 +147,10 @@ class App extends React.Component {
 		}
 
 		this.layoutManager.getInstruments(this.state.login.username).then(instruments => {
+			console.log(instruments);
 			this.setState({ instruments, layoutEditingEnabled: !instruments.length });
 		});
 		this.layoutManager.getApiKey(this.state.login.username).then(apiKey => {
-			console.log(apiKey);
 			this.setState({ apiKey });
 		});
 

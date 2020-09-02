@@ -1,10 +1,12 @@
 import fallbackInstruments from "../../assets/fallbackInstruments.json";
 
 class LayoutManager {
-	constructor(appName, appVersion, baseUrl = "") {
+	constructor(appName, appVersion, baseUrl = "", isProduction = true) {
 		this.appName = appName;
 		this.appVersion = appVersion;
 		this.baseUrl = baseUrl;
+		this.isProduction = isProduction;
+		console.log(this.isProduction);
 	}
 
 	saveInstruments(username, instruments) {
@@ -33,13 +35,12 @@ class LayoutManager {
 			})
 			.catch(error => {
 				this.saveInstruments(username, []);
-				// return fallbackInstruments;
-				return [];
+				return this.isProduction ? [] : fallbackInstruments;
 			});
 	}
 
 	storeApiKey(username, key) {
-		fetch(`${this.baseUrl}/signalk/v1/applicationData/user/${this.appName}/${this.appVersion}/${username}/apiKey`, {
+		return fetch(`${this.baseUrl}/signalk/v1/applicationData/user/${this.appName}/${this.appVersion}/${username}/apiKey`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -47,7 +48,7 @@ class LayoutManager {
 			body: JSON.stringify({ apiKey: key }),
 		}).then(response => {
 			response.ok ? console.log("Saved the API key successfully!") : console.log("There was a problem saving the API key: " + response.status);
-			return response.ok;
+			return response.status === 200;
 		});
 	}
 

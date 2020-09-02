@@ -24,42 +24,13 @@
   {
     "instruments": [
       {
-        "component": "GaugeContainer",
-        "additionalProps": {
-          "path": "navigation.speedOverGround"
-        }
-      },
-      {
-        "component": "GaugeContainer",
-        "additionalProps": {
-          "path": "navigation.speedThroughWater"
-        }
-      },
-      {
-        "component": "GaugeContainer",
-        "additionalProps": {
-          "path": "performance.polarSpeed"
-        }
-      },
-      {
-        "component": "GaugeContainer",
-        "additionalProps": {
-          "path": "performance.polarSpeedRatio"
-        }
-      }
-    ],
-    "type": "quadrant"
-  },
-  {
-    "instruments": [
-      {
         "component": "TridataContainer",
         "additionalProps": {
           "paths": [
-            "navigation.speedThroughWater",
-            "environment.depth.belowTransducer",
-            "navigation.trip.log"
-          ]
+			  "navigation.speedOverGround",
+			  "environment.depth.belowTransducer",
+			  "performance.polarSpeedRatio"
+		  ]
         }
       }
     ],
