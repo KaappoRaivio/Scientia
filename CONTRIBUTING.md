@@ -10,5 +10,7 @@ Ensure that any install or build dependencies, editor configuration files or fol
 
 Try to follow the [Anglularjs commit message conventions](https://github.com/angular/angular.js/blob/master/DEVELOPERS.md#commits).
 
+Use [prettier](https://prettier.io/).
+
 ## Code of Conduct
 Try to be adults.
