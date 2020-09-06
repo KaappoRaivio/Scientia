@@ -96,17 +96,15 @@ const Gauge = ({
 			</div>
 
 			<svg className="gauge-gauge" width={width} height={height} xmlns="http://www.w3.org/2000/svg">
-				<g className="gauge-sectors">
-					<Sectors
-						width={width}
-						height={height}
-						sectors={sectors}
-						center={center}
-						radius={radius}
-						sectorWidth={sectorWidth}
-						backgroundColor={colors.background}
-					/>
-				</g>
+				<Sectors
+					width={width}
+					height={height}
+					sectors={sectors}
+					center={center}
+					radius={radius}
+					sectorWidth={sectorWidth}
+					backgroundColor={colors.background}
+				/>
 				<circle
 					stroke={colors.secondary}
 					fill={"none"}

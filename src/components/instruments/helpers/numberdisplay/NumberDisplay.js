@@ -61,6 +61,9 @@ const NumberDisplay = ({
 	if (value === null) {
 		value = 0;
 	}
+	if (isNumber == null) {
+		isNumber = true;
+	}
 
 	const activeZone = getActiveZone(value, zones || []);
 	if (debug) {
