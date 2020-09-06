@@ -18,7 +18,6 @@ class WindContainer extends React.Component {
 				lineLength: 0.15,
 				textProvider: i => Math.abs(180 - (((((2 * Math.PI) / 12) * i) / Math.PI) * 180).toFixed(0)),
 				angleProvider: i => ((2 * Math.PI) / 12) * i,
-				fontSize: "90%",
 			},
 			{
 				numberOfLines: 36,
