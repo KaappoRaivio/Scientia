@@ -59,6 +59,8 @@ It's also possible to use Scientia with an admin account, but this is not recomm
 If you want to have the weather data displayed on the top-right corner, you [can aquire an OpenWeatherMap API key](https://openweathermap.org/price#weather), and enter it.
 6. Thank you for installing Scientia!
 
+***Note:*** `vessels.self` is implicitly added to all of the paths entered by the user. For example, the correct format for depth is `environment.depth.belowTransducer`.
+
 ## Background 
 Displaying boat data in the browser opens up almost endless possibilities on visualising it. 
 Over my 17 years of sailing (over 17 years of living :D) there have been many occasions where it would have been nice to 
