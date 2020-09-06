@@ -115,10 +115,10 @@ class App extends React.Component {
 
 				valueNormal: "rgba(0, 0, 0, 0)",
 				// valueNormal: "lightgreen",
-				valueAlert: "yellow",
-				valueWarn: "orange",
-				valueAlarm: "red",
-				valueEmergency: "purple",
+				valueAlert: "#ff0",
+				valueWarn: "#f70",
+				valueAlarm: "#f00",
+				valueEmergency: "#f0f",
 			};
 		}
 	}
