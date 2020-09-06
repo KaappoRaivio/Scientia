@@ -31,7 +31,22 @@ const getActiveZone = (value, zones) => {
 	return "value" + zone[0].toUpperCase() + zone.slice(1);
 };
 
-const NumberDisplay = ({ decimalPlaces, height, label, suffix, units, value, displayScale, width, centerLabel, zones, colors, debug, darkMode }) => {
+const NumberDisplay = ({
+	decimalPlaces,
+	height,
+	label,
+	suffix,
+	units,
+	value,
+	displayScale,
+	width,
+	centerLabel,
+	zones,
+	colors,
+	debug,
+	darkMode,
+	isNumber,
+}) => {
 	if (isStillLoading(decimalPlaces, label, units, value, displayScale?.upper, displayScale?.lower)) {
 		// console.log("asdasd", decimalPlaces, label, units, value, displayScale)
 		return <NoData style={{ fontWeight: "bold" }} width={width} height={height} colors={colors} />;
@@ -57,6 +72,8 @@ const NumberDisplay = ({ decimalPlaces, height, label, suffix, units, value, dis
 		animation: ["valueAlarm", "valueEmergency"].includes(activeZone) ? "blink 0.5s infinite steps(1, end)" : "none",
 	};
 
+	// console.log(isNumber, value);
+	const finalRepresentation = (isNumber ? value.toFixed(decimalPlaces) : value) + suffix;
 	return (
 		<div className="numberdisplay-wrapper" style={{ width: `${width}px`, height: `${height}px` }}>
 			<div className={`numberdisplay-parent`} style={alarmStyle}>
@@ -90,21 +107,23 @@ const NumberDisplay = ({ decimalPlaces, height, label, suffix, units, value, dis
 							x="3%"
 							y="90%"
 							maxNumberOfDigits={textMaxLength}
-							value={value.toFixed(decimalPlaces) + suffix}
+							value={finalRepresentation}
 							initialFontSize={60}
-							width={actualWidth * 0.57}
+							width={actualWidth * (isNumber ? 0.57 : 0.97)}
 							height={actualHeight * 0.75}
 							fontWeight={"bold"}
 						/>
-						<AutoFitTextBox
-							x="60%"
-							y="90%"
-							maxNumberOfDigits={units.length}
-							value={" " + units}
-							initialFontSize={60}
-							width={actualWidth * 0.37}
-							height={actualHeight / 2}
-						/>
+						{isNumber && (
+							<AutoFitTextBox
+								x="60%"
+								y="90%"
+								maxNumberOfDigits={units.length}
+								value={" " + units}
+								initialFontSize={60}
+								width={actualWidth * 0.37}
+								height={actualHeight / 2}
+							/>
+						)}
 					</g>
 				</svg>
 			</div>
@@ -116,18 +135,18 @@ NumberDisplay.propTypes = {
 	width: PropTypes.number.isRequired,
 	height: PropTypes.number.isRequired,
 
-	label: PropTypes.string.isRequired,
+	label: PropTypes.string,
 	suffix: PropTypes.string,
-	units: PropTypes.string.isRequired,
-	value: PropTypes.number.isRequired,
+	units: PropTypes.string,
+	value: PropTypes.number,
 
-	decimalPlaces: PropTypes.number.isRequired,
+	decimalPlaces: PropTypes.number,
 
 	centerLabel: PropTypes.bool,
 	debug: PropTypes.bool,
 
 	colors: PropTypes.object.isRequired,
-	displayScale: PropTypes.object.isRequired,
+	displayScale: PropTypes.object,
 	zones: PropTypes.array,
 	darkMode: PropTypes.bool.isRequired,
 };

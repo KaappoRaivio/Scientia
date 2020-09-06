@@ -45,8 +45,9 @@ const Tridata = props => {
 						suffix={""}
 						units={value.meta.units}
 						label={value.meta.displayName}
-						displayScale={commonDisplayScale}
+						isNumber={value.meta.isNumber}
 						decimalPlaces={value.meta.decimalPlaces}
+						displayScale={commonDisplayScale}
 						zones={value.meta.zones}
 						fontSize={props.width / 4}
 						width={props.width}

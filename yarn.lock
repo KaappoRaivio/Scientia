@@ -3932,10 +3932,10 @@ delayed-stream@~1.0.0:
   resolved "https://registry.yarnpkg.com/delayed-stream/-/delayed-stream-1.0.0.tgz#df3ae199acadfb7d440aaae0b29e2272b24ec619"
   integrity sha1-3zrhmayt+31ECqrgsp4icrJOxhk=
 
-delta-processor@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/delta-processor/-/delta-processor-0.0.2.tgz#d73bf967350e6e6eb4b1da3aa33bcc53482fcce6"
-  integrity sha512-X732cd+o+bjRSopYsSjD4+WqFlC+Bd6X+mStWCXj7FURJy5BEP02KLSm+nvdK3rqb/mmQRQjcZcMIwbRX5/xwA==
+delta-processor@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/delta-processor/-/delta-processor-0.1.0.tgz#6ff1b049368aa6fadcc69277bed8f8949e672f5b"
+  integrity sha512-wt0VCLf8O6MhD2xLZLMNhNL8bs0jzII8paMEgVQDc4EsyNZfVbe/BjsCpuCJFC54w0E4ECsuVKVwnDDIPqpzVA==
   dependencies:
     complex.js "^2.0.11"
     decimal.js "^10.2.0"
