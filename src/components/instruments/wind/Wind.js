@@ -41,7 +41,7 @@ const Wind = props => {
 				/>
 			</div>
 
-			<svg className="wind-svg" width={props.width} height={props.height}>
+			<svg className="wind-svg" width={props.width} height={props.height} xmlns="http://www.w3.org/2000/svg">
 				<circle cx={center.x} cy={center.y} r={radius + radius * 0.01} strokeWidth={radius * 0.02} />
 				<g>
 					{Svghelper.getSector(center.x, center.y, radius, 0.025 * props.width, -props.closeHaulAngle, 0, colors.closeHaulRight)}}
