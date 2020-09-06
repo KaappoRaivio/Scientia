@@ -66,12 +66,10 @@ const LineTickSection = ({
 	let lines = SvgHelpers.getDivisionCoordinates(center, radius, length, numberOfLines, angleProvider);
 	let textPositions = SvgHelpers.getDivisionCoordinates(center, textRadius, 0, numberOfLines, angleProvider);
 
-	let path = `${lines.map((line, index) => `M${line.start.x} ${line.start.y} L${line.end.x} ${line.end.y}`)} Z`;
+	let path = `${lines.map((line, index) => `M${line.start.x} ${line.start.y} L${line.end.x} ${line.end.y}`).join(" ")} Z`;
 
 	return (
 		<g strokeWidth={strokeWidthMultiplier ? radius * strokeWidthMultiplier : null}>
-			<path d={path} />
-
 			<g stroke={"none"}>
 				{textPositions.map((item, index) => (
 					<text
@@ -88,6 +86,7 @@ const LineTickSection = ({
 					</text>
 				))}
 			</g>
+			<path d={path} />
 		</g>
 	);
 };
@@ -124,13 +123,15 @@ export class LineTickSections extends React.Component {
 			y: PropTypes.number.isRequired,
 		}),
 		radius: PropTypes.number.isRequired,
-		divisions: PropTypes.arrayOf({
-			fontSize: PropTypes.number.isRequired,
-			lineLength: PropTypes.oneOf([PropTypes.func.isRequired, PropTypes.number.isRequired]).isRequired,
-			angleProvider: PropTypes.func.isRequired,
-			textProvider: PropTypes.func.isRequired,
-			strokeWidthMultiplier: PropTypes.number.isRequired,
-		}),
+		divisions: PropTypes.arrayOf(
+			PropTypes.shape({
+				fontSize: PropTypes.number,
+				lineLength: PropTypes.oneOfType([PropTypes.func, PropTypes.number]).isRequired,
+				angleProvider: PropTypes.func.isRequired,
+				textProvider: PropTypes.func.isRequired,
+				strokeWidthMultiplier: PropTypes.number.isRequired,
+			})
+		),
 		rotateText: PropTypes.bool.isRequired,
 		textRadius: PropTypes.number,
 	};
