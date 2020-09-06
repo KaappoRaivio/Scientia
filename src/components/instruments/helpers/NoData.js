@@ -15,8 +15,8 @@ const NoData = ({ height, width, colors, reasons }) => (
 );
 
 NoData.propTypes = {
-	width: PropTypes.number.isRequired,
-	height: PropTypes.number.isRequired,
+	width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
+	height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]).isRequired,
 	colors: PropTypes.object.isRequired,
 	reasons: PropTypes.arrayOf(PropTypes.string),
 };
