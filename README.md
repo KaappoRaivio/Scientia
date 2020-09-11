@@ -46,9 +46,9 @@ The third objective is to make processing the information easier by **representi
 <div style="display: inline;">
     <img src="./src/assets/readme/concept1.png" style="float: left; margin-right: 1%; box-shadow: 0 2.5px 2.5px gray" width="49%"/>
     <img src="./src/assets/readme/concept2.png" style="float: left; margin-right: 1%; box-shadow: 0 2.5px 2.5px gray" width="49%"/>
-</div>
 
-## Installation
+
+## Installation for use
 I really appreciate your interest!
 1. [Install the signalk server](https://github.com/SignalK/signalk-server#installation).
 2. Find and install `Signalk-scientia-kraivio` from the app store.
@@ -60,6 +60,21 @@ If you want to have the weather data displayed on the top-right corner, you [can
 6. Thank you for installing Scientia!
 
 ***Note:*** `vessels.self` is implicitly added to all of the paths entered by the user. For example, the correct format for depth is `environment.depth.belowTransducer`.
+
+## Installation for development
+I really appreciate your interest in contributing to the development!
+
+1. First, clone a sister package of Scientia, [delta-processor](https://github.com/KaappoRaivio/delta-processor).
+2. `cd` into the repo.
+3. Run `yarn install`.
+4. Run `sudo yarn link`.
+
+Next, install Scientia itself.
+
+5. clone this repository and `cd` into it.
+6. run `yarn link delta-processor`.
+7. run `yarn install`.
+8. run `yarn start`. Now Scientia is running on your local machine on port 3001. Please note that some features such as layout saving will not work on the development build due to the CORS policy of the signalk server.
 
 ## Background 
 Displaying boat data in the browser opens up almost endless possibilities on visualising it. 
