@@ -62,6 +62,7 @@ const LineTickSection = ({
 	textProvider,
 	rotateText,
 	strokeWidthMultiplier,
+	renderText,
 }) => {
 	let lines = SvgHelpers.getDivisionCoordinates(center, radius, length, numberOfLines, angleProvider);
 	let textPositions = SvgHelpers.getDivisionCoordinates(center, textRadius, 0, numberOfLines, angleProvider);
@@ -71,20 +72,22 @@ const LineTickSection = ({
 	return (
 		<g strokeWidth={strokeWidthMultiplier ? radius * strokeWidthMultiplier : null}>
 			<g stroke={"none"}>
-				{textPositions.map((item, index) => (
-					<text
-						key={index}
-						alignmentBaseline={"middle"}
-						transform={`rotate(${rotateText ? 180 - (angleProvider(index) / Math.PI) * 180 : 0}, ${item.start.x || 0}, ${
-							item.start.y || 0
-						})`}
-						x={item.start.x || 0}
-						y={item.start.y || 0}
-						textAnchor="middle"
-						fontSize={_.isFunction(fontSize) ? fontSize(index) : fontSize}>
-						{textProvider(index)}
-					</text>
-				))}
+				{renderText
+					? textPositions.map((item, index) => (
+							<text
+								key={index}
+								alignmentBaseline={"middle"}
+								transform={`rotate(${rotateText ? 180 - (angleProvider(index) / Math.PI) * 180 : 0}, ${item.start.x || 0}, ${
+									item.start.y || 0
+								})`}
+								x={item.start.x || 0}
+								y={item.start.y || 0}
+								textAnchor="middle"
+								fontSize={_.isFunction(fontSize) ? fontSize(index) : fontSize}>
+								{textProvider(index)}
+							</text>
+					  ))
+					: null}
 			</g>
 			<path d={path} />
 		</g>
@@ -105,6 +108,7 @@ export class LineTickSections extends React.Component {
 							length={_.isFunction(division.lineLength) ? i => division.lineLength(i) * radius : division.lineLength * radius}
 							fontSize={division.fontSize}
 							angleProvider={division.angleProvider}
+							renderText={division.renderText}
 							textProvider={division.textProvider}
 							numberOfLines={division.numberOfLines}
 							rotateText={rotateText}

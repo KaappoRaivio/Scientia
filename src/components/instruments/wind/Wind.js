@@ -22,7 +22,10 @@ const Wind = props => {
 		fill: colors.background,
 	};
 
+	// console.log(props.divisions);
+
 	return (
+		// <div>hello world</div>
 		<div className="wind" style={parentStyle}>
 			<div className="wind-speed-display-wrapper">
 				<NumberDisplay
@@ -47,7 +50,6 @@ const Wind = props => {
 					{Svghelper.getSector(center.x, center.y, radius, 0.025 * props.width, -props.closeHaulAngle, 0, colors.closeHaulRight)}}
 					{Svghelper.getSector(center.x, center.y, radius, 0.025 * props.width, props.closeHaulAngle, 0, colors.closeHaulLeft)}
 				</g>{" "}
-				: null
 				<g fill={props.colors.primary} strokeWidth={radius * 0.01}>
 					<LineTickSections radius={radius} center={center} divisions={props.divisions} rotateText={false} />
 				</g>

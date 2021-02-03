@@ -147,7 +147,6 @@ class App extends React.Component {
 		}
 
 		this.layoutManager.getInstruments(this.state.login.username).then(instruments => {
-			console.log(instruments);
 			this.setState({ instruments, layoutEditingEnabled: !instruments.length });
 		});
 		this.layoutManager.getApiKey(this.state.login.username).then(apiKey => {
