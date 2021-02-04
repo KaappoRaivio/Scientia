@@ -21,9 +21,20 @@
 	position: absolute;
 	/*position:relative;*/
 	/*position:absolute;*/
+	/*animation: roll 10s linear infinite;*/
 
 	transition: transform 0.5s ease;
-	transform: rotate(0deg);
+	/*transform: rotate(0deg);*/
+}
+
+@keyframes roll {
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(0deg);
+		/*transform: rotate(360deg);*/
+	}
 }
 
 canvas.background {

@@ -5,14 +5,18 @@ import _ from "underscore";
 class SvgHelpers {
 	static getDivisionCoordinates(center, radius, length, numberOfDivisions, angleProvider) {
 		let lines = [];
+		// console.log(center, radius, length);
 
 		for (let i = 0; i < numberOfDivisions; i++) {
 			let angle = angleProvider(i);
 
 			let actualLength = _.isFunction(length) ? length(i) : length;
+			// console.log(actualLength);
 
 			let start = this.polarToCartesian(angle, radius, center);
 			let end = this.polarToCartesian(angle, radius - actualLength, center);
+
+			// console.log({ start: start, end: end });
 
 			lines.push({ start: start, end: end });
 		}
@@ -22,8 +26,8 @@ class SvgHelpers {
 
 	static polarToCartesian(theta, r, offset) {
 		return {
-			x: offset.x + Math.sin(theta) * r,
-			y: offset.y + Math.cos(theta) * r,
+			x: `${(offset.x + Math.sin(theta) * r) * 100}`,
+			y: `${(offset.y + Math.cos(theta) * r) * 100}`,
 		};
 	}
 
@@ -38,15 +42,23 @@ class SvgHelpers {
 		const otherWay = a1 < a2 ? "1" : "0";
 		const large = a1 - a2 > 180 ? "1" : "0";
 
-		return `M${x} ${y} ${cx1} ${cy1} A${radius} ${radius} 0 ${large} ${otherWay} ${cx2} ${cy2}Z`;
+		return `M${x * 100} ${y * 100} ${cx1 * 100} ${cy1 * 100} A${radius * 100} ${radius * 100} 0 ${large} ${otherWay} ${cx2 * 100} ${cy2 * 100}Z`;
 	}
 
 	static getSector(centerX, centerY, radius, width, startAngle, endAngle, fillColor, key) {
 		return (
-			<g key={key}>
-				<path d={this.getSectorPath(centerX, centerY, radius, 90 + startAngle, 90 + endAngle)} fill={fillColor} />
-				<path d={this.getSectorPath(centerX, centerY, radius - width, 90 + startAngle, 90 + endAngle)} fillOpacity={1} />
-			</g>
+			<svg width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="none" key={key}>
+				<path
+					d={this.getSectorPath(centerX, centerY, radius, 90 + startAngle, 90 + endAngle)}
+					fill={fillColor}
+					vectorEffect="non-scaling-stroke"
+				/>
+				<path
+					d={this.getSectorPath(centerX, centerY, radius - width, 90 + startAngle, 90 + endAngle)}
+					fillOpacity={1}
+					vectorEffect="non-scaling-stroke"
+				/>
+			</svg>
 		);
 	}
 }
@@ -70,7 +82,12 @@ const LineTickSection = ({
 	let path = `${lines.map((line, index) => `M${line.start.x} ${line.start.y} L${line.end.x} ${line.end.y}`).join(" ")} Z`;
 
 	return (
-		<g strokeWidth={strokeWidthMultiplier ? radius * strokeWidthMultiplier : null}>
+		<svg
+			width="100%"
+			height="100%"
+			viewBox="0 0 100 100"
+			preserveAspectRatio="none"
+			strokeWidth={strokeWidthMultiplier ? `${strokeWidthMultiplier * 100}%` : null}>
 			<g stroke={"none"}>
 				{renderText
 					? textPositions.map((item, index) => (
@@ -84,13 +101,14 @@ const LineTickSection = ({
 								y={item.start.y || 0}
 								textAnchor="middle"
 								fontSize={_.isFunction(fontSize) ? fontSize(index) : fontSize}>
+								{/*fontSize={"10"}*/}
 								{textProvider(index)}
 							</text>
 					  ))
 					: null}
 			</g>
-			<path d={path} />
-		</g>
+			<path d={path} vectorEffect="non-scaling-stroke" />
+		</svg>
 	);
 };
 
@@ -104,8 +122,8 @@ export class LineTickSections extends React.Component {
 						<LineTickSection
 							center={center}
 							radius={radius}
-							textRadius={textRadius || radius - 1.5 * division.lineLength * radius}
-							length={_.isFunction(division.lineLength) ? i => division.lineLength(i) * radius : division.lineLength * radius}
+							textRadius={textRadius || radius - 1.5 * division.lineLength}
+							length={_.isFunction(division.lineLength) ? i => division.lineLength(i) : division.lineLength}
 							fontSize={division.fontSize}
 							angleProvider={division.angleProvider}
 							renderText={division.renderText}

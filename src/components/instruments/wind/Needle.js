@@ -23,7 +23,7 @@ const Needle = props => {
 	}
 
 	return (
-		<div className="wrapper" style={{ height: `${props.radius}%` }}>
+		<div className="wrapper" style={{ height: `${props.radius * 100}%` }}>
 			<div className="needleTest" style={style}>
 				<div className="needle" style={{ backgroundColor: props.color }} />
 			</div>

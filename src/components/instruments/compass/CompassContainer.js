@@ -10,21 +10,21 @@ class CompassContainer extends React.Component {
 		this.divisions = [
 			{
 				numberOfLines: 12,
-				lineLength: 0.15,
+				lineLength: 0.075,
 				renderText: true,
 				textProvider: i => mod(180 - (360 / 12) * i, 360),
 				angleProvider: i => ((2 * Math.PI) / 12) * i,
-				fontSize: "80%",
+				fontSize: "8",
 			},
 			{
 				numberOfLines: 36,
-				lineLength: 0.1,
+				lineLength: 0.05,
 				textProvider: i => "",
 				angleProvider: i => ((2 * Math.PI) / 36) * i,
 			},
 			{
 				numberOfLines: 144,
-				lineLength: 0.05,
+				lineLength: 0.025,
 				textProvider: i => "",
 				angleProvider: i => ((2 * Math.PI) / 144) * i,
 			},

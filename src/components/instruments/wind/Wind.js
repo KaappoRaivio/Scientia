@@ -7,9 +7,10 @@ import Svghelper, { LineTickSections } from "../helpers/svgHelpers";
 import "./wind.css";
 
 const Wind = props => {
-	const center = { x: props.width / 2, y: props.height / 2 };
-	const radius = Math.round(props.width / 2.1);
-	const radiusPercent = ((radius / (props.width / 2)) * 100) / 2;
+	const center = { x: 0.5, y: 0.5 };
+	// const radius = Math.round(props.width / 2.1);
+	const radius = 0.476;
+	const radiusPercent = 50;
 
 	const colors = {
 		...props.colors,
@@ -45,18 +46,18 @@ const Wind = props => {
 			</div>
 
 			<svg className="wind-svg" width={props.width} height={props.height} xmlns="http://www.w3.org/2000/svg">
-				<circle cx={center.x} cy={center.y} r={radius + radius * 0.01} strokeWidth={radius * 0.02} />
+				<circle cx={"50%"} cy={"50%"} r={`${radius * 100}%`} strokeWidth={"1%"} />
 				<g>
-					{Svghelper.getSector(center.x, center.y, radius, 0.025 * props.width, -props.closeHaulAngle, 0, colors.closeHaulRight)}}
-					{Svghelper.getSector(center.x, center.y, radius, 0.025 * props.width, props.closeHaulAngle, 0, colors.closeHaulLeft)}
+					{Svghelper.getSector(center.x, center.y, radius, 0.025, -props.closeHaulAngle, 0, colors.closeHaulRight)}}
+					{Svghelper.getSector(center.x, center.y, radius, 0.025, props.closeHaulAngle, 0, colors.closeHaulLeft)}
 				</g>{" "}
-				<g fill={props.colors.primary} strokeWidth={radius * 0.01}>
+				<g fill={props.colors.primary} strokeWidth={"1.5%"}>
 					<LineTickSections radius={radius} center={center} divisions={props.divisions} rotateText={false} />
 				</g>
 			</svg>
 
-			<Needle angle={props.angleApparent.value} radius={radiusPercent} color={colors.accent1} animate={props.animate} />
-			<Needle angle={props.angleTrue.value} radius={radiusPercent} color={colors.accent2} animate={props.animate} />
+			<Needle angle={props.angleApparent.value} radius={radius} color={colors.accent1} animate={props.animate} />
+			<Needle angle={props.angleTrue.value} radius={radius} color={colors.accent2} animate={props.animate} />
 		</div>
 	);
 };

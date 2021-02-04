@@ -38,23 +38,16 @@ const Compass = props => {
 				height={props.height / 3}
 				upperBound={360}
 				decimalPlaces={1}
-				// fontSize={props.width / 4}
 				label="Heading"
 				colors={colors}
 				darkMode={props.darkMode}
 				displayScale={{ lower: 0, upper: 360, type: "linear" }}
 			/>
 
-			<svg className="compassRose" width={props.width} height={props.height} style={compassRotationStyle}>
-				<circle
-					cx={center.x}
-					cy={center.y}
-					r={radius - radius * 0.01}
-					fill={colors.background}
-					stroke={colors.primary}
-					strokeWidth={radius * 0.02}
-				/>
-				<g fill={colors.primary} stroke={colors.primary} strokeWidth={radius * 0.01}>
+			<svg className="compassRose" width="100%" height="100%" style={compassRotationStyle}>
+				<circle cx="50%" cy="50%" r="49.5%" fill={colors.background} stroke={colors.primary} strokeWidth={"1%"} />
+
+				<g fill={colors.primary} stroke={colors.primary} strokeWidth={"1.5%"}>
 					<LineTickSections center={center} radius={radius} divisions={props.divisions} rotateText={true} />
 				</g>
 			</svg>
@@ -63,11 +56,13 @@ const Compass = props => {
 };
 
 const getRadius = props => {
-	return Math.max(props.width / 2 - 2, 0);
+	// return Math.max(props.width / 2 - 2, 0);
+	return 0.5;
 };
 
 const getCenter = props => {
-	return { x: props.width / 2, y: props.height / 2 };
+	// return { x: Math.floor(props.width / 2), y: Math.floor(props.height / 2) };
+	return { x: 0.5, y: 0.5 };
 };
 
 export default Compass;

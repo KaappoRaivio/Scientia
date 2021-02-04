@@ -7,15 +7,15 @@ const Clock = props => {
 	const [seconds, setSeconds] = useState(currentDate.getSeconds() + "");
 
 	useEffect(() => {
-		setInterval(() => {
+		const interval = setInterval(() => {
 			const now = new Date(Date.now());
 			setHours(now.getHours() + "");
 			setMinutes(now.getMinutes() + "");
 			setSeconds(now.getSeconds() + "");
 		}, 1000);
 
-		// return () => clearInterval(interval);
-	});
+		return () => clearInterval(interval);
+	}, []);
 
 	return <ClockComponent hours={hours} minutes={minutes} seconds={seconds} />;
 };
