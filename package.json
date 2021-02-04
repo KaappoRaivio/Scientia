@@ -8,7 +8,9 @@
 		"url": "kaapporaivio.me"
 	},
 	"license": "GPL-3.0-or-later",
-	"dependencies": {},
+	"dependencies": {
+		"delta-processor": "^0.1.1"
+	},
 	"scripts": {
 		"start": "PORT=3001 react-scripts start",
 		"build": "react-scripts build",
@@ -37,7 +39,6 @@
 		"@testing-library/jest-dom": ">=4.2.4",
 		"@testing-library/react": ">=9.3.2",
 		"@testing-library/user-event": ">=7.1.2",
-		"delta-processor": ">=0.1.0",
 		"immutability-helper": ">=3.1.1",
 		"mathjs": ">=6.6.4",
 		"msw": ">=0.20.5",

@@ -2,7 +2,53 @@
 	{
 		"instruments": [
 			{
+				"component": "GaugeContainer",
+				"additionalProps": {
+					"path": "performance.polarSpeedRatio"
+				}
+			}
+		],
+		"type": "single"
+	},
+	{
+		"instruments": [
+			{
+				"component": "GaugeContainer",
+				"additionalProps": {
+					"path": "environment.depth.belowTransducer"
+				}
+			}
+		],
+		"type": "single"
+	},
+	{
+		"instruments": [
+			{
+				"component": "TridataContainer",
+				"additionalProps": {
+					"paths": [
+						"navigation.speedOverGround",
+						"environment.depth.belowTransducer",
+						"performance.polarSpeedRatio"
+					]
+				}
+			}
+		],
+		"type": "single"
+	},
+	{
+		"instruments": [
+			{
 				"component": "WindContainer",
+				"additionalProps": {}
+			}
+		],
+		"type": "single"
+	},
+	{
+		"instruments": [
+			{
+				"component": "CompassContainer",
 				"additionalProps": {}
 			}
 		],

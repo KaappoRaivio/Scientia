@@ -51,8 +51,9 @@ export default class WebSocketManager {
 
 		this.ws.onmessage = event => {
 			this.onStatusChangeCallback(WebSocketManager.STATUS_CONNECTED);
-			const message = JSON.parse(event.data);
-			onDelta(message);
+			new Promise(resolve => {
+				resolve(JSON.parse(event.data));
+			}).then(onDelta);
 		};
 
 		this.ws.onclose = event => {

@@ -74,7 +74,14 @@ class App extends React.Component {
 		const webSocketUrl = this.state.settings.serverAddress;
 		this.isProduction = props.production;
 
-		this.deltaAssembler = new DeltaAssembler(HTTPServerRoot, signalkState => this.setState({ signalkState }));
+		this.deltaAssembler = new DeltaAssembler(
+			HTTPServerRoot,
+			signalkState => {
+				this.setState({ signalkState });
+			},
+			undefined,
+			1000
+		);
 		this.socketManager = new WebSocketManager(
 			webSocketUrl,
 			delta => this.deltaAssembler.onDelta(delta),
