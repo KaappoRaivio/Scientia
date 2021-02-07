@@ -10,6 +10,7 @@ export default class WebSocketManager {
 		this.onDelta = onDelta;
 		this.onStatusChangeCallback = onStatusChangeCallback;
 		this.endpoint = endpoint;
+		this.connected = false;
 	}
 
 	changeAddress(newAddress) {
@@ -22,11 +23,7 @@ export default class WebSocketManager {
 	}
 
 	initializeWebsocket(address, onDelta) {
-		try {
-			this.close();
-		} catch (e) {
-			console.error(e);
-		}
+		this.close();
 
 		this.onStatusChangeCallback(WebSocketManager.STATUS_CONNECTING);
 
@@ -50,7 +47,10 @@ export default class WebSocketManager {
 		};
 
 		this.ws.onmessage = event => {
-			this.onStatusChangeCallback(WebSocketManager.STATUS_CONNECTED);
+			if (!this.connected) {
+				this.onStatusChangeCallback(WebSocketManager.STATUS_CONNECTED);
+				this.connected = true;
+			}
 			new Promise(resolve => {
 				resolve(JSON.parse(event.data));
 			}).then(onDelta);
@@ -74,7 +74,9 @@ export default class WebSocketManager {
 	}
 
 	close() {
-		this.ws.close();
+		if (this.ws != null) {
+			this.ws.close();
+		}
 	}
 
 	open() {

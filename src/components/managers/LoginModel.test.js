@@ -3,11 +3,11 @@ import React from "react";
 import { rest } from "msw";
 import { setupServer } from "msw/node";
 
-import LoginManager from "./LoginManager";
+import LoginModel from "./LoginModel";
 import { render, fireEvent, screen } from "@testing-library/react";
 
 import App from "../../App";
-import { appName, appVersion } from "../../App";
+import { APP_NAME, APP_VERSION } from "../../App";
 
 const USERNAME = "42";
 const PASSWORD = "69";
@@ -28,7 +28,7 @@ const server = setupServer(
 		return res(ctx.status(200));
 	}),
 
-	rest.get(`/signalk/v1/applicationData/*/${appName}/${appVersion}/layout`, (req, res, ctx) => {
+	rest.get(`/signalk/v1/applicationData/*/${APP_NAME}/${APP_VERSION}/layout`, (req, res, ctx) => {
 		return res(ctx.status(404));
 	})
 );
@@ -39,13 +39,13 @@ afterAll(() => server.close());
 
 it("should allow user to login", () => {
 	expect.assertions(2);
-	expect(LoginManager.login("wrong", "")).resolves.toEqual(401);
-	return expect(LoginManager.login(USERNAME, PASSWORD)).resolves.toEqual(200);
+	expect(LoginModel.login("wrong", "")).resolves.toEqual(401);
+	return expect(LoginModel.login(USERNAME, PASSWORD)).resolves.toEqual(200);
 });
 
 it("should allow user to logout", () => {
 	expect.assertions(1);
-	return expect(LoginManager.logout()).resolves.toEqual(200);
+	return expect(LoginModel.logout()).resolves.toEqual(200);
 });
 
 test("the login form should work in production", async () => {

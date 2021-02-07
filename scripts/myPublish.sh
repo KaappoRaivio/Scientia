@@ -9,5 +9,9 @@ cp -r build/ publish/public
 cp -r package.json node_modules publish/
 cp scripts/index.js publish/
 
-cd publish/ || exit
-npm publish
+
+if [ "$1" == "publish" ]
+	then
+		cd publish/ || exit
+		npm publish
+fi

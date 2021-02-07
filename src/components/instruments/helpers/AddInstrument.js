@@ -4,7 +4,7 @@ import "./AddInstrument.css";
 import SettingsForm from "../../settings/SettingsForm";
 
 import ReactDropdown from "react-dropdown";
-import { stringToClass } from "../Instruments";
+import { stringToClass } from "../../managers/LayoutModel";
 
 const schema = {
 	buttonsAtBottom: true,

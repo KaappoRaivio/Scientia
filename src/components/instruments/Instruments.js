@@ -37,7 +37,7 @@ class Instruments extends React.Component {
 								animate={animation}
 								darkMode={darkMode}
 								colors={colors}
-								children={stringToClass(component.component)}
+								children={component.component}
 								data={signalkState}
 								additionalProps={component.additionalProps}
 								resizeDebounce={0}
@@ -63,7 +63,7 @@ class Instruments extends React.Component {
 											animate={animation}
 											darkMode={darkMode}
 											colors={colors}
-											children={stringToClass(quadrant.component)}
+											children={quadrant.component}
 											data={signalkState}
 											additionalProps={quadrant.additionalProps}
 											resizeDebounce={0}
@@ -106,15 +106,5 @@ class Instruments extends React.Component {
 		);
 	}
 }
-
-export const stringToClass = string =>
-	({
-		CompassContainer: CompassContainer,
-		WindContainer: WindContainer,
-		TridataContainer: TridataContainer,
-		GaugeContainer: GaugeContainer,
-		VisualiserContainer: VisualiserContainer,
-		AddInstrument: AddInstrument,
-	}[string]);
 
 export default Instruments;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import SvgHelpers, { LineTickSections } from "../helpers/svgHelpers";
 // import {mod, round, range} from "mathjs";
@@ -34,19 +34,20 @@ const Gauge = ({
 	suffix,
 	units,
 }) => {
-	const center = { x: width / 2, y: height / 2 };
-	const radius = width / 2.1;
-	const radiusPercent = ((radius / (width / 2)) * 100) / 2;
+	const center = { x: 0.5, y: 0.5 };
+	const radius = 0.48;
+	const sectorWidth = 0.1;
+	const innerCircleRadius = radius - sectorWidth;
 
-	let start = 135;
-	let end = -135;
+	const start = 180;
+	const end = -135;
 
 	const percentToAngle = x => {
 		return start - (start - end) * x;
 	};
 
 	if (displayScale == null) {
-		return <NoData colors={colors} height={height} width={width} />;
+		return <NoData colors={colors} height={"25%"} width={"50%"} />;
 	}
 
 	const valueToPercent = valueToPercentConverters[displayScale.type || "linear"](displayScale.upper, displayScale.lower, displayScale.power);
@@ -67,17 +68,12 @@ const Gauge = ({
 		};
 	});
 
-	let sectorWidth = radius * 0.2;
-
 	const darkenIfNight = () => (
-		<>{darkMode ? <rect x={0} y={0} width={width} height={height} fill={"rgba(0, 0, 0, 0.5)"} stroke={"none"} /> : null}</>
+		<>{darkMode ? <rect x={0} y={0} width={"100%"} height={"100%"} fill={"rgba(0, 0, 0, 0.5)"} stroke={"none"} /> : null}</>
 	);
 
-	// console.log("asdasd", units);
-
-	const lineWidth = 0.02;
 	return (
-		<div className="gauge-parent" style={{ width: width, height: height }}>
+		<div className="gauge-parent" style={{ width: "100%", height: "100%" }}>
 			<div className="gauge-number-display-value">
 				<NumberDisplay
 					width={width * 0.7}
@@ -95,7 +91,7 @@ const Gauge = ({
 				/>
 			</div>
 
-			<svg className="gauge-gauge" width={width} height={height} xmlns="http://www.w3.org/2000/svg">
+			<svg className="gauge-gauge">
 				<Sectors
 					width={width}
 					height={height}
@@ -105,26 +101,19 @@ const Gauge = ({
 					sectorWidth={sectorWidth}
 					backgroundColor={colors.background}
 				/>
-				<circle
-					stroke={colors.secondary}
-					fill={"none"}
-					cx={center.x}
-					cy={center.y}
-					r={radius + (radius * lineWidth) / 2}
-					strokeWidth={radius * lineWidth}
-				/>
-				<g stroke={"black"} strokeWidth={(radius * lineWidth) / 2} fill={colors.background}>
+				<circle stroke={colors.secondary} fill={"none"} cx={"50%"} cy={"50%"} r={`48.48%`} strokeWidth={"1%"} />
+				<g stroke={"black"} strokeWidth={"1%"} fill={colors.background}>
 					{SvgHelpers.getSector(center.x, center.y, radius, radius, math.mod(start, 360), math.mod(end, 360), colors.backgroundColor)}
 				</g>
-				<circle stroke={"none"} fill={colors.background} cx={center.x} cy={center.y} r={radius - sectorWidth} />
+				<circle stroke={"none"} fill={colors.background} cx={"50%"} cy={"50%"} r={`${innerCircleRadius * 100}%`} />
 
-				<g stroke={colors.secondary} fill={colors.secondary} strokeWidth={radius * lineWidth}>
+				<g stroke={colors.secondary} fill={colors.secondary}>
 					<LineTickSections center={center} radius={radius} textRadius={radius * 0.8} divisions={divisions} rotateText={false} />
 				</g>
 
 				{darkenIfNight()}
 			</svg>
-			<Needle angle={needleAngle} radius={radiusPercent} color={colors.accent2} animate={animate} demo={false} />
+			<Needle angle={needleAngle} radius={radius} color={colors.accent2} animate={animate} demo={false} />
 		</div>
 	);
 };
@@ -204,7 +193,7 @@ const getDivisions = (displayScale, valueToPercent, percentToangle) => {
 				let derivative = value[i + 1] - value[i] || 0.1;
 				let normalizer = Math.max(...value.map((_, innerIndex) => value[innerIndex + 1] - value[innerIndex] || 0.1));
 
-				return Math.cbrt(derivative / normalizer) / 5;
+				return Math.cbrt(derivative / normalizer) / 10;
 			},
 			textProvider: i => "",
 			angleProvider: i => (percentToangle(value[i]) / 180) * Math.PI + Math.PI,

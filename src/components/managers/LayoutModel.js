@@ -1,10 +1,16 @@
 import fallbackInstruments from "../../assets/fallbackInstruments.json";
+import CompassContainer from "../instruments/compass/CompassContainer";
+import WindContainer from "../instruments/wind/WindContainer";
+import TridataContainer from "../instruments/tridata/TridataContainer";
+import GaugeContainer from "../instruments/gauge/GaugeContainer";
+import VisualiserContainer from "../instruments/visualiser/VisualiserContainer";
+import AddInstrument from "../instruments/helpers/AddInstrument";
 
-class LayoutManager {
-	constructor(appName, appVersion, baseUrl = "", isProduction = true) {
+class LayoutModel {
+	constructor(appName, appVersion, endpoint = "", isProduction = true) {
 		this.appName = appName;
 		this.appVersion = appVersion;
-		this.endpoint = baseUrl;
+		this.endpoint = endpoint;
 		this.isProduction = isProduction;
 		console.log(this.isProduction);
 	}
@@ -23,8 +29,8 @@ class LayoutManager {
 		);
 	}
 
-	getInstruments(username) {
-		return fetch(`${this.endpoint}/signalk/v1/applicationData/user/${this.appName}/${this.appVersion}/${username}/layout`)
+	async getInstruments(username) {
+		const result = await fetch(`${this.endpoint}/signalk/v1/applicationData/user/${this.appName}/${this.appVersion}/${username}/layout`)
 			.then(response => {
 				console.log(response);
 				if (response.status === 200) {
@@ -37,6 +43,14 @@ class LayoutManager {
 				this.saveInstruments(username, []);
 				return this.isProduction ? [] : fallbackInstruments;
 			});
+
+		return result.map(instrument => {
+			instrument.instruments.forEach(item => {
+				item.component = stringToClass(item.component);
+			});
+
+			return instrument;
+		});
 	}
 
 	storeApiKey(username, key) {
@@ -66,5 +80,14 @@ class LayoutManager {
 			.catch(error => "");
 	}
 }
+export const stringToClass = string =>
+	({
+		CompassContainer: CompassContainer,
+		WindContainer: WindContainer,
+		TridataContainer: TridataContainer,
+		GaugeContainer: GaugeContainer,
+		VisualiserContainer: VisualiserContainer,
+		AddInstrument: AddInstrument,
+	}[string]);
 
-export default LayoutManager;
+export default LayoutModel;

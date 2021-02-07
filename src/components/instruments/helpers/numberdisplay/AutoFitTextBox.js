@@ -1,57 +1,34 @@
-import React from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-class AutoFitTextBox extends React.Component {
-	constructor(props) {
-		super(props);
-		this.svgTextNode = React.createRef();
-		this.state = { scale: 1 };
-	}
+// constructor(props) {
+// 	super(props);
+// 	this.svgTextNode = React.createRef();
+// }
+//
 
-	getTextBBox() {
-		return this.svgTextNode.current.getBBox();
-	}
+const AutoFitTextBox = props => {
+	// const scale = this.getTextScale(this.svgTextNode.current);
+	const { value, maxNumberOfDigits, width, height, initialFontSize, ...restOfTheProps } = props;
 
-	getTextScale(textNode) {
-		if (textNode === null) return this.props.initialFontSize;
+	const svgTextNode = useRef(React.createRef());
+	const [bbox, setBBox] = useState(null);
+	const [scale, setScale] = useState(initialFontSize);
+	useEffect(() => {
+		setBBox(svgTextNode.current.getBBox());
+	}, [svgTextNode]);
 
-		const { width, height } = this.props;
-		if (!this.bbox) {
-			this.bbox = this.getTextBBox();
+	useEffect(() => {
+		if (svgTextNode.current !== null && bbox) {
+			const widthScale = (width / bbox.width) * initialFontSize;
+			setScale(Math.min(widthScale, height));
 		}
-		const textBBox = this.bbox;
+	}, [bbox, height, initialFontSize, scale, width]);
 
-		const widthScale = (width / textBBox.width) * this.props.initialFontSize;
-		return Math.min(widthScale, height);
-	}
-
-	render() {
-		// const { scale } = this.state;
-		// // console.log(scale)
-		// const fontSize = window.getComputedStyle(this.svgTextNode.current).getPropertyValue("font-size");
-		// // console.log(fontSize);
-
-		// this.setState({ scale: scale});
-		const scale = this.getTextScale(this.svgTextNode.current);
-		// // console.log(scale, this.props.value.length)
-		const { value, maxNumberOfDigits, initialFontSize, ...restOfTheProps } = this.props;
-
-		return (
-			<text
-				ref={this.svgTextNode}
-				// fontSize={scale}
-				// fontSize={"1em"}
-				// scale={scale}
-				fontSize={scale}
-				{...restOfTheProps}
-				// y={this.props.height}
-				// y={"50%"}
-				// width={"100%"}
-				// alignmentBaseline="hanging">
-			>
-				{value.padStart(maxNumberOfDigits, " ")}
-			</text>
-		);
-	}
-}
+	return (
+		<text ref={svgTextNode} fontSize={scale} width={width} height={height} {...restOfTheProps}>
+			{value.padStart(maxNumberOfDigits, " ")}
+		</text>
+	);
+};
 
 export default AutoFitTextBox;

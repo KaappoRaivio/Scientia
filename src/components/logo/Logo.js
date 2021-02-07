@@ -27,11 +27,11 @@ class Logo extends React.Component {
 		return (
 			<div
 				className="logo-parent"
-				onTouchStart={this.handleButtonPress}
-				onTouchEnd={this.handleButtonRelease}
-				onMouseDown={this.handleButtonPress}
-				onMouseUp={this.handleButtonRelease}
-				onMouseLeave={this.handleButtonRelease}>
+				onTouchStart={this.handleButtonPress.bind(this)}
+				onTouchEnd={this.handleButtonRelease.bind(this)}
+				onMouseDown={this.handleButtonPress.bind(this)}
+				onMouseUp={this.handleButtonRelease.bind(this)}
+				onMouseLeave={this.handleButtonRelease.bind(this)}>
 				{/*<a className="logo-link" href={"https://github.com/KaappoRaivio/Scientia"} target="_blank"*/}
 				{/*   rel="noopener noreferrer">*/}
 				{/*</a>*/}

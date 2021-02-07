@@ -11,7 +11,7 @@ let production = !(!process.env.NODE_ENV || process.env.NODE_ENV === "developmen
 
 ReactDOM.render(
 	<React.StrictMode>
-		<App production={production} />
+		<App production={production} endPoint={production ? "" : "http://localhost:3000"} />
 	</React.StrictMode>,
 	document.getElementById("root")
 );

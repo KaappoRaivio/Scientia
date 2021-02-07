@@ -12,8 +12,8 @@
 	{
 		"instruments": [
 			{
-				"component": "WindContainer",
-				"additionalProps": {}
+				"component": "GaugeContainer",
+				"additionalProps": {"path":  "environment.depth.belowTransducer"}
 			}
 		],
 		"type": "single"
