@@ -134,7 +134,7 @@ Gauge.propTypes = {
 	}),
 	zones: PropTypes.array.isRequired,
 
-	value: PropTypes.number.isRequired,
+	value: PropTypes.number,
 	label: PropTypes.string.isRequired,
 	suffix: PropTypes.string.isRequired,
 	units: PropTypes.string.isRequired,

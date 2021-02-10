@@ -6,7 +6,7 @@ mkdir publish
 yarn build
 cp -r build/ publish/public
 
-cp -r package.json node_modules publish/
+cp -r package.json publish/
 cp scripts/index.js publish/
 
 

@@ -2,28 +2,14 @@ import React from "react";
 
 import "./SingleInstrumentContainer.css";
 
-const RemoveInstrument = ({ height, width, onRemoveClick, enabled }) => {
-	const svgSize = { width: width / 12, height: height / 12 };
+const RemoveInstrument = ({ onClick, enabled }) => {
 	const lineLength = 0.95;
 
-	// console.log(svgSize)
-
-	// return <div className="remove-instrument">Remove</div>
 	return (
-		<svg className={`remove-instrument ${enabled ? "" : "disabled"}`} width={svgSize.width} height={svgSize.height} onClick={onRemoveClick}>
+		<svg className={`remove-instrument ${enabled ? "" : "disabled"}`} width={"8%"} height={"8%"} onClick={onClick}>
 			<g strokeWidth={1.5} stroke={"gray"} strokeLinecap="round">
-				<line
-					x1={svgSize.width * (1 - lineLength)}
-					x2={svgSize.width * lineLength}
-					y1={svgSize.height * (1 - lineLength)}
-					y2={svgSize.height * lineLength}
-				/>
-				<line
-					x2={svgSize.width * (1 - lineLength)}
-					x1={svgSize.width * lineLength}
-					y1={svgSize.height * (1 - lineLength)}
-					y2={svgSize.height * lineLength}
-				/>
+				<line x1={`${(1 - lineLength) * 100}%`} x2={`${lineLength * 100}%`} y1={`${(1 - lineLength) * 100}%`} y2={`${lineLength * 100}%`} />
+				<line x2={`${(1 - lineLength) * 100}%`} x1={`${lineLength * 100}%`} y1={`${(1 - lineLength) * 100}%`} y2={`${lineLength * 100}%`} />
 			</g>
 		</svg>
 	);

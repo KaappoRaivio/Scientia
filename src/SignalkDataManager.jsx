@@ -14,11 +14,7 @@ const useSignalkState = (address, HTTPServerRoot) => {
 			delta => {
 				deltaAssembler.onDelta(delta);
 			},
-			status => {
-				// console.log(status);
-				setSocketManagerStatus(status);
-			},
-			"/signalk/v1/stream/?subscribe=none"
+			setSocketManagerStatus
 		);
 		websocketManager.open();
 	}, [HTTPServerRoot, address]);
@@ -26,21 +22,33 @@ const useSignalkState = (address, HTTPServerRoot) => {
 	return { signalkState, connectionStatus: socketManagerStatus };
 };
 
-const SignalkDataManager = ({ children, appName, appVersion, endPoint, production, username }) => {
+const useInstrumentLayoutManager = (appName, appVersion, endPoint, production, username) => {
 	const [instruments, setInstruments] = useState([]);
+	const [layoutManager] = useState(() => new LayoutModel(appName, appVersion, endPoint, production));
 	useEffect(() => {
-		const layoutManager = new LayoutModel(appName, appVersion, endPoint, production);
 		layoutManager.getInstruments(username).then(setInstruments);
-	}, [appName, appVersion, endPoint, production, username]);
+	}, [appName, appVersion, endPoint, layoutManager, production, username]);
+
+	const updateInstruments = newInstruments => {
+		console.log(newInstruments);
+		setInstruments(newInstruments);
+		layoutManager.saveInstruments(username, newInstruments);
+	};
+
+	return { instruments, updateInstruments };
+};
+
+const SignalkDataManager = ({ children, appName, appVersion, endPoint, production, username }) => {
+	const { instruments, updateInstruments } = useInstrumentLayoutManager(appName, appVersion, endPoint, production, username);
 
 	let url = window.location.href;
 	let ws = "ws:" + url.split(":")[1] + ":3000";
-	const HTTPServerRoot = "http:" + ws.split(":").slice(1, 10).join(":");
+	const HTTPServerRoot = "http:" + ws.split(":").slice(1).join(":");
 	const { signalkState, connectionStatus } = useSignalkState(ws, HTTPServerRoot);
 
 	return React.Children.map(children, child => {
 		if (React.isValidElement(child)) {
-			return React.cloneElement(child, { instruments, signalkState, connectionStatus });
+			return React.cloneElement(child, { instruments, signalkState, connectionStatus, updateInstruments });
 		} else {
 			return child;
 		}

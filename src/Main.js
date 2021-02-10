@@ -13,13 +13,22 @@ const getInitialSettings = () => ({
 	animationsAccordingToChargingStatus: true,
 });
 
-const Main = ({ parentStyle, colors, instruments, signalkState, connectionStatus }) => {
+const Main = ({ parentStyle, colors, instruments, signalkState, connectionStatus, updateInstruments }) => {
 	const [layoutEditingEnabled, setLayoutEditingEnabled] = useState(false);
 	const [settingsPaneOpen, setSettingsPaneOpen] = useState(false);
 
 	useEffect(() => {
 		setLayoutEditingEnabled(instruments.length === 0);
 	}, [instruments]);
+
+	const onInstrumentAdded = instrument => {
+		updateInstruments(instruments.concat(instrument));
+	};
+
+	const onInstrumentRemoved = index => {
+		console.log(index);
+		updateInstruments(instruments.slice(0, index).concat(instruments.slice(index + 1)));
+	};
 
 	return (
 		// <div>main</div>
@@ -44,8 +53,8 @@ const Main = ({ parentStyle, colors, instruments, signalkState, connectionStatus
 				settings={{ animation: false, darkMode: false }}
 				colors={colors}
 				instruments={instruments}
-				onInstrumentAdded={console.log}
-				onInstrumentRemoved={console.log}
+				onInstrumentAdded={onInstrumentAdded}
+				onInstrumentRemoved={onInstrumentRemoved}
 				onInstrumentChanged={console.log}
 				layoutEditingEnabled={layoutEditingEnabled}
 				signalkState={signalkState}

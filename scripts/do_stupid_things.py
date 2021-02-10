@@ -6,15 +6,15 @@ def login(s, username, password):
 	return s.post(f"http://{root}:3000/signalk/v1/auth/login", json={"username": username, "password": password})
 
 def get(s, username, path):
-	return s.get(f"http://{root}:3000/signalk/v1/applicationData/user/signalk-scientia-kraivio/0.1.8/{username}/{path}")
+	return s.get(f"http://{root}:3000/signalk/v1/applicationData/user/signalk-scientia-kraivio/0.2.1/{username}/{path}")
 
 def set(s, username, path, json):
-	return s.post(f"http://{root}:3000/signalk/v1/applicationData/user/signalk-scientia-kraivio/0.1.8/{username}/{path}", json=json)
+	return s.post(f"http://{root}:3000/signalk/v1/applicationData/user/signalk-scientia-kraivio/0.2.1/{username}/{path}", json=json)
 
 
 s = requests.Session()
-username = "admin"
-password = "admin"
+username = "scientia-test"
+password = "scientia-best"
 
 # username = "scientia-test"
 # password = "scientia-best"

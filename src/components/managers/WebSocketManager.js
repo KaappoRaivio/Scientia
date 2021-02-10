@@ -5,12 +5,12 @@ export default class WebSocketManager {
 	static STATUS_CONNECTED = 3;
 	static STATUS_ERROR = 4;
 
-	constructor(address, onDelta, onStatusChangeCallback, endpoint) {
+	constructor(address, onDelta, onStatusChangeCallback) {
 		this.address = address;
 		this.onDelta = onDelta;
 		this.onStatusChangeCallback = onStatusChangeCallback;
-		this.endpoint = endpoint;
 		this.connected = false;
+		this.endpoint = "/signalk/v1/stream/?subscribe=none";
 	}
 
 	changeAddress(newAddress) {

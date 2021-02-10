@@ -32,15 +32,9 @@ class GaugeContainer extends React.Component {
 	};
 
 	render() {
-		const { path, width, animate, height, colors, darkMode, data } = this.props;
+		const { path, width, animation, height, colors, darkMode, data } = this.props;
 
 		const value = getByStringPath(path, data.vessels.self);
-		// console.log(value)
-
-		// if (path === "performance.polarSpeed")
-		//     console.log(value)
-
-		// return <NonNull colors={colors} height={height} width={width} value={value} displayScaleUpper={value.meta.displayScale.upper} displayScaleLower={value.meta.displayScale.lower}>
 		return (
 			<Gauge
 				zones={value.meta.zones}
@@ -50,7 +44,7 @@ class GaugeContainer extends React.Component {
 				darkMode={darkMode}
 				displayScale={value.meta.displayScale}
 				value={value.value}
-				animate={animate}
+				animate={animation}
 				units={value.meta.units}
 				label={value.meta.displayName}
 				suffix={""}

@@ -146,7 +146,6 @@ const myComponentMapper = {
 
 const SettingsForm = ({ onSettingsUpdate, requestClosing, initialValues, schema, buttonsInDocumentFlow }) => {
 	const onSubmit = (values, formApi) => {
-		console.log(formApi, values);
 		onSettingsUpdate(values);
 		requestClosing();
 	};

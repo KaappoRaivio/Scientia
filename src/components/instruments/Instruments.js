@@ -4,107 +4,51 @@ import "./Instruments.css";
 import "./helpers/QuadrantInstrumentContainer.css";
 
 import SingleInstrumentContainer from "./helpers/SingleInstrumentContainer";
-import QuadrantInstrumentContainer from "./helpers/QuadrantInstrumentContainer";
 import AddInstrument from "./helpers/AddInstrument";
-import WindContainer from "./wind/WindContainer";
-import CompassContainer from "./compass/CompassContainer";
-import TridataContainer from "./tridata/TridataContainer";
-import GaugeContainer from "./gauge/GaugeContainer";
-import VisualiserContainer from "./visualiser/VisualiserContainer";
 
-class Instruments extends React.Component {
-	render() {
-		const {
-			colors,
-			instruments,
-			onInstrumentAdded,
-			onInstrumentRemoved,
-			onInstrumentChanged,
-			layoutEditingEnabled,
-			signalkState,
-			settings,
-		} = this.props;
-		const { animation, darkMode } = settings;
+const Instruments = ({
+	colors,
+	instruments,
+	onInstrumentAdded,
+	onInstrumentRemoved,
+	onInstrumentChanged,
+	layoutEditingEnabled,
+	signalkState,
+	settings: { animation, darkMode },
+}) => {
+	const additionalProps = { animation, darkMode, data: signalkState };
+	return (
+		<div className="instrument-grid-container">
+			{instruments.map((instrument, index) => {
+				if (instrument.type === "single") {
+					const component = instrument.instruments[0];
 
-		return (
-			<div className="instrument-grid-container">
-				{instruments.map((instrument, index) => {
-					if (instrument.type === "single") {
-						const component = instrument.instruments[0];
+					return (
+						<SingleInstrumentContainer
+							children={component.component}
+							additionalProps={{ ...component.additionalProps, ...additionalProps }}
+							colors={colors}
+							onRemoveClick={onInstrumentRemoved}
+							index={index}
+							layoutEditingEnabled={layoutEditingEnabled}
+						/>
+					);
+				} else {
+					return <div>Unknown instrument type {instrument.type}</div>;
+				}
+			})}
 
-						return (
-							<SingleInstrumentContainer
-								animate={animation}
-								darkMode={darkMode}
-								colors={colors}
-								children={component.component}
-								data={signalkState}
-								additionalProps={component.additionalProps}
-								resizeDebounce={0}
-								forceResize={true}
-								onRemoveClick={onInstrumentRemoved}
-								index={index}
-								layoutEditingEnabled={layoutEditingEnabled}
-							/>
-						);
-					} else if (instrument.type === "quadrant") {
-						return (
-							<QuadrantInstrumentContainer
-								layoutEditingEnabled={layoutEditingEnabled}
-								onInstrumentChanged={onInstrumentChanged}
-								onRemoveClick={onInstrumentRemoved}
-								index={index}
-								colors={colors}
-								animation={animation}
-								data={instrument.instruments}>
-								{instrument.instruments.map((quadrant, innerIndex) => {
-									return (
-										<SingleInstrumentContainer
-											animate={animation}
-											darkMode={darkMode}
-											colors={colors}
-											children={quadrant.component}
-											data={signalkState}
-											additionalProps={quadrant.additionalProps}
-											resizeDebounce={0}
-											forceResize={true}
-											onRemoveClick={_ => {
-												let newInstruments = instrument.instruments
-													.slice(0, innerIndex)
-													.concat(instrument.instruments.slice(innerIndex + 1));
-
-												onInstrumentChanged(index, {
-													type: "quadrant",
-													instruments: newInstruments,
-												});
-											}}
-											index={innerIndex}
-											layoutEditingEnabled={layoutEditingEnabled}
-										/>
-									);
-								})}
-							</QuadrantInstrumentContainer>
-						);
-					} else {
-						return <div>Unknown instrument type {instrument.type}</div>;
-					}
-				})}
-
-				{layoutEditingEnabled && (
-					<SingleInstrumentContainer
-						children={AddInstrument}
-						data={signalkState}
-						additionalProps={{ onInstrumentAdded }}
-						animate={animation}
-						darkMode={darkMode}
-						colors={colors}
-						forceResize={true}
-						layoutEditingEnabled={false}
-					/>
-				)}
-			</div>
-		);
-	}
-}
+			{layoutEditingEnabled && (
+				<SingleInstrumentContainer
+					children={AddInstrument}
+					data={signalkState}
+					additionalProps={{ ...additionalProps, onInstrumentAdded }}
+					colors={colors}
+					layoutEditingEnabled={false}
+				/>
+			)}
+		</div>
+	);
+};
 
 export default Instruments;

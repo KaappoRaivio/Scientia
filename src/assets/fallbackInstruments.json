@@ -1,22 +1,9 @@
 [
-
 	{
-		"instruments": [
-			{
-				"component": "WindContainer",
-				"additionalProps": {}
-			}
-		],
-		"type": "single"
-	},
-	{
-		"instruments": [
-			{
-				"component": "GaugeContainer",
-				"additionalProps": {"path":  "environment.depth.belowTransducer"}
-			}
-		],
-		"type": "single"
+		"type": "leaf",
+		"component": "GaugeContainer",
+		"additionalProps": {
+			"path": "environment.depth.belowTransducer"
+		}
 	}
-
 ]

@@ -106,7 +106,7 @@ const AddInstrument = ({ onInstrumentAdded, width, height, colors, darkMode, isQ
 				type: "single",
 				instruments: [
 					{
-						component: item.component,
+						component: stringToClass(item.component),
 						additionalProps: options,
 					},
 				],

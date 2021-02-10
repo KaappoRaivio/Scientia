@@ -6,6 +6,20 @@ import GaugeContainer from "../instruments/gauge/GaugeContainer";
 import VisualiserContainer from "../instruments/visualiser/VisualiserContainer";
 import AddInstrument from "../instruments/helpers/AddInstrument";
 
+const serializeInstruments = instruments => {
+	let s = JSON.stringify(
+		instruments.map(instrument => ({
+			instruments: instrument.instruments.map(_instrument => ({
+				additionalProps: _instrument.additionalProps,
+				component: classToString(_instrument.component),
+			})),
+			type: instrument.type,
+		}))
+	);
+	console.log(s, JSON.stringify(instruments));
+	return s;
+};
+
 class LayoutModel {
 	constructor(appName, appVersion, endpoint = "", isProduction = true) {
 		this.appName = appName;
@@ -21,7 +35,7 @@ class LayoutModel {
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify(instruments),
+			body: serializeInstruments(instruments),
 		}).then(response =>
 			response.ok
 				? console.log("Saved instruments successfully!")
@@ -43,14 +57,16 @@ class LayoutModel {
 				this.saveInstruments(username, []);
 				return this.isProduction ? [] : fallbackInstruments;
 			});
-
-		return result.map(instrument => {
+		console.log(result);
+		const map = result.map(instrument => {
 			instrument.instruments.forEach(item => {
 				item.component = stringToClass(item.component);
 			});
 
 			return instrument;
 		});
+		console.log(map);
+		return map;
 	}
 
 	storeApiKey(username, key) {
@@ -88,6 +104,16 @@ export const stringToClass = string =>
 		GaugeContainer: GaugeContainer,
 		VisualiserContainer: VisualiserContainer,
 		AddInstrument: AddInstrument,
+	}[string]);
+
+export const classToString = string =>
+	({
+		[CompassContainer]: "CompassContainer",
+		[WindContainer]: "WindContainer",
+		[TridataContainer]: "TridataContainer",
+		[GaugeContainer]: "GaugeContainer",
+		[VisualiserContainer]: "VisualiserContainer",
+		[AddInstrument]: "AddInstrument",
 	}[string]);
 
 export default LayoutModel;

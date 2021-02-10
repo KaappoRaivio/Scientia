@@ -1,0 +1,68 @@
+[
+	{
+		"type": "branch",
+		"children": [
+			{
+				"type": "branch",
+				"children": [
+					{
+						"type": "leaf",
+						"component": "GaugeContainer",
+						"additionalProps": {
+							"path": "environment.depth.belowTransducer"
+						}
+					},
+					{
+						"type": "leaf",
+						"component": "GaugeContainer",
+						"additionalProps": {
+							"path": "environment.depth.belowTransducer"
+						}
+					},
+					{
+						"type": "leaf",
+						"component": "GaugeContainer",
+						"additionalProps": {
+							"path": "environment.depth.belowTransducer"
+						}
+					},
+					{
+						"type": "leaf",
+						"component": "GaugeContainer",
+						"additionalProps": {
+							"path": "environment.depth.belowTransducer"
+						}
+					}
+				]
+			},
+			{
+				"type": "leaf",
+				"component": "GaugeContainer",
+				"additionalProps": {
+					"path": "environment.depth.belowTransducer"
+				}
+			},
+			{
+				"type": "leaf",
+				"component": "GaugeContainer",
+				"additionalProps": {
+					"path": "environment.depth.belowTransducer"
+				}
+			},
+			{
+				"type": "leaf",
+				"component": "GaugeContainer",
+				"additionalProps": {
+					"path": "environment.depth.belowTransducer"
+				}
+			}
+		]
+	},
+	{
+		"type": "leaf",
+		"component": "GaugeContainer",
+		"additionalProps": {
+			"path": "environment.depth.belowTransducer"
+		}
+	}
+]

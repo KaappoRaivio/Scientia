@@ -151,7 +151,7 @@ export class LineTickSections extends React.Component {
 				lineLength: PropTypes.oneOfType([PropTypes.func, PropTypes.number]).isRequired,
 				angleProvider: PropTypes.func.isRequired,
 				textProvider: PropTypes.func.isRequired,
-				strokeWidthMultiplier: PropTypes.number.isRequired,
+				strokeWidthMultiplier: PropTypes.number,
 			})
 		),
 		rotateText: PropTypes.bool.isRequired,
