@@ -1,9 +1,60 @@
-[
-	{
-		"type": "leaf",
-		"component": "GaugeContainer",
-		"additionalProps": {
-			"path": "environment.depth.belowTransducer"
+{
+	"type": "branch",
+	"children": [
+		{
+			"type": "leaf",
+			"component": {
+				"class": "GaugeContainer",
+				"additionalProps": {
+					"path": "environment.depth.belowTransducer"
+				}
+			}
+		},
+		{
+			"type": "branch",
+			"children": [
+				{
+					"type": "leaf",
+					"component": {
+						"class": "GaugeContainer",
+						"additionalProps": {
+							"path": "environment.depth.belowTransducer"
+						}
+					}
+				},
+				{
+					"type": "leaf",
+					"component": {
+						"class": "GaugeContainer",
+						"additionalProps": {
+							"path": "environment.depth.belowTransducer"
+						}
+					}
+				},
+				{
+					"type": "branch",
+					"children": [
+						{
+							"type": "leaf",
+							"component": {
+								"class": "GaugeContainer",
+								"additionalProps": {
+									"path": "environment.depth.belowTransducer"
+								}
+							}
+						},
+						{
+							"type": "leaf",
+							"component": {
+								"class": "GaugeContainer",
+								"additionalProps": {
+									"path": "environment.depth.belowTransducer"
+								}
+							}
+						}
+					]
+				}
+			]
 		}
-	}
-]
+	]
+}

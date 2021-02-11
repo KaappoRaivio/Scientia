@@ -5,6 +5,7 @@ import "./helpers/QuadrantInstrumentContainer.css";
 
 import SingleInstrumentContainer from "./helpers/SingleInstrumentContainer";
 import AddInstrument from "./helpers/AddInstrument";
+import InstrumentTreeNode from "../InstrumentTreeNode";
 
 const Instruments = ({
 	colors,
@@ -19,24 +20,31 @@ const Instruments = ({
 	const additionalProps = { animation, darkMode, data: signalkState };
 	return (
 		<div className="instrument-grid-container">
-			{instruments.map((instrument, index) => {
-				if (instrument.type === "single") {
-					const component = instrument.instruments[0];
+			<InstrumentTreeNode
+				branch={instruments}
+				additionalProps={additionalProps}
+				colors={colors}
+				onInstrumentRemoved={onInstrumentRemoved}
+				layoutEditingEnabled={layoutEditingEnabled}
+			/>
+			{/*{instruments.map((node, index) => {*/}
+			{/*	if (node.type === "leaf") {*/}
+			{/*		const component = node.component;*/}
 
-					return (
-						<SingleInstrumentContainer
-							children={component.component}
-							additionalProps={{ ...component.additionalProps, ...additionalProps }}
-							colors={colors}
-							onRemoveClick={onInstrumentRemoved}
-							index={index}
-							layoutEditingEnabled={layoutEditingEnabled}
-						/>
-					);
-				} else {
-					return <div>Unknown instrument type {instrument.type}</div>;
-				}
-			})}
+			{/*		return (*/}
+			{/*			<SingleInstrumentContainer*/}
+			{/*				element={component.class}*/}
+			{/*				additionalProps={{ ...component.additionalProps, ...additionalProps }}*/}
+			{/*				colors={colors}*/}
+			{/*				onRemoveClick={onInstrumentRemoved}*/}
+			{/*				index={index}*/}
+			{/*				layoutEditingEnabled={layoutEditingEnabled}*/}
+			{/*			/>*/}
+			{/*		);*/}
+			{/*	} else {*/}
+			{/*		return <div>Unknown instrument type {node.type}</div>;*/}
+			{/*	}*/}
+			{/*})}*/}
 
 			{layoutEditingEnabled && (
 				<SingleInstrumentContainer

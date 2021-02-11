@@ -4,7 +4,7 @@ import "../Instruments.css";
 import "./SingleInstrumentContainer.css";
 import RemoveInstrument from "./RemoveInstrument";
 
-const SingleInstrumentContainer = ({ additionalProps, children, colors, index, layoutEditingEnabled, onRemoveClick }) => {
+const SingleInstrumentContainer = ({ additionalProps, id, element, colors, index, layoutEditingEnabled, onRemoveClick }) => {
 	const probe = useRef(React.createRef());
 	const sideLength = probe.current?.offsetWidth || 0;
 
@@ -22,8 +22,8 @@ const SingleInstrumentContainer = ({ additionalProps, children, colors, index, l
 		backgroundColor: colors.background,
 	};
 
-	if (children == null) {
-		return <div>No children</div>;
+	if (element == null) {
+		return <div>No element</div>;
 	}
 
 	return (
@@ -34,10 +34,8 @@ const SingleInstrumentContainer = ({ additionalProps, children, colors, index, l
 				}}
 				enabled={layoutEditingEnabled}
 			/>
-			<div className="single-flexbox-wrapper">
-				{React.createElement(children, childProps, [])}
-				<div className="probe" ref={probe} />
-			</div>
+			<div className="single-flexbox-wrapper">{React.createElement(element, childProps, [])}</div>
+			<div className="probe" ref={probe} />
 		</div>
 	);
 };

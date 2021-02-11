@@ -57,16 +57,17 @@ class LayoutModel {
 				this.saveInstruments(username, []);
 				return this.isProduction ? [] : fallbackInstruments;
 			});
-		console.log(result);
-		const map = result.map(instrument => {
-			instrument.instruments.forEach(item => {
-				item.component = stringToClass(item.component);
-			});
 
-			return instrument;
-		});
-		console.log(map);
-		return map;
+		const fillBranch = node => {
+			if (node.type === "leaf") {
+				node.component.class = stringToClass(node.component.class);
+			} else {
+				node.children.forEach(fillBranch);
+			}
+		};
+
+		fillBranch(result);
+		return result;
 	}
 
 	storeApiKey(username, key) {

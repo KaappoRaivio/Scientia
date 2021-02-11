@@ -16,6 +16,7 @@ const getInitialSettings = () => ({
 const Main = ({ parentStyle, colors, instruments, signalkState, connectionStatus, updateInstruments }) => {
 	const [layoutEditingEnabled, setLayoutEditingEnabled] = useState(false);
 	const [settingsPaneOpen, setSettingsPaneOpen] = useState(false);
+	const [settings, setSettings] = useState(getInitialSettings());
 
 	useEffect(() => {
 		setLayoutEditingEnabled(instruments.length === 0);
@@ -36,7 +37,7 @@ const Main = ({ parentStyle, colors, instruments, signalkState, connectionStatus
 			<SettingsDialog
 				isModalOpen={settingsPaneOpen}
 				requestClosing={() => setSettingsPaneOpen(false)}
-				initialValues={getInitialSettings()}
+				initialValues={settings}
 				onSettingsUpdate={console.log}
 				colors={colors}
 				appElement={Main}
@@ -50,7 +51,7 @@ const Main = ({ parentStyle, colors, instruments, signalkState, connectionStatus
 				onLogout={console.log}
 			/>
 			<Instruments
-				settings={{ animation: false, darkMode: false }}
+				settings={settings}
 				colors={colors}
 				instruments={instruments}
 				onInstrumentAdded={onInstrumentAdded}
