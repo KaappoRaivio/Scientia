@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import "../Instruments.css";
 import "./SingleInstrumentContainer.css";
@@ -6,7 +6,26 @@ import RemoveInstrument from "./RemoveInstrument";
 
 const SingleInstrumentContainer = ({ additionalProps, id, element, colors, index, layoutEditingEnabled, onRemoveClick }) => {
 	const probe = useRef(React.createRef());
-	const sideLength = probe.current?.offsetWidth || 0;
+	const [sideLength, setSideLength] = useState(0);
+	const width = probe.current?.offsetWidth;
+	useEffect(() => {
+		setSideLength(probe.current?.offsetWidth);
+	}, [width]);
+
+	useEffect(() => {
+		const handler = () => {
+			setSideLength(probe.current?.offsetWidth);
+		};
+
+		let timeoutID = null;
+		const resizeListener = () => {
+			clearTimeout(timeoutID);
+			timeoutID = setTimeout(handler, 500);
+		};
+
+		window.addEventListener("resize", resizeListener);
+		return () => window.removeEventListener("resize", resizeListener);
+	}, []);
 
 	const childProps = {
 		width: sideLength,
@@ -28,12 +47,7 @@ const SingleInstrumentContainer = ({ additionalProps, id, element, colors, index
 
 	return (
 		<div className="single-grid-item with-shadow" style={parentStyle}>
-			<RemoveInstrument
-				onClick={() => {
-					onRemoveClick(index);
-				}}
-				enabled={layoutEditingEnabled}
-			/>
+			<RemoveInstrument onClick={() => onRemoveClick(id)} enabled={layoutEditingEnabled} />
 			<div className="single-flexbox-wrapper">{React.createElement(element, childProps, [])}</div>
 			<div className="probe" ref={probe} />
 		</div>

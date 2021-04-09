@@ -30,7 +30,7 @@ const useInstrumentLayoutManager = (appName, appVersion, endPoint, production, u
 	}, [appName, appVersion, endPoint, layoutManager, production, username]);
 
 	const updateInstruments = newInstruments => {
-		console.log(newInstruments);
+		console.log("Setting state!");
 		setInstruments(newInstruments);
 		layoutManager.saveInstruments(username, newInstruments);
 	};

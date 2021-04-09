@@ -2,26 +2,8 @@
 	"type": "branch",
 	"children": [
 		{
-			"type": "leaf",
-			"component": {
-				"class": "GaugeContainer",
-				"additionalProps": {
-					"path": "environment.depth.belowTransducer"
-				}
-			}
-		},
-		{
 			"type": "branch",
 			"children": [
-				{
-					"type": "leaf",
-					"component": {
-						"class": "GaugeContainer",
-						"additionalProps": {
-							"path": "environment.depth.belowTransducer"
-						}
-					}
-				},
 				{
 					"type": "leaf",
 					"component": {
@@ -39,7 +21,7 @@
 							"component": {
 								"class": "GaugeContainer",
 								"additionalProps": {
-									"path": "environment.depth.belowTransducer"
+									"path": "electrical.batteries.1.current"
 								}
 							}
 						},
@@ -48,13 +30,64 @@
 							"component": {
 								"class": "GaugeContainer",
 								"additionalProps": {
-									"path": "environment.depth.belowTransducer"
+									"path": "electrical.batteries.1.voltage"
 								}
 							}
 						}
 					]
+				},
+				{
+					"type": "branch",
+					"children": [
+						{
+							"type": "leaf",
+							"component": {
+								"class": "GaugeContainer",
+								"additionalProps": {
+									"path": "environment.wind.speedTrue"
+								}
+							}
+						},
+						{
+							"type": "leaf",
+							"component": {
+								"class": "GaugeContainer",
+								"additionalProps": {
+									"path": "environment.wind.speedApparent"
+								}
+							}
+						},
+						{
+							"type": "leaf",
+							"component": {
+								"class": "WindContainer",
+								"additionalProps": {}
+							}
+						}
+					]
+				},
+				{
+					"type": "leaf",
+					"component": {
+						"class": "CompassContainer",
+						"additionalProps": {}
+					}
 				}
 			]
+		},
+		{
+			"type": "leaf",
+			"component": {
+				"class": "TridataContainer",
+				"additionalProps": {
+					"paths": [
+						"navigation.position.latitude",
+						"navigation.position.longitude",
+						"navigation.speedThroughWater",
+						"navigation.speedOverGround"
+					]
+				}
+			}
 		}
 	]
 }

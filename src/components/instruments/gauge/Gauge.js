@@ -29,6 +29,7 @@ const Gauge = ({
 	displayScale,
 	zones,
 
+	path,
 	value,
 	label,
 	suffix,
@@ -47,7 +48,7 @@ const Gauge = ({
 	};
 
 	if (displayScale == null) {
-		return <NoData colors={colors} height={"25%"} width={"50%"} />;
+		return <NoData colors={colors} height={"25%"} width={"50%"} path={path} />;
 	}
 
 	const valueToPercent = valueToPercentConverters[displayScale.type || "linear"](displayScale.upper, displayScale.lower, displayScale.power);
@@ -88,6 +89,7 @@ const Gauge = ({
 					colors={colors}
 					zones={zones}
 					darkMode={darkMode}
+					path={path}
 				/>
 			</div>
 
@@ -134,6 +136,7 @@ Gauge.propTypes = {
 	}),
 	zones: PropTypes.array.isRequired,
 
+	path: PropTypes.string.isRequired,
 	value: PropTypes.number,
 	label: PropTypes.string.isRequired,
 	suffix: PropTypes.string.isRequired,

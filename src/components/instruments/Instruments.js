@@ -25,36 +25,9 @@ const Instruments = ({
 				additionalProps={additionalProps}
 				colors={colors}
 				onInstrumentRemoved={onInstrumentRemoved}
+				onInstrumentAdded={onInstrumentAdded}
 				layoutEditingEnabled={layoutEditingEnabled}
 			/>
-			{/*{instruments.map((node, index) => {*/}
-			{/*	if (node.type === "leaf") {*/}
-			{/*		const component = node.component;*/}
-
-			{/*		return (*/}
-			{/*			<SingleInstrumentContainer*/}
-			{/*				element={component.class}*/}
-			{/*				additionalProps={{ ...component.additionalProps, ...additionalProps }}*/}
-			{/*				colors={colors}*/}
-			{/*				onRemoveClick={onInstrumentRemoved}*/}
-			{/*				index={index}*/}
-			{/*				layoutEditingEnabled={layoutEditingEnabled}*/}
-			{/*			/>*/}
-			{/*		);*/}
-			{/*	} else {*/}
-			{/*		return <div>Unknown instrument type {node.type}</div>;*/}
-			{/*	}*/}
-			{/*})}*/}
-
-			{layoutEditingEnabled && (
-				<SingleInstrumentContainer
-					children={AddInstrument}
-					data={signalkState}
-					additionalProps={{ ...additionalProps, onInstrumentAdded }}
-					colors={colors}
-					layoutEditingEnabled={false}
-				/>
-			)}
 		</div>
 	);
 };

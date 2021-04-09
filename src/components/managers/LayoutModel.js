@@ -6,18 +6,25 @@ import GaugeContainer from "../instruments/gauge/GaugeContainer";
 import VisualiserContainer from "../instruments/visualiser/VisualiserContainer";
 import AddInstrument from "../instruments/helpers/AddInstrument";
 
+const replaceClassesWithStrings = node => {
+	if (node.type === "leaf") {
+		return {
+			type: "leaf",
+			component: {
+				...node.component,
+				class: classToString(node.component.class),
+			},
+		};
+	} else if (node.type === "branch") {
+		return {
+			type: "branch",
+			children: node.children.map(replaceClassesWithStrings),
+		};
+	}
+};
+
 const serializeInstruments = instruments => {
-	let s = JSON.stringify(
-		instruments.map(instrument => ({
-			instruments: instrument.instruments.map(_instrument => ({
-				additionalProps: _instrument.additionalProps,
-				component: classToString(_instrument.component),
-			})),
-			type: instrument.type,
-		}))
-	);
-	console.log(s, JSON.stringify(instruments));
-	return s;
+	return JSON.stringify(replaceClassesWithStrings(instruments));
 };
 
 class LayoutModel {
@@ -54,8 +61,8 @@ class LayoutModel {
 				}
 			})
 			.catch(error => {
-				this.saveInstruments(username, []);
-				return this.isProduction ? [] : fallbackInstruments;
+				this.saveInstruments(username, { type: "branch", children: [] });
+				return this.isProduction ? { type: "branch", children: [] } : fallbackInstruments;
 			});
 
 		const fillBranch = node => {

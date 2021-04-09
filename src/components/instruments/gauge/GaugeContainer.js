@@ -35,6 +35,7 @@ class GaugeContainer extends React.Component {
 		const { path, width, animation, height, colors, darkMode, data } = this.props;
 
 		const value = getByStringPath(path, data.vessels.self);
+
 		return (
 			<Gauge
 				zones={value.meta.zones}
@@ -43,6 +44,7 @@ class GaugeContainer extends React.Component {
 				colors={colors}
 				darkMode={darkMode}
 				displayScale={value.meta.displayScale}
+				path={path}
 				value={value.value}
 				animate={animation}
 				units={value.meta.units}

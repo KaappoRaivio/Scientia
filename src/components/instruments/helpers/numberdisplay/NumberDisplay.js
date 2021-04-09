@@ -46,10 +46,10 @@ const NumberDisplay = ({
 	debug,
 	darkMode,
 	isNumber,
+	path,
 }) => {
 	if (isStillLoading(decimalPlaces, label, units, value, displayScale?.upper, displayScale?.lower)) {
-		// console.log("asdasd", decimalPlaces, label, units, value, displayScale)
-		return <NoData style={{ fontWeight: "bold" }} width={width} height={height} colors={colors} />;
+		return <NoData style={{ fontWeight: "bold" }} width={width} height={height} colors={colors} path={path} />;
 	}
 
 	const actualWidth = width * 0.94;
@@ -152,6 +152,8 @@ NumberDisplay.propTypes = {
 	displayScale: PropTypes.object,
 	zones: PropTypes.array,
 	darkMode: PropTypes.bool.isRequired,
+
+	path: PropTypes.string,
 };
 
 export default NumberDisplay;

@@ -5,6 +5,8 @@ import Instruments from "./components/instruments/Instruments";
 import Logo from "./components/logo/Logo";
 import Done from "./assets/done.svg";
 import Wrench from "./assets/wrench.svg";
+import _ from "lodash";
+import WindContainer from "./components/instruments/wind/WindContainer";
 
 const getInitialSettings = () => ({
 	animation: false,
@@ -13,22 +15,72 @@ const getInitialSettings = () => ({
 	animationsAccordingToChargingStatus: true,
 });
 
+const removeInstrument = (instruments, id) => {
+	const indices = id
+		.split(".")
+		.slice(1)
+		.map(a => parseInt(a));
+
+	const clonedInstruments = _.cloneDeep(instruments);
+
+	let nodeToRemove = clonedInstruments;
+	for (let i = 0; i < indices.length; i++) {
+		const childIndex = indices[i];
+		console.log(childIndex);
+		if (nodeToRemove.type === "branch") {
+			if (i === indices.length - 1) {
+				nodeToRemove.children = nodeToRemove.children.slice(0, childIndex).concat(nodeToRemove.children.slice(childIndex + 1));
+			} else {
+				nodeToRemove = nodeToRemove.children[childIndex];
+			}
+		}
+	}
+
+	return clonedInstruments;
+};
+
 const Main = ({ parentStyle, colors, instruments, signalkState, connectionStatus, updateInstruments }) => {
 	const [layoutEditingEnabled, setLayoutEditingEnabled] = useState(false);
 	const [settingsPaneOpen, setSettingsPaneOpen] = useState(false);
 	const [settings, setSettings] = useState(getInitialSettings());
 
 	useEffect(() => {
-		setLayoutEditingEnabled(instruments.length === 0);
+		const timeout = setTimeout(() => {
+			if (instruments.length === 0) setLayoutEditingEnabled(true);
+		}, 1000);
+
+		return () => clearTimeout(timeout);
 	}, [instruments]);
 
-	const onInstrumentAdded = instrument => {
-		updateInstruments(instruments.concat(instrument));
+	const onInstrumentAdded = (id, node) => {
+		// const cloned =
+		const indices = id
+			.split(".")
+			.slice(1)
+			.map(a => parseInt(a));
+
+		// let clonedInstruments = _.map(instruments, _.clone);
+		const clonedInstruments = _.cloneDeep(instruments);
+		let nodeToAdd = clonedInstruments;
+		for (const childIndex of indices) {
+			console.log(nodeToAdd);
+			if (nodeToAdd.type === "branch") {
+				nodeToAdd = nodeToAdd.children[childIndex];
+			} else {
+				throw Error(`Something happened, got indices ${indices}, but encountered leaf node before the end of them.`);
+			}
+		}
+
+		nodeToAdd.children.push(node);
+		updateInstruments(clonedInstruments);
+		// updateInstruments({
+		// 	type: "branch",
+		// 	children: instruments.children.concat(instrument),
+		// });
 	};
 
-	const onInstrumentRemoved = index => {
-		console.log(index);
-		updateInstruments(instruments.slice(0, index).concat(instruments.slice(index + 1)));
+	const onInstrumentRemoved = id => {
+		updateInstruments(removeInstrument(instruments, id));
 	};
 
 	return (
@@ -64,7 +116,13 @@ const Main = ({ parentStyle, colors, instruments, signalkState, connectionStatus
 				<button className="open-menu-wrapper" onClick={() => setSettingsPaneOpen(true)}>
 					configure
 				</button>
-				<ToggleLayoutEditing editingEnabled={layoutEditingEnabled} onChange={setLayoutEditingEnabled} />
+				<ToggleLayoutEditing
+					editingEnabled={layoutEditingEnabled}
+					onChange={newValue => {
+						console.log(newValue);
+						setLayoutEditingEnabled(newValue);
+					}}
+				/>
 			</div>
 			<Logo />
 		</div>

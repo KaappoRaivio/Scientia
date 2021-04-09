@@ -1,11 +1,14 @@
 import React from "react";
 import SingleInstrumentContainer from "./instruments/helpers/SingleInstrumentContainer";
 import Quadrants from "./instruments/Quadrants";
+import AddInstrument from "./instruments/helpers/AddInstrument";
+import RemoveInstrument from "./instruments/helpers/RemoveInstrument";
 
-const InstrumentTreeNode = ({ branch, id, additionalProps, colors, onInstrumentRemoved, layoutEditingEnabled }) => {
+const InstrumentTreeNode = ({ branch, id, additionalProps, colors, onInstrumentRemoved, onInstrumentAdded, layoutEditingEnabled }) => {
 	const node = branch;
 	if (node.type === "leaf") {
 		const component = node.component;
+		// console.log(component);
 
 		return (
 			<SingleInstrumentContainer
@@ -21,6 +24,15 @@ const InstrumentTreeNode = ({ branch, id, additionalProps, colors, onInstrumentR
 	} else if (node.type === "branch") {
 		const nextLayer = (
 			<>
+				{node.children.length === 0 ? (
+					<RemoveInstrument
+						onClick={() => {
+							console.log("Removed:", id);
+							onInstrumentRemoved(id);
+						}}
+						enabled={layoutEditingEnabled}
+					/>
+				) : null}
 				{node.children.map((child, index) => (
 					<InstrumentTreeNode
 						branch={child}
@@ -28,9 +40,25 @@ const InstrumentTreeNode = ({ branch, id, additionalProps, colors, onInstrumentR
 						colors={colors}
 						id={id + "." + index}
 						onInstrumentRemoved={onInstrumentRemoved}
+						onInstrumentAdded={onInstrumentAdded}
 						layoutEditingEnabled={layoutEditingEnabled}
 					/>
 				))}
+				{layoutEditingEnabled && (id != null || node.children.length < 4) ? (
+					<InstrumentTreeNode
+						colors={colors}
+						additionalProps={additionalProps}
+						branch={{
+							type: "leaf",
+							component: {
+								class: AddInstrument,
+								additionalProps: {
+									onInstrumentAdded: node => onInstrumentAdded(id, node),
+								},
+							},
+						}}
+					/>
+				) : null}
 			</>
 		);
 		if (id === "") {

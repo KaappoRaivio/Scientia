@@ -98,18 +98,16 @@ const AddInstrument = ({ onInstrumentAdded, width, height, colors, darkMode, isQ
 		if (item.type === "quadrant") {
 			console.log("quadrant");
 			onInstrumentAdded({
-				type: "quadrant",
-				instruments: item.components,
+				type: "branch",
+				children: [],
 			});
 		} else {
 			onInstrumentAdded({
-				type: "single",
-				instruments: [
-					{
-						component: stringToClass(item.component),
-						additionalProps: options,
-					},
-				],
+				type: "leaf",
+				component: {
+					class: stringToClass(item.component),
+					additionalProps: options,
+				},
 			});
 		}
 	};
