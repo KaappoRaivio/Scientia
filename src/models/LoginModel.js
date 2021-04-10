@@ -27,7 +27,7 @@ class LoginModel {
 			})
 			.then(json => {
 				console.log(json);
-				return 200;
+				return json.statusCode || 200;
 			})
 
 			.catch(e => console.log("error", e));

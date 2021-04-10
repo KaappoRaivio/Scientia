@@ -103,7 +103,7 @@ const Gauge = ({
 					sectorWidth={sectorWidth}
 					backgroundColor={colors.background}
 				/>
-				<circle stroke={colors.secondary} fill={"none"} cx={"50%"} cy={"50%"} r={`48.48%`} strokeWidth={"1%"} />
+				<circle stroke={colors.primary} fill={"none"} cx={"50%"} cy={"50%"} r={`48.48%`} strokeWidth={"1%"} />
 				<g stroke={"black"} strokeWidth={"1%"} fill={colors.background}>
 					{SvgHelpers.getSector(center.x, center.y, radius, radius, math.mod(start, 360), math.mod(end, 360), colors.backgroundColor)}
 				</g>

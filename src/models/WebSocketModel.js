@@ -1,4 +1,4 @@
-export default class WebSocketManager {
+export default class WebSocketModel {
 	static STATUS_UNKNOWN = 0;
 	static STATUS_DISCONNECTED = 1;
 	static STATUS_CONNECTING = 2;
@@ -25,8 +25,9 @@ export default class WebSocketManager {
 	initializeWebsocket(address, onDelta) {
 		this.close();
 
-		this.onStatusChangeCallback(WebSocketManager.STATUS_CONNECTING);
+		this.onStatusChangeCallback(WebSocketModel.STATUS_CONNECTING);
 
+		console.log(address);
 		this.ws = new WebSocket(address + this.endpoint);
 
 		const preparePath = name => ({
@@ -48,7 +49,7 @@ export default class WebSocketManager {
 
 		this.ws.onmessage = event => {
 			if (!this.connected) {
-				this.onStatusChangeCallback(WebSocketManager.STATUS_CONNECTED);
+				this.onStatusChangeCallback(WebSocketModel.STATUS_CONNECTED);
 				this.connected = true;
 			}
 			new Promise(resolve => {
@@ -57,7 +58,7 @@ export default class WebSocketManager {
 		};
 
 		this.ws.onclose = event => {
-			this.onStatusChangeCallback(WebSocketManager.STATUS_DISCONNECTED);
+			this.onStatusChangeCallback(WebSocketModel.STATUS_DISCONNECTED);
 			console.log("Closing websocket");
 			try {
 				this.ws.send(
@@ -69,7 +70,7 @@ export default class WebSocketManager {
 			} catch (error) {}
 		};
 		this.ws.onerror = event => {
-			this.onStatusChangeCallback(WebSocketManager.STATUS_ERROR);
+			this.onStatusChangeCallback(WebSocketModel.STATUS_ERROR);
 		};
 	}
 

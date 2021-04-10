@@ -9,6 +9,8 @@ import * as PropTypes from "prop-types";
 
 import ReactDropdown from "react-dropdown";
 import "react-dropdown/style.css";
+import { useDispatch } from "react-redux";
+import { settingsPaneOpen } from "../../redux/actions/actions";
 
 const TextField = props => {
 	const { label, input, meta, ...rest } = useFieldApi(props);
@@ -144,9 +146,9 @@ const myComponentMapper = {
 	"custom-type": TextField,
 };
 
-const SettingsForm = ({ onSettingsUpdate, requestClosing, initialValues, schema, buttonsInDocumentFlow }) => {
-	const onSubmit = (values, formApi) => {
-		onSettingsUpdate(values);
+const SettingsForm = ({ initialValues, requestClosing, schema, onSubmit, buttonsInDocumentFlow }) => {
+	const _onSubmit = (values, formApi) => {
+		onSubmit(values);
 		requestClosing();
 	};
 
@@ -162,7 +164,7 @@ const SettingsForm = ({ onSettingsUpdate, requestClosing, initialValues, schema,
 			initialValues={initialValues}
 			componentMapper={myComponentMapper}
 			FormTemplate={MyFormTemplate}
-			onSubmit={onSubmit}
+			onSubmit={_onSubmit}
 			onCancel={onCancel}
 		/>
 	);

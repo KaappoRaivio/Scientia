@@ -4,6 +4,8 @@ import Modal from "react-modal";
 import "./SettingsDialog.css";
 import SettingsForm from "../settings/SettingsForm";
 import { componentTypes } from "@data-driven-forms/react-form-renderer";
+import { useDispatch, useSelector } from "react-redux";
+import { settingsPaneOpen, updateSettings } from "../../redux/actions/actions";
 
 const schema = {
 	title: "Settings",
@@ -60,24 +62,54 @@ const schema = {
 	],
 };
 
-const SettingsDialog = ({ colors, darkMode, isModalOpen, requestClosing, appElement, ...rest }) => (
-	<Modal
-		className="modal-parent with-shadow"
-		style={{
-			overlay: { backgroundColor: "rgba(0, 0, 0, 0.5)" },
-			content: {
-				backgroundColor: colors.background,
-				color: colors.primary,
-			},
-		}}
-		ariaHideApp={false}
-		isOpen={isModalOpen}
-		onRequestClose={requestClosing}>
-		<div>
-			<div className="modal-close" onClick={requestClosing} />
-			<SettingsForm requestClosing={requestClosing} colors={colors} schema={schema} {...rest} />
-		</div>
-	</Modal>
-);
+const getInitialSettings = currentSettings => {
+	return {
+		animation: currentSettings.performance.animation,
+		animationsAccordingToChargingStatus: currentSettings.performance.animationsAccordingToChargingStatus,
+		darkMode: currentSettings.appearance.darkMode,
+		serverAddress: currentSettings.connection.address.host,
+	};
+};
+
+const SettingsDialog = ({ appElement }) => {
+	const dispatch = useDispatch();
+
+	const colors = useSelector(state => state.settings.appearance.colors);
+	const isModalOpen = useSelector(state => state.settings.settingsPaneOpen);
+
+	const requestClosing = () => dispatch(settingsPaneOpen(false));
+
+	const currentSettings = useSelector(state => state.settings);
+
+	const onSubmit = newSettings => {
+		dispatch(updateSettings(newSettings));
+	};
+
+	return (
+		<Modal
+			className="modal-parent with-shadow"
+			style={{
+				overlay: { backgroundColor: "rgba(0, 0, 0, 0.5)" },
+				content: {
+					backgroundColor: colors.background,
+					color: colors.primary,
+				},
+			}}
+			ariaHideApp={false}
+			isOpen={isModalOpen}
+			onRequestClose={requestClosing}
+			appElement={appElement}>
+			<div>
+				<div className="modal-close" onClick={requestClosing} />
+				<SettingsForm
+					requestClosing={requestClosing}
+					initialValues={getInitialSettings(currentSettings)}
+					schema={schema}
+					onSubmit={onSubmit}
+				/>
+			</div>
+		</Modal>
+	);
+};
 
 export default SettingsDialog;

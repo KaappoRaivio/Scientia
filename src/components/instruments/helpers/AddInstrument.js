@@ -4,7 +4,7 @@ import "./AddInstrument.css";
 import SettingsForm from "../../settings/SettingsForm";
 
 import ReactDropdown from "react-dropdown";
-import { stringToClass } from "../../managers/LayoutModel";
+import { stringToClass } from "../../../models/LayoutModel";
 
 const schema = {
 	buttonsAtBottom: true,
@@ -150,7 +150,7 @@ const AddInstrument = ({ onInstrumentAdded, width, height, colors, darkMode, isQ
 				/>
 				<SettingsForm
 					schema={localSchema}
-					onSettingsUpdate={onConfirm}
+					onSubmit={onConfirm}
 					requestClosing={() => {
 						setPlusPressed(false);
 						setSelectedItem(spinnerSchema.options[0]);

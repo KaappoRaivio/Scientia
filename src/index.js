@@ -2,16 +2,20 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import "./index.css";
-import App from "./App";
+import App from "./components/main/App";
 import * as serviceWorker from "./serviceWorker";
+import { Provider } from "react-redux";
+import store from "./redux/store/store";
 
-import "./flat-remix.css";
+// import "./flat-remix.css";
 
 let production = !(!process.env.NODE_ENV || process.env.NODE_ENV === "development");
 
 ReactDOM.render(
 	<React.StrictMode>
-		<App production={production} endPoint={production ? "" : "http://localhost:3000"} />
+		<Provider store={store}>
+			<App production={production} endPoint={production ? "" : "http://localhost:3000"} />
+		</Provider>
 	</React.StrictMode>,
 	document.getElementById("root")
 );

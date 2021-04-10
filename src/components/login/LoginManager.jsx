@@ -4,116 +4,67 @@ import { componentTypes } from "@data-driven-forms/react-form-renderer";
 import SettingsForm from "../settings/SettingsForm";
 
 import "./LoginManager.css";
-import validatorTypes from "@data-driven-forms/react-form-renderer/dist/cjs/validator-types";
-import LoginModel from "../managers/LoginModel";
-import update from "immutability-helper";
+import LoginModel from "../../models/LoginModel";
 import cookie from "react-cookies";
+import { useDispatch, useSelector } from "react-redux";
+import { updateUserLoggedIn } from "../../redux/actions/actions";
+
+import schema from "../../assets/schemas/loginSchema.json";
 
 const COOKIE_USERNAME = "username";
 
-// saveUsername(username) {
-// 	cookie.save(COOKIE_USERNAME, username);
-// }
-//
-//
-// onLogin ({ username, password, apiKey }) {
-// 	LoginModel.login(username, password).then(status => {
-// 		console.log(status);
-// 		if (status === 200) {
-// 			this.setState({
-// 				login: {
-// 					waiting: false,
-// 					loggedIn: true,
-// 					code: null,
-// 					username,
-// 				},
-// 			});
-// 			this.saveUsername(username);
-// 			this.layoutManager.getInstruments(username).then(instruments => {
-// 				this.setState({ instruments, layoutEditingEnabled: !instruments.length });
-// 			});
-// 			this.layoutManager.storeApiKey(username, apiKey).then(ok => {
-// 				console.log(ok, apiKey);
-// 				this.setState({ apiKey });
-// 			});
-// 		} else {
-// 			this.setState({
-// 				login: {
-// 					waiting: false,
-// 					loggedIn: false,
-// 					code: status,
-// 					username,
-// 				},
-// 			});
-// 		}
-// 	});
-//
-// 	this.socketManager.open();
-// };
-// onLogout () {
-// 	LoginModel.logout();
-// 	this.socketManager.close();
-// 	this.setState({
-// 		login: { waiting: false, loggedIn: false },
-// 	});
-// };
-
-// LoginModel.testLoginValidity(this.state.login.username).then(valid => {
-// 	this.setState(oldState =>
-// 		update(oldState, {
-// 			login: {
-// 				waiting: { $set: false },
-// 				loggedIn: { $set: valid },
-// 			},
-// 		})
-// 	);
-// });
-
-const useLogin = (username, password, endPoint) => {
-	const [waitingLoginStatusInfo, setWaitingLoginStatusInfo] = useState(true);
-	const [loggedIn, setLoggedIn] = useState(false);
-	const [code, setCode] = useState(null);
+const useLogin = (username, password, apiKey, endPoint) => {
+	const dispatch = useDispatch();
+	const { loggedIn, waiting, code, userRequestedLogout } = useSelector(state => state.login);
 
 	useEffect(() => {
 		if (username != null) {
 			LoginModel.testLoginValidity(username, endPoint).then(valid => {
-				setLoggedIn(valid);
-				setWaitingLoginStatusInfo(false);
+				dispatch(updateUserLoggedIn(username, valid));
 			});
 		} else {
-			setLoggedIn(false);
-			setWaitingLoginStatusInfo(false);
+			dispatch(updateUserLoggedIn(username, false));
 		}
-	}, [username, endPoint]);
+	}, [username, endPoint, dispatch]);
 
 	useEffect(() => {
-		if (username != null && password != null && !waitingLoginStatusInfo) {
+		if (username != null && password != null && !waiting) {
 			LoginModel.login(username, password, endPoint).then(status => {
+				console.log(status);
 				if (status === 200) {
-					setLoggedIn(true);
+					console.log("SHould be logged int");
+					dispatch(updateUserLoggedIn(username, true, 200, apiKey));
 					cookie.save(COOKIE_USERNAME, username, { sameSite: "strict" });
 				} else {
-					setCode(status);
+					dispatch(updateUserLoggedIn(username, false, status));
 				}
 			});
 		}
-	}, [username, password, waitingLoginStatusInfo, endPoint]);
+	}, [username, password, waiting, endPoint, apiKey, dispatch]);
 
-	return { waiting: waitingLoginStatusInfo, loggedIn, code };
+	useEffect(() => {
+		if (userRequestedLogout) {
+			LoginModel.logout().then(status => {
+				dispatch(updateUserLoggedIn(null, false, null, null));
+			});
+			console.log("Logging out ");
+		}
+	}, [dispatch, userRequestedLogout]);
+
+	return { waiting, loggedIn, code };
 };
 
 const LoginManager = ({ colors, endPoint, children, production }) => {
-	// const { children, colors, onLogin, loggedIn, waiting, code } = props;
-	// username: cookie.load(COOKIE_USERNAME),
-
 	const [{ username, password, apiKey }, setCredentials] = useState({ username: cookie.load(COOKIE_USERNAME) });
-	const { waiting, loggedIn, code } = useLogin(username, password, endPoint);
+	const { waiting, loggedIn, code } = useLogin(username, password, apiKey, endPoint);
+	console.log(loggedIn);
 
 	if (waiting) {
 		return <div>...</div>;
 	}
 
-	if (loggedIn || !production) {
+	// if (loggedIn || !production) {
+	if (loggedIn) {
 		// console.log(children);
 		return React.Children.map(children, child => {
 			if (React.isValidElement(child)) {
@@ -127,48 +78,11 @@ const LoginManager = ({ colors, endPoint, children, production }) => {
 	return (
 		<div className="loginform-parent">
 			<div className="loginform">
-				<SettingsForm requestClosing={() => {}} colors={colors} schema={schema} onSettingsUpdate={setCredentials} initialValues={{}} />
+				<SettingsForm requestClosing={() => {}} colors={colors} schema={schema} onSubmit={setCredentials} initialValues={{}} />
 			</div>
 			{code === 401 && <span>Wrong username or password</span>}
 		</div>
 	);
-};
-
-const schema = {
-	title: "Log in",
-	explanation:
-		"Please supply login credentials for a valid account on your SignalK server. These credentials are used for storing the settings of the app in the server. Your password will not be stored on the device. \n\n Hint: if you want to log in less often, you can increase the 'Login session timeout' parameter in the server's security settings.",
-	fields: [
-		{
-			component: componentTypes.TEXT_FIELD,
-			name: "username",
-			label: "Your username",
-			validate: [
-				{
-					type: validatorTypes.REQUIRED,
-				},
-			],
-		},
-		{
-			component: componentTypes.TEXT_FIELD,
-			name: "password",
-			label: "Your password",
-			type: "password",
-			validate: [
-				{
-					type: validatorTypes.REQUIRED,
-				},
-			],
-		},
-		{
-			component: componentTypes.TEXT_FIELD,
-			name: "weatherApiKey",
-			label: "Api key to OpenWeatherMap, if you have it.",
-		},
-	],
-	dontShowApply: true,
-	dontShowCancel: true,
-	okButtonText: "Log in",
 };
 
 export default LoginManager;

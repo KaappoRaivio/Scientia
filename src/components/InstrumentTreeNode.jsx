@@ -3,8 +3,17 @@ import SingleInstrumentContainer from "./instruments/helpers/SingleInstrumentCon
 import Quadrants from "./instruments/Quadrants";
 import AddInstrument from "./instruments/helpers/AddInstrument";
 import RemoveInstrument from "./instruments/helpers/RemoveInstrument";
+import { useDispatch } from "react-redux";
+import { addInstrument, removeInstrument } from "../redux/actions/actions";
 
-const InstrumentTreeNode = ({ branch, id, additionalProps, colors, onInstrumentRemoved, onInstrumentAdded, layoutEditingEnabled }) => {
+const InstrumentTreeNode = ({ branch, id, additionalProps, colors, layoutEditingEnabled }) => {
+	const dispatch = useDispatch();
+	const onInstrumentAdded = (id, instrument) => {
+		dispatch(addInstrument(id, instrument));
+	};
+	const onInstrumentRemoved = id => {
+		dispatch(removeInstrument(id));
+	};
 	const node = branch;
 	if (node.type === "leaf") {
 		const component = node.component;

@@ -7,9 +7,15 @@ import Weather from "./Weather";
 import "../../assets/weather-icons-master/css/weather-icons.min.css";
 import Logout from "./Logout";
 import ConnectionStatus from "./ConnectionStatus";
+import { useSelector } from "react-redux";
 
-const StatusBar = ({ colors, darkMode, signalkState, onLogout, socketStatus, apiKey }) => {
-	// console.log(signalkState)
+const StatusBar = ({}) => {
+	const socketStatus = useSelector(state => state.connection.status);
+	const signalkState = useSelector(state => state.signalkState);
+	const colors = useSelector(state => state.settings.appearance.colors);
+	const darkMode = useSelector(state => state.settings.appearance.darkMode);
+	const apiKey = useSelector(state => state.login.apiKey);
+
 	return (
 		<div className="statusbar-parent with-shadow">
 			<div className="statusbar-left">
@@ -18,7 +24,7 @@ const StatusBar = ({ colors, darkMode, signalkState, onLogout, socketStatus, api
 			</div>
 			<div className="statusbar-right">
 				<Weather signalkState={signalkState} colors={colors} darkMode={darkMode} apiKey={apiKey} />
-				<Logout onLogout={onLogout} />
+				<Logout />
 			</div>
 		</div>
 	);

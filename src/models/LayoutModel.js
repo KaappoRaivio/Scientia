@@ -1,13 +1,15 @@
-import fallbackInstruments from "../../assets/fallbackInstruments.json";
-import CompassContainer from "../instruments/compass/CompassContainer";
-import WindContainer from "../instruments/wind/WindContainer";
-import TridataContainer from "../instruments/tridata/TridataContainer";
-import GaugeContainer from "../instruments/gauge/GaugeContainer";
-import VisualiserContainer from "../instruments/visualiser/VisualiserContainer";
-import AddInstrument from "../instruments/helpers/AddInstrument";
+import fallbackInstruments from "../assets/fallbackInstruments.json";
+import CompassContainer from "../components/instruments/compass/CompassContainer";
+import WindContainer from "../components/instruments/wind/WindContainer";
+import TridataContainer from "../components/instruments/tridata/TridataContainer";
+import GaugeContainer from "../components/instruments/gauge/GaugeContainer";
+import VisualiserContainer from "../components/instruments/visualiser/VisualiserContainer";
+import AddInstrument from "../components/instruments/helpers/AddInstrument";
 
 const replaceClassesWithStrings = node => {
 	if (node.type === "leaf") {
+		console.log(node, classToString(node.component.class));
+		console.log("value: " + node.component.class);
 		return {
 			type: "leaf",
 			component: {
@@ -37,6 +39,9 @@ class LayoutModel {
 	}
 
 	saveInstruments(username, instruments) {
+		console.log(`${this.endpoint}/signalk/v1/applicationData/user/${this.appName}/${this.appVersion}/${username}/layout`);
+		console.log(serializeInstruments(instruments));
+		console.log(instruments);
 		fetch(`${this.endpoint}/signalk/v1/applicationData/user/${this.appName}/${this.appVersion}/${username}/layout`, {
 			method: "POST",
 			headers: {
@@ -114,7 +119,7 @@ export const stringToClass = string =>
 		AddInstrument: AddInstrument,
 	}[string]);
 
-export const classToString = string =>
+export const classToString = _class =>
 	({
 		[CompassContainer]: "CompassContainer",
 		[WindContainer]: "WindContainer",
@@ -122,6 +127,6 @@ export const classToString = string =>
 		[GaugeContainer]: "GaugeContainer",
 		[VisualiserContainer]: "VisualiserContainer",
 		[AddInstrument]: "AddInstrument",
-	}[string]);
+	}[_class]);
 
 export default LayoutModel;
