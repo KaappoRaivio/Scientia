@@ -9,13 +9,7 @@ import "./gauge.css";
 import NumberDisplay from "../helpers/numberdisplay/NumberDisplay";
 import { PropTypes } from "prop-types";
 import NoData from "../helpers/NoData";
-
-const valueToPercentConverters = {
-	linear: (upper, lower) => x => (x - lower) / (upper - lower),
-	logarithmic: (upper, lower) => x => (Math.log10(x) - Math.log10(lower)) / (Math.log10(upper) - Math.log10(lower)),
-	squareroot: (upper, lower) => x => (Math.sqrt(x) - Math.sqrt(lower)) / (Math.sqrt(upper) - Math.sqrt(lower)),
-	power: (upper, lower, power) => x => (x ** power - lower ** power) / (upper ** power - lower ** power),
-};
+import { valueToPercentConverters } from "../../../misc/scaleConversions";
 
 const Gauge = ({
 	width,

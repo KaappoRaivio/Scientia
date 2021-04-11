@@ -1,148 +1,85 @@
-import * as React from "react";
-
-import "./visualiser.css";
-import Visualiser from "./Visualiser";
+import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
+import { getByStringPath } from "delta-processor";
+import { componentTypes } from "@data-driven-forms/react-form-renderer";
+import validatorTypes from "@data-driven-forms/react-form-renderer/validator-types";
+import Visualiser3 from "./Visualiser3";
 
-class VisualiserContainer extends React.Component {
-	constructor(props) {
-		super(props);
+const useBuffer = size => {
+	const [buffer, setBuffer] = useState([]);
 
-		let data = /*[...Array(1000).keys()].map((_, index) => ({x: index, y: index}))*/ [{ x: 0, y: 1 }];
-		// // console.log(data);
-		this.state = {
-			counter: 0,
-			data,
-			trendData: [{ x: 0, y: 1 }],
-			yDomain: [0, 0],
-			displayScale: null,
-			zones: null,
-			units: null,
-		};
+	return [
+		buffer,
+		buffer[buffer.length - 1],
+		newValue => {
+			if (newValue != null) {
+				setBuffer(oldBuffer => {
+					if (oldBuffer.length >= size) {
+						return oldBuffer.slice(1).concat(newValue);
+					} else {
+						return oldBuffer.concat(newValue);
+					}
+				});
+			}
+		},
+	];
+};
 
-		if (this.props.convert) {
-			this.converter = this.props.convert;
-		} else {
-			this.converter = x => x;
+const makePoint = (value, startTimestamp) => {
+	if (value.value == null || value.meta == null) return null;
+	const x = (new Date(value.meta.timestamp).getTime() - startTimestamp) / 1000;
+	const y = value.value;
+	if (x == null || y == null || startTimestamp == null) return null;
+	return { x, y: y };
+	// const return;
+};
+
+const VisualiserContainer = ({ path, xRange, data, width, height }) => {
+	const value = getByStringPath(path, data.vessels.self, true);
+	const [startTimestamp, setStartTimestamp] = useState(null);
+	const [points, lastValue, addPoint] = useBuffer(xRange || 100);
+
+	let timestamp = value?.meta?.timestamp;
+	useEffect(() => {
+		if (startTimestamp == null && timestamp) {
+			setStartTimestamp(new Date(timestamp).getTime());
+			console.log("Setting timestamp");
 		}
+	}, [startTimestamp, timestamp]);
 
-		this.firstTime = true;
+	const newPoint = makePoint(value, startTimestamp);
+	if (newPoint != null && newPoint?.x !== lastValue?.x) {
+		addPoint(newPoint);
 	}
 
-	subscribe() {
-		const onDelta = message => {
-			let value = message.values[0];
-			this.addData(value.value);
-		};
+	if (points[0] == null || lastValue == null) return <div></div>;
 
-		const onMetadata = metadata => {
-			// // console.log(metadata)
-			this.setState({
-				displayScale: metadata.displayScale,
-				zones: metadata.zones,
-				units: metadata.units,
-			});
+	return (
+		<Visualiser3
+			// points={points.map(item => ({ y: item.y, x: (item.x - points[0].x) / (lastValue.x - points[0].x) }))}
+			points={points}
+			width={width}
+			height={height}
+			scale={"logarithmic"}
+		/>
+	);
+	// return <Visualiser3 points={points.map(item => points[0])} width={width} height={height} />;
+};
 
-			// // console.log(this.state)
-		};
+VisualiserContainer.propTypes = {};
 
-		this.props.subscribe([this.props.path], onDelta, onMetadata);
-	}
-
-	componentDidMount() {
-		this.subscribe();
-	}
-
-	getTimeStamp = () => new Date().getTime() / 1000;
-
-	addData(dataPoint) {
-		if (this.firstTime) {
-			this.startTime = this.getTimeStamp();
-			this.firstTime = false;
-		}
-
-		let trend = this.computeTrendDataPoint(this.state.data);
-
-		this.setState(({ data, trendData }) => {
-			return {
-				data: this.concatData(data, {
-					x: this.getTimeStamp() - this.startTime,
-					y: this.converter(dataPoint),
-				}),
-				trendData: this.concatData(trendData, trend),
-			};
-		});
-	}
-
-	getLatestX() {
-		return this.state.data[this.state.data.length - 1].x + 1;
-	}
-
-	concatData(data, dataPoint) {
-		let newArray;
-		if (data[0].x === 0 || data[0].y === 1) {
-			newArray = data.slice(1);
-		} else {
-			newArray = data.slice();
-		}
-		newArray.push(dataPoint);
-		return newArray;
-		// return data.concat(
-		//     dataPoint
-		// );
-	}
-
-	computeTrendDataPoint(data) {
-		let dataPoints = data.slice(Math.max(data.length - this.props.trendlinePeriod, 0), data.length);
-		if (!dataPoints.length) {
-			return { x: 0, y: 0 };
-		}
-
-		let x = this.getTimeStamp() - this.startTime;
-		let y = dataPoints.map(a => a.y).reduce((a, b) => a + b) / dataPoints.length;
-
-		if (x < 0) {
-			return { x: 0, y: 1 };
-		} else {
-			return { x, y };
-		}
-	}
-
-	static propTypes = {
-		width: PropTypes.number.isRequired,
-		height: PropTypes.number.isRequired,
-		ranges: PropTypes.arrayOf(PropTypes.number).isRequired,
-		units: PropTypes.string.isRequired,
-		fontSize: PropTypes.string.isRequired,
-		trendlinePeriod: PropTypes.number.isRequired,
-		animate: PropTypes.bool.isRequired,
-		numberOfPointsToShow: PropTypes.number.isRequired,
-		colors: PropTypes.object.isRequired,
-		negate: PropTypes.bool,
-	};
-
-	render() {
-		const { width, fontSize, trendlinePeriod, animate, height, legend, numberOfPointsToShow, negate, colors, ranges } = this.props;
-		const { units, displayScale } = this.state;
-		return (
-			<Visualiser
-				legend={legend}
-				units={units}
-				displayScale={displayScale}
-				animate={animate}
-				colors={colors}
-				width={width}
-				height={height}
-				fontSize={fontSize}
-				data={this.state.data}
-				trendData={this.state.trendData}
-				trendlinePeriod={trendlinePeriod}
-				numberOfPointsToShow={numberOfPointsToShow}
-				negate={negate}
-				ranges={ranges}
-			/>
-		);
-	}
-}
+VisualiserContainer.schema = [
+	{
+		component: componentTypes.TEXT_FIELD,
+		name: "path",
+		placeholder: "Path",
+		validate: [
+			{
+				type: validatorTypes.MIN_LENGTH,
+				threshold: 1,
+			},
+		],
+	},
+];
 
 export default VisualiserContainer;

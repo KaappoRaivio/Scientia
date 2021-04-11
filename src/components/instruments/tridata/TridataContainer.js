@@ -4,7 +4,7 @@ import "./tridata.css";
 import Tridata from "./Tridata";
 import { getByStringPath } from "delta-processor";
 import { componentTypes } from "@data-driven-forms/react-form-renderer";
-import validatorTypes from "@data-driven-forms/react-form-renderer/dist/cjs/validator-types";
+import validatorTypes from "@data-driven-forms/react-form-renderer/validator-types";
 
 class TridataContainer extends React.Component {
 	static schema = [

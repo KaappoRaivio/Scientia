@@ -88,6 +88,15 @@
 					]
 				}
 			}
+		},
+		{
+			"type": "leaf",
+			"component": {
+				"class": "VisualiserContainer",
+				"additionalProps": {
+					"path": "environment.wind.speedTrue"
+				}
+			}
 		}
 	]
 }

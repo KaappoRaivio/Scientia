@@ -1,6 +1,6 @@
 import React from "react";
 
-import FormRenderer, { componentTypes, useFieldApi, useFormApi } from "@data-driven-forms/react-form-renderer";
+import { FormRenderer, componentTypes, useFieldApi, useFormApi } from "@data-driven-forms/react-form-renderer";
 
 import "./SettingsForm.css";
 import Switch from "react-switch";
@@ -9,8 +9,6 @@ import * as PropTypes from "prop-types";
 
 import ReactDropdown from "react-dropdown";
 import "react-dropdown/style.css";
-import { useDispatch } from "react-redux";
-import { settingsPaneOpen } from "../../redux/actions/actions";
 
 const TextField = props => {
 	const { label, input, meta, ...rest } = useFieldApi(props);

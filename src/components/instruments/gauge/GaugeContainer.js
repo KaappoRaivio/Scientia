@@ -5,7 +5,7 @@ import { getByStringPath } from "delta-processor";
 
 import PropTypes from "prop-types";
 import { componentTypes } from "@data-driven-forms/react-form-renderer";
-import validatorTypes from "@data-driven-forms/react-form-renderer/dist/cjs/validator-types";
+import validatorTypes from "@data-driven-forms/react-form-renderer/validator-types";
 
 class GaugeContainer extends React.Component {
 	static schema = [

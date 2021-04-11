@@ -45,6 +45,10 @@ const spinnerSchema = {
 			value: "CompassContainer",
 		},
 		{
+			label: "Graph",
+			value: "VisualiserContainer",
+		},
+		{
 			label: "Quadrant...",
 			// value: {
 			// 	components: [],
@@ -74,6 +78,11 @@ const stringToObject = {
 	CompassContainer: {
 		value: {
 			component: "CompassContainer",
+		},
+	},
+	VisualiserContainer: {
+		value: {
+			component: "VisualiserContainer",
 		},
 	},
 	quadrant: {
