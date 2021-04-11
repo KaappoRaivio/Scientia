@@ -16,29 +16,6 @@ input {
 	/*font-family: "Inconsolata", monospace !important;*/
 }
 
-.open-menu {
-	margin-left: 10px !important;
-	margin-right: 10px !important;
-	/*margin-top: 10px;*/
-	padding: 10px;
-	text-align: center;
-	/*height: 10px;*/
-	/*width: 100%;*/
-	position: relative;
-}
-
-.open-menu-wrapper {
-	border: none;
-	background: none;
-	text-transform: capitalize;
-	color: #5c616c;
-	font-family: inherit !important;
-}
-
-.open-menu-wrapper:active {
-	background: none !important;
-}
-
 .configure-layout-wrapper {
 	position: absolute;
 	top: 10px;

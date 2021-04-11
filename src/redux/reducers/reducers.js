@@ -5,13 +5,15 @@ import loginReducer from "./loginReducer";
 import settingsReducer from "./settingsReducer";
 import instrumentLayoutReducer from "./instrumentLayoutReducer";
 import connectionReducer from "./connectionReducer";
+import appStateReducer from "./appStateReducer";
 
-const reducers = combineReducers({
+const rootReducer = combineReducers({
 	signalkState: signalKReducer,
 	login: loginReducer,
 	settings: settingsReducer,
 	instrumentLayout: instrumentLayoutReducer,
 	connection: connectionReducer,
+	appState: appStateReducer,
 });
 
-export default reducers;
+export default rootReducer;

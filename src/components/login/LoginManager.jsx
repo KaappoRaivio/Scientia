@@ -54,21 +54,22 @@ const useLogin = (username, password, apiKey, endPoint) => {
 	return { waiting, loggedIn, code };
 };
 
-const LoginManager = ({ colors, endPoint, children, production }) => {
+const LoginManager = ({ colors, children, production }) => {
 	const [{ username, password, apiKey }, setCredentials] = useState({ username: cookie.load(COOKIE_USERNAME) });
-	const { waiting, loggedIn, code } = useLogin(username, password, apiKey, endPoint);
-	console.log(loggedIn);
+	const endpoint = useSelector(state => state.settings.connection.address.http);
+
+	const { waiting, loggedIn, code } = useLogin(username, password, apiKey, endpoint);
 
 	if (waiting) {
 		return <div>...</div>;
 	}
 
-	// if (loggedIn || !production) {
-	if (loggedIn) {
+	if (loggedIn || !production) {
+		// if (loggedIn) {
 		// console.log(children);
 		return React.Children.map(children, child => {
 			if (React.isValidElement(child)) {
-				return React.cloneElement(child, { production, username, endPoint });
+				return React.cloneElement(child, { production, username, endpoint });
 			} else {
 				return child;
 			}

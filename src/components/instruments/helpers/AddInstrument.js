@@ -85,10 +85,12 @@ const stringToObject = {
 };
 
 const AddInstrument = ({ onInstrumentAdded, width, height, colors, darkMode, isQuadrant }) => {
-	const lineWidth = 5;
+	const lineWidth = 3;
 
-	const svgSize = { x: width / 2.5, y: height / 2.5 };
-	const center = { x: svgSize.x / 2, y: svgSize.y / 2 };
+	// const svgSize = { x: width / 2.5, y: height / 2.5 };
+	// const center = { x: svgSize.x / 2, y: svgSize.y / 2 };
+	const svgSize = { x: 100, y: 100 };
+	const center = { x: 50, y: 50 };
 
 	const [plusPressed, setPlusPressed] = useState(false);
 	const [selectedItem, setSelectedItem] = useState(spinnerSchema.options[0]);
@@ -120,10 +122,27 @@ const AddInstrument = ({ onInstrumentAdded, width, height, colors, darkMode, isQ
 	if (!plusPressed) {
 		return (
 			<button onClick={() => setPlusPressed(true)} className="addinstrument-parent" style={{ backgroundColor: colors.background }}>
-				<svg width={svgSize.x} height={svgSize.y} strokeWidth={lineWidth} stroke={colors.primary}>
-					<line x1={center.x} y1={lineWidth / 2} x2={center.x} y2={svgSize.y - lineWidth / 2} strokeLinecap={"round"} />
-					<line x1={lineWidth / 2} y1={center.y} x2={svgSize.x - lineWidth / 2} y2={center.x} strokeLinecap={"round"} />
-					<rect width={svgSize.x} height={svgSize.y} fill={darkMode ? "none" : "rgba(255, 255, 255, 0.75)"} stroke={"none"} />
+				{/*<svg width={svgSize.x} height={svgSize.y} strokeWidth={lineWidth} stroke={colors.primary}>*/}
+				{/*	<line x1={center.x} y1={lineWidth / 2} x2={center.x} y2={svgSize.y - lineWidth / 2} strokeLinecap={"round"} />*/}
+				{/*	<line x1={lineWidth / 2} y1={center.y} x2={svgSize.x - lineWidth / 2} y2={center.x} strokeLinecap={"round"} />*/}
+				{/*	<rect width={svgSize.x} height={svgSize.y} fill={darkMode ? "none" : "rgba(255, 255, 255, 0.75)"} stroke={"none"} />*/}
+				{/*</svg>*/}
+				<svg width="100%" height="100%" style={{ width: "40%", height: "40%" }} strokeWidth={`${lineWidth}%`} stroke={colors.primary}>
+					<line
+						x1={`${center.x}%`}
+						y1={`${lineWidth / 2}%`}
+						x2={`${center.x}%`}
+						y2={`${svgSize.y - lineWidth / 2}%`}
+						strokeLinecap={"round"}
+					/>
+					<line
+						x1={`${lineWidth / 2}%`}
+						y1={`${center.y}%`}
+						x2={`${svgSize.x - lineWidth / 2}%`}
+						y2={`${center.x}%`}
+						strokeLinecap={"round"}
+					/>
+					<rect width={`${svgSize.x}%`} height={`${svgSize.y}%`} fill={darkMode ? "none" : "rgba(255, 255, 255, 0.75)"} stroke={"none"} />
 				</svg>
 			</button>
 		);

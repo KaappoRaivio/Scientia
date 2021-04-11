@@ -1,0 +1,11 @@
+.modal-parent {
+	font-size: 75%;
+	position: fixed;
+	width: 90%;
+	left: 5%;
+	top: 5%;
+	padding: 10px;
+
+	font-family: Roboto, sans-serif;
+}
+

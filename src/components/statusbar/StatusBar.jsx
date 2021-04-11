@@ -9,7 +9,7 @@ import Logout from "./Logout";
 import ConnectionStatus from "./ConnectionStatus";
 import { useSelector } from "react-redux";
 
-const StatusBar = ({}) => {
+const StatusBar = props => {
 	const socketStatus = useSelector(state => state.connection.status);
 	const signalkState = useSelector(state => state.signalkState);
 	const colors = useSelector(state => state.settings.appearance.colors);

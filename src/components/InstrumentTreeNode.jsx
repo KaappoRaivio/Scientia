@@ -53,20 +53,22 @@ const InstrumentTreeNode = ({ branch, id, additionalProps, colors, layoutEditing
 						layoutEditingEnabled={layoutEditingEnabled}
 					/>
 				))}
-				{layoutEditingEnabled && (id != null || node.children.length < 4) ? (
-					<InstrumentTreeNode
-						colors={colors}
-						additionalProps={additionalProps}
-						branch={{
-							type: "leaf",
-							component: {
-								class: AddInstrument,
-								additionalProps: {
-									onInstrumentAdded: node => onInstrumentAdded(id, node),
+				{layoutEditingEnabled && (node.children.length < 4 || id === ".") ? (
+					<>
+						<InstrumentTreeNode
+							colors={colors}
+							additionalProps={additionalProps}
+							branch={{
+								type: "leaf",
+								component: {
+									class: AddInstrument,
+									additionalProps: {
+										onInstrumentAdded: node => onInstrumentAdded(id, node),
+									},
 								},
-							},
-						}}
-					/>
+							}}
+						/>
+					</>
 				) : null}
 			</>
 		);

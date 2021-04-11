@@ -1,20 +1,18 @@
 import React from "react";
 
 import "./Instruments.css";
-import "./helpers/QuadrantInstrumentContainer.css";
 import InstrumentTreeNode from "../InstrumentTreeNode";
 import { useSelector } from "react-redux";
 
-const Instruments = ({
-	colors,
-	// instruments,
-	onInstrumentChanged,
-	layoutEditingEnabled,
-	signalkState,
-	settings: { animation, darkMode },
-}) => {
+const Instruments = ({}) => {
+	const animation = useSelector(state => state.settings.performance.animation);
+	const darkMode = useSelector(state => state.settings.appearance.darkMode);
+	const signalkState = useSelector(state => state.signalkState);
+	const colors = useSelector(state => state.settings.appearance.colors);
+
 	const additionalProps = { animation, darkMode, data: signalkState };
 	const instruments = useSelector(state => state.instrumentLayout);
+	const layoutEditingEnabled = useSelector(state => state.appState.layoutEditingEnabled);
 
 	return (
 		<div className="instrument-grid-container">

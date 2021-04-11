@@ -8,8 +8,6 @@ import AddInstrument from "../components/instruments/helpers/AddInstrument";
 
 const replaceClassesWithStrings = node => {
 	if (node.type === "leaf") {
-		console.log(node, classToString(node.component.class));
-		console.log("value: " + node.component.class);
 		return {
 			type: "leaf",
 			component: {
@@ -39,9 +37,6 @@ class LayoutModel {
 	}
 
 	saveInstruments(username, instruments) {
-		console.log(`${this.endpoint}/signalk/v1/applicationData/user/${this.appName}/${this.appVersion}/${username}/layout`);
-		console.log(serializeInstruments(instruments));
-		console.log(instruments);
 		fetch(`${this.endpoint}/signalk/v1/applicationData/user/${this.appName}/${this.appVersion}/${username}/layout`, {
 			method: "POST",
 			headers: {
@@ -119,14 +114,32 @@ export const stringToClass = string =>
 		AddInstrument: AddInstrument,
 	}[string]);
 
-export const classToString = _class =>
-	({
-		[CompassContainer]: "CompassContainer",
-		[WindContainer]: "WindContainer",
-		[TridataContainer]: "TridataContainer",
-		[GaugeContainer]: "GaugeContainer",
-		[VisualiserContainer]: "VisualiserContainer",
-		[AddInstrument]: "AddInstrument",
-	}[_class]);
+export const classToString = _class => {
+	switch (_class) {
+		case CompassContainer:
+			return "CompassContainer";
+		case WindContainer:
+			return "WindContainer";
+		case TridataContainer:
+			return "TridataContainer";
+		case GaugeContainer:
+			return "GaugeContainer";
+		case VisualiserContainer:
+			return "VisualiserContainer";
+		case AddInstrument:
+			console.log("Warning! serialising AddInstrument!");
+			return "AddInstrument";
+		default:
+			throw new Error(`Unknown class ${_class}!`);
+	}
+	// return ({
+	// 	[CompassContainer]: "CompassContainer",
+	// 	[WindContainer]: "WindContainer",
+	// 	[TridataContainer]: "TridataContainer",
+	// 	[GaugeContainer]: "GaugeContainer",
+	// 	[VisualiserContainer]: "VisualiserContainer",
+	// 	[AddInstrument]: "AddInstrument"
+	// }[_class]);
+};
 
 export default LayoutModel;

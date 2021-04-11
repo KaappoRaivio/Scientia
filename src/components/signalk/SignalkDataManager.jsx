@@ -43,8 +43,12 @@ const useInstrumentLayoutManager = (appName, appVersion, endPoint, production, u
 	return { instruments };
 };
 
-const SignalkDataManager = ({ children, appName, appVersion, endPoint, production, username }) => {
-	const { instruments } = useInstrumentLayoutManager(appName, appVersion, endPoint, production, username);
+const SignalkDataManager = ({ children }) => {
+	const { appName, appVersion, isProduction } = useSelector(state => state.appState.meta);
+	const endpoint = useSelector(state => state.settings.connection.address.http);
+	const username = useSelector(state => state.login.username);
+
+	const { instruments } = useInstrumentLayoutManager(appName, appVersion, endpoint, isProduction, username);
 
 	const { ws, http } = useSelector(state => state.settings.connection.address);
 	const { signalkState, connectionStatus } = useSignalkState(ws, http);

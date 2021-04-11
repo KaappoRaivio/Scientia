@@ -43,7 +43,6 @@ const getAddress = host => {
 };
 
 const initialState = {
-	settingsPaneOpen: false,
 	appearance: {
 		darkMode: false,
 		colors: getColors(false),
@@ -89,10 +88,6 @@ const settingsReducer = (settingsState = initialState, action) => {
 					darkMode: { $set: action.darkMode },
 					colors: { $set: getColors(action.darkMode) },
 				},
-			});
-		case SETTINGS_PANE_OPEN:
-			return update(settingsState, {
-				settingsPaneOpen: { $set: action.open },
 			});
 		case UPDATE_SETTINGS:
 			return mergeFormResult(settingsState, action.settings);

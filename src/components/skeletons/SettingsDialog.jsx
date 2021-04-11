@@ -6,6 +6,7 @@ import SettingsForm from "../settings/SettingsForm";
 import { componentTypes } from "@data-driven-forms/react-form-renderer";
 import { useDispatch, useSelector } from "react-redux";
 import { settingsPaneOpen, updateSettings } from "../../redux/actions/actions";
+import MyModal from "../modal/MyModal";
 
 const schema = {
 	title: "Settings",
@@ -75,7 +76,7 @@ const SettingsDialog = ({ appElement }) => {
 	const dispatch = useDispatch();
 
 	const colors = useSelector(state => state.settings.appearance.colors);
-	const isModalOpen = useSelector(state => state.settings.settingsPaneOpen);
+	const isOpen = useSelector(state => state.appState.settingsPaneOpen);
 
 	const requestClosing = () => dispatch(settingsPaneOpen(false));
 
@@ -86,19 +87,7 @@ const SettingsDialog = ({ appElement }) => {
 	};
 
 	return (
-		<Modal
-			className="modal-parent with-shadow"
-			style={{
-				overlay: { backgroundColor: "rgba(0, 0, 0, 0.5)" },
-				content: {
-					backgroundColor: colors.background,
-					color: colors.primary,
-				},
-			}}
-			ariaHideApp={false}
-			isOpen={isModalOpen}
-			onRequestClose={requestClosing}
-			appElement={appElement}>
+		<MyModal isOpen={isOpen} appElement={appElement} onRequestClose={requestClosing}>
 			<div>
 				<div className="modal-close" onClick={requestClosing} />
 				<SettingsForm
@@ -108,7 +97,7 @@ const SettingsDialog = ({ appElement }) => {
 					onSubmit={onSubmit}
 				/>
 			</div>
-		</Modal>
+		</MyModal>
 	);
 };
 
