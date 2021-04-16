@@ -1,16 +1,16 @@
+export const COOKIE_USERNAME = "username";
+
 class LoginModel {
-	static testLoginValidity(username, endPoint) {
-		console.log(`${endPoint}/loginStatus`);
-		return fetch(`${endPoint}/loginStatus`)
+	static testLoginValidity(username, endpoint) {
+		return fetch(`${endpoint}/loginStatus`)
 			.then(res => res.json())
 			.then(json => {
-				console.log(json);
 				return json.status === "loggedIn";
 			});
 	}
 
-	static login(username, password, endPoint) {
-		return fetch(`${endPoint}/signalk/v1/auth/login`, {
+	static login(username, password, endpoint) {
+		return fetch(`${endpoint}/signalk/v1/auth/login`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
@@ -33,8 +33,8 @@ class LoginModel {
 			.catch(e => console.log("error", e));
 	}
 
-	static logout() {
-		return fetch("/signalk/v1/auth/logout", {
+	static logout(endpoint) {
+		return fetch(`${endpoint}/signalk/v1/auth/logout`, {
 			method: "PUT",
 		}).then(res => res.status);
 	}

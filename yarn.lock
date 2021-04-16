@@ -4070,10 +4070,10 @@ delayed-stream@~1.0.0:
   resolved "https://registry.yarnpkg.com/delayed-stream/-/delayed-stream-1.0.0.tgz#df3ae199acadfb7d440aaae0b29e2272b24ec619"
   integrity sha1-3zrhmayt+31ECqrgsp4icrJOxhk=
 
-delta-processor@^0.1.3:
-  version "0.1.3"
-  resolved "https://registry.yarnpkg.com/delta-processor/-/delta-processor-0.1.3.tgz#b98a8ef924c77721aa63a1b5c0f4dcccb52ac68c"
-  integrity sha512-FvseEATWbLBzCTbGVI4RnSHrBxRMLuXor23IzofwbC6fqAkyhX7dCWk4PgEWVDAXSFUm/0Ov6CivV+YvDgN9Aw==
+delta-processor@^0.1.4:
+  version "0.1.4"
+  resolved "https://registry.yarnpkg.com/delta-processor/-/delta-processor-0.1.4.tgz#9127cf4c8f1388cfc3edc1d58394fdd89252710d"
+  integrity sha512-jZQHaBV8P1lEJrzw084tDIv7twJxJGEf6Igq2QausSBSBbk9ZVC6fkrDMvWB+wPdIgejeUEro2PKekCEDYJgDQ==
   dependencies:
     complex.js "^2.0.11"
     decimal.js "^10.2.0"
@@ -9924,6 +9924,16 @@ reduce-css-calc@^2.1.8:
   dependencies:
     css-unit-converter "^1.1.1"
     postcss-value-parser "^3.3.0"
+
+redux-devtools-extension@^2.13.9:
+  version "2.13.9"
+  resolved "https://registry.yarnpkg.com/redux-devtools-extension/-/redux-devtools-extension-2.13.9.tgz#6b764e8028b507adcb75a1cae790f71e6be08ae7"
+  integrity sha512-cNJ8Q/EtjhQaZ71c8I9+BPySIBVEKssbPpskBfsXqb8HJ002A3KRVHfeRzwRo6mGPqsm7XuHTqNSNeS1Khig0A==
+
+redux-thunk@^2.3.0:
+  version "2.3.0"
+  resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.3.0.tgz#51c2c19a185ed5187aaa9a2d08b666d0d6467622"
+  integrity sha512-km6dclyFnmcvxhAcrQV2AkZmPQjzPDjgVlQtR0EQjxZPyJ0BnMf3in1ryuR8A2qU0HldVRfxYXbFSKlI3N7Slw==
 
 redux@^4.0.0, redux@^4.0.5:
   version "4.0.5"

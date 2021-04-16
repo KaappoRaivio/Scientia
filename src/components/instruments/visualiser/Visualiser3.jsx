@@ -71,7 +71,7 @@ const getTicks = (data, ticksPerMagnitude, mapper, displayScale, converter, inve
 			arr.push(inverseConverter(i));
 		}
 
-		return arr;
+		return [displayScale.lower].concat(arr);
 	} else {
 		console.log("mitä vittua");
 		return [];
@@ -89,27 +89,45 @@ const applyScale = (data, displayScale) => {
 	return data.map(({ x, y }) => ({ x, y: converter(y) * (upper - lower) + lower }));
 };
 
-const Visualiser3 = ({ points, width, height, scale }) => {
+const Visualiser3 = ({ data, meta, width, height }) => {
 	// const scale =
 	// const a = applyScale(data, );
 	// console.log(data, a);
-	const displayScale = { upper: 100, lower: 1, type: "logarithmic" };
+
+	const { displayScale } = meta;
+	// const displayScale = { upper: 100, lower: 0.1, type: "logarithmic" };
 	const { lower, upper, type } = displayScale;
 	const converter = x => valueToPercentConverters[type](upper, lower)(x);
 	const inverseConverter = x => valueToPercentConvertersInverse[type](upper, lower)(x);
 
 	const convertedData = data.map(({ x, y }) => ({ x, y: converter(y) }));
-	const ticks = getTicks(data, 3, item => item.y, displayScale, converter, inverseConverter);
+	const ticks = getTicks(data, 4, item => item.y, displayScale, converter, inverseConverter);
 	return (
-		<div style={{ padding: "5%", width: "100%", height: "100%", position: "absolute" }}>
-			<ResponsiveContainer width={"100%"} height={"100%"}>
-				<AreaChart data={convertedData} style={{ fontSize: "50%" }}>
-					<CartesianGrid strokeDasharray={"3 3"} />
-					<XAxis dataKey={"x"} type={"number"} ticks={[0]} domain={getDomain(data, 100)} allowDecimals={false} />
-					<YAxis dataKey={"y"} tickFormatter={x => Math.round(inverseConverter(x) * 10) / 10} ticks={ticks.map(converter)} />
-					<Area type={"linear"} dataKey={"y"} stroke={"black"} isAnimationActive={false} />
-				</AreaChart>
-			</ResponsiveContainer>
+		<div style={{ padding: "2.5%", width: "100%", height: "100%", fontSize: "50%", position: "absolute" }}>
+			<span style={{ marginLeft: "6%", marginBottom: "12%", position: "relative" }}>{meta.displayName}</span>
+			<div
+				style={{
+					position: "relative",
+					width: "100%",
+					height: "92%",
+					bottom: "0",
+				}}>
+				<ResponsiveContainer width={"100%"} height={"100%"}>
+					<AreaChart data={convertedData}>
+						<CartesianGrid strokeDasharray={"3 3"} />
+						<XAxis dataKey={"x"} type={"number"} ticks={[null]} domain={getDomain(data, 100)} allowDecimals={false} height={0} />
+						<YAxis
+							style={{ fontFamily: "sans-serif", fontSize: "50%" }}
+							width={0.06 * width}
+							dataKey={"y"}
+							tickFormatter={y => Math.round(inverseConverter(y) * 10) / 10}
+							ticks={ticks.map(converter)}
+							reversed={true}
+						/>
+						<Area type={"linear"} dataKey={"y"} stroke={"black"} isAnimationActive={false} />
+					</AreaChart>
+				</ResponsiveContainer>
+			</div>
 		</div>
 	);
 };

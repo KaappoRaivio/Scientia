@@ -14,7 +14,7 @@ class CompassContainer extends React.Component {
 				renderText: true,
 				textProvider: i => mod(180 - (360 / 12) * i, 360),
 				angleProvider: i => ((2 * Math.PI) / 12) * i,
-				fontSize: "8",
+				fontSize: 8,
 			},
 			{
 				numberOfLines: 36,
@@ -39,7 +39,7 @@ class CompassContainer extends React.Component {
 				width={this.props.width}
 				height={this.props.height}
 				heading={heading}
-				animate={this.props.animate}
+				animation={this.props.animation}
 				colors={this.props.colors}
 				divisions={this.divisions}
 			/>

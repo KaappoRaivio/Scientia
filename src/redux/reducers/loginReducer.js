@@ -1,4 +1,4 @@
-import { LOGOUT, UPDATE_LOGIN } from "../actions/actions";
+import { LOGIN } from "../actions/login";
 
 const initialState = {
 	waiting: true,
@@ -6,33 +6,18 @@ const initialState = {
 	code: null,
 	username: null,
 	apiKey: null,
-	userRequestedLogout: false,
 };
 
 const loginReducer = (loginState = initialState, action) => {
 	switch (action.type) {
-		case UPDATE_LOGIN:
-			console.log("Updating login");
-			console.log({
-				username: action.username,
-				loggedIn: action.loggedIn,
-				waiting: false,
-				code: action.code || loginState.code,
-				apiKey: action.apiKey || loginState.apiKey,
-				userRequestedLogout: false,
-			});
+		case LOGIN:
+			console.log("Updating login status");
 			return {
 				username: action.username,
 				loggedIn: action.loggedIn,
 				waiting: false,
 				code: action.code || loginState.code,
 				apiKey: action.apiKey || loginState.apiKey,
-				userRequestedLogout: false,
-			};
-		case LOGOUT:
-			return {
-				...loginState,
-				userRequestedLogout: true,
 			};
 		default:
 			return loginState;

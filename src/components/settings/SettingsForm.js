@@ -144,7 +144,7 @@ const myComponentMapper = {
 	"custom-type": TextField,
 };
 
-const SettingsForm = ({ initialValues, requestClosing, schema, onSubmit, buttonsInDocumentFlow }) => {
+const SettingsForm = ({ initialValues, requestClosing, schema, style, onSubmit, buttonsInDocumentFlow }) => {
 	const _onSubmit = (values, formApi) => {
 		onSubmit(values);
 		requestClosing();
@@ -156,15 +156,17 @@ const SettingsForm = ({ initialValues, requestClosing, schema, onSubmit, buttons
 	};
 
 	return (
-		<FormRenderer
-			style={{ position: "relative", height: "100%" }}
-			schema={schema}
-			initialValues={initialValues}
-			componentMapper={myComponentMapper}
-			FormTemplate={MyFormTemplate}
-			onSubmit={_onSubmit}
-			onCancel={onCancel}
-		/>
+		<div style={{ position: "relative", height: "100%", ...style }}>
+			<FormRenderer
+				style={{ height: "100%" }}
+				schema={schema}
+				initialValues={initialValues}
+				componentMapper={myComponentMapper}
+				FormTemplate={MyFormTemplate}
+				onSubmit={_onSubmit}
+				onCancel={onCancel}
+			/>
+		</div>
 	);
 };
 

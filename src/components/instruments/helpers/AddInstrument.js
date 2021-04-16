@@ -166,17 +166,18 @@ const AddInstrument = ({ onInstrumentAdded, width, height, colors, darkMode, isQ
 				style={{
 					padding: "3%",
 					fontSize: "50%",
-					height: "80%",
 					overflowY: "auto",
+					height: "100%",
 				}}>
 				<ReactDropdown
-					style={{ position: "absolute" }}
+					style={{ position: "relative", fontSize: "200%" }}
 					value={selectedItem}
 					onChange={onSpinnerChange}
 					options={spinnerSchema.options}
 					placeholder={spinnerSchema.label}
 				/>
 				<SettingsForm
+					style={{ fontSize: "50%", height: "90%" }}
 					schema={localSchema}
 					onSubmit={onConfirm}
 					requestClosing={() => {

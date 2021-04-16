@@ -15,7 +15,7 @@ const Gauge = ({
 	width,
 	height,
 
-	animate,
+	animation,
 	darkMode,
 	colors,
 
@@ -109,7 +109,7 @@ const Gauge = ({
 
 				{darkenIfNight()}
 			</svg>
-			<Needle angle={needleAngle} radius={radius} color={colors.accent2} animate={animate} demo={false} />
+			<Needle angle={needleAngle} radius={radius} color={colors.accent2} animation={animation} demo={false} />
 		</div>
 	);
 };
@@ -118,7 +118,7 @@ Gauge.propTypes = {
 	width: PropTypes.number.isRequired,
 	height: PropTypes.number.isRequired,
 
-	animate: PropTypes.bool.isRequired,
+	animation: PropTypes.bool.isRequired,
 	darkMode: PropTypes.bool.isRequired,
 	colors: PropTypes.object.isRequired,
 

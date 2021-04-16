@@ -7,7 +7,7 @@ yarn build
 cp -r build/ publish/public
 
 cp -r package.json publish/
-cp scripts/index.js publish/
+cp scripts/indexPublish.js publish/index.js
 
 
 if [ "$1" == "publish" ]

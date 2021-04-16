@@ -46,7 +46,7 @@ class GaugeContainer extends React.Component {
 				displayScale={value.meta.displayScale}
 				path={path}
 				value={value.value}
-				animate={animation}
+				animation={animation}
 				units={value.meta.units}
 				label={value.meta.displayName}
 				suffix={""}

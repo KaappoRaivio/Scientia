@@ -18,7 +18,7 @@ const Compass = props => {
 	};
 
 	let compassRotationStyle;
-	if (props.animate) {
+	if (props.animation) {
 		compassRotationStyle = { transform: `rotate(${-heading}deg)` };
 	} else {
 		compassRotationStyle = {
@@ -44,7 +44,7 @@ const Compass = props => {
 				displayScale={{ lower: 0, upper: 360, type: "linear" }}
 			/>
 
-			<svg className="compassRose" width="100%" height="100%" style={compassRotationStyle}>
+			<svg className="compassRose" width="100%" height="100%" strokeWidth={"1%"} style={compassRotationStyle}>
 				<circle cx="50%" cy="50%" r="49.5%" fill={colors.background} stroke={colors.primary} strokeWidth={"1%"} />
 
 				<g fill={colors.primary} stroke={colors.primary} strokeWidth={"1.5%"}>

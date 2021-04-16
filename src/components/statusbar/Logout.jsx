@@ -2,10 +2,11 @@ import React from "react";
 
 import logoutSVG from "../../assets/logout.svg";
 import { useDispatch } from "react-redux";
-import { logout } from "../../redux/actions/actions";
+import { logout } from "../../redux/actions/login";
 
 const Logout = ({}) => {
 	const dispatch = useDispatch();
+
 	const onLogout = () => {
 		console.log("Loggoing out");
 		dispatch(logout());

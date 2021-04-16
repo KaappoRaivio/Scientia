@@ -7,7 +7,7 @@ const Needle = props => {
 		return <div />;
 	}
 	let style;
-	if (props.animate) {
+	if (props.animation) {
 		style = {
 			transform: `rotate(${(props.angle / Math.PI) * 180 - 180}deg)`,
 		};

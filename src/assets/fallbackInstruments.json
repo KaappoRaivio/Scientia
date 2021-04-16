@@ -94,7 +94,7 @@
 			"component": {
 				"class": "VisualiserContainer",
 				"additionalProps": {
-					"path": "environment.wind.speedTrue"
+					"path": "environment.depth.belowTransducer"
 				}
 			}
 		}

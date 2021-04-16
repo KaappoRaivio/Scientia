@@ -62,7 +62,7 @@ class WindContainer extends React.Component {
 				colors={this.props.colors}
 				darkMode={this.props.darkMode}
 				divisions={this.divisions}
-				animate={this.props.animate}
+				animation={this.props.animation}
 				displayScale={wind?.speedTrue?.meta?.displayScale}
 			/>
 		);

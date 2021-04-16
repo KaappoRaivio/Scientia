@@ -35,11 +35,11 @@ const makePoint = (value, startTimestamp) => {
 };
 
 const VisualiserContainer = ({ path, xRange, data, width, height }) => {
-	const value = getByStringPath(path, data.vessels.self, true);
+	const node = getByStringPath(path, data.vessels.self, true);
 	const [startTimestamp, setStartTimestamp] = useState(null);
 	const [points, lastValue, addPoint] = useBuffer(xRange || 100);
 
-	let timestamp = value?.meta?.timestamp;
+	let timestamp = node?.meta?.timestamp;
 	useEffect(() => {
 		if (startTimestamp == null && timestamp) {
 			setStartTimestamp(new Date(timestamp).getTime());
@@ -47,23 +47,14 @@ const VisualiserContainer = ({ path, xRange, data, width, height }) => {
 		}
 	}, [startTimestamp, timestamp]);
 
-	const newPoint = makePoint(value, startTimestamp);
+	const newPoint = makePoint(node, startTimestamp);
 	if (newPoint != null && newPoint?.x !== lastValue?.x) {
 		addPoint(newPoint);
 	}
 
 	if (points[0] == null || lastValue == null) return <div></div>;
 
-	return (
-		<Visualiser3
-			// points={points.map(item => ({ y: item.y, x: (item.x - points[0].x) / (lastValue.x - points[0].x) }))}
-			points={points}
-			width={width}
-			height={height}
-			scale={"logarithmic"}
-		/>
-	);
-	// return <Visualiser3 points={points.map(item => points[0])} width={width} height={height} />;
+	return <Visualiser3 data={points} meta={node.meta} width={width} height={height} scale={"logarithmic"} />;
 };
 
 VisualiserContainer.propTypes = {};
@@ -80,6 +71,7 @@ VisualiserContainer.schema = [
 			},
 		],
 	},
+	{ component: componentTypes.SWITCH, name: "invertYAxis", placeholder: "Inverted", label: "Invert y axis" },
 ];
 
 export default VisualiserContainer;

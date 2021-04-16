@@ -23,8 +23,6 @@ const Wind = props => {
 		fill: colors.background,
 	};
 
-	// console.log(props.divisions);
-
 	return (
 		// <div>hello world</div>
 		<div className="wind" style={parentStyle}>
@@ -56,8 +54,8 @@ const Wind = props => {
 				</g>
 			</svg>
 
-			<Needle angle={props.angleApparent.value} radius={radius} color={colors.accent1} animate={props.animate} />
-			<Needle angle={props.angleTrue.value} radius={radius} color={colors.accent2} animate={props.animate} />
+			<Needle angle={props.angleApparent.value} radius={radius} color={colors.accent1} animation={props.animation} />
+			<Needle angle={props.angleTrue.value} radius={radius} color={colors.accent2} animation={props.animation} />
 		</div>
 	);
 };

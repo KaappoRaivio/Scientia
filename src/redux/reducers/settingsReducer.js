@@ -1,5 +1,5 @@
-import { DARK_MODE, SETTINGS_PANE_OPEN, UPDATE_SETTINGS } from "../actions/actions";
 import update from "immutability-helper";
+import { DARK_MODE, SETTINGS_PANE_OPEN, UPDATE_SETTINGS } from "../actions/appState";
 const getColors = darkMode => {
 	if (darkMode) {
 		return {

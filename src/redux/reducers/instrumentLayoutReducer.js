@@ -1,21 +1,18 @@
-import { ADD_INSTRUMENT, REMOVE_INSTRUMENT, UPDATE_INSTRUMENT_LAYOUT } from "../actions/actions";
+import { ADD_INSTRUMENT, REMOVE_INSTRUMENT } from "../actions/actions";
 import _ from "lodash";
+import { UPDATE_INSTRUMENT_LAYOUT } from "../actions/applicationData";
 
 const initialState = { type: "branch", children: [] };
 const instrumentLayoutReducer = (instrumentLayoutState = initialState, action) => {
 	switch (action.type) {
 		case UPDATE_INSTRUMENT_LAYOUT:
 			return action.layout;
-		case ADD_INSTRUMENT:
-			return addInstrument(instrumentLayoutState, action.id, action.instrument);
-		case REMOVE_INSTRUMENT:
-			return removeInstrument(instrumentLayoutState, action.id);
 		default:
 			return instrumentLayoutState;
 	}
 };
 
-const addInstrument = (instruments, id, node) => {
+export const mergeNewInstrumentById = (instruments, id, node) => {
 	const indices = id
 		.split(".")
 		.slice(1)
@@ -36,7 +33,7 @@ const addInstrument = (instruments, id, node) => {
 	return clonedInstruments;
 };
 
-const removeInstrument = (instruments, id) => {
+export const removeInstrumentById = (instruments, id) => {
 	const indices = id
 		.split(".")
 		.slice(1)

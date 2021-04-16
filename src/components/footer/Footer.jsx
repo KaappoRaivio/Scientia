@@ -1,11 +1,11 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { setLayoutEditingEnabled, settingsPaneOpen } from "../../redux/actions/actions";
 
 import styles from "./Footer.module.css";
 import Done from "../../assets/done.svg";
 import Wrench from "../../assets/wrench.svg";
 import { useDispatch, useSelector } from "react-redux";
+import { setLayoutEditingEnabled, settingsPaneOpen } from "../../redux/actions/appState";
 
 const Footer = props => {
 	const dispatch = useDispatch();

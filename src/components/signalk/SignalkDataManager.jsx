@@ -3,8 +3,10 @@ import LayoutModel from "../../models/LayoutModel";
 import WebSocketModel from "../../models/WebSocketModel";
 import DeltaAssembler from "delta-processor";
 import { useDispatch, useSelector } from "react-redux";
-import { updateConnectionStatus, updateInstrumentLayout, updateSignalkState } from "../../redux/actions/actions";
+import { updateConnectionStatus, updateSignalkState } from "../../redux/actions/actions";
 import PropTypes from "prop-types";
+import LayoutManager from "../../models/LayoutModel";
+import { changeInstrumentLayout } from "../../redux/actions/applicationData";
 
 const useSignalkState = (address, HTTPServerRoot) => {
 	const dispatch = useDispatch();
@@ -25,20 +27,16 @@ const useSignalkState = (address, HTTPServerRoot) => {
 	return { signalkState, connectionStatus: socketManagerStatus };
 };
 
-const useInstrumentLayoutManager = (appName, appVersion, endPoint, production, username) => {
+const useInstrumentLayoutManager = (appName, appVersion, endpoint, isProduction, username) => {
 	const dispatch = useDispatch();
 	const instruments = useSelector(state => state.instrumentLayout);
 
-	const [layoutManager] = useState(() => new LayoutModel(appName, appVersion, endPoint, production));
 	useEffect(() => {
-		layoutManager.getInstruments(username).then(instruments => {
-			dispatch(updateInstrumentLayout(instruments));
+		console.log("Getting instruments");
+		LayoutManager.getInstruments(username, appName, appVersion, isProduction, endpoint).then(instruments => {
+			dispatch(changeInstrumentLayout(instruments));
 		});
-	}, [appName, appVersion, dispatch, endPoint, layoutManager, production, username]);
-
-	useEffect(() => {
-		layoutManager.saveInstruments(username, instruments);
-	}, [instruments, layoutManager, username]);
+	}, [appName, appVersion, dispatch, endpoint, isProduction, username]);
 
 	return { instruments };
 };
@@ -63,12 +61,7 @@ const SignalkDataManager = ({ children }) => {
 };
 
 SignalkDataManager.propTypes = {
-	children: PropTypes.array.isRequired,
-	appName: PropTypes.string.isRequired,
-	appVersion: PropTypes.string.isRequired,
-	endPoint: PropTypes.string.isRequired,
-	production: PropTypes.bool.isRequired,
-	username: PropTypes.string.isRequired,
+	children: PropTypes.element.isRequired,
 };
 
 export default SignalkDataManager;

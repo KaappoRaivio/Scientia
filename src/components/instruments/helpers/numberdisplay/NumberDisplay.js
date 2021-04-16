@@ -141,7 +141,7 @@ NumberDisplay.propTypes = {
 	label: PropTypes.string,
 	suffix: PropTypes.string,
 	units: PropTypes.string,
-	value: PropTypes.number,
+	value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
 
 	decimalPlaces: PropTypes.number,
 
@@ -151,7 +151,7 @@ NumberDisplay.propTypes = {
 	colors: PropTypes.object.isRequired,
 	displayScale: PropTypes.object,
 	zones: PropTypes.array,
-	darkMode: PropTypes.bool.isRequired,
+	darkMode: PropTypes.bool,
 
 	path: PropTypes.string,
 };

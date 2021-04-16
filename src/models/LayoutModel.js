@@ -6,6 +6,8 @@ import GaugeContainer from "../components/instruments/gauge/GaugeContainer";
 import VisualiserContainer from "../components/instruments/visualiser/VisualiserContainer";
 import AddInstrument from "../components/instruments/helpers/AddInstrument";
 
+import _ from "lodash";
+
 const replaceClassesWithStrings = node => {
 	if (node.type === "leaf") {
 		return {
@@ -28,32 +30,34 @@ const serializeInstruments = instruments => {
 };
 
 class LayoutModel {
-	constructor(appName, appVersion, endpoint = "", isProduction = true) {
-		this.appName = appName;
-		this.appVersion = appVersion;
-		this.endpoint = endpoint;
-		this.isProduction = isProduction;
-		console.log(this.isProduction);
-	}
+	// constructor(appName, appVersion, endpoint = "", isProduction = true) {
+	// 	this.appName = appName;
+	// 	this.appVersion = appVersion;
+	// 	this.endpoint = endpoint;
+	// 	this.isProduction = isProduction;
+	// 	console.log(this.isProduction);
+	// }
 
-	saveInstruments(username, instruments) {
-		fetch(`${this.endpoint}/signalk/v1/applicationData/user/${this.appName}/${this.appVersion}/${username}/layout`, {
+	static saveInstruments(username, appName, appVersion, isProduction, endpoint, instruments) {
+		// const endpoint = reduxState.settings.connection.address.http;
+		// const { appName, appVersion } = reduxState.appState.meta;
+
+		return fetch(`${endpoint}/signalk/v1/applicationData/user/${appName}/${appVersion}/${username}/layout`, {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
 			body: serializeInstruments(instruments),
-		}).then(response =>
-			response.ok
-				? console.log("Saved instruments successfully!")
-				: console.log("There was a problem saving the insruments: " + response.status)
-		);
+		}).then(response => ({ ok: response.ok, status: response.status }));
 	}
 
-	async getInstruments(username) {
-		const result = await fetch(`${this.endpoint}/signalk/v1/applicationData/user/${this.appName}/${this.appVersion}/${username}/layout`)
+	static async getInstruments(username, appName, appVersion, isProduction, endpoint) {
+		// console.log(reduxState);
+		// const { appName, appVersion, isProduction } = reduxState.appState.meta;
+		// const { endpoint } = reduxState.settings.connection.address.http;
+
+		const result = await fetch(`${endpoint}/signalk/v1/applicationData/user/${appName}/${appVersion}/${username}/layout`)
 			.then(response => {
-				console.log(response);
 				if (response.status === 200) {
 					return response.json();
 				} else {
@@ -61,8 +65,13 @@ class LayoutModel {
 				}
 			})
 			.catch(error => {
-				this.saveInstruments(username, { type: "branch", children: [] });
-				return this.isProduction ? { type: "branch", children: [] } : fallbackInstruments;
+				console.log("Didn't find any instruments, probably in dev!");
+				if (isProduction) {
+					console.log("Fixing corrupt save data!");
+					LayoutModel.saveInstruments(username, appName, appVersion, isProduction, endpoint, { type: "branch", children: [] });
+				}
+
+				return isProduction ? { type: "branch", children: [] } : _.cloneDeep(fallbackInstruments);
 			});
 
 		const fillBranch = node => {
@@ -77,7 +86,7 @@ class LayoutModel {
 		return result;
 	}
 
-	storeApiKey(username, key) {
+	static storeApiKey(username, key) {
 		return fetch(`${this.endpoint}/signalk/v1/applicationData/user/${this.appName}/${this.appVersion}/${username}/apiKey`, {
 			method: "POST",
 			headers: {
@@ -90,7 +99,7 @@ class LayoutModel {
 		});
 	}
 
-	getApiKey(username) {
+	static getApiKey(username) {
 		return fetch(`${this.endpoint}/signalk/v1/applicationData/user/${this.appName}/${this.appVersion}/${username}/apiKey`)
 			.then(response => {
 				console.log(response);

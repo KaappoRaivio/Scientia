@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import MyModal from "../modal/MyModal";
 import { useDispatch, useSelector } from "react-redux";
 import AddInstrument from "../instruments/helpers/AddInstrument";
-import { addInstrument } from "../../redux/actions/actions";
+import { addInstrument } from "../../redux/actions/applicationData";
 
 const AddInstrumentDialog = props => {
 	const dispatch = useDispatch();

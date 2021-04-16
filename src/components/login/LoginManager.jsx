@@ -4,82 +4,65 @@ import { componentTypes } from "@data-driven-forms/react-form-renderer";
 import SettingsForm from "../settings/SettingsForm";
 
 import "./LoginManager.css";
-import LoginModel from "../../models/LoginModel";
+import { COOKIE_USERNAME } from "../../models/LoginModel";
 import cookie from "react-cookies";
 import { useDispatch, useSelector } from "react-redux";
-import { updateUserLoggedIn } from "../../redux/actions/actions";
 
 import schema from "../../assets/schemas/loginSchema.json";
+import { isLoggedIn, login } from "../../redux/actions/login";
 
-const COOKIE_USERNAME = "username";
-
-const useLogin = (username, password, apiKey, endPoint) => {
+const useLogin = (username, password, apiKey) => {
 	const dispatch = useDispatch();
-	const { loggedIn, waiting, code, userRequestedLogout } = useSelector(state => state.login);
+	const { loggedIn, waiting, code } = useSelector(state => state.login);
 
 	useEffect(() => {
-		if (username != null) {
-			LoginModel.testLoginValidity(username, endPoint).then(valid => {
-				dispatch(updateUserLoggedIn(username, valid));
-			});
+		console.log(`Probing login with username ${username}`);
+		if (waiting) {
+			dispatch(isLoggedIn(username));
+		}
+	}, [dispatch, username, waiting]);
+
+	const performLogin = () => {
+		if (username != null && password != null) {
+			console.log("Logging in with username", username, password);
+			dispatch(login(username, password, apiKey));
 		} else {
-			dispatch(updateUserLoggedIn(username, false));
+			console.log("Username or password are null, not logging in !");
 		}
-	}, [username, endPoint, dispatch]);
+	};
 
-	useEffect(() => {
-		if (username != null && password != null && !waiting) {
-			LoginModel.login(username, password, endPoint).then(status => {
-				console.log(status);
-				if (status === 200) {
-					console.log("SHould be logged int");
-					dispatch(updateUserLoggedIn(username, true, 200, apiKey));
-					cookie.save(COOKIE_USERNAME, username, { sameSite: "strict" });
-				} else {
-					dispatch(updateUserLoggedIn(username, false, status));
-				}
-			});
-		}
-	}, [username, password, waiting, endPoint, apiKey, dispatch]);
+	useEffect(performLogin, [username, password, apiKey, dispatch]);
 
-	useEffect(() => {
-		if (userRequestedLogout) {
-			LoginModel.logout().then(status => {
-				dispatch(updateUserLoggedIn(null, false, null, null));
-			});
-			console.log("Logging out ");
-		}
-	}, [dispatch, userRequestedLogout]);
-
-	return { waiting, loggedIn, code };
+	return { waiting, loggedIn, code, performLogin };
 };
 
-const LoginManager = ({ colors, children, production }) => {
+const LoginManager = ({ colors, children }) => {
+	const production = useSelector(state => state.appState.meta.isProduction);
 	const [{ username, password, apiKey }, setCredentials] = useState({ username: cookie.load(COOKIE_USERNAME) });
-	const endpoint = useSelector(state => state.settings.connection.address.http);
 
-	const { waiting, loggedIn, code } = useLogin(username, password, apiKey, endpoint);
+	const { waiting, loggedIn, code, performLogin } = useLogin(username, password, apiKey);
 
 	if (waiting) {
-		return <div>...</div>;
+		return <div>Please wait...</div>;
 	}
 
 	if (loggedIn || !production) {
-		// if (loggedIn) {
-		// console.log(children);
-		return React.Children.map(children, child => {
-			if (React.isValidElement(child)) {
-				return React.cloneElement(child, { production, username, endpoint });
-			} else {
-				return child;
-			}
-		});
+		return children;
 	}
 
 	return (
 		<div className="loginform-parent">
 			<div className="loginform">
-				<SettingsForm requestClosing={() => {}} colors={colors} schema={schema} onSubmit={setCredentials} initialValues={{}} />
+				<SettingsForm
+					requestClosing={() => {}}
+					colors={colors}
+					schema={schema}
+					onSubmit={values => {
+						setCredentials(values);
+						performLogin();
+					}}
+					initialValues={{}}
+				/>
 			</div>
 			{code === 401 && <span>Wrong username or password</span>}
 		</div>

@@ -107,7 +107,7 @@ const LineTickSection = ({
 					  ))
 					: null}
 			</g>
-			<path d={path} vectorEffect="non-scaling-stroke" />
+			<path d={path} strokeWidth={"1%"} vectorEffect="non-scaling-stroke" />
 		</svg>
 	);
 };

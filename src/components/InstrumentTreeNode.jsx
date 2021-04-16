@@ -4,7 +4,7 @@ import Quadrants from "./instruments/Quadrants";
 import AddInstrument from "./instruments/helpers/AddInstrument";
 import RemoveInstrument from "./instruments/helpers/RemoveInstrument";
 import { useDispatch } from "react-redux";
-import { addInstrument, removeInstrument } from "../redux/actions/actions";
+import { addInstrument, removeInstrument } from "../redux/actions/applicationData";
 
 const InstrumentTreeNode = ({ branch, id, additionalProps, colors, layoutEditingEnabled }) => {
 	const dispatch = useDispatch();
@@ -27,6 +27,7 @@ const InstrumentTreeNode = ({ branch, id, additionalProps, colors, layoutEditing
 				onRemoveClick={onInstrumentRemoved}
 				index={0}
 				id={id}
+				key={id}
 				layoutEditingEnabled={layoutEditingEnabled}
 			/>
 		);
@@ -51,6 +52,7 @@ const InstrumentTreeNode = ({ branch, id, additionalProps, colors, layoutEditing
 						onInstrumentRemoved={onInstrumentRemoved}
 						onInstrumentAdded={onInstrumentAdded}
 						layoutEditingEnabled={layoutEditingEnabled}
+						key={id + "." + index}
 					/>
 				))}
 				{layoutEditingEnabled && (node.children.length < 4 || id === ".") ? (

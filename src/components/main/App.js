@@ -11,7 +11,7 @@ import Package from "../../../package.json";
 import Main from "./Main";
 import SignalkDataManager from "../signalk/SignalkDataManager";
 import { connect, useDispatch, useSelector } from "react-redux";
-import { setAppMetadata } from "../../redux/actions/actions";
+import { setAppMetadata } from "../../redux/actions/appState";
 
 export const APP_NAME = Package.name;
 export const APP_VERSION = Package.version;

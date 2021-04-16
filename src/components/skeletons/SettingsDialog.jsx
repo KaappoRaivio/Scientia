@@ -5,8 +5,8 @@ import "./SettingsDialog.css";
 import SettingsForm from "../settings/SettingsForm";
 import { componentTypes } from "@data-driven-forms/react-form-renderer";
 import { useDispatch, useSelector } from "react-redux";
-import { settingsPaneOpen, updateSettings } from "../../redux/actions/actions";
 import MyModal from "../modal/MyModal";
+import { settingsPaneOpen, updateSettings } from "../../redux/actions/appState";
 
 const schema = {
 	title: "Settings",

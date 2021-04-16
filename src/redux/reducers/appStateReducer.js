@@ -1,6 +1,5 @@
-import { ADD_INSTRUMENT_DIALOG_OPEN, APP_METADATA, LAYOUT_EDITING_ENABLED, SETTINGS_PANE_OPEN } from "../actions/actions";
-
 import update from "immutability-helper";
+import { ADD_INSTRUMENT_DIALOG_OPEN, APP_METADATA, LAYOUT_EDITING_ENABLED, SETTINGS_PANE_OPEN } from "../actions/appState";
 
 const initialState = {
 	settingsPaneOpen: false,
