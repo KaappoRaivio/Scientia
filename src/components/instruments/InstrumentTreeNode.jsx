@@ -1,10 +1,10 @@
 import React from "react";
-import SingleInstrumentContainer from "./instruments/helpers/SingleInstrumentContainer";
-import Quadrants from "./instruments/Quadrants";
-import AddInstrument from "./instruments/helpers/AddInstrument";
-import RemoveInstrument from "./instruments/helpers/RemoveInstrument";
+import SingleInstrumentContainer from "./helpers/SingleInstrumentContainer";
+import Quadrants from "./Quadrants";
+import AddInstrument from "./helpers/AddInstrument";
+import RemoveInstrument from "./helpers/RemoveInstrument";
 import { useDispatch } from "react-redux";
-import { addInstrument, removeInstrument } from "../redux/actions/applicationData";
+import { addInstrument, removeInstrument } from "../../redux/actions/applicationData";
 
 const InstrumentTreeNode = ({ branch, id, additionalProps, colors, layoutEditingEnabled }) => {
 	const dispatch = useDispatch();

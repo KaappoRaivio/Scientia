@@ -1,10 +1,10 @@
 import React from "react";
 
 import "./Instruments.css";
-import InstrumentTreeNode from "../InstrumentTreeNode";
+import InstrumentTreeNode from "./InstrumentTreeNode";
 import { useSelector } from "react-redux";
 
-const Instruments = ({}) => {
+const Instruments = props => {
 	const animation = useSelector(state => state.settings.performance.animation);
 	const darkMode = useSelector(state => state.settings.appearance.darkMode);
 	const signalkState = useSelector(state => state.signalkState);
