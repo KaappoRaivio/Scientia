@@ -94,7 +94,8 @@
 			"component": {
 				"class": "VisualiserContainer",
 				"additionalProps": {
-					"path": "environment.depth.belowTransducer"
+					"path": "environment.depth.belowTransducer",
+					"invertYAxis": true
 				}
 			}
 		}

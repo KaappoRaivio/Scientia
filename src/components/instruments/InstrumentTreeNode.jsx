@@ -55,7 +55,7 @@ const InstrumentTreeNode = ({ branch, id, additionalProps, colors, layoutEditing
 						key={id + "." + index}
 					/>
 				))}
-				{layoutEditingEnabled && (node.children.length < 4 || id === ".") ? (
+				{layoutEditingEnabled && (node.children.length < 4 || id === "") ? (
 					<>
 						<InstrumentTreeNode
 							colors={colors}

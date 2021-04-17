@@ -34,7 +34,7 @@ const makePoint = (value, startTimestamp) => {
 	// const return;
 };
 
-const VisualiserContainer = ({ path, xRange, data, width, height }) => {
+const VisualiserContainer = ({ path, xRange, data, width, height, invertYAxis }) => {
 	const node = getByStringPath(path, data.vessels.self, true);
 	const [startTimestamp, setStartTimestamp] = useState(null);
 	const [points, lastValue, addPoint] = useBuffer(xRange || 100);
@@ -54,7 +54,7 @@ const VisualiserContainer = ({ path, xRange, data, width, height }) => {
 
 	if (points[0] == null || lastValue == null) return <div></div>;
 
-	return <Visualiser3 data={points} meta={node.meta} width={width} height={height} scale={"logarithmic"} />;
+	return <Visualiser3 data={points} meta={node.meta} displayOptions={{ invertYAxis }} width={width} height={height} />;
 };
 
 VisualiserContainer.propTypes = {};

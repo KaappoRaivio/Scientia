@@ -89,12 +89,13 @@ const applyScale = (data, displayScale) => {
 	return data.map(({ x, y }) => ({ x, y: converter(y) * (upper - lower) + lower }));
 };
 
-const Visualiser3 = ({ data, meta, width, height }) => {
+const Visualiser3 = ({ data, meta, displayOptions, width, height }) => {
 	// const scale =
 	// const a = applyScale(data, );
 	// console.log(data, a);
 
 	const { displayScale } = meta;
+	const { invertYAxis } = displayOptions;
 	// const displayScale = { upper: 100, lower: 0.1, type: "logarithmic" };
 	const { lower, upper, type } = displayScale;
 	const converter = x => valueToPercentConverters[type](upper, lower)(x);
@@ -122,7 +123,7 @@ const Visualiser3 = ({ data, meta, width, height }) => {
 							dataKey={"y"}
 							tickFormatter={y => Math.round(inverseConverter(y) * 10) / 10}
 							ticks={ticks.map(converter)}
-							reversed={true}
+							reversed={invertYAxis}
 						/>
 						<Area type={"linear"} dataKey={"y"} stroke={"black"} isAnimationActive={false} />
 					</AreaChart>
