@@ -30,18 +30,7 @@ const serializeInstruments = instruments => {
 };
 
 class LayoutModel {
-	// constructor(appName, appVersion, endpoint = "", isProduction = true) {
-	// 	this.appName = appName;
-	// 	this.appVersion = appVersion;
-	// 	this.endpoint = endpoint;
-	// 	this.isProduction = isProduction;
-	// 	console.log(this.isProduction);
-	// }
-
 	static saveInstruments(username, appName, appVersion, isProduction, endpoint, instruments) {
-		// const endpoint = reduxState.settings.connection.address.http;
-		// const { appName, appVersion } = reduxState.appState.meta;
-
 		return fetch(`${endpoint}/signalk/v1/applicationData/user/${appName}/${appVersion}/${username}/layout`, {
 			method: "POST",
 			headers: {
@@ -52,10 +41,6 @@ class LayoutModel {
 	}
 
 	static async getInstruments(username, appName, appVersion, isProduction, endpoint) {
-		// console.log(reduxState);
-		// const { appName, appVersion, isProduction } = reduxState.appState.meta;
-		// const { endpoint } = reduxState.settings.connection.address.http;
-
 		const result = await fetch(`${endpoint}/signalk/v1/applicationData/user/${appName}/${appVersion}/${username}/layout`)
 			.then(response => {
 				if (response.status === 200) {
@@ -113,6 +98,7 @@ class LayoutModel {
 			.catch(error => "");
 	}
 }
+
 export const stringToClass = string =>
 	({
 		CompassContainer: CompassContainer,
@@ -141,14 +127,6 @@ export const classToString = _class => {
 		default:
 			throw new Error(`Unknown class ${_class}!`);
 	}
-	// return ({
-	// 	[CompassContainer]: "CompassContainer",
-	// 	[WindContainer]: "WindContainer",
-	// 	[TridataContainer]: "TridataContainer",
-	// 	[GaugeContainer]: "GaugeContainer",
-	// 	[VisualiserContainer]: "VisualiserContainer",
-	// 	[AddInstrument]: "AddInstrument"
-	// }[_class]);
 };
 
 export default LayoutModel;

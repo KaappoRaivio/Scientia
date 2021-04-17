@@ -1,7 +1,7 @@
 import { mergeNewInstrumentById, removeInstrumentById } from "../reducers/instrumentLayoutReducer";
 import LayoutManager from "../../models/LayoutModel";
 
-export const UPDATE_INSTRUMENT_LAYOUT = 60;
+export const UPDATE_INSTRUMENT_LAYOUT = "update-instrument-layout";
 const updateInstrumentLayout = newLayout => {
 	return { type: UPDATE_INSTRUMENT_LAYOUT, layout: newLayout };
 };

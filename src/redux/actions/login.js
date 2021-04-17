@@ -39,7 +39,7 @@ export const logout = () => async (dispatch, getState) => {
 		console.log(`Got status ${status} when trying to logout!`);
 	}
 };
-export const LOGIN = 1;
+export const LOGIN = "login";
 const updateLoginStatus = (username, waiting, loggedIn, apiKey, statusCode) => {
 	return { type: LOGIN, username, waiting, loggedIn, apiKey, code: statusCode };
 };

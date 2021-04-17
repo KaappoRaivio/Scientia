@@ -8,7 +8,7 @@ import Wrench from "../../assets/wrench.svg";
 import { useDispatch, useSelector } from "react-redux";
 import AddInstrumentDialog from "../addinstrument/AddInstrumentDialog";
 import Footer from "../footer/Footer";
-import { setLayoutEditingEnabled, settingsPaneOpen } from "../../redux/actions/appState";
+import { setLayoutEditingEnabled, settingsDialogOpen } from "../../redux/actions/appState";
 
 const Main = ({ parentStyle, instruments }) => {
 	const dispatch = useDispatch();

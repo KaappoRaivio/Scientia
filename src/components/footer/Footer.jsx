@@ -5,7 +5,7 @@ import styles from "./Footer.module.css";
 import Done from "../../assets/done.svg";
 import Wrench from "../../assets/wrench.svg";
 import { useDispatch, useSelector } from "react-redux";
-import { setLayoutEditingEnabled, settingsPaneOpen } from "../../redux/actions/appState";
+import { setLayoutEditingEnabled, settingsDialogOpen } from "../../redux/actions/appState";
 
 const Footer = props => {
 	const dispatch = useDispatch();
@@ -13,7 +13,7 @@ const Footer = props => {
 
 	return (
 		<div className={`${styles["open-menu"]} with-shadow`}>
-			<button className={styles["open-menu-wrapper"]} onClick={() => dispatch(settingsPaneOpen(true))}>
+			<button className={styles["open-menu-wrapper"]} onClick={() => dispatch(settingsDialogOpen(true))}>
 				configure
 			</button>
 			<ToggleLayoutEditing editingEnabled={layoutEditingEnabled} onChange={newValue => dispatch(setLayoutEditingEnabled(newValue))} />

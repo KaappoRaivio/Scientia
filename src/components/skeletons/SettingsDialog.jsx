@@ -6,7 +6,7 @@ import SettingsForm from "../settings/SettingsForm";
 import { componentTypes } from "@data-driven-forms/react-form-renderer";
 import { useDispatch, useSelector } from "react-redux";
 import MyModal from "../modal/MyModal";
-import { settingsPaneOpen, updateSettings } from "../../redux/actions/appState";
+import { settingsDialogOpen, updateSettings } from "../../redux/actions/appState";
 
 const schema = {
 	title: "Settings",
@@ -78,7 +78,7 @@ const SettingsDialog = ({ appElement }) => {
 	const colors = useSelector(state => state.settings.appearance.colors);
 	const isOpen = useSelector(state => state.appState.settingsPaneOpen);
 
-	const requestClosing = () => dispatch(settingsPaneOpen(false));
+	const requestClosing = () => dispatch(settingsDialogOpen(false));
 
 	const currentSettings = useSelector(state => state.settings);
 

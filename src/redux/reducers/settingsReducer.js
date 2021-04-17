@@ -1,5 +1,5 @@
 import update from "immutability-helper";
-import { DARK_MODE, SETTINGS_PANE_OPEN, UPDATE_SETTINGS } from "../actions/appState";
+import { DARK_MODE, SETTINGS_DIALOG_OPEN, UPDATE_SETTINGS } from "../actions/appState";
 const getColors = darkMode => {
 	if (darkMode) {
 		return {
@@ -82,13 +82,6 @@ const mergeFormResult = (state, formResult) => {
 
 const settingsReducer = (settingsState = initialState, action) => {
 	switch (action.type) {
-		case DARK_MODE:
-			return update(settingsState, {
-				appearance: {
-					darkMode: { $set: action.darkMode },
-					colors: { $set: getColors(action.darkMode) },
-				},
-			});
 		case UPDATE_SETTINGS:
 			return mergeFormResult(settingsState, action.settings);
 		default:

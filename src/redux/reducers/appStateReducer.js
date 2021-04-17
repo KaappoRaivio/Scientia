@@ -1,5 +1,5 @@
 import update from "immutability-helper";
-import { ADD_INSTRUMENT_DIALOG_OPEN, APP_METADATA, LAYOUT_EDITING_ENABLED, SETTINGS_PANE_OPEN } from "../actions/appState";
+import { ADDINSTRUMENT_DIALOG_OPEN, APP_METADATA, LAYOUT_EDITING_ENABLED, SETTINGS_DIALOG_OPEN } from "../actions/appState";
 
 const initialState = {
 	settingsPaneOpen: false,
@@ -15,9 +15,9 @@ const initialState = {
 
 const appStateReducer = (appState = initialState, action) => {
 	switch (action.type) {
-		case ADD_INSTRUMENT_DIALOG_OPEN:
+		case ADDINSTRUMENT_DIALOG_OPEN:
 			return { ...appState, addInstrumentDialogOpen: action.open };
-		case SETTINGS_PANE_OPEN:
+		case SETTINGS_DIALOG_OPEN:
 			return { ...appState, settingsPaneOpen: action.open };
 		case LAYOUT_EDITING_ENABLED:
 			return { ...appState, layoutEditingEnabled: action.enabled };
