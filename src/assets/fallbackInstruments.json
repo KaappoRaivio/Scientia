@@ -2,90 +2,12 @@
 	"type": "branch",
 	"children": [
 		{
-			"type": "branch",
-			"children": [
-				{
-					"type": "leaf",
-					"component": {
-						"class": "GaugeContainer",
-						"additionalProps": {
-							"path": "environment.depth.belowTransducer"
-						}
-					}
-				},
-				{
-					"type": "branch",
-					"children": [
-						{
-							"type": "leaf",
-							"component": {
-								"class": "GaugeContainer",
-								"additionalProps": {
-									"path": "electrical.batteries.1.current"
-								}
-							}
-						},
-						{
-							"type": "leaf",
-							"component": {
-								"class": "GaugeContainer",
-								"additionalProps": {
-									"path": "electrical.batteries.1.voltage"
-								}
-							}
-						}
-					]
-				},
-				{
-					"type": "branch",
-					"children": [
-						{
-							"type": "leaf",
-							"component": {
-								"class": "GaugeContainer",
-								"additionalProps": {
-									"path": "environment.wind.speedTrue"
-								}
-							}
-						},
-						{
-							"type": "leaf",
-							"component": {
-								"class": "GaugeContainer",
-								"additionalProps": {
-									"path": "environment.wind.speedApparent"
-								}
-							}
-						},
-						{
-							"type": "leaf",
-							"component": {
-								"class": "WindContainer",
-								"additionalProps": {}
-							}
-						}
-					]
-				},
-				{
-					"type": "leaf",
-					"component": {
-						"class": "CompassContainer",
-						"additionalProps": {}
-					}
-				}
-			]
-		},
-		{
 			"type": "leaf",
 			"component": {
-				"class": "TridataContainer",
+				"class": "VisualiserContainer",
 				"additionalProps": {
-					"paths": [
-						"navigation.position.latitude",
-						"navigation.position.longitude",
-						"navigation.speedThroughWater",
-						"navigation.speedOverGround"
-					]
+					"path": "environment.depth.belowTransducer",
+					"invertYAxis": true
 				}
 			}
 		},
@@ -94,8 +16,27 @@
 			"component": {
 				"class": "VisualiserContainer",
 				"additionalProps": {
-					"path": "environment.depth.belowTransducer",
-					"invertYAxis": true
+					"path": "environment.wind.speedTrue",
+					"invertYAxis": false
+				}
+			}
+		},
+		{
+			"type": "leaf",
+			"component": {
+				"class": "VisualiserContainer",
+				"additionalProps": {
+					"path": "performance.polarSpeedRatio",
+					"invertYAxis": false
+				}
+			}
+		},
+		{
+			"type": "leaf",
+			"component": {
+				"class": "GaugeContainer",
+				"additionalProps": {
+					"path": "environment.depth.belowTransducer"
 				}
 			}
 		}

@@ -1,9 +1,9 @@
 export default class WebSocketModel {
-	static STATUS_UNKNOWN = 0;
-	static STATUS_DISCONNECTED = 1;
-	static STATUS_CONNECTING = 2;
-	static STATUS_CONNECTED = 3;
-	static STATUS_ERROR = 4;
+	static STATUS_UNKNOWN = "status-unknown";
+	static STATUS_DISCONNECTED = "status-disconnected";
+	static STATUS_CONNECTING = "status-connecting";
+	static STATUS_CONNECTED = "status-connected";
+	static STATUS_ERROR = "status-error";
 
 	constructor(address, onDelta, onStatusChangeCallback) {
 		this.address = address;

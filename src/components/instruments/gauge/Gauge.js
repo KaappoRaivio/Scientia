@@ -59,7 +59,7 @@ const Gauge = ({
 		return {
 			startAngle: percentToAngle(valueToPercent(lowerLimit)),
 			endAngle: percentToAngle(valueToPercent(upperLimit)),
-			fillColor: colors["value" + zone.state[0].toUpperCase() + zone.state.slice(1)],
+			fillColor: colors.zones[zone.state],
 		};
 	});
 

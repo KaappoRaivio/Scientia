@@ -25,10 +25,18 @@ const useBuffer = size => {
 	];
 };
 
-const makePoint = (value, startTimestamp) => {
+const makePoint = (value, displayScale, startTimestamp) => {
 	if (value.value == null || value.meta == null) return null;
 	const x = (new Date(value.meta.timestamp).getTime() - startTimestamp) / 1000;
-	const y = value.value;
+
+	let y = value.value;
+	if (displayScale?.upper != null) {
+		y = Math.min(displayScale.upper, y);
+	}
+	if (displayScale?.lower != null) {
+		y = Math.max(displayScale.lower, y);
+	}
+
 	if (x == null || y == null || startTimestamp == null) return null;
 	return { x, y: y };
 	// const return;
@@ -47,12 +55,12 @@ const VisualiserContainer = ({ path, xRange, data, width, height, invertYAxis })
 		}
 	}, [startTimestamp, timestamp]);
 
-	const newPoint = makePoint(node, startTimestamp);
+	const newPoint = makePoint(node, node?.meta?.displayScale, startTimestamp);
 	if (newPoint != null && newPoint?.x !== lastValue?.x) {
 		addPoint(newPoint);
 	}
 
-	if (points[0] == null || lastValue == null) return <div></div>;
+	if (points[0] == null || lastValue == null) return <div />;
 
 	return <Visualiser3 data={points} meta={node.meta} displayOptions={{ invertYAxis }} width={width} height={height} />;
 };

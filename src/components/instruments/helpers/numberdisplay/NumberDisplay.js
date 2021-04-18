@@ -27,8 +27,7 @@ const isStillLoading = (...params) => {
 };
 
 const getActiveZone = (value, zones) => {
-	const zone = checkForZones(zones, value);
-	return "value" + zone[0].toUpperCase() + zone.slice(1);
+	return checkForZones(zones, value);
 };
 
 const NumberDisplay = ({
@@ -71,8 +70,8 @@ const NumberDisplay = ({
 	}
 
 	const alarmStyle = {
-		backgroundColor: colors[activeZone],
-		animation: ["valueAlarm", "valueEmergency"].includes(activeZone) ? "blink 0.5s infinite steps(1, end)" : "none",
+		backgroundColor: colors.zones[activeZone],
+		animation: ["alarm", "emergency"].includes(activeZone) ? "blink 0.5s infinite steps(1, end)" : "none",
 	};
 
 	// console.log(isNumber, value);
@@ -81,7 +80,7 @@ const NumberDisplay = ({
 		<div className="numberdisplay-wrapper" style={{ width: `${width}px`, height: `${height}px` }}>
 			<div className={`numberdisplay-parent`} style={alarmStyle}>
 				<svg className="numberdisplay-svg" width={`${actualWidth}px`} height={`${actualHeight}px`} fill={"black"} stroke={"none"}>
-					<g fill={activeZone !== "valueNormal" && darkMode ? colors.secondary : colors.primary}>
+					<g fill={activeZone !== "normal" && darkMode ? colors.secondary : colors.primary}>
 						{/*<g fill={colors.secondary}>*/}
 						{centerLabel ? (
 							<AutoFitTextBox

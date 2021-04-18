@@ -1,81 +1,29 @@
 import React from "react";
 
-import "chart.css";
-import { Area, AreaChart, CartesianGrid, Line, LineChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
-
-import { scaleLog } from "d3-scale";
+import { Area, AreaChart, CartesianGrid, ReferenceArea, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { valueToPercentConverters, valueToPercentConvertersInverse } from "../../../misc/scaleConversions";
+import { useSelector } from "react-redux";
 
-// const data = [
-// 	{ x: 0, y: 10 },
-// 	{ x: 1, y: 5 },
-// 	{ x: 2, y: 8 },
-// 	{ x: 4, y: 14 },
-// ];
-
-const data = [...Array(100).keys()].map(a => ({ x: a + 1, y: a + 1 }));
-// const data = [
-// 	{
-// 		x: 2.114,
-// 		y: 11.93154183039472,
-// 	},
-// 	{
-// 		x: 3.125,
-// 		y: 10.192299786962748,
-// 	},
-// 	{
-// 		x: 4.158,
-// 		y: 9.903178053007577,
-// 	},
-// 	{
-// 		x: 5.323,
-// 		y: 9.903178053007577,
-// 	},
-// 	{
-// 		x: 6.701,
-// 		y: 9.903178053007577,
-// 	},
-// 	{
-// 		x: 8.116,
-// 		y: 9.607695841876875,
-// 	},
-// 	{
-// 		x: 9.119,
-// 		y: 9.607695841876875,
-// 	},
-// 	{
-// 		x: 10.331,
-// 		y: 10.337784552507987,
-// 	},
-// 	{
-// 		x: 11.332,
-// 		y: 10.897024288102202,
-// 	},
-// 	{
-// 		x: 12.345,
-// 		y: 10.337784552507987,
-// 	},
-// ];
+// const data = [...Array(100).keys()].map(a => ({ x: a + 1, y: a + 1 }));
 
 const getTicks = (data, ticksPerMagnitude, mapper, displayScale, converter, inverseConverter) => {
+	let amount;
 	if (displayScale.type === "logarithmic") {
-		// const min = Math.round(Math.min(...data.map(mapper)));
-		// const max = Math.round(Math.max(...data.map(mapper)));
-		const amount = ticksPerMagnitude * (Math.log10(displayScale.upper) - Math.log10(displayScale.lower));
-		const stepSize = 1 / amount;
-
-		const arr = [];
-
-		for (let i = 0; i < 1; i += stepSize) {
-			// arr.push(inverseConverter(i * (displayScale.upper - displayScale.lower) + displayScale.lower));
-			arr.push(inverseConverter(i));
-		}
-
-		return [displayScale.lower].concat(arr);
+		const { upper, lower } = displayScale;
+		amount = ticksPerMagnitude * (Math.log10(upper) - Math.log10(lower));
 	} else {
-		console.log("mitä vittua");
-		return [];
+		amount = 2 * ticksPerMagnitude;
 	}
+
+	const stepSize = 1 / amount;
+
+	const arr = [];
+
+	for (let i = 0; i <= 1; i += stepSize) {
+		arr.push(inverseConverter(i));
+	}
+
+	return arr;
 };
 
 const getDomain = (data, xRange, mapper = item => item.x) => {
@@ -83,29 +31,47 @@ const getDomain = (data, xRange, mapper = item => item.x) => {
 	return [max - xRange, max];
 };
 
-const applyScale = (data, displayScale) => {
-	const { lower, upper, type } = displayScale;
-	const converter = valueToPercentConverters[type](upper, lower);
-	return data.map(({ x, y }) => ({ x, y: converter(y) * (upper - lower) + lower }));
+const getZones = (meta, domain, converter, colors) => {
+	const { zones } = meta;
+
+	return zones.map(zone => {
+		const color = colors.zones[zone.state];
+		return <ReferenceArea x1={domain[0]} x2={domain[1]} y1={converter(zone.lower)} y2={converter(zone.upper)} fill={color} />;
+	});
 };
 
 const Visualiser3 = ({ data, meta, displayOptions, width, height }) => {
-	// const scale =
-	// const a = applyScale(data, );
-	// console.log(data, a);
-
+	const colors = useSelector(state => state.settings.appearance.colors);
+	const darkMode = useSelector(state => state.settings.appearance.darkMode);
 	const { displayScale } = meta;
 	const { invertYAxis } = displayOptions;
-	// const displayScale = { upper: 100, lower: 0.1, type: "logarithmic" };
-	const { lower, upper, type } = displayScale;
-	const converter = x => valueToPercentConverters[type](upper, lower)(x);
-	const inverseConverter = x => valueToPercentConvertersInverse[type](upper, lower)(x);
+	const { lower, upper, type, power } = displayScale;
+
+	let inverseConverter;
+	let converter;
+	if (type === "power") {
+		converter = valueToPercentConverters[type](upper, lower, power);
+		inverseConverter = valueToPercentConvertersInverse[type](upper, lower, power);
+	} else {
+		converter = valueToPercentConverters[type](upper, lower);
+		inverseConverter = valueToPercentConvertersInverse[type](upper, lower);
+	}
 
 	const convertedData = data.map(({ x, y }) => ({ x, y: converter(y) }));
 	const ticks = getTicks(data, 4, item => item.y, displayScale, converter, inverseConverter);
+	let domain = getDomain(data, 100);
 	return (
-		<div style={{ padding: "2.5%", width: "100%", height: "100%", fontSize: "50%", position: "absolute" }}>
-			<span style={{ marginLeft: "6%", marginBottom: "12%", position: "relative" }}>{meta.displayName}</span>
+		<div
+			style={{
+				padding: "2.5%",
+				width: "100%",
+				height: "100%",
+				fontSize: "50%",
+				position: "absolute",
+				color: colors.primary,
+				backgroundColor: colors.background,
+			}}>
+			<span style={{ marginLeft: "1%", marginBottom: "12%", position: "relative" }}>{meta.displayName}</span>
 			<div
 				style={{
 					position: "relative",
@@ -114,18 +80,40 @@ const Visualiser3 = ({ data, meta, displayOptions, width, height }) => {
 					bottom: "0",
 				}}>
 				<ResponsiveContainer width={"100%"} height={"100%"}>
-					<AreaChart data={convertedData}>
-						<CartesianGrid strokeDasharray={"3 3"} />
-						<XAxis dataKey={"x"} type={"number"} ticks={[null]} domain={getDomain(data, 100)} allowDecimals={false} height={0} />
-						<YAxis
-							style={{ fontFamily: "sans-serif", fontSize: "50%" }}
-							width={0.06 * width}
+					<AreaChart data={convertedData} margin={{ top: 0.01 * width, bottom: 0.01 * width, left: 0.01 * width, right: 0.01 * width }}>
+						<CartesianGrid strokeDasharray={"3 3"} stroke={colors.secondary} strokeOpacity={darkMode ? 1 : 0.2} />
+						{getZones(meta, domain, converter, colors)}
+						<XAxis
+							dataKey={"x"}
+							type={"number"}
+							ticks={[null]}
+							domain={domain}
+							allowDecimals={false}
+							allowDataOverflow={true}
+							height={0}
+						/>
+						<Area
+							type={"linear"}
 							dataKey={"y"}
-							tickFormatter={y => Math.round(inverseConverter(y) * 10) / 10}
+							stroke={colors.primary}
+							strokeWidth={width * 0.01}
+							strokeLinecap={"round"}
+							strokeLinejoin={"round"}
+							isAnimationActive={false}
+							fill={"none"}
+						/>
+						<YAxis
+							style={{ fontFamily: "sans-serif", fontSize: "50%", background: "white", fontWeight: "bold" }}
+							width={0.125 * width}
+							dataKey={"y"}
+							tickFormatter={y => `${Math.round(inverseConverter(y) * 10) / 10} ${meta.units}`}
 							ticks={ticks.map(converter)}
 							reversed={invertYAxis}
+							// tick={<CustomYAxisTick colors={colors} />}
+							allowDataOverflow={true}
+							color={colors.primary}
+							mirror={true}
 						/>
-						<Area type={"linear"} dataKey={"y"} stroke={"black"} isAnimationActive={false} />
 					</AreaChart>
 				</ResponsiveContainer>
 			</div>
@@ -134,5 +122,25 @@ const Visualiser3 = ({ data, meta, displayOptions, width, height }) => {
 };
 
 Visualiser3.propTypes = {};
+
+const CustomYAxisTick = ({ colors, ...props }) => {
+	// console.log(props);
+	const string = props.tickFormatter(props.payload.value);
+	return (
+		<g
+			transform={`translate(${props.x},${props.y})`}
+			width={props.width}
+			height={props.height}
+			style={{ zIndex: 1000, ...props.style }}
+			className={props.className}>
+			<text x={0} y={0} textAnchor="start" fill={colors.primary} stroke={colors.background} strokeWidth={5}>
+				{string}
+			</text>
+			<text x={0} y={0} textAnchor="start" fill={colors.primary} stroke={"none"}>
+				{string}
+			</text>
+		</g>
+	);
+};
 
 export default Visualiser3;

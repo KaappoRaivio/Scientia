@@ -10,11 +10,13 @@ const getColors = darkMode => {
 			accent1: "rgb(0, 50, 150)",
 			accent2: "rgb(0, 50, 220)",
 
-			valueNormal: "rgba(0, 0, 0,0)",
-			valueAlert: "#dd0",
-			valueWarn: "#d80",
-			valueAlarm: "#d00",
-			valueEmergency: "#f0f",
+			zones: {
+				normal: "rgba(0, 0, 0,0)",
+				alert: "#dd0",
+				warn: "#d80",
+				alarm: "#d00",
+				emergency: "#f0f",
+			},
 		};
 	} else {
 		return {
@@ -25,12 +27,13 @@ const getColors = darkMode => {
 			accent1: "rgb(0, 50, 150)",
 			accent2: "rgb(0, 50, 220)",
 
-			valueNormal: "rgba(0, 0, 0, 0)",
-			// valueNormal: "lightgreen",
-			valueAlert: "#ff0",
-			valueWarn: "#f70",
-			valueAlarm: "#f00",
-			valueEmergency: "#f0f",
+			zones: {
+				normal: "rgba(0, 0, 0, 0)",
+				alert: "#ff0",
+				warn: "#f70",
+				alarm: "#f00",
+				emergency: "#f0f",
+			},
 		};
 	}
 };
