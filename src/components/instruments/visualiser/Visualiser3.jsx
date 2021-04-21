@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useDebugValue, useEffect } from "react";
 
 import { Area, AreaChart, CartesianGrid, ReferenceArea, ResponsiveContainer, XAxis, YAxis } from "recharts";
 import { valueToPercentConverters, valueToPercentConvertersInverse } from "../../../misc/scaleConversions";
@@ -103,13 +103,15 @@ const Visualiser3 = ({ data, meta, displayOptions, width, height }) => {
 							fill={"none"}
 						/>
 						<YAxis
-							style={{ fontFamily: "sans-serif", fontSize: "50%", background: "white", fontWeight: "bold" }}
+							style={{ fontFamily: "sans-serif", fontSize: "75%", background: "white", fontWeight: "bold" }}
 							width={0.125 * width}
 							dataKey={"y"}
 							tickFormatter={y => `${Math.round(inverseConverter(y) * 10) / 10} ${meta.units}`}
 							ticks={ticks.map(converter)}
+							tickLine={false}
 							reversed={invertYAxis}
-							// tick={<CustomYAxisTick colors={colors} />}
+							orientation={"right"}
+							tick={<CustomYAxisTick colors={colors} />}
 							allowDataOverflow={true}
 							color={colors.primary}
 							mirror={true}
@@ -124,7 +126,11 @@ const Visualiser3 = ({ data, meta, displayOptions, width, height }) => {
 Visualiser3.propTypes = {};
 
 const CustomYAxisTick = ({ colors, ...props }) => {
-	// console.log(props);
+	// console.log(props.viewV);
+	// useEffect(() => {
+	// 	console.log(props);
+	// }, [props]);
+
 	const string = props.tickFormatter(props.payload.value);
 	return (
 		<g
@@ -133,10 +139,10 @@ const CustomYAxisTick = ({ colors, ...props }) => {
 			height={props.height}
 			style={{ zIndex: 1000, ...props.style }}
 			className={props.className}>
-			<text x={0} y={0} textAnchor="start" fill={colors.primary} stroke={colors.background} strokeWidth={5}>
+			<text x={0} y={0} textAnchor="end" fill={colors.primary} stroke={colors.background} strokeWidth={5} dominantBaseline={"middle"}>
 				{string}
 			</text>
-			<text x={0} y={0} textAnchor="start" fill={colors.primary} stroke={"none"}>
+			<text x={0} y={0} textAnchor="end" fill={colors.primary} stroke={"none"} dominantBaseline={"middle"}>
 				{string}
 			</text>
 		</g>

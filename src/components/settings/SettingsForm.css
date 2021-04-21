@@ -96,4 +96,5 @@
 
 .form-confirm:active {
 	background: inherit !important;
+	transform: scale(0.95,0.95);
 }

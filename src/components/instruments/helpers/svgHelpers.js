@@ -5,7 +5,6 @@ import _ from "underscore";
 class SvgHelpers {
 	static getDivisionCoordinates(center, radius, length, numberOfDivisions, angleProvider) {
 		let lines = [];
-		// console.log(center, radius, length);
 
 		for (let i = 0; i < numberOfDivisions; i++) {
 			let angle = angleProvider(i);
