@@ -51,6 +51,9 @@ const Compass = props => {
 					<LineTickSections center={center} radius={radius} divisions={props.divisions} rotateText={true} />
 				</g>
 			</svg>
+			<svg className={"compassNeedle"} width={"100%"} height={"100%"} strokeWidth={"1%"}>
+				<line x1={"50%"} x2={"50%"} y1={"48%"} y2={"50%"} stroke={colors.primary} strokeLinecap={"round"} />
+			</svg>
 		</div>
 	);
 };

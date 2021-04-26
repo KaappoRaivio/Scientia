@@ -2,7 +2,7 @@
 	padding: 0 10px 10px;
 	display: grid;
 	grid-template-columns: repeat(1, 1fr);
-	grid-gap: 10px;
+	gap: 10px;
 	width: 100%;
 	background-color: inherit;
 

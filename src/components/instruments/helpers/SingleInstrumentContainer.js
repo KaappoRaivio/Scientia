@@ -39,29 +39,22 @@ const SingleInstrumentContainer = ({ additionalProps, id, element, colors, index
 		colors,
 		...additionalProps,
 	};
-
+	// Math.min(sideLength.width / 10, sideLength.height / 10)
 	const parentStyle = {
-		height: sideLength.width,
-		fontSize: Math.min(sideLength.width / 10, (sideLength.height / 10) * 0.58),
+		// height: sideLength.width,
+		fontSize: sideLength.width / 10,
+		// fontSize: sideLength.width < sideLength.height ? sideLength.width / 10 : sideLength.height / 10,
 		color: colors.primary,
 		backgroundColor: colors.background,
 	};
 
-	// return didCatch ? (
-	// 	<p>Error occured: {error}</p>
-	// ) : (
-	// 	<ErrorBoundary>
 	return (
 		<div className="single-grid-item with-shadow" style={parentStyle}>
 			<RemoveInstrument onClick={() => onRemoveClick(id)} enabled={layoutEditingEnabled} />
-			<div className="single-flexbox-wrapper">
-				<ErrorBoundary>{React.createElement(element, childProps, [])}</ErrorBoundary>
-			</div>
+			<ErrorBoundary>{React.createElement(element, childProps, [])}</ErrorBoundary>
 			<div className="probe" ref={probe} />
 		</div>
 	);
-	// </ErrorBoundary>
-	// );
 };
 
 export default SingleInstrumentContainer;

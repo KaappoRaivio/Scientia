@@ -27,6 +27,12 @@
 	/*transform: rotate(0deg);*/
 }
 
+.compassNeedle {
+	left: 0;
+	top: 0;
+	position: absolute;
+}
+
 @keyframes roll {
 	0% {
 		transform: rotate(0deg);
