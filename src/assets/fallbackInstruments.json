@@ -52,6 +52,13 @@
 					}
 				}
 			]
+		},
+		{
+			"type": "branch",
+			"layout": "stacked",
+			"children": [
+
+			]
 		}
 	]
 }

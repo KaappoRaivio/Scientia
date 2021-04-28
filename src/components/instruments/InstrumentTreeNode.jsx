@@ -8,7 +8,7 @@ import { addInstrument, removeInstrument } from "../../redux/actions/application
 import Single from "./layouts/Single";
 import Stacked from "./layouts/Stacked";
 
-const InstrumentTreeNode = ({ branch, id, additionalProps, colors, layoutEditingEnabled, nestingLevel = 0 }) => {
+const InstrumentTreeNode = ({ branch, id = "", additionalProps, colors, layoutEditingEnabled, nestingLevel = 0 }) => {
 	const dispatch = useDispatch();
 	const onInstrumentAdded = (id, instrument) => {
 		dispatch(addInstrument(id, instrument));
@@ -19,7 +19,6 @@ const InstrumentTreeNode = ({ branch, id, additionalProps, colors, layoutEditing
 	const node = branch;
 	if (node.type === "leaf") {
 		const component = node.component;
-		// console.log(component);
 
 		const child = (
 			<InstrumentContainer
@@ -28,7 +27,7 @@ const InstrumentTreeNode = ({ branch, id, additionalProps, colors, layoutEditing
 				colors={colors}
 				onRemoveClick={onInstrumentRemoved}
 				index={0}
-				id={nestingLevel}
+				id={id}
 				key={id}
 				layoutEditingEnabled={layoutEditingEnabled}
 			/>
@@ -40,28 +39,21 @@ const InstrumentTreeNode = ({ branch, id, additionalProps, colors, layoutEditing
 		}
 	} else if (node.type === "branch") {
 		const nextLayer = [
-			node.children.length === 0 ? (
-				<RemoveInstrument
-					onClick={() => {
-						console.log("Removed:", id);
-						onInstrumentRemoved(id);
-					}}
-					enabled={layoutEditingEnabled}
-				/>
-			) : null,
-			...node.children.map((child, index) => (
-				<InstrumentTreeNode
-					branch={child}
-					additionalProps={additionalProps}
-					colors={colors}
-					id={id + "." + index}
-					onInstrumentRemoved={onInstrumentRemoved}
-					onInstrumentAdded={onInstrumentAdded}
-					layoutEditingEnabled={layoutEditingEnabled}
-					key={id + "." + index}
-					nestingLevel={nestingLevel + 1}
-				/>
-			)),
+			...node.children.map((child, index) => {
+				return (
+					<InstrumentTreeNode
+						branch={child}
+						additionalProps={additionalProps}
+						colors={colors}
+						id={id + "." + index}
+						onInstrumentRemoved={onInstrumentRemoved}
+						onInstrumentAdded={onInstrumentAdded}
+						layoutEditingEnabled={layoutEditingEnabled}
+						key={id + "." + index}
+						nestingLevel={nestingLevel + 1}
+					/>
+				);
+			}),
 			layoutEditingEnabled && (node.children.length < 4 || id === "") ? (
 				<InstrumentTreeNode
 					colors={colors}
@@ -80,21 +72,33 @@ const InstrumentTreeNode = ({ branch, id, additionalProps, colors, layoutEditing
 			) : null,
 		].filter(x => x != null);
 
+		const removeInstrument =
+			node.children.length === 0 ? (
+				<RemoveInstrument
+					onClick={() => {
+						console.log("Removed:", id);
+						onInstrumentRemoved(id);
+					}}
+					enabled={layoutEditingEnabled}
+				/>
+			) : null;
+
 		if (id === "") {
 			return nextLayer;
 		} else {
 			switch (node.layout) {
 				case "stacked":
-					const child = <Stacked>{nextLayer}</Stacked>;
+					console.log(nextLayer);
+					const child = <Stacked removeInstrument={removeInstrument}>{nextLayer}</Stacked>;
 					if (nestingLevel === 1) {
-						return <Single>{child}</Single>;
+						return <Single removeInstrument={removeInstrument}>{child}</Single>;
 					} else {
 						return child;
 					}
 				// return child;
 				case "quadrants":
 				default:
-					return <Quadrants>{nextLayer}</Quadrants>;
+					return <Quadrants removeInstrument={removeInstrument}>{nextLayer}</Quadrants>;
 			}
 		}
 	} else {

@@ -47,8 +47,8 @@ const getAddress = host => {
 
 const initialState = {
 	appearance: {
-		darkMode: true,
-		colors: getColors(true),
+		darkMode: false,
+		colors: getColors(false),
 	},
 	performance: {
 		animation: false,

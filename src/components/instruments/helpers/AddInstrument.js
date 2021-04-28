@@ -56,6 +56,10 @@ const spinnerSchema = {
 			// },
 			value: "quadrant",
 		},
+		{
+			label: "Stacked...",
+			value: "stacked",
+		},
 	].sort((a, b) => a.label.localeCompare(b.label)),
 };
 
@@ -88,7 +92,15 @@ const stringToObject = {
 	quadrant: {
 		value: {
 			components: [],
-			type: "quadrant",
+			layout: "quadrant",
+			type: "multi",
+		},
+	},
+	stacked: {
+		value: {
+			components: [],
+			layout: "stacked",
+			type: "multi",
 		},
 	},
 };
@@ -106,10 +118,11 @@ const AddInstrument = ({ onInstrumentAdded, width, height, colors, darkMode, isQ
 
 	const onConfirm = options => {
 		const item = stringToObject[selectedItem.value].value;
-		if (item.type === "quadrant") {
-			console.log("quadrant");
+		if (item.type === "multi") {
+			console.log("multi");
 			onInstrumentAdded({
 				type: "branch",
+				layout: item.layout,
 				children: [],
 			});
 		} else {
