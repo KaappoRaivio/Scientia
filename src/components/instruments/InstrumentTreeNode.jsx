@@ -88,7 +88,6 @@ const InstrumentTreeNode = ({ branch, id = "", additionalProps, colors, layoutEd
 		} else {
 			switch (node.layout) {
 				case "stacked":
-					console.log(nextLayer);
 					const child = <Stacked removeInstrument={removeInstrument}>{nextLayer}</Stacked>;
 					if (nestingLevel === 1) {
 						return <Single removeInstrument={removeInstrument}>{child}</Single>;
