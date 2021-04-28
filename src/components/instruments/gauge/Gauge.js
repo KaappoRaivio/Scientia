@@ -97,17 +97,17 @@ const Gauge = ({
 					sectorWidth={sectorWidth}
 					backgroundColor={colors.background}
 				/>
-				<circle stroke={colors.primary} fill={"none"} cx={"50%"} cy={"50%"} r={`48.48%`} strokeWidth={"1%"} />
 				<g stroke={"black"} strokeWidth={"1%"} fill={colors.background}>
 					{SvgHelpers.getSector(center.x, center.y, radius, radius, math.mod(start, 360), math.mod(end, 360), colors.backgroundColor)}
 				</g>
-				<circle stroke={"none"} fill={colors.background} cx={"50%"} cy={"50%"} r={`${innerCircleRadius * 100}%`} />
 
 				<g stroke={colors.secondary} fill={colors.secondary}>
 					<LineTickSections center={center} radius={radius} textRadius={radius * 0.8} divisions={divisions} rotateText={false} />
 				</g>
 
 				{darkenIfNight()}
+				<circle stroke={"none"} fill={colors.background} cx={"50%"} cy={"50%"} r={`${innerCircleRadius * 100}%`} />
+				<circle stroke={colors.primary} fill={"none"} cx={"50%"} cy={"50%"} r={`48.48%`} strokeWidth={"1%"} />
 			</svg>
 			<Needle angle={needleAngle} radius={radius} color={colors.accent2} animation={animation} demo={false} />
 		</div>
