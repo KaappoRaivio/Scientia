@@ -1,0 +1,35 @@
+{
+	"component": "select",
+	"name": "instrument",
+	"label": "Select instrument",
+	"options": [
+		{
+			"label": "Wind",
+			"value": "WindContainer"
+		},
+		{
+			"label": "Tridata",
+			"value": "TridataContainer"
+		},
+		{
+			"label": "Gauge",
+			"value": "GaugeContainer"
+		},
+		{
+			"label": "Compass",
+			"value": "CompassContainer"
+		},
+		{
+			"label": "Graph",
+			"value": "VisualiserContainer"
+		},
+		{
+			"label": "Quadrant...",
+			"value": "quadrant"
+		},
+		{
+			"label": "Stacked...",
+			"value": "stacked"
+		}
+	]
+}

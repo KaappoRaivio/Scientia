@@ -5,105 +5,106 @@ import SettingsForm from "../../settings/SettingsForm";
 
 import ReactDropdown from "react-dropdown";
 import { stringToClass } from "../../../models/LayoutModel";
-
+import spinnerSchema from "../../../assets/addinstrument/spinneschema.json";
+import stringToObject from "../../../assets/addinstrument/responseschema.json";
 const schema = {
 	buttonsAtBottom: true,
 	dontShowApply: true,
 };
 
-const spinnerSchema = {
-	component: "select",
-	name: "instrument",
-	label: "Select instrument",
-	options: [
-		{
-			label: "Wind",
-			// value: {
-			// 	component: "WindContainer",
-			// },
-			value: "WindContainer",
-		},
-		{
-			label: "Tridata",
-			// value: {
-			// 	component: "TridataContainer",
-			// },
-			value: "TridataContainer",
-		},
-		{
-			label: "Gauge",
-			// value: {
-			// 	component: "GaugeContainer",
-			// },
-			value: "GaugeContainer",
-		},
-		{
-			label: "Compass",
-			// value: {
-			// 	component: "CompassContainer",
-			// },
-			value: "CompassContainer",
-		},
-		{
-			label: "Graph",
-			value: "VisualiserContainer",
-		},
-		{
-			label: "Quadrant...",
-			// value: {
-			// 	components: [],
-			// 	type: "quadrant",
-			// },
-			value: "quadrant",
-		},
-		{
-			label: "Stacked...",
-			value: "stacked",
-		},
-	].sort((a, b) => a.label.localeCompare(b.label)),
-};
+// const spinnerSchema = {
+// 	component: "select",
+// 	name: "instrument",
+// 	label: "Select instrument",
+// 	options: [
+// 		{
+// 			label: "Wind",
+// 			// value: {
+// 			// 	component: "WindContainer",
+// 			// },
+// 			value: "WindContainer",
+// 		},
+// 		{
+// 			label: "Tridata",
+// 			// value: {
+// 			// 	component: "TridataContainer",
+// 			// },
+// 			value: "TridataContainer",
+// 		},
+// 		{
+// 			label: "Gauge",
+// 			// value: {
+// 			// 	component: "GaugeContainer",
+// 			// },
+// 			value: "GaugeContainer",
+// 		},
+// 		{
+// 			label: "Compass",
+// 			// value: {
+// 			// 	component: "CompassContainer",
+// 			// },
+// 			value: "CompassContainer",
+// 		},
+// 		{
+// 			label: "Graph",
+// 			value: "VisualiserContainer",
+// 		},
+// 		{
+// 			label: "Quadrant...",
+// 			// value: {
+// 			// 	components: [],
+// 			// 	type: "quadrant",
+// 			// },
+// 			value: "quadrant",
+// 		},
+// 		{
+// 			label: "Stacked...",
+// 			value: "stacked",
+// 		},
+// 	].sort((a, b) => a.label.localeCompare(b.label)),
+// };
 
-const stringToObject = {
-	WindContainer: {
-		value: {
-			component: "WindContainer",
-		},
-	},
-	TridataContainer: {
-		value: {
-			component: "TridataContainer",
-		},
-	},
-	GaugeContainer: {
-		value: {
-			component: "GaugeContainer",
-		},
-	},
-	CompassContainer: {
-		value: {
-			component: "CompassContainer",
-		},
-	},
-	VisualiserContainer: {
-		value: {
-			component: "VisualiserContainer",
-		},
-	},
-	quadrant: {
-		value: {
-			components: [],
-			layout: "quadrant",
-			type: "multi",
-		},
-	},
-	stacked: {
-		value: {
-			components: [],
-			layout: "stacked",
-			type: "multi",
-		},
-	},
-};
+// const stringToObject = {
+// 	WindContainer: {
+// 		value: {
+// 			component: "WindContainer",
+// 		},
+// 	},
+// 	TridataContainer: {
+// 		value: {
+// 			component: "TridataContainer",
+// 		},
+// 	},
+// 	GaugeContainer: {
+// 		value: {
+// 			component: "GaugeContainer",
+// 		},
+// 	},
+// 	CompassContainer: {
+// 		value: {
+// 			component: "CompassContainer",
+// 		},
+// 	},
+// 	VisualiserContainer: {
+// 		value: {
+// 			component: "VisualiserContainer",
+// 		},
+// 	},
+// 	quadrant: {
+// 		value: {
+// 			components: [],
+// 			layout: "quadrant",
+// 			type: "multi",
+// 		},
+// 	},
+// 	stacked: {
+// 		value: {
+// 			components: [],
+// 			layout: "stacked",
+// 			type: "multi",
+// 		},
+// 	},
+// };
 
 const AddInstrument = ({ onInstrumentAdded, width, height, colors, darkMode, isQuadrant }) => {
 	const lineWidth = 3;
@@ -186,7 +187,7 @@ const AddInstrument = ({ onInstrumentAdded, width, height, colors, darkMode, isQ
 					style={{ position: "relative", fontSize: "200%" }}
 					value={selectedItem}
 					onChange={onSpinnerChange}
-					options={spinnerSchema.options}
+					options={spinnerSchema.options.sort((a, b) => a.label.localeCompare(b.label))}
 					placeholder={spinnerSchema.label}
 				/>
 				<SettingsForm

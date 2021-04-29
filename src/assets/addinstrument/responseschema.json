@@ -1,0 +1,41 @@
+{
+	"WindContainer": {
+		"value": {
+			"component": "WindContainer"
+		}
+	},
+	"TridataContainer": {
+		"value": {
+			"component": "TridataContainer"
+		}
+	},
+	"GaugeContainer": {
+		"value": {
+			"component": "GaugeContainer"
+		}
+	},
+	"CompassContainer": {
+		"value": {
+			"component": "CompassContainer"
+		}
+	},
+	"VisualiserContainer": {
+		"value": {
+			"component": "VisualiserContainer"
+		}
+	},
+	"quadrant": {
+		"value": {
+			"components": [],
+			"layout": "quadrant",
+			"type": "multi"
+		}
+	},
+	"stacked": {
+		"value": {
+			"components": [],
+			"layout": "stacked",
+			"type": "multi"
+		}
+	}
+}

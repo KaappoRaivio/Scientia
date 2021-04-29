@@ -1,4 +1,4 @@
-import requests, pprint, yaml
+import requests, pprint, yaml, time
 
 root = "localhost"
 
@@ -11,16 +11,24 @@ def get(s, username, path):
 def set(s, username, path, json):
 	return s.post(f"http://{root}:3000/signalk/v1/applicationData/user/signalk-scientia-kraivio/0.2.1/{username}/{path}", json=json)
 
+def auto(s):
+	return s.put(f"http://{root}:3000/signalk/v1/api/vessels/self/steering/autopilot/state", json={"value": "auto"})
+
+def standby(s):
+	return s.put(f"http://{root}:3000/signalk/v1/api/vessels/self/steering/autopilot/state", json={"value": "standby"})
+
+def turn(s, direction):
+	return s.put(f"http://{root}:3000/signalk/v1/api/vessels/self/steering/autopilot/actions/adjustHeading", json={"value": direction})
+
 
 s = requests.Session()
-username = "scientia-test"
-password = "scientia-best"
+username = "admin"
+password = "admin"
 
-# username = "scientia-test"
-# password = "scientia-best"
-#
-# username = "nohyphen"
-# password = "nohyphen"
 print(login(s, username, password))
-print(set(s, username, "layout", [{'type': 'single', 'instruments': [{'component': 'CompassContainer', 'additionalProps': {}}]}]))
-print(get(s, username, "layout"), get(s, username, "layout").json())
+print(standby(s).json())
+# time.sleep(0.5)
+# print(auto(s).json())
+# time.sleep(1)
+# print(turn(s, -10).json())
+
