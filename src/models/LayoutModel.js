@@ -20,6 +20,7 @@ const replaceClassesWithStrings = node => {
 	} else if (node.type === "branch") {
 		return {
 			type: "branch",
+			layout: node.layout,
 			children: node.children.map(replaceClassesWithStrings),
 		};
 	}
