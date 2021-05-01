@@ -1,1 +1,79 @@
-{ "name": "signalk-scientia-kraivio-dev", "version": "0.2.3", "description": "A webapp plugin for signalk-server-node with beautiful graphics.", "keywords": [ "signalk-webapp", "signalk-node-server-plugin" ], "homepage": "signalk-scientia-kraivio-dev", "license": "GPL-3.0-or-later", "author": { "name": "Kaappo Raivio", "email": "kaappo.raivio@gmail.com", "url": "kaapporaivio.me" }, "main": "index.js", "scripts": { "dev": "./scripts/myDev.sh", "start": "PORT=3001 react-scripts start", "build": "react-scripts build", "test": "react-scripts test", "eject": "react-scripts eject", "mypublish": "./scripts/myPublish.sh" }, "browserslist": { "production": [ ">0.2%", "not dead", "not op_mini all" ], "development": [ "last 1 chrome version", "last 1 firefox version", "last 1 safari version" ] }, "eslintConfig": { "extends": "react-app" }, "dependencies": {}, "devDependencies": { "@data-driven-forms/react-form-renderer": ">2.5.3", "@testing-library/jest-dom": ">=4.2.4", "@testing-library/react": ">=9.3.2", "@testing-library/user-event": ">=7.1.2", "chart.css": "^0.1.1", "delta-processor": "^0.1.4", "immutability-helper": ">=3.1.1", "lodash": "^4.17.21", "mathjs": ">=6.6.4", "moment": "^2.29.1", "msw": ">=0.20.5", "pipeline-js": ">=1.0.2", "prettier": ">=2.0.5", "prop-types": ">=15.7.2", "rc-slider": ">=9.3.1", "react": ">=16.13.1", "react-cookies": ">=0.1.1", "react-copy-to-clipboard": "^5.0.3", "react-dom": ">=16.13.1", "react-dropdown": ">=1.7.0", "react-fast-compare": ">=3.2.0", "react-modal": ">=3.11.2", "react-redux": "^7.2.3", "react-scripts": "3.4.1", "react-sidebar": ">=3.0.2", "react-switch": ">=5.0.1", "react-vis": ">=1.11.7", "react-weathericons": ">=1.0.4", "recharts": "^2.0.9", "recompose": ">=0.30.0", "redux": "^4.0.5", "redux-devtools-extension": "^2.13.9", "redux-thunk": "^2.3.0", "underscore": ">=1.10.2", "use-error-boundary": "^2.0.4", "why-did-you-update": "0.1.1" } }
+{
+  "name": "signalk-scientia-kraivio-dev",
+  "version": "0.2.4",
+  "description": "A webapp plugin for signalk-server-node with beautiful graphics.",
+  "keywords": [
+    "signalk-webapp",
+    "signalk-node-server-plugin"
+  ],
+  "homepage": "signalk-scientia-kraivio-dev",
+  "license": "GPL-3.0-or-later",
+  "author": {
+    "name": "Kaappo Raivio",
+    "email": "kaappo.raivio@gmail.com",
+    "url": "kaapporaivio.me"
+  },
+  "main": "index.js",
+  "scripts": {
+    "dev": "./scripts/myDev.sh",
+    "start": "PORT=3001 react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "mypublish": "./scripts/myPublish.sh"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "@data-driven-forms/react-form-renderer": ">2.5.3",
+    "@testing-library/jest-dom": ">=4.2.4",
+    "@testing-library/react": ">=9.3.2",
+    "@testing-library/user-event": ">=7.1.2",
+    "chart.css": "^0.1.1",
+    "delta-processor": "^0.1.4",
+    "immutability-helper": ">=3.1.1",
+    "lodash": "^4.17.21",
+    "mathjs": ">=6.6.4",
+    "moment": "^2.29.1",
+    "msw": ">=0.20.5",
+    "pipeline-js": ">=1.0.2",
+    "prettier": ">=2.0.5",
+    "prop-types": ">=15.7.2",
+    "rc-slider": ">=9.3.1",
+    "react": ">=16.13.1",
+    "react-cookies": ">=0.1.1",
+    "react-copy-to-clipboard": "^5.0.3",
+    "react-dom": ">=16.13.1",
+    "react-dropdown": ">=1.7.0",
+    "react-fast-compare": ">=3.2.0",
+    "react-modal": ">=3.11.2",
+    "react-redux": "^7.2.3",
+    "react-scripts": "3.4.1",
+    "react-sidebar": ">=3.0.2",
+    "react-switch": ">=5.0.1",
+    "react-vis": ">=1.11.7",
+    "react-weathericons": ">=1.0.4",
+    "recharts": "^2.0.9",
+    "recompose": ">=0.30.0",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "^2.13.9",
+    "redux-thunk": "^2.3.0",
+    "underscore": ">=1.10.2",
+    "use-error-boundary": "^2.0.4",
+    "why-did-you-update": "0.1.1"
+  }
+}
