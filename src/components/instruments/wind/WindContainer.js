@@ -45,6 +45,9 @@ class WindContainer extends React.Component {
 		if (wind.speedTrue !== null) {
 			speed = wind.speedTrue;
 			speedQuality = "T";
+		} else if (wind.speedOverGorund !== null) {
+			speed = wind.speedOverGorund;
+			speedQuality = "T";
 		} else {
 			speed = wind.speedApparent;
 			speedQuality = "A";
@@ -55,7 +58,7 @@ class WindContainer extends React.Component {
 				width={this.props.width}
 				height={this.props.height}
 				angleApparent={wind.angleApparent || {}}
-				angleTrue={wind.angleTrueWater || {}}
+				angleTrue={wind.angleTrueWater || wind.angleTrueGround || {}}
 				speed={speed || {}}
 				speedQuality={speedQuality}
 				closeHaulAngle={this.state.closeHaulAngle}

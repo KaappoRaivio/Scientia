@@ -32,7 +32,9 @@ class CompassContainer extends React.Component {
 	}
 
 	render() {
-		const heading = this.props?.data?.vessels?.self?.navigation?.courseOverGroundTrue;
+		const heading =
+			this.props?.data?.vessels?.self?.navigation?.courseOverGroundTrue ||
+			this.props?.data?.vessels?.self?.navigation?.courseOverGroundMagnetic;
 
 		return (
 			<Compass
