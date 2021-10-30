@@ -1,6 +1,6 @@
 ![Header](./src/assets/readme/header.png)
 
-![Maintenance](https://img.shields.io/maintenance/yes/2020)
+![Maintenance](https://img.shields.io/maintenance/yes/2021)
 [![GitHub issues](https://img.shields.io/github/issues/KaappoRaivio/Scientia)](https://github.com/KaappoRaivio/Scientia/issues)
 [![GitHub forks](https://img.shields.io/github/forks/KaappoRaivio/Scientia)](https://github.com/KaappoRaivio/Scientia/network)
 [![GitHub stars](https://img.shields.io/github/stars/KaappoRaivio/Scientia)](https://github.com/KaappoRaivio/Scientia/stargazers)
@@ -18,12 +18,12 @@ _Please note the Scientia is currently in development, and more features will be
   - [x] Numeric display
   - [x] Wind instrument
   - [x] Compass
-  - [ ] Graph (Coming **really** soon (written on 2.9.2020))
-  - [ ] Polar diagram (Coming before the next season (written on 2.9.2020))
+  - [ ] Graph
+  - [ ] Polar diagram
 - [x] Light and dark mode
 - [x] Weather forecast from openWeatherMap
 - [x] Saving the layout on the server
-- [ ] Saving the settings on the server (coming **very** soon)
+- [ ] Saving the settings on the server
 - [ ] Customiseable colors scheme
 - [ ] Customiseable units
 <div style="display: inline;">
